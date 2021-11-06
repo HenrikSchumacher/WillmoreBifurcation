@@ -3,14 +3,36 @@
 \subsection{\Andy{I do not have any intuition about preservation ‘up to first order’.}}
 
 \Henrik{%
-Through a somewhat intransparent process (in the sense that I did not present their derivation in the \emph{Mathematica} notebook), I was able to determine the fundamental vector fields $\Funda[][\AmbSpace]$ for the three ``infinitesimal boosts'' $u$, $v$, $w \in \Lie(G)$, i.e. for three further generators that complement $\Lie(\SO(\AmbDim)) \oplus \Lie(\AmbSpace) \oplus \Lie(\R_{>0}) in \Lie(G)$, so that we obtain a full basis of $\Lie(G)$. 
+Through a somewhat intransparent process (in the sense that I did not present their derivation in the \emph{Mathematica} notebook), I was able to determine the fundamental vector fields $\Funda[][\AmbSpace]$ for the three ``infinitesimal boosts'' $u$, $v$, $w \in \Lie(G)$, i.e. for three further generators that complement $\Lie(\SO(\AmbDim)) \oplus \Lie(\AmbSpace) \oplus \Lie(\R_{>0}) \subset \Lie(G)$, so that we obtain a full basis of $\Lie(G)$. 
 In the notebook, I denoted these three fundamental vector fields by $U$, $V$, $W$, i.e., 
 \begin{align*}
-	U \ceq K^{\AmbSpace}_u,
-	\quad
-	V \ceq K^{\AmbSpace}_v,
-	\qand
-	W \ceq K^{\AmbSpace}_w.
+	U (x)
+	\ceq K^{\AmbSpace}_u \at_x
+	&=
+	\begin{pmatrix}
+		 x_1^2-x_2^2-x_3^2 \\
+		 2 \, x_{1} \, x_{2} \\
+		 2 \, x_{1} \, x_{3}
+	\end{pmatrix}
+	,
+	\\
+	V(x) \ceq K^{\AmbSpace}_v \at_x
+		&=
+	\begin{pmatrix}
+		 2 \, x_2 \, x_1  \\
+		 x_2^2-x_3^2-x_1^2 \\
+		 2 \, x_2 \, x_3
+	\end{pmatrix}
+	,
+	\\
+	W(x) \ceq K^{\AmbSpace}_w\at_x
+	&=
+	\begin{pmatrix}
+		2 \, x_3 \, x_1 \\
+		2 \, x_3 \, x_2 \\
+		x_3^2 -x_1^2 - x_2^2
+	\end{pmatrix}
+	.
 \end{align*}
 Thus by \eqref{eq:Funda}, we have 
 \begin{align*}
@@ -34,22 +56,67 @@ and analogously
 \end{align*}
 
 And what I did in the notebook is just checking for each torus $f$ of revolution with circular contour (TRCC for short) that
-
+\begin{align}
+	D \Area(f) \,(\Funda[u] \at_f) &= 0, \label{eq:DAU}
+	\\
+	D \Area(f) \,(\Funda[v] \at_f) &= 0, \label{eq:DAV}
+	\\
+	D \Area(f) \,(\Funda[w] \at_f) &= 0, \label{eq:DAW}
+	\\
+	D \Volume(f) \,(\Funda[u] \at_f) &= 0,  \label{eq:DVU}
+	\\
+	D \Volume(f) \,(\Funda[v] \at_f) &= 0,  \label{eq:DVV}
+	\\
+	D \Volume(f) \,(\Funda[w] \at_f) &= 0.  \label{eq:DVW}
+\end{align}
+I did so by parameterizing the torus by
 \begin{align*}
-	D \Area(f) \,(\Funda[u] \at_f) &= 0.
-	\\
-	D \Area(f) \,(\Funda[v] \at_f) &= 0,
-	\\
-	D \Area(f) \,(\Funda[w] \at_f) &= 0,
-	\\
-	D \Volume(f) \,(\Funda[u] \at_f) &= 0,
-	\\
-	D \Volume(f) \,(\Funda[v] \at_f) &= 0,
-	\\
-	D \Volume(f) \,(\Funda[w] \at_f) &= 0.
+	f( \varphi , \vartheta)
+	\begin{pmatrix}
+		\cos (\varphi ) (r \cos (\vartheta )+R)
+		\\
+		\sin (\varphi ) (r \cos (\vartheta )+R)
+		\\
+		r \,  \sin (\vartheta )
+	\end{pmatrix}
+	\quad
+	\text{with some $R>0$ and some $r>0$.}
 \end{align*}
+We know that
+\begin{align*}
+	D\Area(f) \, X
+	=
+	\int_M \ninnerprod{H_f, X}\, \vol_f
+	\qand
+	D\Area(f) \, X
+	=
+	\int_M \ninnerprod{\nu_f, X}\, \vol_f	,
+\end{align*}
+where $H_f$ and $\nu_f$ are mean curvature vector and outward pointing normal of $f$.
+Observe that
+\begin{align*}
+	\vol_f = r \, \sqrt{(R + r \cos(\vartheta))^2},
+	\quad
+	\nu_f = \tfrac{\partial}{\partial r} f(\varphi,\theta) = 
+	\begin{pmatrix}
+		\cos(\vartheta ) \, \cos (\varphi)
+		\\
+		\cos(\vartheta) \, \sin(\varphi)
+		\\
+		\sin(\vartheta)
+	\end{pmatrix}
+	\qand
+	H_f(\varphi,\vartheta) = h(\theta) \, \nu_f
+	,
+\end{align*}
+where $h(\theta)$ denotes the magnitude of the mean curvature vector which -- by rotation symmetry -- does not depend on the angle $\varphi$.
+Thus, we can write down the \eqref{eq:DAU}--\eqref{eq:DVW} explicitly.
+Then we just have to exploit symmetry properties of the trigonometric functions $\sin$ and $\cos$.
 
-Of course, this does not necessarily imply that $\Area$ and $\Volume$ are constant on the whole orbit $\mathcal{O} = (G f)$, not even on an arbitrarily small neighborhood of $f$. While the boost $\exp(t \, w)$ ``in $z$-direction'' (along the axis of revolution) sends a TRCC to a TRCC (the contour has to be circular again and boosting along the axis of revolution preserves rotation symmetry; the parameterization might change considerably, but we are not interested in the parameterization, right?), the boosts $\exp(t \, u)$ and $\exp(t \, v )$ along the $x$ and $y$ direction should deform TRCC into Dupin cyclides. And so I do not expect that $\exp(t \,u)$, $\exp(t \,v)$ preserve both area and volume. But I could be wrong.
+\bigskip
+
+Of course, this does not necessarily imply that $\Area$ and $\Volume$ are constant on the whole orbit $\mathcal{O} = (G f)$, not even on an arbitrarily small neighborhood of $f$. 
+While the boost $\exp(t \, w)$ ``in $z$-direction'' (along the axis of revolution) sends a TRCC to a TRCC (the contour has to be circular again and boosting along the axis of revolution preserves rotation symmetry; the parameterization might change considerably, but we are not interested in the parameterization, right?), the boosts $\exp(t \, u)$ and $\exp(t \, v )$ along the $x$ and $y$ direction should deform TRCC into Dupin cyclides. And so I do not expect that $\exp(t \,u)$, $\exp(t \,v)$ preserve both area and volume. But I could be wrong.
 }%
 
 \subsection{\Andy{With your symbolic setup in \emph{Mathematica} Henrik, is it easy to look at the 2nd order change? Maybe we will even see what makes the Clifford torus isoperimetric ratio so special?}}
