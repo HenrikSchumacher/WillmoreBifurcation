@@ -1,0 +1,91 @@
+\section{Questions}
+
+\subsection{\Andy{I do not have any intuition about preservation ‘up to first order’.}}
+
+\Henrik{%
+Through a somewhat intransparent process (in the sense that I did not present their derivation in the \emph{Mathematica} notebook), I was able to determine the fundamental vector fields $\Funda[][\AmbSpace]$ for the three ``infinitesimal boosts'' $u$, $v$, $w \in \Lie(G)$, i.e. for three further generators that complement $\Lie(\SO(\AmbDim)) \oplus \Lie(\AmbSpace) \oplus \Lie(\R_{>0}) in \Lie(G)$, so that we obtain a full basis of $\Lie(G)$. 
+In the notebook, I denoted these three fundamental vector fields by $U$, $V$, $W$, i.e., 
+\begin{align*}
+	U \ceq K^{\AmbSpace}_u,
+	\quad
+	V \ceq K^{\AmbSpace}_v,
+	\qand
+	W \ceq K^{\AmbSpace}_w.
+\end{align*}
+Thus by \eqref{eq:Funda}, we have 
+\begin{align*}
+	\Funda[u] \at_f =  U \circ f, 
+	\quad
+	\Funda[v] \at_f =  V \circ f, 
+	\qand
+	\Funda[w] \at_f =  W \circ f.
+\end{align*}
+
+We can now study area $\Area \colon \ConfSpace \to \R$ and enclosed volume $\Volume \colon \ConfSpace \to \R$ along an orbit $\Orbit \ceq (G f)$ of $G$. 
+By the chain rule we have for each differentiable curve 
+$g \colon ]-\epsilon,\epsilon[ \to G$ with $g(0) = 1$ and $g'(0) \in \Lie(G)$ 
+that
+\begin{align*}
+		\frac{\dd}{\dd t} \Area( L_{g(t)}(f) ) \At_{t=0} = D \Area(f) \,(\Funda[\xi] \at_f)
+\end{align*}
+and analogously
+\begin{align*}
+		\frac{\dd}{\dd t} \Volume( L_{g(t)}(f) ) \At_{t=0} = D \Volume(f) \,(\Funda[\xi] \at_f).
+\end{align*}
+
+And what I did in the notebook is just checking for each torus $f$ of revolution with circular contour (TRCC for short) that
+
+\begin{align*}
+	D \Area(f) \,(\Funda[u] \at_f) &= 0.
+	\\
+	D \Area(f) \,(\Funda[v] \at_f) &= 0,
+	\\
+	D \Area(f) \,(\Funda[w] \at_f) &= 0,
+	\\
+	D \Volume(f) \,(\Funda[u] \at_f) &= 0,
+	\\
+	D \Volume(f) \,(\Funda[v] \at_f) &= 0,
+	\\
+	D \Volume(f) \,(\Funda[w] \at_f) &= 0.
+\end{align*}
+
+Of course, this does not necessarily imply that $\Area$ and $\Volume$ are constant on the whole orbit $\mathcal{O} = (G f)$, not even on an arbitrarily small neighborhood of $f$. While the boost $\exp(t \, w)$ ``in $z$-direction'' (along the axis of revolution) sends a TRCC to a TRCC (the contour has to be circular again and boosting along the axis of revolution preserves rotation symmetry; the parameterization might change considerably, but we are not interested in the parameterization, right?), the boosts $\exp(t \, u)$ and $\exp(t \, v )$ along the $x$ and $y$ direction should deform TRCC into Dupin cyclides. And so I do not expect that $\exp(t \,u)$, $\exp(t \,v)$ preserve both area and volume. But I could be wrong.
+}%
+
+\subsection{\Andy{With your symbolic setup in \emph{Mathematica} Henrik, is it easy to look at the 2nd order change? Maybe we will even see what makes the Clifford torus isoperimetric ratio so special?}}
+
+\Henrik{%
+Could be worth a try. Computing the Hessian at a critical point is typically not that difficult because it actually does not depend on the employed Riemannian metric and its connection:
+
+Denote the orbit of $f$ under $G$ by $\Orbit = L_G(f)$. The fundamental vector fields $\Funda$ span the tangent space  $T_f  \Orbit$. If $\Function \colon \Orbit \to \R$ is twice differentiable, then for any Riemannian metric $h$ on $\Orbit$ we have
+\begin{align*}
+ 	\Hess^{h}(\Function)( \Funda[\xi] , \Funda[\eta]) 
+ 	= 
+ 	\bigparen{ \Funda[\xi] \Funda[\eta] \Function } \at_f 
+ 	- 
+ 	\dd \Function(f) \, \nabla^h_{\Funda[\xi]} \Funda[\eta],
+ 	\quad
+ 	\text{for all $\xi$, $\eta \in \Lie(G)$,}
+\end{align*} 	
+where $\nabla^h$ is the Levi-Civita connection of $h$.
+So in general, the result depends on the choice of a metric! But if $\dd \Function \at f = 0$ (like in the cases $\Function = \Area |_{\Orbit}$ and $\Function = \Volume |_{\Orbit}$ for example), then the metric-dependent term just vanishes and we get
+\begin{align*}
+ 	\Hess^{h}(\Function)(f) ( \Funda[\xi] , \Funda[\eta]) 
+ 	= 
+ 	\bigparen{ \Funda[\xi] \Funda[\eta] \Function } \at_f 
+	.
+\end{align*}
+And we (or rather \emph{Mathematica}) should be able to compute the latter, once we have figured out how the exponentials for the infinitesimal boost $u$, $v$, $w$ actually look like \ldots
+
+\bigskip
+
+Caution: If I am not mistaken, this does \emph{not} imply
+\begin{align*}
+	\bigparen{ \Funda[\xi] \Funda[\eta] \Area } \at_f 
+	=
+	D^2 \Area(f)( \Funda[\xi] , \Funda[\eta]),
+\end{align*}
+where $D^2$ denotes the second derivative on the surrounding Banach space!
+This has to do with the fact that the orbit is a curved submanifold of $\ConfSpace$ and that $D\Area(f) \neq 0$. ( We only know that $D\Area(f)$ vanishes when multiplied against fundamental vector fields 
+$\Funda[u]\at_f$, $\Funda[v]\at_f$, $\Funda[w]\at_f$ (and against any fundamental vector fields of the group of Euclidean motions, of course).
+}%
