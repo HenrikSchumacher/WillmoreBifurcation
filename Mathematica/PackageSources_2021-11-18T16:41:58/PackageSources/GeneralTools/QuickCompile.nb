@@ -1,0 +1,157 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      6160,        149]
+NotebookOptionsPosition[      5721,        134]
+NotebookOutlinePosition[      6113,        150]
+CellTagsIndexPosition[      6070,        147]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"QuickCompile", "::", "usage"}], "=", 
+    "\"\<MyCompile[returntype,args,code,opts]\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"QuickCompile", ",", "HoldAll"}], "]"}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"QuickCompile", "/:", 
+    RowBox[{"Set", "[", 
+     RowBox[{"fun_", ",", 
+      RowBox[{"QuickCompile", "[", 
+       RowBox[{"returntype_", ",", "args_", ",", "code_", ",", "opts___"}], 
+       "]"}]}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"name", ",", "file", ",", "lib"}], "}"}], ",", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "fun", "]"}], "===", "LibraryFunction"}], ",", 
+         
+         RowBox[{"LibraryFunctionUnload", "[", "fun", "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ClearAll", "[", "fun", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"name", "=", 
+        RowBox[{"SymbolName", "[", "fun", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"file", "=", 
+        RowBox[{"Export", "[", 
+         RowBox[{
+          RowBox[{"FileNameJoin", "[", 
+           RowBox[{"{", 
+            RowBox[{"$TemporaryDirectory", ",", 
+             RowBox[{"name", "<>", "\"\<.cpp\>\""}]}], "}"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+             "\"\<\n#include\\\"WolframLibrary.h\\\"\n#include\\\"\>\"", "<>", 
+              RowBox[{"FileNameJoin", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"ParentDirectory", "[", 
+                  RowBox[{"InstallationPath", "[", 
+                   RowBox[{
+                    RowBox[{"Packages", "[", "$PM", "]"}], "[", 
+                    "\"\<GeneralTools\>\"", "]"}], "]"}], "]"}], ",", 
+                 "\[IndentingNewLine]", "\"\<LTemplate\>\"", ",", 
+                 "\"\<IncludeFiles\>\"", ",", "\"\<mlstream.h\>\""}], 
+                "\[IndentingNewLine]", "}"}], "]"}], "<>", 
+              "\"\<\\\"\n#include\\\"\>\"", "<>", 
+              RowBox[{"FileNameJoin", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"ParentDirectory", "[", 
+                  RowBox[{"InstallationPath", "[", 
+                   RowBox[{
+                    RowBox[{"Packages", "[", "$PM", "]"}], "[", 
+                    "\"\<GeneralTools\>\"", "]"}], "]"}], "]"}], ",", 
+                 "\[IndentingNewLine]", "\"\<LTemplate\>\"", ",", 
+                 "\"\<IncludeFiles\>\"", ",", "\"\<LTemplateHelpers.h\>\""}], 
+                "\[IndentingNewLine]", "}"}], "]"}], "<>", 
+              "\"\<\\\"\n#include\\\"\>\"", "<>", 
+              RowBox[{"FileNameJoin", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"ParentDirectory", "[", 
+                  RowBox[{"InstallationPath", "[", 
+                   RowBox[{
+                    RowBox[{"Packages", "[", "$PM", "]"}], "[", 
+                    "\"\<GeneralTools\>\"", "]"}], "]"}], "]"}], ",", 
+                 "\[IndentingNewLine]", "\"\<LTemplate\>\"", ",", 
+                 "\"\<IncludeFiles\>\"", ",", "\"\<LTemplate.h\>\""}], 
+                "\[IndentingNewLine]", "}"}], "]"}], "<>", "\"\<\\\"\n\>\""}],
+              ",", "\[IndentingNewLine]", "code"}], "\[IndentingNewLine]", 
+            "}"}], "]"}], "\[IndentingNewLine]", ",", "\"\<Text\>\""}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"lib", "=", 
+        RowBox[{"CreateLibrary", "[", 
+         RowBox[{
+          RowBox[{"{", "file", "}"}], ",", "name", ",", 
+          RowBox[{
+          "\"\<TargetDirectory\>\"", "\[Rule]", " ", "$TemporaryDirectory"}], 
+          ",", 
+          RowBox[{"Sequence", "@@", 
+           RowBox[{"Flatten", "[", "opts", "]"}]}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Set", "[", 
+        RowBox[{"fun", ",", 
+         RowBox[{"LibraryFunctionLoad", "[", 
+          RowBox[{"lib", ",", "name", ",", "args", ",", "returntype"}], 
+          "]"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.820920141973608*^9, 3.820920153891464*^9}, {
+   3.820923746184774*^9, 3.8209237991111937`*^9}, {3.82092391084971*^9, 
+   3.820923966864403*^9}, {3.8209243918749723`*^9, 3.820924394967991*^9}, {
+   3.8209244265437393`*^9, 3.820924458958708*^9}, {3.8209246119373302`*^9, 
+   3.82092462789863*^9}, 
+   3.839495945168811*^9},ExpressionUUID->"df65c4fe-91ed-4342-ae68-\
+9b7685be65c9"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.820924607603269*^9, 
+  3.820924614201215*^9}},ExpressionUUID->"cd20aeba-34ea-4666-832f-\
+d79f358a7521"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"68e37f79-1ea9-4e34-9a77-14e35ae2d6a7"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 5004, 107, 942, "Input",ExpressionUUID->"df65c4fe-91ed-4342-ae68-9b7685be65c9"],
+Cell[5565, 129, 152, 3, 41, "Input",ExpressionUUID->"cd20aeba-34ea-4666-832f-d79f358a7521"]
+}
+]
+*)
+

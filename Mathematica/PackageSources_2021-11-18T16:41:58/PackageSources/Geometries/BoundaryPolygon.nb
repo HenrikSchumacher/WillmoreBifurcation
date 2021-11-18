@@ -1,0 +1,186 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      7348,        178]
+NotebookOptionsPosition[      6962,        164]
+NotebookOutlinePosition[      7298,        179]
+CellTagsIndexPosition[      7255,        176]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"BoundaryPolygonRawData", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "cf", ",", "elist", ",", "vals", ",", "e1", ",", "e2", ",", "edges", 
+        ",", "plist", ",", "pts", ",", "\[Sigma]"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"cf", "=", 
+        RowBox[{"Compile", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"ee", ",", "_Integer", ",", "1"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "_Integer"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Compile`GetElement", "[", 
+             RowBox[{"ee", ",", "i"}], "]"}], ",", 
+            RowBox[{"Compile`GetElement", "[", 
+             RowBox[{"ee", ",", "j"}], "]"}]}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"RuntimeAttributes", "\[Rule]", 
+           RowBox[{"{", "Listable", "}"}]}]}], "\[IndentingNewLine]", "]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"elist", "=", 
+        RowBox[{"ToPack", "@", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"BoundaryEdges", "[", "M", "]"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "This", " ", "is", " ", "supposed", " ", "to", " ", "get", " ", 
+          "the", " ", "orientation", " ", "of", " ", "the", " ", "boundary", 
+          " ", "curve", " ", "right"}], ",", " ", 
+         RowBox[{"provided", " ", "that", " ", "M", " ", "is", " ", 
+          RowBox[{"oriented", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"vals", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"SignedAdjacencyMatrix", "[", 
+           RowBox[{"M", ",", "Edges", ",", "Triangles"}], "]"}], 
+          "\[LeftDoubleBracket]", "elist", "\[RightDoubleBracket]"}], "[", 
+         "\"\<NonzeroValues\>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"e2", "=", 
+        RowBox[{
+         RowBox[{"UnitStep", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"SignedAdjacencyMatrix", "[", 
+             RowBox[{"M", ",", "Edges", ",", "Triangles"}], "]"}], 
+            "\[LeftDoubleBracket]", "elist", "\[RightDoubleBracket]"}], "[", 
+           "\"\<NonzeroValues\>\"", "]"}], "]"}], "+", "1"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"e1", "=", 
+        RowBox[{"3", "-", "e2"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"edges", "=", 
+        RowBox[{"cf", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Edges", "[", "M", "]"}], "\[LeftDoubleBracket]", "elist", 
+           "\[RightDoubleBracket]"}], ",", "e1", ",", "e2"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"plist", "=", 
+        RowBox[{"BoundaryVertices", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{"VertexCoordinates", "[", 
+         RowBox[{"M", ",", "plist"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Sigma]", "=", 
+        RowBox[{"AssociationThread", "[", 
+         RowBox[{"plist", ",", 
+          RowBox[{"Range", "[", 
+           RowBox[{"Length", "[", "plist", "]"}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", "P", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"P", "=", 
+           RowBox[{"Init0", "[", 
+            RowBox[{"polygon", ",", "pts", ",", " ", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Lookup", "[", 
+                 RowBox[{"\[Sigma]", ",", "#"}], "]"}], "&"}], "/@", 
+               RowBox[{"Transpose", "[", "edges", "]"}]}], "]"}]}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"SetConversionInfo", "[", 
+           RowBox[{"P", ",", 
+            RowBox[{"Association", "[", 
+             RowBox[{"\"\<Type\>\"", "\[Rule]", "mesh"}], "]"}]}], "]"}], ";",
+           "\[IndentingNewLine]", "P"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.671701302800618*^9, 3.671701315453127*^9}, {
+   3.671701385862711*^9, 3.671701389772819*^9}, {3.671701594597808*^9, 
+   3.6717015968256683`*^9}, 3.671701932988538*^9, {3.6717021095725803`*^9, 
+   3.671702122620035*^9}, {3.74979577085139*^9, 3.749795817895212*^9}, {
+   3.787729089880211*^9, 3.787729092061754*^9}, {3.7877303959664907`*^9, 
+   3.787730402646476*^9}, {3.787735232526807*^9, 3.7877352618004637`*^9}, {
+   3.787735404444343*^9, 3.787735421697811*^9}, {3.788413160466156*^9, 
+   3.788413163199239*^9}, {3.791030786595663*^9, 3.791030800801545*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"4824a756-b6bc-498d-8c59-5e1b1d7baeaa"],
+
+Cell[BoxData[
+ RowBox[{"BoundaryPolygon", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "P", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"P", "\[LeftArrow]", 
+        RowBox[{"BoundaryPolygonRawData", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"SetVertexCoordinates", "[", 
+        RowBox[{"P", ",", 
+         RowBox[{"VertexCoordinates", "[", 
+          RowBox[{"M", ",", 
+           RowBox[{"BoundaryVertices", "[", "M", "]"}]}], "]"}]}], "]"}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"SetPersistentCache", "[", 
+        RowBox[{"M", ",", "\"\<BoundaryPolygonRawData\>\"", ",", "P"}], "]"}],
+        ";", "\[IndentingNewLine]", "P"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.671701336617703*^9, 3.671701374704521*^9}, {
+  3.671701606305835*^9, 3.671701614826985*^9}, {3.749795780371668*^9, 
+  3.749795824703124*^9}, {3.755364979872484*^9, 3.755364980258211*^9}, {
+  3.788413174565845*^9, 3.788413179220388*^9}},
+ CellLabel->"In[31]:=",ExpressionUUID->"fda2ef9f-fe4d-4b64-ac1e-c84c7651adc7"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 5174, 115, 592, "Input",ExpressionUUID->"4824a756-b6bc-498d-8c59-5e1b1d7baeaa"],
+Cell[5735, 137, 1223, 25, 217, "Input",ExpressionUUID->"fda2ef9f-fe4d-4b64-ac1e-c84c7651adc7"]
+}
+]
+*)
+

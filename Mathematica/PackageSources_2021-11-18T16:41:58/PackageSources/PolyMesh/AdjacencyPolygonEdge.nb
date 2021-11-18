@@ -1,0 +1,372 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     16225,        364]
+NotebookOptionsPosition[     15079,        342]
+NotebookOutlinePosition[     15415,        357]
+CellTagsIndexPosition[     15372,        354]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"PartSortedByAbsThread", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"data", ",", "_Integer", ",", "1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"ran", ",", "_Integer", ",", "1"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", "order", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"order", "=", 
+         RowBox[{"Sort", "[", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"Abs", "[", 
+             RowBox[{
+             "data", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+             "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", 
+              RowBox[{
+              "ran", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+              ",", 
+              RowBox[{
+              "ran", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}],
+              "}"}]}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Part", "[", 
+         RowBox[{"data", ",", "order"}], "]"}]}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"RuntimeAttributes", "\[Rule]", 
+      RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.71991321605142*^9, 
+  3.719913314143124*^9}},ExpressionUUID->"daca5630-ad5f-496f-a4d6-\
+17a5bfa7276f"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"SignedPolygonsNeighEdges", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"PartThread", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ExtractFromSparseArray", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Join", "@@", 
+          RowBox[{"getOrientedEdgesFromPolygons", "[", 
+           RowBox[{"Polygons", "[", "M", "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"PolygonRanges", "[", "M", "]"}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.7188860129825172`*^9, 3.718886015597084*^9}, {
+   3.7188861643510923`*^9, 3.718886164907031*^9}, {3.7194003621541977`*^9, 
+   3.719400405190524*^9}, 3.719466477003776*^9, {3.719514783802348*^9, 
+   3.719514805175619*^9}, 3.7195177473675127`*^9, {3.719913114074634*^9, 
+   3.7199131150003653`*^9}, {3.719913319970421*^9, 3.7199133383733053`*^9}, {
+   3.758904782685481*^9, 3.7589047847253647`*^9}, 
+   3.764567765736969*^9},ExpressionUUID->"55102444-6cf7-497c-b78d-\
+1c022a777720"],
+
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "Polygons", ",", "Edges"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"signesPNE", ",", "n", ",", "m", ",", "data"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"signesPNE", "=", 
+        RowBox[{"PartThread", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ExtractFromSparseArray", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Join", "@@", 
+             RowBox[{"getOrientedEdgesFromPolygons", "[", 
+              RowBox[{"Polygons", "[", "M", "]"}], "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"PolygonRanges", "[", "M", "]"}]}], "\[IndentingNewLine]", 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{"EdgeCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"m", "=", 
+        RowBox[{"PolygonCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"data", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"SortBy", "[", 
+            RowBox[{"#", ",", "Abs"}], "]"}], "&"}], "/@", "signesPNE"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SparseArray", "@@", 
+        RowBox[{"{", 
+         RowBox[{"Automatic", ",", 
+          RowBox[{"{", 
+           RowBox[{"m", ",", "n"}], "}"}], ",", "0", ",", 
+          RowBox[{"{", 
+           RowBox[{"1", ",", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"AccumulateIntegerList", "[", 
+               RowBox[{"PolygonSizes", "[", "M", "]"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"Abs", "[", "data", "]"}], "}"}], "]"}]}], 
+             "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Sign", "[", "data", "]"}]}], "}"}]}], "}"}]}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.719984914583436*^9, 3.719984924613576*^9}, {
+  3.758904778734441*^9, 3.758904780285816*^9}, {3.7647595467383347`*^9, 
+  3.764759569961535*^9}, {3.764762369612261*^9, 3.764762371210813*^9}, {
+  3.806202174596188*^9, 3.8062021838090887`*^9}, {3.806202305698558*^9, 
+  3.806202350312244*^9}, {3.806202502561702*^9, 3.806202505024971*^9}, {
+  3.806203798440729*^9, 3.806203798790098*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"6621de34-a2c3-41f0-8096-0f0b1aa8b3ba"],
+
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "Edges", ",", "Polygons"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Transpose", "[", 
+     RowBox[{"SignedAdjacencyMatrix", "[", 
+      RowBox[{"M", ",", "Polygons", ",", "Edges"}], "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.718873969748363*^9, 3.7188740721116753`*^9, {3.718874307004202*^9, 
+   3.71887430967321*^9}, 3.718879064974598*^9, {3.718879168417676*^9, 
+   3.7188791873838253`*^9}, 3.718879276887179*^9, 3.718879585494937*^9, {
+   3.718885844280662*^9, 3.7188858778489*^9}, 3.718886029575088*^9, {
+   3.7194004438228703`*^9, 3.7194004762045*^9}, 3.7194658674849377`*^9, 
+   3.719466005111912*^9, {3.719514786682539*^9, 3.719514805621167*^9}, 
+   3.719913506458267*^9, {3.7199849342203093`*^9, 3.719984939011846*^9}, {
+   3.7199854132354383`*^9, 3.7199854139620323`*^9}, {3.758904773525873*^9, 
+   3.7589047751491337`*^9}, {3.806202192264155*^9, 3.8062021989777193`*^9}, {
+   3.806203512561261*^9, 3.8062035221899357`*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"a9a36b8a-cd19-4d51-8a6b-346f3bb6245b"],
+
+Cell[BoxData[
+ RowBox[{"AdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "Polygons", ",", "Edges"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Abs", "[", 
+     RowBox[{"SignedAdjacencyMatrix", "[", 
+      RowBox[{"M", ",", "Polygons", ",", "Edges"}], "]"}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.719984950853448*^9, 3.7199849576994753`*^9}, {
+   3.720430854002966*^9, 3.720430875048666*^9}, {3.75890476854252*^9, 
+   3.758904771325376*^9}, {3.764762404735127*^9, 3.764762415774941*^9}, {
+   3.806202202016974*^9, 3.806202208742326*^9}, {3.8062023837363443`*^9, 
+   3.80620238883993*^9}, 3.806203534320483*^9},
+ CellLabel->"In[14]:=",ExpressionUUID->"be0d43bc-9bc8-4102-ba5d-2d5929602c88"],
+
+Cell[BoxData[
+ RowBox[{"AdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "Edges", ",", "Polygons"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Abs", "[", 
+     RowBox[{"SignedAdjacencyMatrix", "[", 
+      RowBox[{"M", ",", "Edges", ",", "Polygons"}], "]"}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.718874648759397*^9, 3.7188746577769814`*^9}, 
+   3.718879281758778*^9, {3.718969240257306*^9, 3.718969240698539*^9}, {
+   3.719400541995503*^9, 3.719400574999487*^9}, {3.7195147904828253`*^9, 
+   3.719514806106513*^9}, {3.720430914967997*^9, 3.7204309213845787`*^9}, {
+   3.758904758961194*^9, 3.758904762381424*^9}, {3.764762420088862*^9, 
+   3.764762422807043*^9}, {3.764762968052762*^9, 3.764762968714282*^9}, {
+   3.806202216400468*^9, 3.8062022216883163`*^9}, {3.806202409943241*^9, 
+   3.80620241359097*^9}, {3.806203539296417*^9, 3.8062035417784653`*^9}},
+ CellLabel->"In[15]:=",ExpressionUUID->"94b4a2b7-3910-40d7-ba94-0fe9879ad3ce"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"EdgesNeighPolygons", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"AdjacencyLists", "[", 
+       RowBox[{
+        RowBox[{"AdjacencyMatrix", "[", "M", "]"}], ",", "2"}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.718881106352915*^9, 3.718881114740738*^9}, {
+   3.718884681904584*^9, 3.718884692717678*^9}, {3.718885400124878*^9, 
+   3.7188854015963984`*^9}, 3.7188855303163967`*^9, {3.71889211596201*^9, 
+   3.718892163684422*^9}, {3.7189683573766727`*^9, 3.71896836961654*^9}, 
+   3.718971844559424*^9, {3.719400540851706*^9, 3.7194005507845984`*^9}, {
+   3.71951478898426*^9, 3.7195148058765717`*^9}, 3.720430963255638*^9, {
+   3.758904755425295*^9, 3.758904757013603*^9}, {3.764759480031541*^9, 
+   3.764759486914712*^9}, 
+   3.806202436046091*^9},ExpressionUUID->"73090bb1-bf8f-4836-a189-\
+f857d32bce97"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"EdgePolygonValences", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"Differences", "[", 
+      RowBox[{
+       RowBox[{"EdgePolygonAdjacencyMatrix", "[", "M", "]"}], "[", 
+       "\"\<RowPointers\>\"", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.7189594891200037`*^9, 3.718959492201633*^9}, 
+   3.7193999686260643`*^9, {3.7194697231868896`*^9, 3.719469751760556*^9}, {
+   3.719514792400875*^9, 3.719514806329529*^9}, {3.75890472020536*^9, 
+   3.7589047539975367`*^9}, {3.787733604885541*^9, 
+   3.787733606139784*^9}},ExpressionUUID->"07147629-10b0-48ad-bbfd-\
+6d5c6487ec7d"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"EdgeValenceList", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"EdgePolygonValenceList", "[", "M", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.758906811275296*^9, 3.75890683296472*^9}, 
+   3.787732247218047*^9},ExpressionUUID->"5b208d8a-2f3a-4bc4-b253-\
+e6a618659d59"],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"is", " ", "now", " ", 
+    RowBox[{"ValenceList", "[", 
+     RowBox[{"M", ",", "Edges", ",", "Polygons"}], "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"EdgePolygonValenceList", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"LetL", "[", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"evals", "=", 
+           RowBox[{"EdgePolygonValences", "[", "M", "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"Max", "[", "evals", "]"}]}], ",", 
+          RowBox[{"m", "=", 
+           RowBox[{"EdgeCount", "[", "M", "]"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"A", "=", 
+           RowBox[{"SparseArray", "@@", 
+            RowBox[{"{", 
+             RowBox[{"Automatic", ",", 
+              RowBox[{"{", 
+               RowBox[{"m", ",", "n"}], "}"}], ",", "0", ",", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", 
+                RowBox[{"{", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Range", "[", 
+                   RowBox[{"0", ",", "m"}], "]"}], ",", 
+                  RowBox[{"(*", "RowPointers", "*)"}], "\[IndentingNewLine]", 
+                  
+                  RowBox[{"Transpose", "[", 
+                   RowBox[{"{", "evals", "}"}], "]"}]}], 
+                 RowBox[{"(*", "ColumnIndices", "*)"}], "\[IndentingNewLine]",
+                  "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"1", ",", 
+                  RowBox[{"{", "m", "}"}]}], "]"}]}], 
+               RowBox[{"(*", "NonzeroValues", "*)"}], "\[IndentingNewLine]", 
+               "}"}]}], "}"}]}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Association", "[", 
+         RowBox[{"Table", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"i", "\[Rule]", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{
+              RowBox[{"A", "\[LeftDoubleBracket]", 
+               RowBox[{"All", ",", "i"}], "\[RightDoubleBracket]"}], "[", 
+              "\"\<NonzeroPositions\>\"", "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "n"}], "}"}]}], "\[IndentingNewLine]",
+           "]"}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.7188799464327087`*^9, 3.718879955534481*^9}, {
+   3.718975432875449*^9, 3.718975437752252*^9}, 3.71939996925143*^9, {
+   3.719465866751142*^9, 3.719465867037401*^9}, {3.719482325629786*^9, 
+   3.719482334415516*^9}, {3.719508315729965*^9, 3.719508316808772*^9}, 
+   3.719514804292431*^9, {3.7589047463383713`*^9, 3.7589047477751837`*^9}, {
+   3.758906805297901*^9, 3.75890682944726*^9}, {3.806202480589081*^9, 
+   3.806202493466889*^9}},ExpressionUUID->"b6f0d8e5-47bf-4018-ac3d-\
+41232a81464c"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1698, 43, 242, "Input",ExpressionUUID->"daca5630-ad5f-496f-a4d6-17a5bfa7276f"],
+Cell[2259, 65, 1352, 26, 267, "Input",ExpressionUUID->"55102444-6cf7-497c-b78d-1c022a777720"],
+Cell[3614, 93, 2912, 63, 517, "Input",ExpressionUUID->"6621de34-a2c3-41f0-8096-0f0b1aa8b3ba"],
+Cell[6529, 158, 1303, 24, 117, "Input",ExpressionUUID->"a9a36b8a-cd19-4d51-8a6b-346f3bb6245b"],
+Cell[7835, 184, 811, 16, 92, "Input",ExpressionUUID->"be0d43bc-9bc8-4102-ba5d-2d5929602c88"],
+Cell[8649, 202, 1060, 19, 92, "Input",ExpressionUUID->"94b4a2b7-3910-40d7-ba94-0fe9879ad3ce"],
+Cell[9712, 223, 980, 19, 92, "Input",ExpressionUUID->"73090bb1-bf8f-4836-a189-f857d32bce97"],
+Cell[10695, 244, 801, 16, 117, "Input",ExpressionUUID->"07147629-10b0-48ad-bbfd-6d5c6487ec7d"],
+Cell[11499, 262, 439, 10, 92, "Input",ExpressionUUID->"5b208d8a-2f3a-4bc4-b253-e6a618659d59"],
+Cell[11941, 274, 3134, 66, 492, "Input",ExpressionUUID->"b6f0d8e5-47bf-4018-ac3d-41232a81464c"]
+}
+]
+*)
+

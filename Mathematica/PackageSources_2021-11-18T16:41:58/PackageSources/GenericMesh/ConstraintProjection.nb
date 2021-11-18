@@ -1,0 +1,677 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     32771,        669]
+NotebookOptionsPosition[     32283,        654]
+NotebookOutlinePosition[     32619,        669]
+CellTagsIndexPosition[     32576,        666]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ConstraintProjection", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M00_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "residual", ",", "M", ",", "Q", ",", "iter", ",", "U", ",", "b", ",", 
+        "V", ",", "W", ",", "TOL", ",", "S", ",", "tic", ",", "toc", ",", 
+        "maxiter", ",", "miniter", ",", "S0", ",", "\[Tau]0", ",", "\[Tau]", 
+        ",", "\[Tau]min", ",", "NewtonQ", ",", "n", ",", "\[Sigma]", ",", 
+        "\[Gamma]", ",", "\[Phi]0", ",", "\[Phi]\[Tau]", ",", "D\[Phi]0", ",",
+         "\[Tau]list", ",", "stuckQ", ",", "succeededQ", ",", "MINTOL", ",", 
+        "message"}], "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\[Sigma]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<ArmijoParameter\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Gamma]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<ConstractionFactor\>\"", "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"TOL", "=", 
+        RowBox[{"N", "[", 
+         RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"MINTOL", "=", 
+        RowBox[{"Min", "[", 
+         RowBox[{"TOL", ",", 
+          RowBox[{"N", "[", 
+           RowBox[{"OptionValue", "[", "\"\<MinTolerance\>\"", "]"}], "]"}]}],
+          "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"maxiter", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MaxIterations\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"miniter", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MinIterations\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]min", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MinStepSize\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]0", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Damping\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"stuckQ", "=", "False"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Switch", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "Method", "]"}], ",", 
+         "\[IndentingNewLine]", "\"\<FrozenNewton\>\"", ",", 
+         RowBox[{"NewtonQ", "=", "False"}], ",", "\[IndentingNewLine]", 
+         "\"\<Newton\>\"", ",", 
+         RowBox[{"NewtonQ", "=", "True"}], ",", "\[IndentingNewLine]", "_", 
+         ",", 
+         RowBox[{"NewtonQ", "=", "True"}]}], "\[IndentingNewLine]", "]"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"M", "\[LeftArrow]", "M00"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]list", "=", 
+        RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"M", "=", 
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"head", "=", 
+              RowBox[{"Head", "[", "M00", "]"}]}], "}"}], ",", 
+            RowBox[{"Initialize", "[", 
+             RowBox[{"head", ",", 
+              RowBox[{
+              "M00", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}],
+              "]"}]}], "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{
+        "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", 
+         "NewtonQ"}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"iter", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"V", "=", 
+        RowBox[{"ConstraintViolation", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{"Length", "[", "V", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"n", ">", "0"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"SetCache", "[", 
+           RowBox[{
+           "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", 
+            "NewtonQ"}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"iter", "=", "0"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"\[Tau]", "=", "\[Tau]0"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"residual", "=", 
+           RowBox[{"Max", "[", 
+            RowBox[{"Abs", "[", "V", "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"residual", ">", "TOL"}], "&&", 
+               RowBox[{"iter", "<", "maxiter"}]}], ")"}], "||", 
+             RowBox[{"iter", "<", "miniter"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"S", "=", 
+              RowBox[{"MetricSaddlePointSystem", "[", "M", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[Phi]0", "=", 
+              RowBox[{
+               RowBox[{"V", ".", "V"}], "/", "n"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"tic", "=", 
+           RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"While", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"And", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"residual", ">", "TOL"}], "&&", 
+                 RowBox[{"iter", "<", "maxiter"}]}], ")"}], "||", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"residual", ">", "MINTOL"}], "&&", 
+                 RowBox[{"iter", "<", "miniter"}]}], ")"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\[Tau]", ">", "\[Tau]min"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"!", "stuckQ"}]}], "\[IndentingNewLine]", "]"}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"iter", "++"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"\[Tau]", "=", "\[Tau]0"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"U", "=", 
+              RowBox[{"SystemPseudoInverse", "[", 
+               RowBox[{"S", ",", "V"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"D\[Phi]0", "=", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "2."}], "/", "n"}], ")"}], " ", 
+               RowBox[{"V", ".", 
+                RowBox[{
+                 RowBox[{"Constraint", "'"}], "[", "M", "]"}], ".", 
+                RowBox[{"Flatten", "[", "U", "]"}]}]}]}], ";", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"D\[Phi]0", "<", "0."}], "\[IndentingNewLine]", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Q", "=", 
+                  RowBox[{"Displace", "[", 
+                   RowBox[{"M", ",", 
+                    RowBox[{
+                    RowBox[{"-", "\[Tau]"}], " ", "U"}]}], "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"W", "=", 
+                  RowBox[{"ConstraintViolation", "[", "Q", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"\[Phi]\[Tau]", "=", 
+                  RowBox[{
+                   RowBox[{"W", ".", "W"}], "/", "n"}]}], ";", 
+                 "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                 RowBox[{"While", "[", "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{
+                   "This", " ", "Armijo", " ", "condition", " ", "is", " ", 
+                    "only", " ", "valid", " ", "for", " ", 
+                    RowBox[{"Newton", "'"}], "s", " ", 
+                    RowBox[{"method", "!"}]}], "*)"}], "\[IndentingNewLine]", 
+                  
+                  RowBox[{"(*", 
+                   RowBox[{
+                    RowBox[{"\[Phi]\[Tau]", ">", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"\[Sigma]", " ", "\[Tau]"}]}], ")"}], 
+                    "\[Phi]0"}]}], ","}], "*)"}], "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"\[Phi]\[Tau]", ">", 
+                    RowBox[{"\[Phi]0", "+", 
+                    RowBox[{"\[Sigma]", " ", "\[Tau]", " ", "D\[Phi]0"}]}]}], 
+                    "&&", 
+                    RowBox[{"\[Tau]", ">", "\[Tau]min"}]}], 
+                   "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<Armijo: \>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"\[Phi]0", ",", 
+                    RowBox[{"\[Phi]0", "+", 
+                    RowBox[{"\[Sigma]", " ", "\[Tau]", " ", "D\[Phi]0"}]}], 
+                    ",", "\[Phi]\[Tau]", ",", "D\[Phi]0", ",", "\[Tau]"}], 
+                    "}"}], ",", "\"\< Residuals: \>\"", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Sqrt", "[", "\[Phi]0", "]"}], ",", "residual", 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"Ordering", "[", 
+                    RowBox[{"Abs", "[", "V", "]"}], "]"}], 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    "TOL"}], "}"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+                    "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"\[Tau]", "*=", "\[Gamma]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Q", "=", 
+                    RowBox[{"Displace", "[", 
+                    RowBox[{"M", ",", 
+                    RowBox[{
+                    RowBox[{"-", "\[Tau]"}], " ", "U"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"W", "=", 
+                    RowBox[{"ConstraintViolation", "[", "Q", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"\[Phi]\[Tau]", "=", 
+                    RowBox[{
+                    RowBox[{"W", ".", "W"}], "/", "n"}]}], ";"}]}], 
+                  "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"AppendTo", "[", 
+                  RowBox[{"\[Tau]list", ",", 
+                   RowBox[{"iter", "\[Rule]", "\[Tau]"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"M", "=", "Q"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"SetCache", "[", 
+                  RowBox[{
+                  "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", 
+                   "NewtonQ"}], "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"S", "=", 
+                  RowBox[{"MetricSaddlePointSystem", "[", "M", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"V", "=", "W"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"\[Phi]0", "=", "\[Phi]\[Tau]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"residual", "=", 
+                  RowBox[{"Max", "[", 
+                   RowBox[{"Abs", "[", "V", "]"}], "]"}]}], ";"}], 
+                "\[IndentingNewLine]", ")"}], "\[IndentingNewLine]", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"stuckQ", "=", "True"}], ";"}]}], 
+              "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+           "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"toc", "=", 
+        RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"succeededQ", "=", 
+        RowBox[{"(", 
+         RowBox[{"residual", "\[LessEqual]", "TOL"}], ")"}]}], 
+       RowBox[{"(*", 
+        RowBox[{"&&", 
+         RowBox[{"(", 
+          RowBox[{"\[Tau]", ">", "\[Tau]min"}], ")"}], "&&", 
+         RowBox[{"(", 
+          RowBox[{"!", "stuckQ"}], ")"}]}], "*)"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Which", "[", "\[IndentingNewLine]", 
+        RowBox[{"stuckQ", ",", 
+         RowBox[{
+         "message", "=", 
+          "\"\<ConstraintProjection found no improving direction.\>\""}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{"\[Tau]", "\[LessEqual]", "\[Tau]min"}], ",", 
+         RowBox[{
+         "message", "=", 
+          "\"\<ConstraintProjection aborted due to tiny step size.\>\""}], 
+         ",", "\[IndentingNewLine]", "True", ",", 
+         RowBox[{"message", "=", "\"\<\>\""}]}], "\[IndentingNewLine]", "]"}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", "message", "]"}], ">", "0"}], ",", 
+           RowBox[{"Print", "[", "message", "]"}]}], "]"}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{"succeededQ", ",", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<Newton step sizes: \>\"", ",", "\[Tau]list"}], 
+             "]"}], ";"}]}], "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{
+        "M", ",", "\"\<ConstraintProjectionData\>\"", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Association", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<Succeeded\>\"", "\[Rule]", "succeededQ"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"iter", "\[GreaterEqual]", "maxiter"}], ",", "False", 
+               ",", "True"}], "]"}], ","}], "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"\"\<Method\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "Method", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Iterations\>\"", "\[Rule]", "iter"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<StepSizes\>\"", "\[Rule]", " ", "\[Tau]list"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Residual\>\"", "\[Rule]", "residual"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "TOL"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "maxiter"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<MinIterations\>\"", "\[Rule]", "miniter"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<MinStepSize\>\"", "\[Rule]", "\[Tau]min"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Timing\>\"", "\[Rule]", 
+            RowBox[{"toc", "-", "tic"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<Violation\>\"", "\[Rule]", "V"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Message\>\"", "\[Rule]", "message"}]}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{",", 
+            RowBox[{"\"\<Update\>\"", "\[Rule]", 
+             RowBox[{"Subtract", "[", 
+              RowBox[{
+               RowBox[{"Dofs", "[", "M", "]"}], ",", 
+               RowBox[{"Dofs", "[", "M00", "]"}]}], "]"}]}]}], "*)"}], 
+          "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{
+        "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", "True"}], 
+        "]"}], ";", "\[IndentingNewLine]", "M"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Tolerance\>\"", "\[Rule]", 
+        RowBox[{"1.", " ", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "8"}], ")"}]}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<MinTolerance\>\"", "\[Rule]", 
+        RowBox[{"1.", " ", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "12"}], ")"}]}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Method", "\[Rule]", "\"\<FrozenNewton\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "10"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MinIterations\>\"", "\[Rule]", "0"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MinStepSize\>\"", "\[Rule]", 
+        RowBox[{"1.", " ", 
+         RowBox[{"10", "^", 
+          RowBox[{"-", "12"}]}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Damping\>\"", "\[Rule]", "1."}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArmijoParameter\>\"", "\[Rule]", "0.25"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ConstractionFactor\>\"", "\[Rule]", "0.2"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.6977823446408052`*^9, {3.697782470047667*^9, 3.697782486782552*^9}, {
+   3.6977827525945*^9, 3.6977827642488832`*^9}, {3.697783739999879*^9, 
+   3.6977837416960707`*^9}, {3.709815624228636*^9, 3.709815672194272*^9}, {
+   3.709815717388204*^9, 3.709815774310717*^9}, {3.709815838512882*^9, 
+   3.70981588498912*^9}, {3.709816246040359*^9, 3.709816249656081*^9}, {
+   3.709816314336666*^9, 3.709816317572747*^9}, {3.7098164951205387`*^9, 
+   3.7098165108873863`*^9}, {3.709816541696535*^9, 3.7098165690232964`*^9}, {
+   3.709816626541881*^9, 3.7098166793966103`*^9}, 3.7111374953984947`*^9, {
+   3.7154375282444572`*^9, 3.715437565571802*^9}, {3.718894601349107*^9, 
+   3.718894610451447*^9}, {3.720184845417939*^9, 3.720184845599679*^9}, {
+   3.738256466491701*^9, 3.7382564670826187`*^9}, {3.738657175889135*^9, 
+   3.7386572134713907`*^9}, {3.738657347620358*^9, 3.738657361064633*^9}, {
+   3.738657460626507*^9, 3.738657533975801*^9}, {3.7386577468373632`*^9, 
+   3.738657752071062*^9}, {3.738657792005872*^9, 3.738657820834113*^9}, {
+   3.73865889635979*^9, 3.73865889808677*^9}, {3.7386613280113487`*^9, 
+   3.7386613307139883`*^9}, {3.738661391366975*^9, 3.738661404277688*^9}, {
+   3.783935605450266*^9, 3.783935607921414*^9}, {3.783935652674288*^9, 
+   3.783935653785453*^9}, {3.795424640919886*^9, 3.795424672379694*^9}, {
+   3.7954247300727882`*^9, 3.795424736461749*^9}, {3.798271995722754*^9, 
+   3.798272046240054*^9}, 3.798272119055781*^9, {3.79827690312296*^9, 
+   3.798276942078866*^9}, {3.7982770636028976`*^9, 3.798277094969139*^9}, {
+   3.79827715460902*^9, 3.7982771653906918`*^9}, {3.7982772276299963`*^9, 
+   3.798277227820364*^9}, 3.7982786419615793`*^9, {3.798284450195888*^9, 
+   3.798284454088331*^9}, {3.798285269980887*^9, 3.798285272025546*^9}, 
+   3.798349667022833*^9, {3.7983571772164087`*^9, 3.798357192501604*^9}, 
+   3.7983573017424173`*^9, 3.798357813992283*^9, {3.798357844037631*^9, 
+   3.798357888316772*^9}, {3.798357970262706*^9, 3.798358005709169*^9}, {
+   3.798358351246257*^9, 3.7983583996509123`*^9}, {3.798358444177581*^9, 
+   3.798358478935822*^9}, {3.798358704673902*^9, 3.798358735929635*^9}, {
+   3.7983589359234133`*^9, 3.7983589465588427`*^9}, {3.7983590007909203`*^9, 
+   3.798359104451631*^9}, {3.798359211146405*^9, 3.798359216600008*^9}, {
+   3.798359252069668*^9, 3.7983592655656567`*^9}, {3.798359301284636*^9, 
+   3.798359341274291*^9}, {3.798359473033692*^9, 3.798359510060835*^9}, 
+   3.798359556395846*^9, 3.798359605138701*^9, {3.798359636905624*^9, 
+   3.798359637870579*^9}, {3.798359696037305*^9, 3.798359710532856*^9}, {
+   3.798359871922718*^9, 3.798359873223215*^9}, {3.798360117000499*^9, 
+   3.798360117871402*^9}, 3.798360546320384*^9, {3.798360806950964*^9, 
+   3.798360822292964*^9}, {3.798360967929142*^9, 3.798360974959293*^9}, {
+   3.798361013093699*^9, 3.798361175338051*^9}, {3.7983612061655083`*^9, 
+   3.798361248302497*^9}, {3.79836128228449*^9, 3.798361312419176*^9}, {
+   3.798361343218836*^9, 3.7983613672573357`*^9}, {3.798361560352392*^9, 
+   3.7983616137027617`*^9}, {3.798361688357397*^9, 3.7983616886302567`*^9}, {
+   3.798361741600531*^9, 3.7983617520735826`*^9}, {3.7983619539539843`*^9, 
+   3.798362036495688*^9}, {3.79837149433667*^9, 3.7983715418923264`*^9}, {
+   3.798371584478066*^9, 3.7983716590589943`*^9}, {3.79837168949018*^9, 
+   3.7983716897131777`*^9}, {3.798371755823679*^9, 3.798371765685647*^9}, {
+   3.7983718111979237`*^9, 3.798371828807233*^9}, 3.798372376607648*^9, 
+   3.798372929594964*^9, 3.798392098555896*^9},
+ CellLabel->"In[71]:=",ExpressionUUID->"3e9a178b-7bb4-46e7-9d36-118e16c4d258"],
+
+Cell[BoxData[
+ RowBox[{"ConstraintProjectionData", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Missing", "[", 
+     RowBox[{
+     "\"\<ConstraintProjectionData\>\"", ",", 
+      "\"\<No projection applied, yet.\>\""}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.665839953507806*^9, 3.665840099516913*^9}, {
+   3.665840160923139*^9, 3.66584019468843*^9}, {3.66584026376343*^9, 
+   3.665840304516198*^9}, {3.66584033676783*^9, 3.665840488026609*^9}, {
+   3.6658405920689917`*^9, 3.665840593321862*^9}, {3.665840876581999*^9, 
+   3.665840883579796*^9}, {3.665840956078693*^9, 3.665840958433485*^9}, {
+   3.6658420147316093`*^9, 3.665842023403845*^9}, {3.666682302959401*^9, 
+   3.666682308203755*^9}, {3.66669369650119*^9, 3.666693696909873*^9}, {
+   3.6666937331720963`*^9, 3.6666937900955*^9}, {3.666694143065292*^9, 
+   3.666694144063242*^9}, {3.666694220215691*^9, 3.6666942327769213`*^9}, {
+   3.666701646784343*^9, 3.66670164996519*^9}, {3.666714020367742*^9, 
+   3.666714022637136*^9}, {3.666937397518605*^9, 3.666937498913275*^9}, {
+   3.666937548281907*^9, 3.666937617690287*^9}, {3.6669377204711237`*^9, 
+   3.6669378014892282`*^9}, {3.670427862926284*^9, 3.67042787547532*^9}, {
+   3.678543350640623*^9, 3.678543356207201*^9}, {3.679716639277782*^9, 
+   3.679716693356572*^9}, {3.6797167612643347`*^9, 3.6797167916015472`*^9}, {
+   3.681117823472763*^9, 3.681117875647128*^9}, {3.681119473532639*^9, 
+   3.681119657205387*^9}, 3.681120869126638*^9, {3.681192944755417*^9, 
+   3.6811929590731373`*^9}, {3.681193011685973*^9, 3.681193022732971*^9}, {
+   3.681193061214628*^9, 3.681193259252343*^9}, {3.6811933509792747`*^9, 
+   3.6811933556482773`*^9}, {3.681193546134111*^9, 3.681193554668416*^9}, {
+   3.681193631576268*^9, 3.681193642206438*^9}, {3.6811943324042997`*^9, 
+   3.6811943468620787`*^9}, {3.6811943948079987`*^9, 3.681194420698738*^9}, {
+   3.68119529126659*^9, 3.681195306489888*^9}, {3.681200852402014*^9, 
+   3.681200860236437*^9}, 3.68122185502781*^9, {3.686143198920589*^9, 
+   3.6861432613282146`*^9}, 3.6894071682782507`*^9, {3.693214821431199*^9, 
+   3.693214897530854*^9}, {3.693214949718297*^9, 3.693214952685166*^9}, {
+   3.693215606828805*^9, 3.693215611531671*^9}, {3.693650489613706*^9, 
+   3.6936504912354517`*^9}, {3.693650549553042*^9, 3.6936505549948378`*^9}, {
+   3.693650628367792*^9, 3.693650745823552*^9}, 3.6936512268912086`*^9, {
+   3.6936525781926937`*^9, 3.693652578648683*^9}, {3.693658457343594*^9, 
+   3.693658470637896*^9}, {3.6964138465858307`*^9, 3.696413854745387*^9}, {
+   3.696413925071349*^9, 3.696413940517158*^9}, 3.696416157140242*^9, {
+   3.696416221741111*^9, 3.6964162300591288`*^9}, {3.696416265505727*^9, 
+   3.6964162657043056`*^9}, {3.69649813120214*^9, 3.6964981704233713`*^9}, {
+   3.6965020282440653`*^9, 3.696502034077201*^9}, {3.697467181483451*^9, 
+   3.6974671818437033`*^9}, {3.697467222876459*^9, 3.697467226529179*^9}, {
+   3.697467605993334*^9, 3.69746762064612*^9}, {3.697467658113336*^9, 
+   3.697467661917572*^9}, {3.6974677147513657`*^9, 3.6974677352943068`*^9}, {
+   3.6974681688465347`*^9, 3.6974681991061773`*^9}, {3.697469498048355*^9, 
+   3.697469498327445*^9}, {3.697470315289798*^9, 3.697470327446836*^9}, {
+   3.69778225431201*^9, 3.6977823232492647`*^9}, {3.6977831044358873`*^9, 
+   3.697783106857168*^9}, {3.79542488566431*^9, 
+   3.795424886997294*^9}},ExpressionUUID->"7244da5c-ff0c-408a-bc30-\
+5673d9719cef"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"ConstraintProjectionOld", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M00_", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "residual", ",", "M", ",", "iter", ",", "U", ",", "b", ",", "V", ",", 
+         "TOL", ",", "S", ",", "newS", ",", "tic", ",", "toc", ",", "maxiter",
+          ",", "miniter", ",", "S0", ",", "\[Tau]", ",", "storeS", ",", 
+         "NewtonQ"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"TOL", "=", 
+         RowBox[{"N", "[", 
+          RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"maxiter", "=", 
+         RowBox[{"OptionValue", "[", "\"\<MaxIterations\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"miniter", "=", 
+         RowBox[{"OptionValue", "[", "\"\<MinIterations\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\[Tau]", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Damping\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Switch", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "Method", "]"}], ",", 
+          "\[IndentingNewLine]", "\"\<FrozenNewton\>\"", ",", 
+          RowBox[{"NewtonQ", "=", "False"}], ",", "\[IndentingNewLine]", 
+          "\"\<Newton\>\"", ",", 
+          RowBox[{"NewtonQ", "=", "True"}], ",", "\[IndentingNewLine]", "_", 
+          ",", 
+          RowBox[{"NewtonQ", "=", "True"}]}], "\[IndentingNewLine]", "]"}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"M", "\[LeftArrow]", "M00"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"SetCache", "[", 
+         RowBox[{
+         "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", 
+          "NewtonQ"}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"iter", "=", "0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"V", "=", 
+         RowBox[{"ConstraintViolation", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"residual", "=", 
+         RowBox[{"Max", "[", 
+          RowBox[{"Abs", "[", "V", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"tic", "=", 
+         RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"While", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"residual", ">", "TOL"}], "&&", 
+             RowBox[{"iter", "<", "maxiter"}]}], ")"}], "||", 
+           RowBox[{"iter", "<", "miniter"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"++", "iter"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"S", "\[LeftArrow]", 
+            RowBox[{"MetricSaddlePointSystem", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"U", "=", 
+            RowBox[{"SystemPseudoInverse", "[", 
+             RowBox[{"S", ",", "V"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"SetPersistentCache", "[", 
+            RowBox[{
+            "M", ",", "\"\<MetricSaddlePointSystemContainer\>\"", ",", "S"}], 
+            "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"M", "\[LeftArrow]", 
+            RowBox[{"Displace", "[", 
+             RowBox[{"M", ",", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"-", "\[Tau]"}], ")"}], " ", "U"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"SetCache", "[", 
+            RowBox[{
+            "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", 
+             "NewtonQ"}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"V", "=", 
+            RowBox[{"ConstraintViolation", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"residual", "=", 
+            RowBox[{"Max", "[", 
+             RowBox[{"Abs", "[", "V", "]"}], "]"}]}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"toc", "=", 
+         RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"SetCache", "[", 
+         RowBox[{
+         "M", ",", "\"\<ConstraintProjectionData\>\"", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Association", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"\"\<Succeeded\>\"", "\[Rule]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"iter", "\[GreaterEqual]", "maxiter"}], ",", "False", 
+               ",", "True"}], "]"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<Method\>\"", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "Method", "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Iterations\>\"", "\[Rule]", "iter"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Residual\>\"", "\[Rule]", "residual"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "TOL"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "maxiter"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<MinIterations\>\"", "\[Rule]", "miniter"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Timing\>\"", "\[Rule]", 
+             RowBox[{"toc", "-", "tic"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<Violations\>\"", "\[Rule]", "V"}]}], 
+           "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetCache", "[", 
+         RowBox[{
+         "M", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", "True"}], 
+         "]"}], ";", "\[IndentingNewLine]", "M"}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<Options\>\"", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<Tolerance\>\"", "\[Rule]", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "8"}], ")"}]}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Method", "\[Rule]", "\"\<FrozenNewton\>\""}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "20"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<MinIterations\>\"", "\[Rule]", "0"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<Damping\>\"", "\[Rule]", "1."}]}], "\[IndentingNewLine]",
+        "}"}]}]}], "\[IndentingNewLine]", "]"}]}], "*)"}]], "Input",
+ CellChangeTimes->{
+  3.6977823446408052`*^9, {3.697782470047667*^9, 3.697782486782552*^9}, {
+   3.6977827525945*^9, 3.6977827642488832`*^9}, {3.697783739999879*^9, 
+   3.6977837416960707`*^9}, {3.70981165775669*^9, 3.709811658099642*^9}, {
+   3.783935484654777*^9, 3.783935531434032*^9}, {3.7887881357546387`*^9, 
+   3.7887881359288197`*^9}, {3.795424889081925*^9, 
+   3.795424898437977*^9}},ExpressionUUID->"2358c875-d8ec-4dc7-976e-\
+2a295fd6a6d0"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 21107, 427, 3192, "Input",ExpressionUUID->"3e9a178b-7bb4-46e7-9d36-118e16c4d258"],
+Cell[21668, 449, 3583, 54, 117, "Input",ExpressionUUID->"7244da5c-ff0c-408a-bc30-5673d9719cef"],
+Cell[25254, 505, 7025, 147, 1342, "Input",ExpressionUUID->"2358c875-d8ec-4dc7-976e-2a295fd6a6d0"]
+}
+]
+*)
+

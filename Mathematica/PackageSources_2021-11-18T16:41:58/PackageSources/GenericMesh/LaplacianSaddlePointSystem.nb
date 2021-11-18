@@ -1,0 +1,137 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4916,        129]
+NotebookOptionsPosition[      4344,        113]
+NotebookOutlinePosition[      4680,        128]
+CellTagsIndexPosition[      4637,        125]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"LaplacianSaddlePointMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "QT", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"QT", "=", 
+        RowBox[{
+         RowBox[{"Mass", "[", "M", "]"}], ".", 
+         RowBox[{"AdjacencyMatrix", "[", 
+          RowBox[{"M", ",", "Vertices", ",", "ConnectedComponents"}], 
+          "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ArrayFlatten", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"WeakLaplace", "[", "M", "]"}], ",", "QT"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Transpose", "[", "QT", "]"}], ",", "0."}], "}"}]}], 
+         "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.820583479485162*^9, 3.820583512001831*^9}, {
+  3.820583963881981*^9, 3.82058396615136*^9}, {3.8205840605088177`*^9, 
+  3.820584061795595*^9}},ExpressionUUID->"11b70347-8ded-4363-9488-\
+621051c9190f"],
+
+Cell[BoxData[
+ RowBox[{"LaplacianSaddlePointMatrixPardisoContainerOutdatedQ", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+   "M_genericmesh", ",", "\[IndentingNewLine]", "True", ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.820583637756521*^9, 3.820583657474297*^9}, {
+   3.820583799127249*^9, 3.820583799533306*^9}, 
+   3.820584064822332*^9},ExpressionUUID->"79542bba-f9dc-43b1-a1fe-\
+eb64b0a5bb55"],
+
+Cell[BoxData[
+ RowBox[{"LaplacianSaddlePointMatrixPardisoContainer", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"SetCache", "[", 
+      RowBox[{
+      "M", ",", "\"\<LaplacianSaddlePointMatrixPardisoContainerOutdatedQ\>\"",
+        ",", "False"}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Pardiso", "[", 
+      RowBox[{
+       RowBox[{"LaplacianSaddlePointMatrix", "[", "M", "]"}], ",", 
+       RowBox[{"MatrixType", "\[Rule]", 
+        RowBox[{"-", "2"}]}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.820583576326037*^9, 3.8205836082220488`*^9}, {
+   3.820583685259598*^9, 3.8205837097127943`*^9}, 3.8205838751252117`*^9, 
+   3.820584065974327*^9},ExpressionUUID->"593bffb5-4de7-4a49-a947-\
+5d6fc3aa73b3"],
+
+Cell[BoxData[
+ RowBox[{"LaplacianSaddlePointMatrixPardiso", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"P", "=", 
+      RowBox[{"LaplacianSaddlePointMatrixPardisoContainer", "[", "M", "]"}]}],
+      ";", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+       "LaplacianSaddlePointMatrixPardisoContainerOutdatedQ", "[", "M", "]"}],
+        ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"SetCache", "[", 
+         RowBox[{
+         "M", ",", 
+          "\"\<LaplacianSaddlePointMatrixPardisoContainerOutdatedQ\>\"", ",", 
+          "False"}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"P", "[", 
+         RowBox[{"\"\<Update\>\"", "[", 
+          RowBox[{"LaplacianSaddlePointMatrix", "[", "M", "]"}], "]"}], "]"}],
+         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+     "P"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.820583767424963*^9, 3.820583793053639*^9}, 
+   3.820583878124896*^9, 
+   3.820584067022387*^9},ExpressionUUID->"e50e6f67-54cb-411b-8c90-\
+baa9ee6f2c90"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1167, 28, 167, "Input",ExpressionUUID->"11b70347-8ded-4363-9488-621051c9190f"],
+Cell[1728, 50, 511, 11, 117, "Input",ExpressionUUID->"79542bba-f9dc-43b1-a1fe-eb64b0a5bb55"],
+Cell[2242, 63, 913, 19, 142, "Input",ExpressionUUID->"593bffb5-4de7-4a49-a947-5d6fc3aa73b3"],
+Cell[3158, 84, 1182, 27, 242, "Input",ExpressionUUID->"e50e6f67-54cb-411b-8c90-baa9ee6f2c90"]
+}
+]
+*)
+

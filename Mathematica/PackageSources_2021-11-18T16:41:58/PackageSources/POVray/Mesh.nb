@@ -1,0 +1,712 @@
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[         0,          0]
+NotebookDataLength[     34860,        711]
+NotebookOptionsPosition[     34158,        688]
+NotebookOutlinePosition[     34550,        704]
+CellTagsIndexPosition[     34507,        701]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"POVray", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"povfile", ",", "outfile", ",", "intstyle", ",", "\[Lambda]"}],
+        "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"povfile", "=", 
+        RowBox[{"OptionValue", "[", "\"\<POVFile\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"outfile", "=", 
+        RowBox[{"OptionValue", "[", "\"\<File\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"intstyle", "=", 
+        RowBox[{"OptionValue", "[", "\"\<InteriorStyle\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"intstyle", "===", "Automatic"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"intstyle", "=", 
+           RowBox[{"POVrayTexture", "[", "M", "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"Not", "[", 
+           RowBox[{"NumericQ", "[", 
+            RowBox[{"OptionValue", "[", "\"\<Scale\>\"", "]"}], "]"}], "]"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"BoundingBoxLength", "[", "M", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"OptionValue", "[", "\"\<Scale\>\"", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<Time for creating boundary: \>\"", ",", 
+           RowBox[{
+            RowBox[{"AbsoluteTiming", "[", 
+             RowBox[{
+              RowBox[{"BndPresent3D", "[", "M", "]"}], ";"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<Time for exporting interior: \>\"", ",", "#"}], "]"}], 
+         "&"}], "@", 
+        RowBox[{"First", "@", 
+         RowBox[{"AbsoluteTiming", "@", 
+          RowBox[{"MeshPOVray", "[", 
+           RowBox[{"M", ",", "povfile", ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<Style\>\"", "\[Rule]", "intstyle"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "\"\<SmoothNormals\>\"", "]"}]}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"OverwriteTarget", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "OverwriteTarget", "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}]}]}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "[", "\"\<Boundary\>\"", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{
+             "\"\<Time for creating and exporting boundary: \>\"", ",", "#"}],
+              "]"}], "&"}], "@", 
+           RowBox[{"First", "@", 
+            RowBox[{"AbsoluteTiming", "@", 
+             RowBox[{"BoundaryPOVray", "[", 
+              RowBox[{"M", ",", "povfile", ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<SubdivisionFactor\>\"", "\[Rule]", 
+                RowBox[{
+                "OptionValue", "[", "\"\<BoundarySubdivisionFactor\>\"", 
+                 "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Style\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<BoundaryStyle\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Thickness\>\"", "\[Rule]", 
+                RowBox[{"getAbsoluteSize", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "OptionValue", "[", "\"\<BoundaryThickness\>\"", "]"}], ",",
+                   "\[Lambda]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<SmoothBoundary\>\"", "]"}]}],
+                ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Mesh\>\"", "\[Rule]", " ", 
+                RowBox[{"OptionValue", "[", "\"\<BoundaryMesh\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+              "\[IndentingNewLine]", "]"}]}]}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "[", "\"\<Singular\>\"", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{
+             "\"\<Time for creating and exporting singular strata: \>\"", ",",
+               "#"}], "]"}], "&"}], "@", 
+           RowBox[{"First", "@", 
+            RowBox[{"AbsoluteTiming", "@", 
+             RowBox[{"SingularPOVray", "[", 
+              RowBox[{"M", ",", "povfile", ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Thickness\>\"", "\[Rule]", 
+                RowBox[{"getAbsoluteSize", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "OptionValue", "[", "\"\<SingularThickness\>\"", "]"}], ",",
+                   "\[Lambda]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Style\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<SingularStyle\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<SmoothSingular\>\"", "]"}]}],
+                ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Mesh\>\"", "\[Rule]", " ", 
+                RowBox[{"OptionValue", "[", "\"\<SingularMesh\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Scaled\>\"", "\[Rule]", " ", "False"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+              "\[IndentingNewLine]", "]"}]}]}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "[", "\"\<Edges\>\"", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<Time for exporting edges: \>\"", ",", "#"}], "]"}], 
+            "&"}], "@", 
+           RowBox[{"First", "@", 
+            RowBox[{"AbsoluteTiming", "@", 
+             RowBox[{"EdgePOVray", "[", 
+              RowBox[{
+               RowBox[{"EdgeData", "[", "M", "]"}], ",", "povfile", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<Thickness\>\"", "\[Rule]", 
+                RowBox[{"getAbsoluteSize", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "[", "\"\<EdgeThickness\>\"", "]"}], 
+                  ",", "\[Lambda]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Style\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<EdgeStyle\>\"", "]"}]}], ",",
+                "\[IndentingNewLine]", 
+               RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+              "\[IndentingNewLine]", "]"}]}]}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TrueQ", "@", 
+          RowBox[{"OptionValue", "[", "\"\<Points\>\"", "]"}]}], ",", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<Time for exporting points: \>\"", ",", "#"}], "]"}],
+             "&"}], "@", 
+           RowBox[{"First", "@", 
+            RowBox[{"AbsoluteTiming", "@", 
+             RowBox[{"PointPOVray", "[", 
+              RowBox[{
+               RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", "povfile", 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Thickness\>\"", "\[Rule]", 
+                RowBox[{"getAbsoluteSize", "[", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "[", "\"\<PointThickness\>\"", "]"}],
+                   ",", "\[Lambda]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Style\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<PointStyle\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+              "\[IndentingNewLine]", "]"}]}]}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "[", "\"\<Render\>\"", "]"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"TempPOVray", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<Cam\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<Cam\>\"", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"\"\<BndStyle\>\"", "\[Rule]", 
+              RowBox[{"OptionValue", "[", "\"\<BndStyle\>\"", "]"}]}], ","}], 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"\"\<SingularStyle\>\"", "\[Rule]", 
+              RowBox[{"OptionValue", "[", "\"\<SingularStyle\>\"", "]"}]}], 
+             ","}], "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"\"\<IntStyle\>\"", "\[Rule]", "intstyle"}], ","}], 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"\"\<EdgeStyle\>\"", "\[Rule]", 
+              RowBox[{"OptionValue", "[", "\"\<EdgeStyle\>\"", "]"}]}], ","}],
+             "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"\"\<PntStyle\>\"", "\[Rule]", 
+              RowBox[{"OptionValue", "[", "\"\<PntStyle\>\"", "]"}]}], ","}], 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"\"\<Background\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<Background\>\"", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<LightSource\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<LightSource\>\"", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<AmbientLight\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<AmbientLight\>\"", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Radiosity\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<Radiosity\>\"", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Code\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<Code\>\"", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Path\>\"", "\[Rule]", 
+            RowBox[{"DirectoryName", "[", "povfile", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<File\>\"", "\[Rule]", "outfile"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<PlotWhat\>\"", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"FileBaseName", "[", "povfile", "]"}], "<>", 
+              "\"\<.\>\"", "<>", 
+              RowBox[{"FileExtension", "[", "povfile", "]"}]}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Import\>\"", "\[Rule]", 
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"OptionValue", "[", "\"\<Import\>\"", "]"}], "]"}]}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<PrintMessages\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<PrintMessages\>\"", "]"}]}]}], 
+          "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<POVFile\>\"", "\[RuleDelayed]", "$POVrayGeometryFile"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<File\>\"", "\[RuleDelayed]", "$POVrayOutputFile"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Background\>\"", "\[RuleDelayed]", "stdbackground"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<LightSource\>\"", "\[RuleDelayed]", "stdlight"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AmbientLight\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "1"}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Radiosity\>\"", "\[RuleDelayed]", "stdrad"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Code\>\"", "\[Rule]", "\"\<\>\""}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Scale\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Cam\>\"", "\[RuleDelayed]", "stdcam"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<InteriorStyle\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Boundary\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SmoothBoundary\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<BoundaryStyle\>\"", "\[RuleDelayed]", "stdbndtex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<BoundaryMesh\>\"", "\[Rule]", "32"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<BoundarySubdivisionFactor\>\"", "\[Rule]", "360"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<BoundaryThickness\>\"", "\[Rule]", 
+        RowBox[{"Scaled", "[", "0.01", "]"}]}], ",", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Edges\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<EdgeStyle\>\"", "\[RuleDelayed]", "stdedgetex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<EdgeThickness\>\"", "\[Rule]", 
+        RowBox[{"Scaled", "[", "0.001", "]"}]}], ",", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Points\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PointStyle\>\"", "\[RuleDelayed]", "stdpnttex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PointThickness\>\"", "\[Rule]", 
+        RowBox[{"Scaled", "[", "0.005", "]"}]}], ",", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Singular\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SmoothSingular\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SingularStyle\>\"", "\[RuleDelayed]", "stdsingtex"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<SingularMesh\>\"", "\[Rule]", "32"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SingularThickness\>\"", "\[Rule]", 
+        RowBox[{"Scaled", "[", "0.01", "]"}]}], ",", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintMessages\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Render\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Import\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"OverwriteTarget", "\[Rule]", "True"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.632132553414073*^9, 3.632132620860259*^9}, {
+   3.632132654726995*^9, 3.632132659886243*^9}, 3.632132718852769*^9, {
+   3.632132938938046*^9, 3.632132939236155*^9}, {3.6321329998044577`*^9, 
+   3.632133044237344*^9}, {3.632133116466506*^9, 3.632133263715598*^9}, {
+   3.632136914265128*^9, 3.632136914487947*^9}, {3.632216349278336*^9, 
+   3.632216356137014*^9}, {3.632216662094254*^9, 3.63221667289404*^9}, {
+   3.6322170241993923`*^9, 3.6322170304579487`*^9}, {3.632831580654744*^9, 
+   3.632831591829179*^9}, {3.632831690175658*^9, 3.6328316915727367`*^9}, {
+   3.641536717551959*^9, 3.6415367266261253`*^9}, {3.642651490080906*^9, 
+   3.6426514929720287`*^9}, {3.6426794167692223`*^9, 
+   3.6426794169108973`*^9}, {3.6426795578993464`*^9, 3.64267955859198*^9}, {
+   3.648450763274498*^9, 3.648450861627685*^9}, {3.667050252045793*^9, 
+   3.667050269485652*^9}, {3.670862757423745*^9, 3.670862759526649*^9}, {
+   3.670863588337708*^9, 3.6708636090790043`*^9}, {3.670864615386072*^9, 
+   3.670864642738579*^9}, 3.6708650120941133`*^9, {3.675522259671815*^9, 
+   3.675522270955464*^9}, {3.681632566398304*^9, 3.681632578585362*^9}, {
+   3.681633976870288*^9, 3.681633987375421*^9}, 3.681635706487503*^9, {
+   3.681636549354773*^9, 3.681636552016667*^9}, {3.681637460908255*^9, 
+   3.6816374772502604`*^9}, {3.681639064452729*^9, 3.681639073591161*^9}, {
+   3.6843926184658127`*^9, 3.684392638094397*^9}, {3.717332784593525*^9, 
+   3.717332801335785*^9}, {3.717332929131316*^9, 3.717332945170401*^9}, {
+   3.724569512690963*^9, 3.724569572408722*^9}, {3.724569795505624*^9, 
+   3.724569796685611*^9}, {3.724569937182064*^9, 3.724569938418244*^9}, {
+   3.728038752727849*^9, 3.7280387541256123`*^9}, {3.7442890549289293`*^9, 
+   3.744289067374815*^9}, {3.744290540483818*^9, 3.744290577639925*^9}, {
+   3.744290638951034*^9, 3.744290647755206*^9}, {3.744290694711955*^9, 
+   3.7442908489123087`*^9}, 3.744290904700329*^9, 3.744291541191545*^9, {
+   3.744292296666374*^9, 3.7442923057561626`*^9}, {3.7442927721929607`*^9, 
+   3.7442927728402843`*^9}, {3.7484428096682158`*^9, 3.748442812690528*^9}, {
+   3.748443070771688*^9, 3.7484430730594177`*^9}, {3.748443191243445*^9, 
+   3.74844322196024*^9}, {3.749907930003778*^9, 3.749907977761333*^9}, {
+   3.7499095566540947`*^9, 3.749909559244995*^9}, {3.749909918721108*^9, 
+   3.749909919404141*^9}, {3.7582844349426203`*^9, 3.758284503753716*^9}, {
+   3.75828479208664*^9, 3.7582847970143423`*^9}, {3.788358971427219*^9, 
+   3.788359169626499*^9}, {3.7883704425844593`*^9, 3.7883705119898252`*^9}, {
+   3.788370566996984*^9, 3.7883706277740097`*^9}, {3.788370711962884*^9, 
+   3.78837071796165*^9}, {3.7883708069753*^9, 3.7883708352805557`*^9}, 
+   3.788370868670402*^9, {3.78837090373573*^9, 3.788370923083214*^9}, {
+   3.788370955087967*^9, 3.7883711503305283`*^9}, {3.788371186292273*^9, 
+   3.788371195187434*^9}, {3.7883712505224247`*^9, 3.7883712811117764`*^9}, {
+   3.788371314806363*^9, 3.788371321960958*^9}, {3.788373460915283*^9, 
+   3.788373472544939*^9}, 3.788377066869314*^9, 3.788379868466449*^9, {
+   3.788606216994667*^9, 3.7886062206258307`*^9}, {3.789565073533616*^9, 
+   3.789565251911212*^9}, {3.789565376651883*^9, 3.7895653982034683`*^9}, {
+   3.78956617089601*^9, 3.789566280283502*^9}, {3.789567446088805*^9, 
+   3.789567583618499*^9}, {3.790773429593423*^9, 3.790773434781774*^9}, {
+   3.7907747590487833`*^9, 3.790774767141643*^9}, 3.793711908469103*^9, {
+   3.79371207700804*^9, 3.79371212799478*^9}, {3.793712704141704*^9, 
+   3.7937127302287397`*^9}, {3.797930723971931*^9, 3.797930726609112*^9}, {
+   3.797935044919581*^9, 3.797935074173321*^9}, {3.817548859989069*^9, 
+   3.817548860902438*^9}, 3.8175489238316603`*^9, 3.817548954956558*^9, 
+   3.817549151827537*^9, {3.828522736915565*^9, 
+   3.828522739445942*^9}},ExpressionUUID->"18c735e8-c661-4c08-99de-\
+b3571c5fa4f0"],
+
+Cell[BoxData[
+ RowBox[{"MeshPOVray", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", 
+      RowBox[{"file_String", ":", "$POVrayGeometryFile"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"BB", ",", "style", ",", "texfile", ",", "f"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"style", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Style\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"style", "===", "Automatic"}], "||", 
+          RowBox[{"Not", "[", 
+           RowBox[{"StringQ", "[", "style", "]"}], "]"}]}], ",", 
+         RowBox[{"style", "=", "\"\<texture{MeshTex}\>\""}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"BB", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"ToGraphicsComplex", "[", 
+          RowBox[{"M", ",", 
+           RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<SmoothNormals\>\"", "]"}]}]}], 
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TrueQ", "[", 
+           RowBox[{"OptionValue", "[", "\"\<Texture\>\"", "]"}], "]"}], "&&", 
+          
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Head", "[", 
+             RowBox[{"TextureMesh", "[", "M", "]"}], "]"}], "=!=", 
+            "Missing"}], ")"}], "&&", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Head", "[", 
+             RowBox[{"Texture", "[", "M", "]"}], "]"}], "=!=", "Missing"}], 
+           ")"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"texfile", "=", 
+           RowBox[{"FileNameJoin", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"DirectoryName", "[", "file", "]"}], ",", 
+              RowBox[{
+               RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+               "\"\<_Texture.png\>\""}]}], "}"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Export", "[", 
+           RowBox[{"texfile", ",", 
+            RowBox[{
+             RowBox[{"Texture", "[", "M", "]"}], "\[LeftDoubleBracket]", "1", 
+             "\[RightDoubleBracket]"}], ",", "\"\<PNG\>\""}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"style", "=", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+             "\"\<texture{\\n\\t\\tpigment{\\n\\t\\t\\timage_map{ png \
+\\\"\>\"", "<>", "texfile", "<>", 
+              "\"\<\\\"}\\n\\t\\t}\\n\\t\\tfinish {\>\""}], ",", 
+             RowBox[{"POVrayFinish", "[", "M", "]"}], ",", 
+             "\"\<}\\n\\t}\\n\>\""}], "\[IndentingNewLine]", "]"}]}], ";"}]}],
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"POVrayWriteString", "[", 
+          RowBox[{"file", ",", "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Table", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"SphereString", "[", 
+                RowBox[{"data", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"BoundingBoxLength", "[", "M", "]"}], " ", 
+                  RowBox[{"OptionValue", "[", "\"\<Thickness\>\"", "]"}]}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "[", "\"\<Style\>\"", "]"}], "<>", 
+                  "\"\<\\n\>\""}]}], "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"data", ",", 
+                 RowBox[{
+                 "IrregularBoundaryVertexCoordinates", "[", "M", "]"}]}], 
+                "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+             "\[IndentingNewLine]", "\"\<\\n\>\""}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"OverwriteTarget", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "OverwriteTarget", "]"}]}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+       
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "[", "OverwriteTarget", "]"}], "]"}], ",", 
+         RowBox[{
+          RowBox[{"Export", "[", 
+           RowBox[{"file", ",", "\"\<\>\"", ",", "\"\<Text\>\""}], "]"}], 
+          ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"GraphicsComplexPOVray", "[", 
+          RowBox[{"x", ",", "file", ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<Style\>\"", "\[Rule]", "style"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", 
+            RowBox[{"OptionValue", "[", "\"\<SmoothNormals\>\"", "]"}]}], ",",
+            "\[IndentingNewLine]", 
+           RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+          "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "BB"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "file"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", "\[IndentingNewLine]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Style\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Texture\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.632132553414073*^9, 3.632132620860259*^9}, {
+   3.632132654726995*^9, 3.632132659886243*^9}, 3.632132718852769*^9, {
+   3.632132938938046*^9, 3.632132939236155*^9}, {3.6321329998044577`*^9, 
+   3.632133044237344*^9}, 3.6321365611761847`*^9, {3.632831528488618*^9, 
+   3.632831542374914*^9}, {3.63283271254943*^9, 3.632832789648965*^9}, {
+   3.6336845797097816`*^9, 3.6336845845169888`*^9}, {3.6426532215741167`*^9, 
+   3.642653234913644*^9}, {3.667045725168289*^9, 3.6670457353576937`*^9}, {
+   3.6670512349264383`*^9, 3.667051238131961*^9}, {3.670864717422311*^9, 
+   3.670864720917965*^9}, {3.670865523933461*^9, 3.670865544688653*^9}, {
+   3.679727844752162*^9, 3.6797278482397003`*^9}, {3.679727959431321*^9, 
+   3.679727959621648*^9}, {3.679728281152046*^9, 3.679728424768718*^9}, {
+   3.679728476691703*^9, 3.679728485674499*^9}, 3.679728517908518*^9, {
+   3.679728552195986*^9, 3.679728559834153*^9}, {3.67972861230425*^9, 
+   3.679728638483201*^9}, 3.6797286706668*^9, 3.6797287970528584`*^9, 
+   3.679728840581192*^9, {3.6797289139610987`*^9, 3.679728925329341*^9}, {
+   3.679729160716063*^9, 3.6797292270175343`*^9}, 3.679734597098341*^9, {
+   3.683105998431168*^9, 3.683106006965982*^9}, {3.6831061047664824`*^9, 
+   3.683106121549247*^9}, {3.6831070740429163`*^9, 3.6831071499621763`*^9}, {
+   3.683107191982465*^9, 3.683107196404566*^9}, {3.6843925228341618`*^9, 
+   3.684392576371006*^9}, {3.68439346798594*^9, 3.684393479513525*^9}, {
+   3.692039708116446*^9, 3.692039782102951*^9}, {3.692040013269246*^9, 
+   3.692040045611331*^9}, {3.692040084690034*^9, 3.6920400968885517`*^9}, 
+   3.71850845685084*^9, {3.724576614427264*^9, 3.724576629273736*^9}, {
+   3.7438549035971746`*^9, 3.743854922842462*^9}, {3.743862574223936*^9, 
+   3.743862610377349*^9}, 3.74386281356679*^9, 3.7438628869521933`*^9, {
+   3.7438632797218313`*^9, 3.743863279894739*^9}, 3.743863319718731*^9, {
+   3.743863918154085*^9, 3.74386393479107*^9}, 3.743864028778957*^9, 
+   3.744285916883089*^9, {3.744286726990974*^9, 3.744286727773035*^9}, 
+   3.744286884400466*^9, {3.744289007640778*^9, 3.744289044165296*^9}, {
+   3.744290941226974*^9, 3.74429103015353*^9}, {3.744291076422407*^9, 
+   3.744291130442284*^9}, {3.744291338315309*^9, 3.744291340200004*^9}, {
+   3.7442915329950733`*^9, 3.744291534495933*^9}, {3.744293207309585*^9, 
+   3.744293250601843*^9}, 3.74429369860108*^9, {3.744293816655119*^9, 
+   3.744293818429483*^9}, {3.7442939965214767`*^9, 3.7442939968865423`*^9}, {
+   3.7484430175183353`*^9, 3.748443051619011*^9}, {3.749120843957446*^9, 
+   3.7491208490740547`*^9}, {3.7491208975838547`*^9, 3.749120897819495*^9}, {
+   3.7499069991104927`*^9, 3.749907001125643*^9}, {3.749907120396207*^9, 
+   3.7499071357999*^9}, {3.7499072210782557`*^9, 3.7499072212593403`*^9}, 
+   3.749909652771194*^9, {3.749909869271047*^9, 3.7499098721902943`*^9}, {
+   3.749909902590678*^9, 3.749909902755103*^9}, {3.758446886615398*^9, 
+   3.7584468891792192`*^9}, {3.758446945806244*^9, 3.7584469647425213`*^9}, 
+   3.7883649545250397`*^9, {3.78837135828447*^9, 3.788371409890893*^9}, {
+   3.788371599908325*^9, 3.7883716176439543`*^9}, {3.788371798397977*^9, 
+   3.788371798701276*^9}, 3.788379872049995*^9, {3.79077253486756*^9, 
+   3.790772549182357*^9}, {3.790773494988583*^9, 3.79077353815309*^9}, {
+   3.793893799919805*^9, 3.7938938041736526`*^9}, {3.7938940903246593`*^9, 
+   3.793894092520035*^9}, {3.828522745041329*^9, 3.828522749360458*^9}, {
+   3.837855467372715*^9, 3.837855486476005*^9}},
+ CellLabel->
+  "In[184]:=",ExpressionUUID->"ff05445c-a038-4c30-8f78-bb27b47769fe"],
+
+Cell[BoxData[
+ RowBox[{"TwoSidedMeshPOVray", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "\[Epsilon]_", ",", "opts___"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M1", ",", "M2"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"M1", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"mesh", ",", "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"TriangleData", "[", "M", "]"}], "+", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{
+                RowBox[{"\[Epsilon]", " ", 
+                 RowBox[{"TriangleNormals", "[", "M", "]"}]}], ",", "3"}], 
+               "]"}], "]"}]}], ",", "1"}], "]"}], ",", "\[IndentingNewLine]", 
+          
+          RowBox[{"Partition", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"3", 
+               RowBox[{"TriangleCount", "[", "M", "]"}]}]}], "]"}], ",", 
+            "3"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"M2", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"mesh", ",", "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"TriangleData", "[", "M", "]"}], "-", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{
+                RowBox[{"\[Epsilon]", " ", 
+                 RowBox[{"TriangleNormals", "[", "M", "]"}]}], ",", "3"}], 
+               "]"}], "]"}]}], ",", "1"}], "]"}], ",", "\[IndentingNewLine]", 
+          
+          RowBox[{"Partition", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"3", 
+               RowBox[{"TriangleCount", "[", "M", "]"}]}]}], "]"}], ",", 
+            "3"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"POVray", "[", 
+        RowBox[{"M1", ",", "cam", ",", "light", ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<POVFile\>\"", "\[Rule]", "\"\<Surface1.pov\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "False"}], ",", 
+         RowBox[{"\"\<Boundary\>\"", "\[Rule]", "False"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<IntStyle\>\"", "\[Rule]", "DullBlue"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Render\>\"", "\[Rule]", "False"}]}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"POVray", "[", 
+        RowBox[{"M2", ",", "cam", ",", "light", ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<POVFile\>\"", "\[Rule]", "\"\<Surface2.pov\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "False"}], ",", 
+         RowBox[{"\"\<Boundary\>\"", "\[Rule]", "False"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<IntStyle\>\"", "\[Rule]", "DullOrange"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Render\>\"", "\[Rule]", "False"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"TempPOVray", "[", 
+        RowBox[{"opts", ",", 
+         RowBox[{"\"\<PlotWhat\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"\"\<Surface1.pov\>\"", ",", "\"\<Surface2.pov\>\""}], 
+           "}"}]}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.7599883474867268`*^9, {3.760008619023696*^9, 3.760008619766725*^9}, 
+   3.7600107714683313`*^9, {3.760010819138791*^9, 3.760010836016982*^9}, {
+   3.788371655592548*^9, 3.788371773076428*^9}},
+ CellLabel->
+  "In[146]:=",ExpressionUUID->"5a9d9e1b-0a5b-4c71-9d5a-8030a70e2d17"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"d83379ce-8d58-47a5-8eb2-6cc02ca7d53e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[400, 13, 20126, 392, 3167, "Input",ExpressionUUID->"18c735e8-c661-4c08-99de-b3571c5fa4f0"],
+Cell[20529, 407, 9591, 186, 1117, "Input",ExpressionUUID->"ff05445c-a038-4c30-8f78-bb27b47769fe"],
+Cell[30123, 595, 4031, 91, 667, "Input",ExpressionUUID->"5a9d9e1b-0a5b-4c71-9d5a-8030a70e2d17"]
+}
+]
+*)
+

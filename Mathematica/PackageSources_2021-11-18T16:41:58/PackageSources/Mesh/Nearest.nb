@@ -1,0 +1,145 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4769,        137]
+NotebookOptionsPosition[      4474,        122]
+NotebookOutlinePosition[      4832,        138]
+CellTagsIndexPosition[      4789,        135]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NearestTriangleFunction", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Nearest", "[", 
+       RowBox[{
+        RowBox[{"TriangleMidpoints", "[", "M", "]"}], "\[Rule]", 
+        "Automatic"}], "]"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"Nearest", "[", 
+      RowBox[{
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"TriangleData", "[", "M", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", "1", "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"2", ",", "3"}], "}"}]}], "}"}]}], "]"}], "\[Rule]", 
+       "Automatic"}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"InputType", "\[Rule]", "mesh"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NearestTriangle", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_", ",", "p_", ",", 
+       RowBox[{"n_:", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"nf", "=", 
+         RowBox[{"NearestTriangleFunction", "[", "M", "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"nf", "[", 
+        RowBox[{
+         RowBox[{"getProLongations", "[", 
+          RowBox[{"p", ",", "3"}], "]"}], ",", "n"}], "]"}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"InputType", "\[Rule]", "mesh"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"NearestTriangle", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_", ",", "p_", ",", 
+      RowBox[{"{", 
+       RowBox[{"n_", ",", "r_"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"nf", "=", 
+        RowBox[{"NearestTriangleFunction", "[", "M", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"nf", "[", 
+       RowBox[{
+        RowBox[{"getProLongations", "[", 
+         RowBox[{"p", ",", "3"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"n", ",", "r"}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"InputType", "\[Rule]", "mesh"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Note that this is only experimental and does not always yield a \
+triangle containing a minimal distance projection.\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7249455916296873`*^9, 3.7249456800342627`*^9}, {
+  3.724945715485141*^9, 3.724945715850678*^9}, {3.7259423222270613`*^9, 
+  3.725942323613242*^9}, {3.725942551343556*^9, 3.72594255694281*^9}, {
+  3.725945764670917*^9, 3.7259457848595552`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"getProLongations", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"x", ",", "_Real", ",", "1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"n", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{"Table", "[", 
+       RowBox[{"x", ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "n"}], "}"}]}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"RuntimeAttributes", "\[Rule]", 
+      RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Parallelization", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{3.725942389552915*^9, 3.7259425461843863`*^9}]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2979, 74, 594, "Input"],
+Cell[3540, 96, 930, 24, 169, "Input"]
+}
+]
+*)
+

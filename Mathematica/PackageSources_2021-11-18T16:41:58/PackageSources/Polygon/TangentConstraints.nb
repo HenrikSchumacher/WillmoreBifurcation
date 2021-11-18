@@ -1,0 +1,219 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8790,        211]
+NotebookOptionsPosition[      8453,        195]
+NotebookOutlinePosition[      8811,        211]
+CellTagsIndexPosition[      8768,        208]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"FixTangents", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_", ",", "elist_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"ClearAllCacheDependingOn", "[", 
+       RowBox[{"M", ",", "\"\<FixedTangents\>\""}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"SetPersistentCache", "[", 
+       RowBox[{
+       "M", ",", "\"\<FixedTangents\>\"", ",", "\[IndentingNewLine]", 
+        RowBox[{"AssociationThread", "[", 
+         RowBox[{"elist", "\[Rule]", 
+          RowBox[{
+           RowBox[{"NormalizedEdgeVectors", "[", "M", "]"}], 
+           "\[LeftDoubleBracket]", "elist", "\[RightDoubleBracket]"}]}], 
+         "]"}]}], "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"InputType", "\[Rule]", "polygon"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"FixedTangents", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Association", "[", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"InputType", "\[Rule]", "polygon"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.6639259300002947`*^9, 3.663925942166996*^9}, {
+  3.663926085897085*^9, 3.663926115913118*^9}, {3.663926166196327*^9, 
+  3.663926215456064*^9}, {3.6639263088276443`*^9, 3.66392631089008*^9}, {
+  3.663926355662311*^9, 3.663926370905538*^9}, {3.6639373903242826`*^9, 
+  3.663937394515019*^9}, {3.719504424539074*^9, 3.7195044575026703`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"TangentConstraintMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"elist", "=", 
+         RowBox[{"Keys", "[", 
+          RowBox[{"FixedTangents", "[", "M", "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"c", "=", "0"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"d", " ", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"a", "=", 
+         RowBox[{"getframe", "/@", 
+          RowBox[{"Values", "[", 
+           RowBox[{"FixedTangents", "[", "M", "]"}], "]"}]}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"SparseArray", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Flatten", "[", 
+          RowBox[{
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{"x", "\[Function]", 
+              RowBox[{"Table", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"c", "++"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"Table", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"c", ",", 
+                    RowBox[{
+                    RowBox[{"d", " ", 
+                    RowBox[{"(", 
+                    RowBox[{"x", "-", "1"}], ")"}]}], "+", "i"}]}], "}"}], 
+                   ",", 
+                   RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "d"}], "}"}]}], "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"j", ",", "1", ",", 
+                  RowBox[{"d", "-", "1"}]}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", "elist"}], "]"}], ",", "2"}], "]"}], 
+         "\[Rule]", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"a", "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", 
+            RowBox[{"2", ";;", 
+             RowBox[{"-", "1"}]}]}], "\[RightDoubleBracket]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"c", ",", 
+          RowBox[{
+           RowBox[{"numedges", "[", "M", "]"}], "d"}]}], "}"}]}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"InputType", "\[Rule]", "polygon"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{3.666936785285084*^9, 3.719504434068899*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"DDTangentConstraints", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"TangentConstraintMatrix", "[", "M", "]"}], "\[Equal]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"TangentConstraintMatrix", "[", "M", "]"}], ".", 
+        RowBox[{"DDUnitEdgeVectors", "[", "M", "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"InputType", "\[Rule]", "polygon"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DTangentConstraints", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"TangentConstraintMatrix", "[", "M", "]"}], "\[Equal]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"TangentConstraintMatrix", "[", "M", "]"}], ".", 
+        RowBox[{"DUnitEdgeVectors", "[", "M", "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"InputType", "\[Rule]", "polygon"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TangentConstraints", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"TangentConstraintMatrix", "[", "M", "]"}], "\[Equal]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"TangentConstraintMatrix", "[", "M", "]"}], ".", 
+        RowBox[{"UnitEdgeVectors", "[", "M", "]"}]}]}], "\[IndentingNewLine]",
+       "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"InputType", "\[Rule]", "polygon"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   ";"}]}], "Input",
+ CellChangeTimes->{{3.664179639915393*^9, 3.664179824928837*^9}, {
+   3.6641798600242643`*^9, 3.6641799276131477`*^9}, {3.664180291566793*^9, 
+   3.664180293572157*^9}, {3.6641817238796673`*^9, 3.664181733113584*^9}, {
+   3.664201628423266*^9, 3.664201629675736*^9}, {3.6642016765374403`*^9, 
+   3.664201682571373*^9}, {3.6642021719084673`*^9, 3.6642021844021263`*^9}, {
+   3.66420894679424*^9, 3.664208946929749*^9}, {3.664521868018949*^9, 
+   3.66452187483862*^9}, {3.66452193620044*^9, 3.66452194888585*^9}, {
+   3.6645390807243757`*^9, 3.66453908286524*^9}, {3.66453911654848*^9, 
+   3.664539132940208*^9}, {3.664539183170727*^9, 3.66453918484729*^9}, {
+   3.664539217424666*^9, 3.664539217876462*^9}, 3.664547653522502*^9, {
+   3.664548929289716*^9, 3.664548944724166*^9}, {3.6645489853783817`*^9, 
+   3.6645489963982964`*^9}, {3.665649849148958*^9, 3.665649856860182*^9}, {
+   3.665649896311528*^9, 3.6656498985960827`*^9}, {3.665649935977216*^9, 
+   3.6656499446952553`*^9}, {3.66565007834166*^9, 3.665650104973304*^9}, {
+   3.66585318231353*^9, 3.665853227251515*^9}, {3.666638155928399*^9, 
+   3.666638156644887*^9}, {3.66693678779554*^9, 3.666936795551119*^9}}]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1660, 34, 344, "Input"],
+Cell[2221, 56, 2679, 65, 469, "Input"],
+Cell[4903, 123, 3546, 70, 669, "Input"]
+}
+]
+*)
+

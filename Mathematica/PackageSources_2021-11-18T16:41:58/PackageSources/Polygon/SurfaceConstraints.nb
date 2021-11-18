@@ -1,0 +1,662 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     29184,        654]
+NotebookOptionsPosition[     28587,        637]
+NotebookOutlinePosition[     28940,        653]
+CellTagsIndexPosition[     28897,        650]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"SurfaceConstraintVertices", "=", 
+  RowBox[{"SettingFunction", "[", 
+   RowBox[{"P_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"Range", "[", 
+     RowBox[{"VertexCount", "[", "P", "]"}], "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.736703631651187*^9, 3.736703637945455*^9}},
+ CellLabel->"In[53]:=",ExpressionUUID->"5cf252a2-a204-48d5-8132-baa1df4af383"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetSurfaceConstraintFunction", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M_polygon", ",", "f_"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Quiet", "[", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"XX", ",", "X", ",", "cf", ",", "cDf", ",", "cDDf"}], "}"}],
+          ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"XX", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{
+             "X", "\[LeftDoubleBracket]", "j", "\[RightDoubleBracket]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", "1", ",", 
+               RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "}"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"cf", "=", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"code", "=", 
+               RowBox[{"N", "[", 
+                RowBox[{"f", "[", "XX", "]"}], "]"}]}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Compile", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"{", 
+                 RowBox[{"X", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+               "\[IndentingNewLine]", "code", ",", "\[IndentingNewLine]", 
+               RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"RuntimeAttributes", "\[Rule]", 
+                RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+               
+               RowBox[{"Parallelization", "\[Rule]", "True"}]}], 
+              "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"cDf", "=", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"code", "=", 
+               RowBox[{"N", "[", 
+                RowBox[{"D", "[", 
+                 RowBox[{
+                  RowBox[{"f", "[", "XX", "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Flatten", "[", "XX", "]"}], ",", "1"}], "}"}]}], 
+                 "]"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Compile", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"{", 
+                 RowBox[{"X", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+               "\[IndentingNewLine]", "code", ",", "\[IndentingNewLine]", 
+               RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"RuntimeAttributes", "\[Rule]", 
+                RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+               
+               RowBox[{"Parallelization", "\[Rule]", "True"}]}], 
+              "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"cDDf", "=", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"code", "=", 
+               RowBox[{"N", "[", 
+                RowBox[{"D", "[", 
+                 RowBox[{
+                  RowBox[{"f", "[", "XX", "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"Flatten", "[", "XX", "]"}], ",", "2"}], "}"}]}], 
+                 "]"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Compile", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"{", 
+                 RowBox[{"X", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+               "\[IndentingNewLine]", "code", ",", "\[IndentingNewLine]", 
+               RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"RuntimeAttributes", "\[Rule]", 
+                RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+               
+               RowBox[{"Parallelization", "\[Rule]", "True"}]}], 
+              "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"ClearAllCacheDependingOn", "[", 
+           RowBox[{"M", ",", "\"\<SurfaceConstraintFunction\>\""}], "]"}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"ClearAllCacheDependingOn", "[", 
+           RowBox[{"M", ",", "\"\<DSurfaceConstraintFunction\>\""}], "]"}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"ClearAllCacheDependingOn", "[", 
+           RowBox[{"M", ",", "\"\<DDSurfaceConstraintFunction\>\""}], "]"}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"SetPersistentCache", "[", 
+           RowBox[{"M", ",", "\"\<SurfaceConstraintFunction\>\"", ",", "cf"}],
+            "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"SetPersistentCache", "[", 
+           RowBox[{
+           "M", ",", "\"\<DSurfaceConstraintFunction\>\"", ",", "cDf"}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"SetPersistentCache", "[", 
+           RowBox[{
+           "M", ",", "\"\<DDSurfaceConstraintFunction\>\"", ",", "cDDf"}], 
+           "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SurfaceConstraintFunction", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+     "M_polygon", ",", "\[IndentingNewLine]", "None", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DSurfaceConstraintFunction", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+     "M_polygon", ",", "\[IndentingNewLine]", "None", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DDSurfaceConstraintFunction", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+     "M_polygon", ",", "\[IndentingNewLine]", "None", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SurfaceConstraint", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\[Phi]", "=", 
+         RowBox[{"SurfaceConstraintFunction", "[", "M", "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"\[Phi]", "===", "None"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Map", "[", 
+          RowBox[{"\[Phi]", ",", 
+           RowBox[{"Normal", "[", 
+            RowBox[{"VertexCoordinates", "[", 
+             RowBox[{"M", ",", 
+              RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}]}], "]"}], 
+            "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DSurfaceConstraintCombinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"c", "=", "0"}], ",", "d"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"d", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"c", "++"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"c", ",", 
+                 RowBox[{"i", "+", "j"}]}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", "1", ",", "d"}], "}"}]}], "]"}]}], 
+            "\[IndentingNewLine]", ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", 
+              RowBox[{"d", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}], "-", 
+                 "1"}], ")"}]}]}], "}"}]}], "]"}], ",", "1"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SurfaceConstraint", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"D\[Phi]", "=", 
+         RowBox[{"DSurfaceConstraintFunction", "[", "M", "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"D\[Phi]", "===", "None"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"MySparseArray", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Rule", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"DSurfaceConstraintCombinatorics", "[", "M", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Map", "[", 
+               RowBox[{"D\[Phi]", ",", 
+                RowBox[{"Normal", "[", 
+                 RowBox[{"VertexCoordinates", "[", 
+                  RowBox[{"M", ",", 
+                   RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}]}], 
+                  "]"}], "]"}]}], "]"}], "]"}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Length", "[", 
+              RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}], "]"}], 
+             ",", 
+             RowBox[{"DofCount", "[", "M", "]"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", "Total"}], "]"}]}], "\[IndentingNewLine]", 
+        "]"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DDSurfaceConstraintCombinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"c", "=", "0"}], ",", "d"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"d", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"c", "++"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"c", ",", 
+                   RowBox[{"i", "+", "j"}], ",", 
+                   RowBox[{"i", "+", "k"}]}], "}"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"j", ",", "1", ",", "d"}], "}"}]}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"k", ",", "1", ",", "d"}], "}"}]}], "]"}]}], 
+            "\[IndentingNewLine]", ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", 
+              RowBox[{"d", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}], "-", 
+                 "1"}], ")"}]}]}], "}"}]}], "]"}], ",", "2"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SurfaceConstraint", "''"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"DD\[Phi]", "=", 
+        RowBox[{"DDSurfaceConstraintFunction", "[", "M", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"DD\[Phi]", "===", "None"}], ",", 
+        RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"MySparseArray", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Rule", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"DDSurfaceConstraintCombinatorics", "[", "M", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Map", "[", 
+              RowBox[{"DD\[Phi]", ",", 
+               RowBox[{"Normal", "[", 
+                RowBox[{"VertexCoordinates", "[", 
+                 RowBox[{"M", ",", 
+                  RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}]}], 
+                 "]"}], "]"}]}], "]"}], "]"}]}], "\[IndentingNewLine]", "]"}],
+           ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Length", "[", 
+             RowBox[{"SurfaceConstraintVertices", "[", "M", "]"}], "]"}], ",", 
+            RowBox[{"DofCount", "[", "M", "]"}], ",", 
+            RowBox[{"DofCount", "[", "M", "]"}]}], "}"}], ",", 
+          "\[IndentingNewLine]", "Total"}], "]"}]}], "\[IndentingNewLine]", 
+       "]"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.678527431044251*^9, 3.6785274794888477`*^9}, {
+   3.678527631932939*^9, 3.678527671014694*^9}, {3.678528281464168*^9, 
+   3.6785284010047503`*^9}, {3.678528505818491*^9, 3.6785285120222883`*^9}, {
+   3.678528542211911*^9, 3.678528641648922*^9}, 3.6785287948850603`*^9, {
+   3.6785288375448217`*^9, 3.678528838463035*^9}, {3.678528923655027*^9, 
+   3.678528958068391*^9}, {3.6785289947886744`*^9, 3.678529024568515*^9}, {
+   3.678529189819413*^9, 3.678529193829928*^9}, {3.678529362378598*^9, 
+   3.678529362767281*^9}, {3.678529697257366*^9, 3.67852973410646*^9}, {
+   3.678529782244565*^9, 3.678529783949965*^9}, {3.678529860818809*^9, 
+   3.678529940555208*^9}, {3.67853107071418*^9, 3.6785311939415693`*^9}, {
+   3.678634595462171*^9, 3.678634595521267*^9}, {3.678634824396193*^9, 
+   3.678634853415029*^9}, 3.6786371196071053`*^9, {3.678637183988751*^9, 
+   3.678637213926207*^9}, {3.678637908046032*^9, 3.67863794320992*^9}, {
+   3.678638847095702*^9, 3.6786388910978727`*^9}, {3.683616394119053*^9, 
+   3.683616394203165*^9}, {3.683616468212061*^9, 3.6836165066317787`*^9}, {
+   3.683617048246188*^9, 3.683617081227849*^9}, 3.683617137962554*^9, {
+   3.683617198689642*^9, 3.683617213809784*^9}, {3.683617591577763*^9, 
+   3.683617591746901*^9}, {3.720105213778099*^9, 3.7201052461421547`*^9}, {
+   3.736700769930513*^9, 3.7367007806737967`*^9}, {3.7367029722790537`*^9, 
+   3.736702993351872*^9}, {3.748495342588747*^9, 3.748495373184547*^9}, {
+   3.7484971740715446`*^9, 
+   3.748497231626779*^9}},ExpressionUUID->"0fb3a947-bb3c-42c4-a6b5-\
+df203974d4ab"],
+
+Cell[BoxData[
+ RowBox[{"SurfaceConstraintPlotRange", "=", 
+  RowBox[{"SettingFunction", "[", 
+   RowBox[{"P_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"plora", ",", "diam"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"plora", "=", 
+        RowBox[{"MinMax", "/@", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{"VertexCoordinates", "[", "P", "]"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"diam", "=", 
+        RowBox[{"Norm", "[", 
+         RowBox[{"Differences", "/@", "plora"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"plora", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], "-=", 
+        RowBox[{"0.01", "diam"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"plora", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}], "+=", 
+        RowBox[{"0.01", "diam"}]}], ";", "\[IndentingNewLine]", "plora"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{
+  3.748496589152143*^9},ExpressionUUID->"9e40dcf8-d9c8-4c5f-9dcf-\
+d6565d5d106f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SurfaceConstraintPlotData", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"P_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "cf", ",", "data", ",", "plora", ",", "diff", ",", "x", ",", "y", ",",
+          "z"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"cf", "=", 
+         RowBox[{"SurfaceConstraintFunction", "[", "P", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"plora", "=", 
+         RowBox[{"SurfaceConstraintPlotRange", "[", "P", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Quiet", "[", 
+         RowBox[{"Show", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"ContourPlot3D", "@@", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"cf", "[", 
+                RowBox[{"{", 
+                 RowBox[{"x", ",", "y", ",", "z"}], "}"}], "]"}], "\[Equal]", 
+               "0."}], ",", "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"x", ",", 
+                RowBox[{"plora", "\[LeftDoubleBracket]", 
+                 RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"plora", "\[LeftDoubleBracket]", 
+                 RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], "}"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"y", ",", 
+                RowBox[{"plora", "\[LeftDoubleBracket]", 
+                 RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"plora", "\[LeftDoubleBracket]", 
+                 RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}]}], "}"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"z", ",", 
+                RowBox[{"plora", "\[LeftDoubleBracket]", 
+                 RowBox[{"3", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"plora", "\[LeftDoubleBracket]", 
+                 RowBox[{"3", ",", "2"}], "\[RightDoubleBracket]"}]}], "}"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"ContourStyle", "\[Rule]", 
+               RowBox[{"OptionValue", "[", "ContourStyle", "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Lighting", "\[Rule]", "\"\<Neutral\>\""}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Axes", "\[Rule]", "False"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Mesh", "\[Rule]", "None"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"PlotPoints", "\[Rule]", "50"}], "\[IndentingNewLine]", 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"Sequence", "@@", 
+               RowBox[{
+               "Options", "[", "\"\<ContourPlotOptions\>\"", "]"}]}]}], 
+             "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Sequence", "@@", 
+            RowBox[{"PlotOptions", "[", "P", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"PlotRange", "\[Rule]", "All"}]}], "\[IndentingNewLine]", 
+          "]"}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ContourStyle", "\[Rule]", 
+         RowBox[{"FaceForm", "[", 
+          RowBox[{"{", 
+           RowBox[{"uniblau", ",", 
+            RowBox[{"Opacity", "[", "0.85", "]"}], ",", 
+            RowBox[{"Specularity", "[", 
+             RowBox[{
+              InterpretationBox[
+               ButtonBox[
+                TooltipBox[
+                 GraphicsBox[{
+                   {GrayLevel[0], RectangleBox[{0, 0}]}, 
+                   {GrayLevel[0], RectangleBox[{1, -1}]}, 
+                   {GrayLevel[1], RectangleBox[{0, -1}, {2, 1}]}},
+                  AspectRatio->1,
+                  DefaultBaseStyle->"ColorSwatchGraphics",
+                  Frame->True,
+                  FrameStyle->GrayLevel[0.6666666666666666],
+                  FrameTicks->None,
+                  
+                  ImageSize->
+                   Dynamic[{
+                    Automatic, 1.35 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}],
+                  PlotRangePadding->None],
+                 StyleBox[
+                  RowBox[{"GrayLevel", "[", "1", "]"}], NumberMarks -> False]],
+                Appearance->None,
+                BaseStyle->{},
+                BaselinePosition->Baseline,
+                ButtonFunction:>With[{Typeset`box$ = EvaluationBox[]}, 
+                  If[
+                   Not[
+                    AbsoluteCurrentValue["Deployed"]], 
+                   SelectionMove[Typeset`box$, All, Expression]; 
+                   FrontEnd`Private`$ColorSelectorInitialAlpha = 1; 
+                   FrontEnd`Private`$ColorSelectorInitialColor = GrayLevel[1]; 
+                   FrontEnd`Private`$ColorSelectorUseMakeBoxes = True; 
+                   MathLink`CallFrontEnd[
+                    FrontEnd`AttachCell[Typeset`box$, 
+                    FrontEndResource["GrayLevelColorValueSelector"], {
+                    0, {Left, Bottom}}, {Left, Top}, 
+                    "ClosingActions" -> {
+                    "SelectionDeparture", "ParentChanged", 
+                    "EvaluatorQuit"}]]]],
+                DefaultBaseStyle->{},
+                Evaluator->Automatic,
+                Method->"Preemptive"],
+               GrayLevel[1],
+               Editable->False,
+               Selectable->False], ",", "30"}], "]"}]}], "}"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<ContourPlotOptions\>\"", "\[Rule]", 
+         RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "}"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"SurfaceConstraintPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"P_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"cf", ",", "pdata", ",", "qdata"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"cf", "=", 
+        RowBox[{"SurfaceConstraintFunction", "[", "P", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"cf", "===", "None"}], "||", 
+          RowBox[{
+           RowBox[{"Head", "[", "cf", "]"}], "===", "Missing"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Graphics3D", "[", 
+          RowBox[{"Sequence", "@@", 
+           RowBox[{"GraphicsOptions", "[", "P", "]"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"qdata", "=", 
+           RowBox[{"SurfaceConstraintPlotRange", "[", "P", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"pdata", "=", 
+           RowBox[{"MinMax", "/@", 
+            RowBox[{"Transpose", "[", 
+             RowBox[{"VertexCoordinates", "[", "P", "]"}], "]"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Min", "[", 
+                RowBox[{
+                 RowBox[{"pdata", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], "-", 
+                 RowBox[{"qdata", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+                "]"}], "<", "0."}], ")"}], "||", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Max", "[", 
+                RowBox[{
+                 RowBox[{"pdata", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}], "-", 
+                 RowBox[{"qdata", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                "]"}], ">", "0."}], ")"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"SetSurfaceConstraintPlotRange", "[", 
+              RowBox[{"P", ",", "pdata"}], "]"}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Show", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"SurfaceConstraintPlotData", "[", "P", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Sequence", "@@", 
+             RowBox[{"PlotOptions", "[", "P", "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}],
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.683630318617469*^9, 3.683630345189109*^9}, {
+   3.683632393253806*^9, 3.683632470037312*^9}, {3.683632534124536*^9, 
+   3.683632538346038*^9}, {3.683632572420336*^9, 3.683632577165004*^9}, {
+   3.683632627432826*^9, 3.6836327434892063`*^9}, {3.683632906841729*^9, 
+   3.683632986518456*^9}, {3.683633157720126*^9, 3.683633168066925*^9}, {
+   3.683633201107072*^9, 3.68363329329683*^9}, {3.683633436536976*^9, 
+   3.683633466502041*^9}, 3.683634781216152*^9, {3.683641109944021*^9, 
+   3.6836411101678257`*^9}, {3.683641317221534*^9, 3.683641320902342*^9}, {
+   3.683641450806221*^9, 3.683641450996765*^9}, 3.6836415949905567`*^9, {
+   3.683704448950737*^9, 3.683704474958729*^9}, {3.6837045057115583`*^9, 
+   3.6837045151900663`*^9}, {3.683704585846355*^9, 3.683704590694124*^9}, {
+   3.6837048958235826`*^9, 3.6837049069113607`*^9}, 3.6837052919301767`*^9, {
+   3.6837053454628677`*^9, 3.6837054243400784`*^9}, {3.683705454595172*^9, 
+   3.683705528339807*^9}, {3.6837069313949213`*^9, 3.683706969066145*^9}, 
+   3.708000976061919*^9, {3.7201052160658484`*^9, 3.72010521663608*^9}, {
+   3.74849599471629*^9, 3.7484960680155993`*^9}, {3.748496105002187*^9, 
+   3.74849611169491*^9}, {3.748496156988124*^9, 3.748496216901338*^9}, {
+   3.7484962812732553`*^9, 3.748496289840754*^9}, {3.748496504981256*^9, 
+   3.748496546007379*^9}, {3.74849659397071*^9, 3.748496627734787*^9}, {
+   3.748496758271764*^9, 3.748496828251298*^9}},
+ CellLabel->"In[28]:=",ExpressionUUID->"95d42a98-f344-4792-9756-0dba9e9f159e"]
+},
+WindowSize->{1120, 852},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 417, 8, 92, "Input",ExpressionUUID->"5cf252a2-a204-48d5-8132-baa1df4af383"],
+Cell[978, 30, 15890, 355, 2867, "Input",ExpressionUUID->"0fb3a947-bb3c-42c4-a6b5-df203974d4ab"],
+Cell[16871, 387, 1253, 30, 242, "Input",ExpressionUUID->"9e40dcf8-d9c8-4c5f-9dcf-d6565d5d106f"],
+Cell[18127, 419, 10456, 216, 1242, "Input",ExpressionUUID->"95d42a98-f344-4792-9756-0dba9e9f159e"]
+}
+]
+*)
+

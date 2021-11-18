@@ -1,0 +1,189 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      7551,        181]
+NotebookOptionsPosition[      6978,        165]
+NotebookOutlinePosition[      7314,        180]
+CellTagsIndexPosition[      7271,        177]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CreateCombinatorics", "[", 
+   RowBox[{
+   "\"\<Triangle\>\"", ",", "tetmesh", ",", "3", ",", "M", ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"DeleteDuplicates", "[", 
+     RowBox[{"cStandardizePolygons", "[", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"getOrientedTrianglesFromTets", "[", 
+         RowBox[{"Tets", "[", "M", "]"}], "]"}], ",", "1"}], "]"}], "]"}], 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}]}], "]"}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.664391504484268*^9, 3.664391512257215*^9}, {
+   3.6643970340504513`*^9, 3.664397039985071*^9}, {3.664397378380416*^9, 
+   3.664397381196254*^9}, {3.6804306074975567`*^9, 3.680430621445901*^9}, {
+   3.6804306541431828`*^9, 3.680430660605588*^9}, {3.680430701959037*^9, 
+   3.6804307025986443`*^9}, 3.680430742250478*^9, {3.7194655513300323`*^9, 
+   3.719465606542918*^9}, {3.7194843208243637`*^9, 3.719484331311809*^9}, 
+   3.719486556957429*^9, {3.720012502511219*^9, 3.720012521093423*^9}, {
+   3.720012707797393*^9, 3.720012716889475*^9}, {3.720013064420326*^9, 
+   3.720013066890114*^9}, {3.720024433687222*^9, 3.720024457450046*^9}, {
+   3.791012483262512*^9, 3.7910124864403687`*^9}, {3.791022077841864*^9, 
+   3.7910220813287497`*^9}, {3.791035553203281*^9, 3.791035560572116*^9}},
+ CellLabel->"In[35]:=",ExpressionUUID->"d4b0bf7c-3eeb-4025-b377-7f2dcba070f2"],
+
+Cell[BoxData[
+ RowBox[{"TriangleMidpoints", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_tetmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"AdjacencyMatrix", "[", 
+       RowBox[{"M", ",", "Vertices", ",", "Triangles"}], "]"}], 
+      "\[Transpose]"}], ".", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"VertexCoordinates", "[", "M", "]"}], "/", "3."}], ")"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7101320942987747`*^9, 3.710132097375618*^9}, {
+   3.7159587588039083`*^9, 3.715958763488871*^9}, {3.71948425762742*^9, 
+   3.719484315056828*^9}, {3.7200125061022043`*^9, 3.720012506388876*^9}, 
+   3.720024434191394*^9, {3.758907832322463*^9, 3.758907836758491*^9}, 
+   3.791022086193803*^9, {3.7910354905592813`*^9, 3.7910354959019938`*^9}},
+ CellLabel->"In[36]:=",ExpressionUUID->"31a63210-3dad-4872-a116-86d6ca35fbcd"],
+
+Cell[BoxData[
+ RowBox[{"TriangleLookupFunction", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_tetmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"f1", ",", "f2", ",", "f3", ",", "n", ",", "m"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"n", "=", 
+        RowBox[{"VertexCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"m", "=", 
+        RowBox[{"TriangleCount", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"f1", ",", "f2", ",", "f3"}], "}"}], "=", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"Triangles", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"Warning", ":", " ", 
+         RowBox[{
+         "This", " ", "can", " ", "look", " ", "up", " ", "only", " ", 
+          "those", " ", "triangles", " ", "that", " ", "have", " ", "been", 
+          " ", "standadized", " ", "with", " ", 
+          RowBox[{"cStandardizePolygons", "."}]}]}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"SparseArray", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Rule", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Join", "[", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "f2", ",", "f3"}], "}"}], "]"}], ",", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "f3", ",", "f2"}], "}"}], "]"}]}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Join", "[", 
+            RowBox[{
+             RowBox[{"Range", "[", "m", "]"}], ",", 
+             RowBox[{"Range", "[", 
+              RowBox[{
+               RowBox[{"-", "1"}], ",", 
+               RowBox[{"-", "m"}], ",", 
+               RowBox[{"-", "1"}]}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+          "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"n", ",", "n", ",", "n"}], "}"}]}], "\[IndentingNewLine]", 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7200132791293583`*^9, 3.72001335191267*^9}, {
+   3.72001351305512*^9, 3.720013554101075*^9}, {3.720015393404196*^9, 
+   3.720015421985138*^9}, 3.7200244345144672`*^9, {3.75890782378786*^9, 
+   3.758907825936817*^9}, {3.791008484600758*^9, 3.791008507114335*^9}, 
+   3.791012069137252*^9, {3.7910123798682203`*^9, 3.7910124415388117`*^9}, {
+   3.791022088211001*^9, 3.7910220909450483`*^9}},
+ CellLabel->"In[37]:=",ExpressionUUID->"f7b67be8-489b-4372-88e5-faebc316de9c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"TriangleLookup", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_tetmesh", ",", "list_"}], "}"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"(*", 
+      RowBox[{"Warning", ":", " ", 
+       RowBox[{
+       "This", " ", "can", " ", "look", " ", "up", " ", "only", " ", "those", 
+        " ", "triangles", " ", "that", " ", "have", " ", "been", " ", 
+        "standadized", " ", "with", " ", 
+        RowBox[{"cStandardizePolygons", "."}]}]}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"B", "=", 
+         RowBox[{"TriangleLookupFunction", "[", "M", "]"}]}], "}"}], ",", 
+       RowBox[{"Abs", "[", 
+        RowBox[{"Extract", "[", 
+         RowBox[{"B", ",", "list"}], "]"}], "]"}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.720013575630089*^9, 3.720013584398707*^9}, {
+   3.720013686684484*^9, 3.7200137121337442`*^9}, 3.720024435011756*^9, {
+   3.7589078274883127`*^9, 3.758907829167058*^9}, {3.7910124282725887`*^9, 
+   3.791012438631316*^9}, 
+   3.79102209450565*^9},ExpressionUUID->"64856387-821f-4e8b-adfe-\
+e1fa761fac7a"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1457, 26, 117, "Input",ExpressionUUID->"d4b0bf7c-3eeb-4025-b377-7f2dcba070f2"],
+Cell[2018, 48, 899, 18, 92, "Input",ExpressionUUID->"31a63210-3dad-4872-a116-86d6ca35fbcd"],
+Cell[2920, 68, 2820, 63, 417, "Input",ExpressionUUID->"f7b67be8-489b-4372-88e5-faebc316de9c"],
+Cell[5743, 133, 1231, 30, 117, "Input",ExpressionUUID->"64856387-821f-4e8b-adfe-e1fa761fac7a"]
+}
+]
+*)
+

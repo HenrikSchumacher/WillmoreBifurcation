@@ -1,0 +1,531 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     23830,        523]
+NotebookOptionsPosition[     22393,        498]
+NotebookOutlinePosition[     22729,        513]
+CellTagsIndexPosition[     22686,        510]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"LoadDependencies", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"list", ",", "result"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"list", "=", 
+        RowBox[{"Packages", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"result", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Values", "[", 
+          RowBox[{"Map", "[", 
+           RowBox[{"PackageLoadDependencies", ",", "list"}], "]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{"M", ",", "\"\<Packages\>\"", ",", "list"}], "]"}], ";", 
+       "\[IndentingNewLine]", "result"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.665388652806891*^9, 3.66538869331369*^9}, {
+   3.665388757632945*^9, 3.665388785793538*^9}, {3.6653888904158783`*^9, 
+   3.665388904086755*^9}, 3.6653889939647827`*^9, {3.66973129514522*^9, 
+   3.6697312982693043`*^9}, {3.695031460063828*^9, 3.695031462734297*^9}, {
+   3.707926733881261*^9, 3.707926734039796*^9}, {3.795359016991132*^9, 
+   3.795359018648312*^9}},ExpressionUUID->"e7462507-ec16-41b2-8d26-\
+118da4a06121"],
+
+Cell[BoxData[
+ RowBox[{"CreateLoadDependencyGraph", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"G", "=", 
+        RowBox[{"Graph", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Keys", "[", 
+           RowBox[{"Packages", "[", "M", "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"LoadDependencies", "[", "M", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"LoopFreeGraphQ", "[", "G", "]"}]}], ",", 
+         RowBox[{"Message", "[", 
+          RowBox[{"CreateLoadDependencyGraph", "::", "loop"}], "]"}]}], "]"}],
+        ";", "\[IndentingNewLine]", "G"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Warnings\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<loop\>\"", "\[Rule]", " ", 
+       "\"\<Dependency graph contains loops. Cannot guarantee \
+functionality.\>\""}], "\[IndentingNewLine]", "}"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.664469510950408*^9, 3.664469530261429*^9}, {
+   3.664469564078455*^9, 3.664469565095484*^9}, {3.6652952552290907`*^9, 
+   3.665295257917326*^9}, {3.665295301558032*^9, 3.665295357295231*^9}, 
+   3.665336895468151*^9, {3.665389142141542*^9, 3.6653891643786297`*^9}, {
+   3.665392917938588*^9, 3.665392919367612*^9}, {3.669731303872209*^9, 
+   3.669731309241868*^9}, {3.6697319238365383`*^9, 3.669731924213338*^9}, {
+   3.695031545315732*^9, 3.6950315511553288`*^9}, {3.795359012016842*^9, 
+   3.795359014055851*^9}},ExpressionUUID->"d35fae8b-3eb8-472c-b067-\
+c3d60c10b4eb"],
+
+Cell[BoxData[
+ RowBox[{"LoadDependencyGraph", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"Graph", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"CreateLoadDependencyGraph", "[", "M", "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"VertexLabels", "\[Rule]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<Labels\>\"", "]"}], ",", 
+         "\"\<Name\>\"", ",", 
+         RowBox[{"Placed", "[", 
+          RowBox[{"\"\<Name\>\"", ",", "Tooltip"}], "]"}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Labels\>\"", "\[Rule]", "False"}], "\[IndentingNewLine]", 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.664467306900094*^9, 3.664467338058728*^9}, {
+   3.6644673695725*^9, 3.664467414308343*^9}, {3.664468504397859*^9, 
+   3.664468631655757*^9}, {3.6644693929245377`*^9, 3.6644694794036627`*^9}, {
+   3.664469540616008*^9, 3.6644696305442038`*^9}, 3.665295389513824*^9, 
+   3.66533689606736*^9, 3.6653994127879753`*^9, {3.669731311151935*^9, 
+   3.669731315240953*^9}, {3.795359003728765*^9, 
+   3.795359006911929*^9}},ExpressionUUID->"bc30b28a-747e-483a-8a18-\
+c93f9897d5ac"],
+
+Cell[BoxData[
+ RowBox[{"UpdateDependencies", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{"Values", "[", 
+      RowBox[{"Map", "[", 
+       RowBox[{"PackageUpdateDependencies", ",", 
+        RowBox[{"Packages", "[", "M", "]"}]}], "]"}], "]"}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.665388652806891*^9, 3.66538869331369*^9}, {
+   3.665388757632945*^9, 3.665388785793538*^9}, {3.6653888904158783`*^9, 
+   3.665388904086755*^9}, 3.6653889939647827`*^9, {3.66973129514522*^9, 
+   3.6697312982693043`*^9}, {3.6697313630794897`*^9, 3.669731368036292*^9}, {
+   3.695031768642741*^9, 3.6950317762644863`*^9}, {3.7079267366408854`*^9, 
+   3.707926736816001*^9}, {3.795359000433118*^9, 3.7953590099200153`*^9}, {
+   3.796789602164002*^9, 3.7967896079140368`*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"086dc2d1-26fc-46f1-950c-2ee3355ac795"],
+
+Cell[BoxData[
+ RowBox[{"CreateUpdateDependencyGraph", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"G", "=", 
+        RowBox[{"Graph", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Keys", "[", 
+           RowBox[{"Packages", "[", "M", "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"UpdateDependencies", "[", "M", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"LoopFreeGraphQ", "[", "G", "]"}]}], ",", 
+         RowBox[{"Message", "[", 
+          RowBox[{"CreateUpdateDependencyGraph", "::", "loop"}], "]"}]}], 
+        "]"}], ";", "\[IndentingNewLine]", "G"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Warnings\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<loop\>\"", "\[Rule]", " ", 
+       "\"\<Dependency graph contains loops. Cannot guarantee \
+functionality.\>\""}], "\[IndentingNewLine]", "}"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.664469510950408*^9, 3.664469530261429*^9}, {
+   3.664469564078455*^9, 3.664469565095484*^9}, {3.6652952552290907`*^9, 
+   3.665295257917326*^9}, {3.665295301558032*^9, 3.665295357295231*^9}, 
+   3.665336895468151*^9, {3.665389142141542*^9, 3.6653891643786297`*^9}, {
+   3.665392917938588*^9, 3.665392919367612*^9}, {3.669731303872209*^9, 
+   3.669731309241868*^9}, {3.66973137193195*^9, 3.669731380354823*^9}, {
+   3.6950317531865683`*^9, 3.695031757273128*^9}, {3.7953589969622107`*^9, 
+   3.795358998552348*^9}},ExpressionUUID->"c0690c70-7987-4685-b11f-\
+3e59d24dc460"],
+
+Cell[BoxData[
+ RowBox[{"UpdateDependencyGraph", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"Graph", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"CreateUpdateDependencyGraph", "[", "M", "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"VertexLabels", "\[Rule]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<Labels\>\"", "]"}], ",", 
+         "\"\<Name\>\"", ",", 
+         RowBox[{"Placed", "[", 
+          RowBox[{"\"\<Name\>\"", ",", "Tooltip"}], "]"}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Labels\>\"", "\[Rule]", "False"}], "\[IndentingNewLine]", 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.664467306900094*^9, 3.664467338058728*^9}, {
+   3.6644673695725*^9, 3.664467414308343*^9}, {3.664468504397859*^9, 
+   3.664468631655757*^9}, {3.6644693929245377`*^9, 3.6644694794036627`*^9}, {
+   3.664469540616008*^9, 3.6644696305442038`*^9}, 3.665295389513824*^9, 
+   3.66533689606736*^9, 3.6653994127879753`*^9, {3.669731311151935*^9, 
+   3.669731315240953*^9}, {3.669731400699738*^9, 3.6697314036661797`*^9}, {
+   3.795358989722888*^9, 
+   3.795358994552615*^9}},ExpressionUUID->"2a48ede8-8887-42c7-b74b-\
+37c5723ec8e9"],
+
+Cell[BoxData[
+ RowBox[{"NeededPackages", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_packagemanager", ",", "load_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"VertexOutComponent", "[", 
+     RowBox[{
+      RowBox[{"LoadDependencyGraph", "[", "M", "]"}], ",", 
+      RowBox[{"Context2Name", "[", "load", "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.6653368966512537`*^9, {3.669731410274576*^9, 3.669731411547903*^9}, {
+   3.795359022816948*^9, 
+   3.795359025958433*^9}},ExpressionUUID->"5f9d956b-f366-4cdf-b7cf-\
+5ef882e94ef0"],
+
+Cell[BoxData[
+ RowBox[{"OutdatedFromDependencies", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "pos", ",", "dates", ",", "edges", ",", "frontieredges", ",", 
+        "frontierpts", ",", "packlist", ",", "changelist", ",", "missing"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"edges", "=", 
+        RowBox[{"UpdateDependencies", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"dates", "=", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Lookup", "[", 
+            RowBox[{
+             RowBox[{"PackageInstallationDates", "[", "M", "]"}], ",", 
+             RowBox[{"edges", "\[LeftDoubleBracket]", 
+              RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{
+             RowBox[{"PackageLastChangeDates", "[", "M", "]"}], ",", 
+             RowBox[{"edges", "\[LeftDoubleBracket]", 
+              RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}], "]"}]}],
+           "\[IndentingNewLine]", "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"pos", "=", 
+        RowBox[{"Position", "[", 
+         RowBox[{
+          RowBox[{"dates", "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", 
+            RowBox[{"-", "1"}]}], "\[RightDoubleBracket]"}], ",", 
+          "_Missing"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"missing", "=", 
+        RowBox[{"Extract", "[", 
+         RowBox[{"edges", ",", "pos"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"pos", "\[NotEqual]", 
+          RowBox[{"{", "}"}]}], ",", 
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"OutdatedFromDependencies", "::", "depmiss"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"missing", "\[LeftDoubleBracket]", 
+            RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}], ",", 
+           RowBox[{"missing", "\[LeftDoubleBracket]", 
+            RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"frontieredges", "=", 
+        RowBox[{"Pick", "[", 
+         RowBox[{
+          RowBox[{"Delete", "[", 
+           RowBox[{"edges", ",", "pos"}], "]"}], ",", 
+          RowBox[{"Less", "@@@", 
+           RowBox[{"Delete", "[", 
+            RowBox[{"dates", ",", "pos"}], "]"}]}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"frontierpts", "=", 
+        RowBox[{"DeleteDuplicates", "[", 
+         RowBox[{"frontieredges", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"packlist", "=", 
+        RowBox[{"Packages", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"changelist", "=", 
+        RowBox[{
+        "packlist", "\[LeftDoubleBracket]", "frontierpts", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"changelist", "=", 
+        RowBox[{"Map", "[", 
+         RowBox[{"EnforceCompilation", ",", "changelist"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"packlist", "=", 
+        RowBox[{"Append", "[", 
+         RowBox[{"packlist", ",", "changelist"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{"M", ",", "\"\<Packages\>\"", ",", "packlist"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"VertexInComponent", "[", 
+        RowBox[{
+         RowBox[{"UpdateDependencyGraph", "[", "M", "]"}], ",", 
+         "frontierpts"}], "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Warnings\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<depmiss\>\"", "\[Rule]", 
+       "\"\<Warning: The the source files of the following packges could not \
+be found: `1`. The packages `2` might now work as expected after \
+installation.\>\""}], " ", "\[IndentingNewLine]", "}"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.665396563821162*^9, 3.6653965664259033`*^9}, {
+   3.665396598615641*^9, 3.6653966006534777`*^9}, 3.665397327079582*^9, {
+   3.665397400938224*^9, 3.6653974502618513`*^9}, {3.6653979417934093`*^9, 
+   3.665398011790824*^9}, {3.665398304866643*^9, 3.665398310195343*^9}, {
+   3.6654777722219687`*^9, 3.665477785477129*^9}, {3.6654785541092873`*^9, 
+   3.6654785807485523`*^9}, 3.665479712369618*^9, {3.665479799821207*^9, 
+   3.665479801196045*^9}, {3.665496767876896*^9, 3.665496860701647*^9}, {
+   3.6654968986147833`*^9, 3.665496981633428*^9}, {3.6655811242962093`*^9, 
+   3.665581125150991*^9}, 3.665582020453573*^9, {3.669731424500101*^9, 
+   3.6697314407611227`*^9}, 3.695031929765332*^9, {3.6950323855213614`*^9, 
+   3.695032387033606*^9}, {3.69503342163719*^9, 3.695033430578267*^9}, {
+   3.695033559983316*^9, 3.695033560613433*^9}, {3.695033687469492*^9, 
+   3.6950336902285013`*^9}, 3.695034702644959*^9, {3.707926738704462*^9, 
+   3.707926738864964*^9}, {3.7953590283205633`*^9, 3.795359033031196*^9}, {
+   3.796887158647202*^9, 
+   3.7968871610306396`*^9}},ExpressionUUID->"6a131f71-8cb0-4f1e-af2c-\
+b6790094fe52"],
+
+Cell[BoxData[
+ RowBox[{"UpdateGraph", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_packagemanager", ",", "load_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"SelfUpdate", "[", "M", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Outdated packages: \>\"", ",", 
+         RowBox[{"OutdatedPackages", "[", "M", "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<New packages: \>\"", ",", 
+         RowBox[{"NewPackages", "[", "M", "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{"\"\<Outdated form dependeny packages: \>\"", ",", 
+         RowBox[{"OutdatedFromDependencies", "[", "M", "]"}]}], "]"}], ";"}], 
+      "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"Graph", "[", 
+      RowBox[{
+       RowBox[{"Subgraph", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"UpdateDependencyGraph", "[", "M", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Intersection", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"NeededPackages", "[", 
+            RowBox[{"M", ",", "load"}], "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Union", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"OutdatedPackages", "[", "M", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"NewPackages", "[", "M", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"OutdatedFromDependencies", "[", "M", "]"}]}], 
+            "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"VertexLabels", "\[Rule]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Labels\>\"", "]"}], ",", 
+          "\"\<Name\>\"", ",", 
+          RowBox[{"Placed", "[", 
+           RowBox[{"\"\<Name\>\"", ",", "Tooltip"}], "]"}]}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Labels\>\"", "\[Rule]", "False"}], "\[IndentingNewLine]", 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.664469781676526*^9, 3.664469790880444*^9}, {
+   3.6652962924129543`*^9, 3.665296293662702*^9}, 3.66533689783314*^9, {
+   3.6653984870631943`*^9, 3.665398491161954*^9}, {3.66547916258676*^9, 
+   3.665479164944759*^9}, 3.6654818496167383`*^9, {3.665481967563724*^9, 
+   3.665481971577838*^9}, 3.6697314685040283`*^9, {3.729357774222783*^9, 
+   3.7293577993654118`*^9}, 3.729360907485402*^9, {3.795359035198967*^9, 
+   3.795359036950192*^9}},ExpressionUUID->"fd2f722d-cafa-476c-a60d-\
+e82dbf6c8425"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"HighlightUpdateGraph", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_packagemanager", ",", "load_"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"HighlightGraph", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"TransitiveReductionGraph", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"VertexDelete", "[", 
+          RowBox[{
+           RowBox[{"LoadDependencyGraph", "[", "M", "]"}], ",", 
+           "\"\<PM\>\""}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Options", "[", 
+          RowBox[{"LoadDependencyGraph", "[", "M", "]"}], "]"}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TransitiveReductionGraph", "@", 
+        RowBox[{"UpdateGraph", "[", 
+         RowBox[{"M", ",", "load"}], "]"}]}]}], "\[IndentingNewLine]", 
+      "]"}]}], "\[IndentingNewLine]", "]"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.665391037916318*^9, 3.665391053880836*^9}, {
+   3.66539108616925*^9, 3.6653911037596416`*^9}, 3.665414734104217*^9, {
+   3.6654158678154583`*^9, 3.665415868020896*^9}, {3.669731949027833*^9, 
+   3.669731949600689*^9}, {3.6941610578913717`*^9, 3.694161082897575*^9}, 
+   3.694161127982753*^9, {3.746588993142582*^9, 3.7465890028684177`*^9}, {
+   3.795361082853229*^9, 
+   3.795361084738324*^9}},ExpressionUUID->"6f07af54-ec4a-4ac1-96c4-\
+5d900629d321"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"UpdateOrder", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_packagemanager", ",", "load_"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"TopologicalSort", "[", 
+      RowBox[{"ReverseGraph", "[", 
+       RowBox[{"UpdateGraph", "[", 
+        RowBox[{"M", ",", "load"}], "]"}], "]"}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.6644692703798923`*^9, 3.664469293812601*^9}, 
+   3.665336898369625*^9, {3.665390738301297*^9, 3.6653907660325317`*^9}, {
+   3.665390837470232*^9, 3.665390840009583*^9}, {3.665487497142395*^9, 
+   3.665487500284726*^9}, {3.6654908336106777`*^9, 3.665490836579563*^9}, {
+   3.66549135227256*^9, 3.665491429287713*^9}, {3.665491610477646*^9, 
+   3.6654916203724527`*^9}, {3.6950338567493668`*^9, 3.695033886775364*^9}, 
+   3.695034644169935*^9, 3.746589010796102*^9, {3.7953610864676723`*^9, 
+   3.7953610881620283`*^9}},ExpressionUUID->"4afd2a2e-04c7-4271-88dd-\
+2095c1451cd0"],
+
+Cell[BoxData[
+ RowBox[{"UpdatePackages", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_packagemanager", ",", "load_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"LoadPackages", "[", 
+     RowBox[{"M", ",", "load"}], "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.665392217897851*^9, 3.6653922778194532`*^9}, {
+   3.6653923377666817`*^9, 3.665392360942945*^9}, {3.6653924113605433`*^9, 
+   3.665392423344987*^9}, 3.665400721112113*^9, {3.66548183463993*^9, 
+   3.66548185764662*^9}, {3.665582851976946*^9, 3.665582857394588*^9}, {
+   3.795359039631349*^9, 
+   3.795359041061055*^9}},ExpressionUUID->"0709b1e1-bc11-494a-ad20-\
+e7fa7ad1312f"],
+
+Cell[BoxData[
+ RowBox[{"UpdateAllPackages", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"LoadPackages", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"Map", "[", 
+       RowBox[{"PackageName", ",", 
+        RowBox[{"Packages", "[", "M", "]"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.665494345581183*^9, 3.665494367628993*^9}, {
+  3.665582865825623*^9, 3.665582876726125*^9}, {3.7953590424558973`*^9, 
+  3.7953590447580137`*^9}},ExpressionUUID->"8a4e47c6-39db-468f-905b-\
+d5437644ccd5"]
+},
+WindowSize->{1119, 852},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1326, 27, 217, "Input",ExpressionUUID->"e7462507-ec16-41b2-8d26-118da4a06121"],
+Cell[1887, 49, 1889, 40, 317, "Input",ExpressionUUID->"d35fae8b-3eb8-472c-b067-c3d60c10b4eb"],
+Cell[3779, 91, 1377, 27, 242, "Input",ExpressionUUID->"bc30b28a-747e-483a-8a18-c93f9897d5ac"],
+Cell[5159, 120, 968, 17, 92, "Input",ExpressionUUID->"086dc2d1-26fc-46f1-950c-2ee3355ac795"],
+Cell[6130, 139, 1895, 40, 317, "Input",ExpressionUUID->"c0690c70-7987-4685-b11f-3e59d24dc460"],
+Cell[8028, 181, 1433, 28, 242, "Input",ExpressionUUID->"2a48ede8-8887-42c7-b74b-37c5723ec8e9"],
+Cell[9464, 211, 626, 16, 92, "Input",ExpressionUUID->"5f9d956b-f366-4cdf-b7cf-5ef882e94ef0"],
+Cell[10093, 229, 5573, 116, 767, "Input",ExpressionUUID->"6a131f71-8cb0-4f1e-af2c-b6790094fe52"],
+Cell[15669, 347, 2898, 61, 567, "Input",ExpressionUUID->"fd2f722d-cafa-476c-a60d-e82dbf6c8425"],
+Cell[18570, 410, 1445, 30, 242, "Input",ExpressionUUID->"6f07af54-ec4a-4ac1-96c4-5d900629d321"],
+Cell[20018, 442, 1042, 21, 92, "Input",ExpressionUUID->"4afd2a2e-04c7-4271-88dd-2095c1451cd0"],
+Cell[21063, 465, 722, 16, 92, "Input",ExpressionUUID->"0709b1e1-bc11-494a-ad20-e7fa7ad1312f"],
+Cell[21788, 483, 601, 13, 92, "Input",ExpressionUUID->"8a4e47c6-39db-468f-905b-d5437644ccd5"]
+}
+]
+*)
+

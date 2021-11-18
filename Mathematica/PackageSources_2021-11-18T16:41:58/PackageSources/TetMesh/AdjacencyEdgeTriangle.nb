@@ -1,0 +1,140 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4994,        132]
+NotebookOptionsPosition[      4611,        118]
+NotebookOutlinePosition[      4947,        133]
+CellTagsIndexPosition[      4904,        130]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_tetmesh", ",", "Triangles", ",", "Edges"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "k", ",", "m", ",", "n", ",", "data", ",", "f1", ",", "f2", ",", 
+        "f3"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"m", "=", 
+        RowBox[{"CountOf", "[", 
+         RowBox[{"M", ",", "Triangles"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{"CountOf", "[", 
+         RowBox[{"M", ",", "Edges"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"k", "=", "3"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"f1", ",", "f2", ",", "f3"}], "}"}], "=", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"Triangles", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"data", "=", 
+        RowBox[{"ExtractFromSparseArray", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"f2", ",", "f3", ",", "f1"}], "}"}], "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"f3", ",", "f1", ",", "f2"}], "}"}], "]"}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SparseArray", "@@", 
+        RowBox[{"{", 
+         RowBox[{"Automatic", ",", 
+          RowBox[{"{", 
+           RowBox[{"m", ",", "n"}], "}"}], ",", "0", ",", 
+          RowBox[{"{", 
+           RowBox[{"1", ",", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Range", "[", 
+               RowBox[{"0", ",", 
+                RowBox[{"k", " ", "m"}], ",", "k"}], "]"}], ",", 
+              RowBox[{"(*", "RowPointers", "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"Partition", "[", 
+               RowBox[{
+                RowBox[{"Abs", "[", "data", "]"}], ",", "1"}], "]"}]}], 
+             RowBox[{"(*", "ColumnIndices", "*)"}], "\[IndentingNewLine]", 
+             "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Sign", "[", "data", "]"}]}], 
+           RowBox[{"(*", "NonzeroValues", "*)"}], "\[IndentingNewLine]", 
+           "}"}]}], "}"}]}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7910176769859858`*^9, 3.791017689688966*^9}, {
+   3.791017769758522*^9, 3.791017854073847*^9}, {3.791017908626189*^9, 
+   3.791017936814815*^9}, {3.791017972040032*^9, 3.7910179749103823`*^9}, {
+   3.791019960117326*^9, 3.791019961178273*^9}, 
+   3.791021976302739*^9},ExpressionUUID->"53582e4c-7197-423f-8ebe-\
+0dbcd53271d4"],
+
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_tetmesh", ",", "Edges", ",", "Triangles"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "#", "]"}], ">", "0"}], ",", 
+        RowBox[{"Transpose", "[", "#", "]"}], ",", "#"}], "]"}], "&"}], "@", 
+     RowBox[{"SignedAdjacencyMatrix", "[", 
+      RowBox[{"M", ",", "Triangles", ",", "Edges"}], "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.791018019798678*^9, 3.7910180303394127`*^9}, {
+   3.79101811354631*^9, 3.79101812941536*^9}, {3.791019964362776*^9, 
+   3.791019972208832*^9}, 
+   3.79102198240619*^9},ExpressionUUID->"fc17ac0d-20c6-4b68-8831-\
+8c0fd7dc049a"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 3115, 71, 517, "Input",ExpressionUUID->"53582e4c-7197-423f-8ebe-0dbcd53271d4"],
+Cell[3676, 93, 931, 23, 117, "Input",ExpressionUUID->"fc17ac0d-20c6-4b68-8831-8c0fd7dc049a"]
+}
+]
+*)
+

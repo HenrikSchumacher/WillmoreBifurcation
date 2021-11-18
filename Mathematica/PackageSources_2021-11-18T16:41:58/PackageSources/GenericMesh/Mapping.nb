@@ -1,0 +1,540 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     21396,        532]
+NotebookOptionsPosition[     20187,        509]
+NotebookOutlinePosition[     20579,        525]
+CellTagsIndexPosition[     20536,        522]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"GraphMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "f_"}], "}"}], ",", "\[IndentingNewLine]", 
+    
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"p", ",", "q", ",", "Q"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"p", "=", 
+        RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Dimensions", "[", "p", "]"}], "\[LeftDoubleBracket]", "2",
+            "\[RightDoubleBracket]"}], ">", "2"}], ",", 
+         RowBox[{"p", "=", 
+          RowBox[{"p", "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", 
+            RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}]}], "]"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"q", "=", 
+          RowBox[{"f", "[", "p", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"Not", "[", "MatrixQ", "]"}], ",", 
+           RowBox[{"q", "=", 
+            RowBox[{"f", "/@", "p"}]}]}], "]"}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"q", "=", 
+        RowBox[{"f", "/@", "p"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "\[LeftArrow]", "M"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ClearAllCache", "[", "Q", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SetVertexCoordinates", "[", 
+        RowBox[{"Q", ",", 
+         RowBox[{"Join", "[", 
+          RowBox[{"p", ",", 
+           RowBox[{"Partition", "[", 
+            RowBox[{"q", ",", "1"}], "]"}], ",", "2"}], "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ColorGradient", "[", 
+        RowBox[{"Q", ",", "q"}], "]"}], ";", "\[IndentingNewLine]", "Q"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.774364360159133*^9, 3.77436437090905*^9}, {
+  3.774364460622891*^9, 3.774364470935192*^9}, {3.774364523147585*^9, 
+  3.774364530306859*^9}},
+ CellLabel->"In[26]:=",ExpressionUUID->"0a5069c4-4356-4428-aa8f-b9b6f51c512e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Displace", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M_genericmesh", ",", 
+        RowBox[{"V_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", "data", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"data", "=", 
+          RowBox[{
+          "M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "data", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+           "\[RightDoubleBracket]"}], "=", 
+          RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Dimensions", "[", "V", "]"}], "\[Equal]", 
+            RowBox[{"{", 
+             RowBox[{"DofCount", "[", "M", "]"}], "}"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+            "data", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+             "\[RightDoubleBracket]"}], "+=", 
+            RowBox[{"Partition", "[", 
+             RowBox[{"V", ",", 
+              RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}]}], 
+           "\[IndentingNewLine]", ",", 
+           RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Dimensions", "[", "V", "]"}], "\[Equal]", 
+              RowBox[{"{", 
+               RowBox[{"EmbeddingDimension", "[", "M", "]"}], "}"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+              "data", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+               "\[RightDoubleBracket]"}], "+=", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"V", ",", 
+                RowBox[{"VertexCount", "[", "M", "]"}]}], "]"}]}], 
+             "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Message", "[", 
+               StyleBox[
+                RowBox[{"Displace", "::", "dim"}], "MessageName"], "]"}], ";",
+               "\[IndentingNewLine]", 
+              RowBox[{"Abort", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Initialize", "[", 
+          RowBox[{"genericmesh", ",", "data"}], "]"}]}]}], 
+       "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+      "Description", "\[Rule]", 
+       "\"\<Displace[M,V] returns M with vertices given by \
+VertexCoordinates[M] = VertexCoordinates[M] + V.\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<dim\>\"", "\[Rule]", "\"\<Error: Dimensions do not fit.\>\""}], 
+        "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Displace", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_genericmesh", ",", 
+       RowBox[{"V_", "?", "MatrixQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "data", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"data", "=", 
+         RowBox[{
+         "M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+         "data", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+          "\[RightDoubleBracket]"}], "=", 
+         RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Dimensions", "[", "V", "]"}], "\[Equal]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"VertexCount", "[", "M", "]"}], ",", 
+             RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "}"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "data", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+            "\[RightDoubleBracket]"}], "+=", "V"}], "\[IndentingNewLine]", 
+          ",", 
+          RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Message", "[", 
+            StyleBox[
+             RowBox[{"Displace", "::", "dim"}], "MessageName"], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Abort", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}], ";",
+         "\[IndentingNewLine]", 
+        RowBox[{"Initialize", "[", 
+         RowBox[{"genericmesh", ",", "data"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<Displace[M,V] returns M with vertices given by \
+VertexCoordinates[M] = VertexCoordinates[M] + V.\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<dim\>\"", "\[Rule]", "\"\<Error: Dimensions do not fit.\>\""}], 
+       "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.757757956700005*^9, 3.757757991640931*^9}, {
+  3.75775803295341*^9, 3.7577580331197443`*^9}, {3.757758085516032*^9, 
+  3.757758085852165*^9}, {3.7577581493113813`*^9, 3.7577581578351994`*^9}, {
+  3.7577582737425003`*^9, 3.757758288637344*^9}, {3.757758333164867*^9, 
+  3.757758361934227*^9}, {3.757758624369018*^9, 
+  3.757758635135989*^9}},ExpressionUUID->"32aad9f6-5c01-471b-8cc5-\
+237c19e26b4d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NormalDisplace", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_genericmesh", ",", 
+       RowBox[{"t_", "?", "MatrixQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Displace", "[", 
+      RowBox[{"M", ",", 
+       RowBox[{
+        RowBox[{"DotThread", "[", 
+         RowBox[{"t", ",", 
+          RowBox[{"Normals", "[", "M", "]"}]}], "]"}], " ", 
+        RowBox[{"Normals", "[", "M", "]"}]}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NormalDisplace", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_genericmesh", ",", 
+       RowBox[{"t_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Displace", "[", 
+      RowBox[{"M", ",", 
+       RowBox[{"t", " ", 
+        RowBox[{"Normals", "[", "M", "]"}]}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"NormalDisplace", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", 
+      RowBox[{"t_", "?", "NumericQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Displace", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"t", " ", 
+       RowBox[{"Normals", "[", "M", "]"}]}]}], "]"}]}], "\[IndentingNewLine]",
+    "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7577578074792852`*^9, 3.757757892016964*^9}, {
+  3.7577579351044273`*^9, 3.757757936056958*^9}, {3.7577580772118607`*^9, 
+  3.7577580808901663`*^9}, {3.757758245606185*^9, 
+  3.757758245891892*^9}},ExpressionUUID->"a5344a0d-8237-490d-b5f9-\
+813f9c077a66"],
+
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"SetVertexCoordinates", "::", "usage"}], "=", 
+    "\"\<SetVertexCoordinates[M,V] sets the vertex coodinates of M to \
+V.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"genericmesh", "/:", 
+    RowBox[{"SetVertexCoordinates", "[", 
+     RowBox[{
+      RowBox[{"M", ":", 
+       RowBox[{"genericmesh", "[", "$genericmesh_", "]"}]}], ",", 
+      RowBox[{"V_", "?", "VectorQ"}]}], "]"}], ":=", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+       "$genericmesh", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+        "\[RightDoubleBracket]"}], "=", 
+       RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"KeyDropFrom", "[", 
+       RowBox[{
+        RowBox[{
+        "$genericmesh", "\[LeftDoubleBracket]", "\"\<PersistentCache\>\"", 
+         "\[RightDoubleBracket]"}], ",", 
+        RowBox[{"{", "\"\<BoundaryLinkData\>\"", "}"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Dimensions", "[", "V", "]"}], "\[Equal]", 
+         RowBox[{"{", 
+          RowBox[{"DofCount", "[", "M", "]"}], "}"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+         "$genericmesh", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+          "\[RightDoubleBracket]"}], "=", 
+         RowBox[{"Partition", "[", 
+          RowBox[{"V", ",", 
+           RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}]}], 
+        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{"Displace", "::", "dim"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Abort", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}], ";"}],
+      "\[IndentingNewLine]", ")"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"genericmesh", "/:", 
+    RowBox[{"SetVertexCoordinates", "[", 
+     RowBox[{
+      RowBox[{"M", ":", 
+       RowBox[{"genericmesh", "[", "$genericmesh_", "]"}]}], ",", 
+      RowBox[{"V_", "?", "MatrixQ"}]}], "]"}], ":=", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+       "$genericmesh", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+        "\[RightDoubleBracket]"}], "=", 
+       RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"KeyDropFrom", "[", 
+       RowBox[{
+        RowBox[{
+        "$genericmesh", "\[LeftDoubleBracket]", "\"\<PersistentCache\>\"", 
+         "\[RightDoubleBracket]"}], ",", 
+        RowBox[{"{", "\"\<BoundaryLinkData\>\"", "}"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "V", "]"}], "\[Equal]", 
+         RowBox[{"VertexCount", "[", "M", "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Dimensions", "[", "V", "]"}], "\[LeftDoubleBracket]", 
+              "2", "\[RightDoubleBracket]"}], "\[NotEqual]", 
+             RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+              "$genericmesh", "\[LeftDoubleBracket]", 
+               "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], "=", 
+              RowBox[{"KeyDrop", "[", 
+               RowBox[{
+                RowBox[{
+                "$genericmesh", "\[LeftDoubleBracket]", 
+                 "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], ",", 
+                "\"\<AssemblyCombinatoricsStorage\>\""}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+         "$genericmesh", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+          "\[RightDoubleBracket]"}], "=", "V"}], "\[IndentingNewLine]", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{"Displace", "::", "dim"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Abort", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}], ";"}],
+      "\[IndentingNewLine]", ")"}]}], ";"}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.730184322713381*^9, 3.7301844890560102`*^9}, {
+   3.7301854745173264`*^9, 3.730185506113158*^9}, {3.750598579599267*^9, 
+   3.750598599637664*^9}, {3.7506703610243263`*^9, 3.750670372636216*^9}, {
+   3.75775810254191*^9, 3.757758185841988*^9}, {3.777835420942374*^9, 
+   3.777835505514724*^9}, {3.777836073829121*^9, 3.777836076132709*^9}, 
+   3.777836837973341*^9},ExpressionUUID->"9a225fa7-0ef7-4623-b58a-\
+9f3973e63a32"],
+
+Cell[BoxData[
+ RowBox[{"ConversionInfo", "=", 
+  RowBox[{"SettingFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "None"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.669728053384226*^9, 3.66972809697396*^9}, 
+   3.720093116422525*^9, {3.78841270716849*^9, 
+   3.788412728142435*^9}},ExpressionUUID->"4eb96bf9-bf9e-43db-90e9-\
+ac28071de9bf"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.835587617518304*^9, 
+  3.835587658158203*^9}},ExpressionUUID->"2f6de06d-8bbd-461c-b730-\
+7099c309170e"],
+
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{"genericmesh", "/:", 
+    RowBox[{"Map", "[", 
+     RowBox[{"f_", ",", "M_genericmesh"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"data", ",", "Mnew"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"data", "=", 
+        RowBox[{"M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+        "data", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+         "\[RightDoubleBracket]"}], "=", 
+        RowBox[{"Map", "[", 
+         RowBox[{"f", ",", 
+          RowBox[{
+          "data", "\[LeftDoubleBracket]", "\"\<VertexCoordinates\>\"", 
+           "\[RightDoubleBracket]"}]}], "]"}]}], ";", 
+       RowBox[{
+        RowBox[{
+        "data", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+         "\[RightDoubleBracket]"}], "=", 
+        RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Mnew", "=", 
+        RowBox[{"Initialize", "[", 
+         RowBox[{"genericmesh", ",", "data"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "Mnew"}]}], "\[IndentingNewLine]", "]"}]}], 
+   ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.835587662059532*^9, 
+  3.8355876668195753`*^9}},ExpressionUUID->"b63b017c-fe93-4b3f-8f79-\
+99d1f994d576"],
+
+Cell[BoxData[
+ RowBox[{"Translate", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", 
+      RowBox[{"v_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Displace", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"v", ",", 
+        RowBox[{"VertexCount", "[", "M", "]"}]}], "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Translate[ P,v,selector ] returns the polygon translated by the \
+vector v.\>\""}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.839508692295191*^9, 
+  3.83950870449253*^9}},ExpressionUUID->"363c9c9c-ef1f-4141-ad62-\
+e921ec0e3ef6"],
+
+Cell[BoxData[
+ RowBox[{"Scale", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "S_"}], "}"}], ",", "\[IndentingNewLine]", 
+    
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "Q", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Q", "\[LeftArrow]", "M"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SetVertexCoordinates", "[", "\[IndentingNewLine]", 
+        RowBox[{"Q", ",", "\[IndentingNewLine]", 
+         RowBox[{"S", " ", 
+          RowBox[{"VertexCoordinates", "[", "Q", "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "Q"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.839508727563878*^9, 3.839508735626144*^9}, {
+  3.839508777868146*^9, 3.8395087815055847`*^9}},
+ CellLabel->
+  "In[1042]:=",ExpressionUUID->"de4b1713-9a5f-4f67-b600-39dd5e9f1e2e"],
+
+Cell[BoxData[
+ RowBox[{"AffineTransform", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", 
+      RowBox[{"A_", "?", "MatrixQ"}], ",", 
+      RowBox[{"v_", "?", "VectorQ"}], ",", 
+      RowBox[{"S_", ":", "1."}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "Q", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Q", "\[LeftArrow]", "M"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SetVertexCoordinates", "[", "\[IndentingNewLine]", 
+        RowBox[{"Q", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"VertexCoordinates", "[", "Q", "]"}], ".", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"A", " ", "S"}], "]"}]}], "+", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"v", ",", 
+            RowBox[{"VertexCount", "[", "M", "]"}]}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "Q"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.839508762090122*^9, 3.839508856431542*^9}, 
+   3.839508914342369*^9},
+ CellLabel->
+  "In[1045]:=",ExpressionUUID->"b5e5f96c-ee7d-4c43-bb71-8918f55e7226"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ba6a84ca-9323-42fc-8ee1-864ddc6d1cf8"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2228, 53, 367, "Input",ExpressionUUID->"0a5069c4-4356-4428-aa8f-b9b6f51c512e"],
+Cell[2789, 75, 5768, 137, 942, "Input",ExpressionUUID->"32aad9f6-5c01-471b-8cc5-237c19e26b4d"],
+Cell[8560, 214, 1707, 45, 292, "Input",ExpressionUUID->"a5344a0d-8237-490d-b5f9-813f9c077a66"],
+Cell[10270, 261, 4972, 117, 767, "Input",ExpressionUUID->"9a225fa7-0ef7-4623-b58a-9f3973e63a32"],
+Cell[15245, 380, 340, 7, 42, "Input",ExpressionUUID->"4eb96bf9-bf9e-43db-90e9-ac28071de9bf"],
+Cell[15588, 389, 152, 3, 41, "Input",ExpressionUUID->"2f6de06d-8bbd-461c-b730-7099c309170e"],
+Cell[15743, 394, 1475, 36, 292, "Input",ExpressionUUID->"b63b017c-fe93-4b3f-8f79-99d1f994d576"],
+Cell[17221, 432, 742, 19, 117, "Input",ExpressionUUID->"363c9c9c-ef1f-4141-ad62-e921ec0e3ef6"],
+Cell[17966, 453, 940, 22, 267, "Input",ExpressionUUID->"de4b1713-9a5f-4f67-b600-39dd5e9f1e2e"],
+Cell[18909, 477, 1274, 30, 267, "Input",ExpressionUUID->"b5e5f96c-ee7d-4c43-bb71-8918f55e7226"]
+}
+]
+*)
+

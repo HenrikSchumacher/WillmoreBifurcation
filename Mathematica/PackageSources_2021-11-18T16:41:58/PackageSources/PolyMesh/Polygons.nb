@@ -1,0 +1,253 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9786,        245]
+NotebookOptionsPosition[      8552,        222]
+NotebookOutlinePosition[      8888,        237]
+CellTagsIndexPosition[      8845,        234]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Polygons", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "args___"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+     "\[LeftDoubleBracket]", 
+     RowBox[{"\"\<Polygons\>\"", ",", "args"}], "\[RightDoubleBracket]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Polygons[M] gives list of faces (i.e. vertex index tuples) in \
+polymesh object M.\nPolygons[M,i] gives i-th tuple of M.\nPolygons[M,n;;m] \
+gives tuple n to m of M.\>\""}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.719514533184957*^9, 3.719514554906856*^9}, {
+  3.76456369973079*^9, 
+  3.764563701009074*^9}},ExpressionUUID->"a6ad158e-330f-4127-a16d-\
+91b21d9d885f"],
+
+Cell[BoxData[
+ RowBox[{"PolygonCount", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", "M_polymesh", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Length", "[", 
+     RowBox[{
+      RowBox[{"M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+      "\[LeftDoubleBracket]", "\"\<Polygons\>\"", "\[RightDoubleBracket]"}], 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<PolygonCount[M] returns number of polygons contained in polymesh \
+object M.\>\""}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.719514290024962*^9, 3.7195143095300627`*^9}, {
+  3.764563702249621*^9, 
+  3.764563703536766*^9}},ExpressionUUID->"05ef6e74-ef6a-44a7-8e2a-\
+a3b8adbef092"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CountOf", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polymesh", ",", "Polygons"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Length", "[", 
+      RowBox[{
+       RowBox[{"M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+       "\[LeftDoubleBracket]", "\"\<Polygons\>\"", "\[RightDoubleBracket]"}], 
+      "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.806202106883112*^9, 3.806202122961617*^9}},
+ CellLabel->"In[63]:=",ExpressionUUID->"08a20732-1294-4916-ad5a-9df1c95f6627"],
+
+Cell[BoxData[
+ RowBox[{"MeshCells", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "2"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Polygons", "[", "M", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7647527096689253`*^9, 3.764752728458109*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"0111261d-e837-4cab-9ec8-ec9ea0afc8cc"],
+
+Cell[BoxData[
+ RowBox[{"getPolygonData", "=", 
+  RowBox[{"CPackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"P", ",", "_Real", ",", "2"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"p", ",", "_Integer", ",", "1"}], "}"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"Compile`GetElement", "[", 
+       RowBox[{"P", ",", 
+        RowBox[{"Compile`GetElement", "[", 
+         RowBox[{"p", ",", "i"}], "]"}]}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"Length", "[", "p", "]"}]}], "}"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"RuntimeAttributes", "\[Rule]", 
+     RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7578456072113543`*^9, 3.757845624160233*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"e94ad78a-dfe5-4e08-b97f-476206d0622a"],
+
+Cell[BoxData[
+ RowBox[{"PolygonData", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"getPolygonData", "[", 
+     RowBox[{
+      RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+      RowBox[{"Polygons", "[", "M", "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7231020836952133`*^9, 3.723102135864511*^9}, {
+  3.7231026583888407`*^9, 3.7231026598341503`*^9}, {3.764563705865472*^9, 
+  3.764563707608597*^9}},ExpressionUUID->"8b7b5186-3d6a-4f2e-8095-\
+c5dda0b57f29"],
+
+Cell[BoxData[
+ RowBox[{"PolygonCentroids", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Mean", "/@", 
+     RowBox[{"PolygonData", "[", "M", "]"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.723102409152038*^9, 3.723102417201105*^9}, {
+  3.723102518593493*^9, 3.7231025191832247`*^9}, {3.764563708976462*^9, 
+  3.7645637101684732`*^9}},ExpressionUUID->"4db4cb66-f6f4-43e8-a602-\
+23ca7dc8fd27"],
+
+Cell[BoxData[
+ RowBox[{"PolygonSizes", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"ToPack", "[", 
+     RowBox[{"Length", "/@", 
+      RowBox[{"Polygons", "[", "M", "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.719517274101653*^9, 3.7195173531238623`*^9}, {
+  3.758904794060829*^9, 
+  3.7589047964043217`*^9}},ExpressionUUID->"f4876300-5c76-4f15-a0ce-\
+922a0702e934"],
+
+Cell[BoxData[
+ RowBox[{"PolygonMaxSize", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Max", "[", 
+     RowBox[{"PolygonSizes", "[", "M", "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.764763158828236*^9, 3.764763162619059*^9}, {
+  3.764763229770894*^9, 3.764763230712516*^9}},
+ CellLabel->"In[27]:=",ExpressionUUID->"a7babc50-19be-41a9-8028-fa78fdfd2429"],
+
+Cell[BoxData[
+ RowBox[{"AccumulatedPolygonSizes", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"AccumulateIntegerList", "[", 
+     RowBox[{"PolygonSizes", "[", "M", "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.764759761609743*^9, 3.764759791978072*^9}, {
+  3.7647602679699287`*^9, 3.764760268559514*^9}, {3.764762080583356*^9, 
+  3.7647621073076887`*^9}},
+ CellLabel->
+  "In[197]:=",ExpressionUUID->"186951b4-9af2-4a6d-88e7-a0d4eef9806d"],
+
+Cell[BoxData[
+ RowBox[{"PolygonRanges", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polymesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"acc", "=", 
+        RowBox[{"Rest", "[", 
+         RowBox[{"AccumulatedPolygonSizes", "[", "M", "]"}], "]"}]}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{"Transpose", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Prepend", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Most", "[", "acc", "]"}], "+", "1"}], ",", "1"}], "]"}], 
+         ",", "acc"}], "}"}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7195175678048363`*^9, 3.719517575431923*^9}, {
+  3.7589047892686577`*^9, 3.758904792260806*^9}, {3.764566939027657*^9, 
+  3.764566950823573*^9}, {3.7647596113752947`*^9, 3.764759612590114*^9}, {
+  3.7647620878865767`*^9, 3.764762097971984*^9}},
+ CellLabel->
+  "In[198]:=",ExpressionUUID->"bb4855ad-3dd6-420d-86b7-9e74d6cf0c4e"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 864, 20, 167, "Input",ExpressionUUID->"a6ad158e-330f-4127-a16d-91b21d9d885f"],
+Cell[1425, 42, 755, 17, 117, "Input",ExpressionUUID->"05ef6e74-ef6a-44a7-8e2a-a3b8adbef092"],
+Cell[2183, 61, 637, 15, 117, "Input",ExpressionUUID->"08a20732-1294-4916-ad5a-9df1c95f6627"],
+Cell[2823, 78, 416, 9, 92, "Input",ExpressionUUID->"0111261d-e837-4cab-9ec8-ec9ea0afc8cc"],
+Cell[3242, 89, 1231, 30, 192, "Input",ExpressionUUID->"e94ad78a-dfe5-4e08-b97f-476206d0622a"],
+Cell[4476, 121, 645, 14, 117, "Input",ExpressionUUID->"8b7b5186-3d6a-4f2e-8095-c5dda0b57f29"],
+Cell[5124, 137, 557, 11, 117, "Input",ExpressionUUID->"4db4cb66-f6f4-43e8-a602-23ca7dc8fd27"],
+Cell[5684, 150, 554, 13, 117, "Input",ExpressionUUID->"f4876300-5c76-4f15-a0ce-922a0702e934"],
+Cell[6241, 165, 539, 11, 117, "Input",ExpressionUUID->"a7babc50-19be-41a9-8028-fa78fdfd2429"],
+Cell[6783, 178, 623, 13, 117, "Input",ExpressionUUID->"186951b4-9af2-4a6d-88e7-a0d4eef9806d"],
+Cell[7409, 193, 1139, 27, 167, "Input",ExpressionUUID->"bb4855ad-3dd6-420d-86b7-9e74d6cf0c4e"]
+}
+]
+*)
+

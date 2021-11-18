@@ -1,0 +1,115 @@
+Notebook[{Cell[BoxData[RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", RowBox[
+       {RowBox[{RowBox[{"ClosedSpline", "::", "usage"}], "=", 
+          "\"Constructs an interpolation by a closed cubic spline\""}], ";", 
+        "\[IndentingNewLine]", RowBox[{RowBox[{"OpenSpline", "::", "usage"}], 
+          "=", "\"Constructs an interpolation by an open cubic spline\""}], 
+        ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{RowBox[{"parametrizeCurve", "::", "usage"}], "=", 
+          "\"???\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{RowBox[{"periodicSplineSlopes", "::", "usage"}], "=", 
+          "\"???\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", " ", RowBox[{"see", " ", "Eugene", " ", 
+            RowBox[{"Lee", ":", " ", RowBox[{"Choosing", " ", "nodes", " ", 
+                "in", " ", "parametric", " ", "curve", " ", 
+                "interpolation"}]}]}], " ", "*)"}], "\n", 
+        RowBox[{RowBox[{"parametrizeCurve", "[", RowBox[{"pts_List", ",", 
+              RowBox[{"a", ":", RowBox[{"(", RowBox[{"_", "?", "NumericQ"}], 
+                  ")"}], ":", RowBox[{"1", "/", "2"}]}]}], "]"}], ":=", 
+          RowBox[{RowBox[{"FoldList", "[", RowBox[{"Plus", ",", "0", ",", 
+                RowBox[{"Normalize", "[", RowBox[{RowBox[{RowBox[{"(", 
+                        RowBox[{"Norm", "/@", RowBox[{"Differences", "[", 
+                          "pts", "]"}]}], ")"}], "^", "a"}], ",", "Total"}], 
+                  "]"}]}], "]"}], "/;", RowBox[{"MatrixQ", "[", 
+              RowBox[{"pts", ",", "NumericQ"}], "]"}]}]}], ";", "\n", "\n", 
+        RowBox[{"(*", " ", RowBox[{RowBox[{RowBox[{"by", " ", "use", " ", 
+                RowBox[{"J", ".", "M"}], " ", "at", " ", RowBox[{"http", 
+                  ":"}]}], "//", RowBox[{RowBox[{"mathematica", ".", 
+                  "stackexchange", ".", "com"}], "\n", " ", "see", " ", 
+                RowBox[{"http", ":"}]}]}], "//", RowBox[
+             {RowBox[{RowBox[{RowBox[{RowBox[{"mathematica", ".", 
+                      "stackexchange", ".", "com"}], "/", "questions"}], "/", 
+                  "10273"}], "/", "higher"}], "-", "order", "-", "periodic", 
+              "-", "interpolation", "-", "curve", "-", "fitting"}]}], "\n", 
+          "*)"}], "\[IndentingNewLine]", "\n", 
+        RowBox[{RowBox[{"periodicSplineSlopes", "[", 
+            RowBox[{"pts_", "?", "MatrixQ"}], "]"}], ":=", 
+          RowBox[{"Module", "[", RowBox[{RowBox[{"{", RowBox[
+                 {RowBox[{"n", "=", RowBox[{"Length", "[", "pts", "]"}]}], 
+                  ",", "dy", ",", "ha", ",", "xa", ",", "ya"}], "}"}], ",", 
+              RowBox[{RowBox[{RowBox[{"{", RowBox[{"xa", ",", "ya"}], "}"}], 
+                  "=", RowBox[{"Transpose", "[", "pts", "]"}]}], ";", "\n", 
+                RowBox[{"ha", "=", RowBox[{RowBox[{RowBox[{"{", RowBox[
+                         {"##", ",", "#1"}], "}"}], "&"}], "@@", RowBox[
+                     {"Differences", "[", "xa", "]"}]}]}], ";", "\n", 
+                RowBox[{"dy", "=", RowBox[{RowBox[{"(", RowBox[{RowBox[
+                         {RowBox[{"{", RowBox[{"##", ",", "#1"}], "}"}], 
+                          "&"}], "@@", RowBox[{"Differences", "[", "ya", 
+                          "]"}]}], ")"}], "/", "ha"}]}], ";", "\n", 
+                RowBox[{"dy", "=", RowBox[{"LinearSolve", "[", RowBox[
+                     {RowBox[{"SparseArray", "[", RowBox[{"{", RowBox[
+                          {RowBox[{RowBox[{"Band", "[", RowBox[{"{", RowBox[
+                          {"2", ",", "1"}], "}"}], "]"}], "->", RowBox[
+                          {"Drop", "[", RowBox[{"ha", ",", "2"}], "]"}]}], 
+                          ",", RowBox[{RowBox[{"Band", "[", RowBox[{"{", 
+                          RowBox[{"1", ",", "1"}], "}"}], "]"}], "->", 
+                          RowBox[{"ListConvolve", "[", RowBox[{RowBox[{"{", 
+                          RowBox[{"2", ",", "2"}], "}"}], ",", "ha"}], 
+                          "]"}]}], ",", RowBox[{RowBox[{"Band", "[", RowBox[
+                          {"{", RowBox[{"1", ",", "2"}], "}"}], "]"}], "->", 
+                          RowBox[{"Drop", "[", RowBox[{"ha", ",", RowBox[
+                          {"-", "2"}]}], "]"}]}], ",", RowBox[{RowBox[{"{", 
+                          RowBox[{"1", ",", RowBox[{"n", "-", "1"}]}], "}"}], 
+                          "->", RowBox[{"ha", "[", RowBox[{"[", "2", "]"}], 
+                          "]"}]}], ",", RowBox[{RowBox[{"{", RowBox[{RowBox[
+                          {"n", "-", "1"}], ",", "1"}], "}"}], "->", RowBox[
+                          {"ha", "[", RowBox[{"[", RowBox[{"-", "2"}], "]"}], 
+                          "]"}]}]}], "}"}], "]"}], ",", RowBox[{"3", " ", 
+                        RowBox[{"MapThread", "[", RowBox[{RowBox[{RowBox[
+                          {"Dot", "[", RowBox[{"#1", ",", RowBox[{"Reverse", 
+                          "[", "#2", "]"}]}], "]"}], "&"}], ",", RowBox[
+                          {RowBox[{RowBox[{"Partition", "[", RowBox[{"#", 
+                          ",", "2", ",", "1"}], "]"}], "&"}], "/@", RowBox[
+                          {"{", RowBox[{"ha", ",", "dy"}], "}"}]}]}], 
+                          "]"}]}]}], "]"}]}], ";", "\n", RowBox[{"Prepend", 
+                  "[", RowBox[{"dy", ",", RowBox[{"Last", "[", "dy", "]"}]}], 
+                  "]"}]}]}], "]"}]}], ";", "\n", "\[IndentingNewLine]", "\n", 
+        RowBox[{RowBox[{"ClosedSpline", "[", "b_", "]"}], ":=", 
+          RowBox[{"Block", "[", RowBox[{RowBox[{"{", RowBox[{"tvals", ",", 
+                  "cmps", ",", "slopes"}], "}"}], ",", "\n", 
+              RowBox[{RowBox[{"tvals", "=", RowBox[{"2", "Pi", " ", 
+                    RowBox[{"parametrizeCurve", "[", RowBox[{"b", ",", "1"}], 
+                      "]"}]}]}], ";", "\n", RowBox[{"cmps", "=", 
+                  RowBox[{"Transpose", "[", "b", "]"}]}], ";", "\n", 
+                RowBox[{"slopes", "=", RowBox[{"Transpose", "[", RowBox[
+                     {RowBox[{RowBox[{"periodicSplineSlopes", "[", RowBox[
+                          {"Transpose", "[", RowBox[{"{", RowBox[{"tvals", 
+                          ",", "#"}], "}"}], "]"}], "]"}], "&"}], "/@", 
+                      "cmps"}], "]"}]}], ";", "\n", "\n", RowBox[
+                 {"Interpolation", "[", RowBox[{RowBox[{"Transpose", "[", 
+                      RowBox[{"{", RowBox[{RowBox[{"List", "/@", "tvals"}], 
+                          ",", "b", ",", "slopes"}], "}"}], "]"}], ",", " ", 
+                    RowBox[{"Method", "->", "\"Hermite\""}], ",", RowBox[
+                     {"InterpolationOrder", "->", "3"}], ",", RowBox[
+                     {"PeriodicInterpolation", "->", "True"}]}], "]"}]}]}], 
+            "\n", "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        "\n", RowBox[{RowBox[{"OpenSpline", "[", "b_", "]"}], ":=", 
+          RowBox[{"Block", "[", RowBox[{RowBox[{"{", "tvals", "}"}], ",", 
+              "\n", RowBox[{RowBox[{"tvals", "=", RowBox[{"2", "Pi", " ", 
+                    RowBox[{"parametrizeCurve", "[", RowBox[{"b", ",", "1"}], 
+                      "]"}]}]}], ";", "\n", RowBox[{"Interpolation", "[", 
+                  RowBox[{RowBox[{"Transpose", "[", RowBox[{"{", RowBox[
+                         {RowBox[{"List", "/@", "tvals"}], ",", "b"}], "}"}], 
+                      "]"}], ",", " ", RowBox[{"Method", "->", 
+                      "\"Hermite\""}], ",", RowBox[{"InterpolationOrder", 
+                      "->", "3"}]}], "]"}]}]}], "\n", "]"}]}], ";"}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "]"}]], "Input", CellChangeTimes -> 
+    {{3.6318747009516983*^9, 3.631874722632977*^9}, 
+     {3.631875014086854*^9, 3.631875018277602*^9}, {3.632739438342455*^9, 
+      3.6327394538461246*^9}, {3.632739631172164*^9, 
+      3.632739652299438*^9}}]}, WindowSize -> {1440, 852}, 
+ WindowMargins -> {{0, Automatic}, {Automatic, 0}}, 
+ FrontEndVersion -> 
+  "10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (December 4, 2014)", 
+ StyleDefinitions -> "Default.nb"]

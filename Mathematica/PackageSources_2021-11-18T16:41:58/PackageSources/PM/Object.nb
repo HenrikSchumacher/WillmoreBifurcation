@@ -1,0 +1,1671 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     82836,       1663]
+NotebookOptionsPosition[     82386,       1648]
+NotebookOutlinePosition[     82778,       1664]
+CellTagsIndexPosition[     82735,       1661]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"MakeRegion", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"MBCount", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Initialize", "::", "usage"}], "=", 
+    "\"\<Initialize[class,assoc] creates an object with head class and with \
+data association given by assoc.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SerializeHold", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"SerializeHold", ",", "HoldAll"}], "]"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Protect", "[", "SerializeHold", "]"}], ";", "\[IndentingNewLine]",
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Serialize", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Deserialize", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ExportObject", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ImportObject", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Serialize", "[", 
+     RowBox[{"X_", "?", "Developer`PackedArrayQ"}], "]"}], ":=", "X"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Serialize", "[", "X_Association", "]"}], ":=", 
+    RowBox[{"Evaluate", "/@", 
+     RowBox[{"(", 
+      RowBox[{"Serialize", "/@", "X"}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Serialize", "[", "X_List", "]"}], ":=", 
+    RowBox[{"Serialize", "/@", "X"}]}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Serialize", "[", "X_", "]"}], ":=", "X"}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Deserialize", "[", 
+     RowBox[{"X_", "?", "Developer`PackedArrayQ"}], "]"}], ":=", "X"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Deserialize", "[", "X_Association", "]"}], ":=", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Evaluate", "@*", "Deserialize"}], "/@", "X"}], ")"}]}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Deserialize", "[", "X_List", "]"}], ":=", 
+    RowBox[{"Deserialize", "/@", "X"}]}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Deserialize", "[", "X_", "]"}], ":=", 
+    RowBox[{"ReplaceRepeated", "[", 
+     RowBox[{"X", ",", 
+      RowBox[{
+       RowBox[{"SerializeHold", "[", "a_", "]"}], ":>", "a"}]}], "]"}]}], ";",
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Deserialize", "[", 
+     RowBox[{"X", ":", 
+      RowBox[{
+       RowBox[{"SerializeHold", "[", "Initialize", "]"}], "[", 
+       RowBox[{"type_", ",", "data0_"}], "]"}]}], "]"}], ":=", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"data", "=", 
+        RowBox[{"Deserialize", "[", "data0", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Initialize", "[", 
+       RowBox[{"type", ",", "data"}], "]"}]}], "\[IndentingNewLine]", "]"}]}],
+    ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Settings", "::", "usage"}], "=", 
+    "\"\<Settings[M] returns the association constituting the Settings cache \
+of object M.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SettingsKeys", "::", "usage"}], "=", 
+    "\"\<SettingsKeys[M] is equivalent to Keys[Settings[M]].\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearSettings", "::", "usage"}], "=", 
+    "\"\<ClearSettings[M] deletes whole Settings of object M.\n\n\
+SettingsCache[M,key] drops key from Settings of object M. Non-String key is \
+translated to String.\n\nClearSettings[M,list] drops alls keys in list from \
+Settings of object M. Non-String keys are translated to Strings.\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SetSettings", "::", "usage"}], "=", 
+    "\"\<SetSettings[M,k,val] sets the entry with key k in the Settings of \
+object M to val.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Cache", "::", "usage"}], "=", 
+    "\"\<Cache[M] returns the association constituting the Cache of object M.\
+\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CacheKeys", "::", "usage"}], "=", 
+    "\"\<CacheKeys[M] is equivalent to Keys[Cache[M]].\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearCache", "::", "usage"}], "=", 
+    "\"\<ClearCache[M] deletes whole Cache of object M.\n\nClearCache[M,key] \
+drops key from Cache of object M. Non-String key is translated to String.\n\n\
+ClearCache[M,list] drops alls keys in list from Cache of object M. Non-String \
+keys are translated to Strings.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearCacheDependingOn", "::", "usage"}], "=", 
+    "\"\<ClearCacheDependingOn[M,f] searches call graph for cached \
+PackageFunctions calling PackageFunction f and drops their keys from Cache.\n\
+\nClearCacheDependingOn[M,flist] searches call graph for all cached \
+PackageFunctions calling one of the PackageFunctions in flist and drops their \
+keys from Cache.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SetCache", "::", "usage"}], "=", 
+    "\"\<SetCache[M,k,val] sets the entry with key k in the Cache of object M \
+to val.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"MapToCache", "::", "usage"}], "=", 
+      "\"\<Highly experimentally. I am still not satisfied with the behavior \
+as depending Cache is not automatically dropped ONLY when needed. Setting \
+\\\"DropDependencies\\\"\[Rule]True as default is very inefficient.\>\""}], 
+     ";"}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"PersistentCache", "::", "usage"}], "=", 
+    "\"\<PersistentCache[M] returns the association constituting the \
+PersistentCache of object M.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"PersistentCacheKeys", "::", "usage"}], "=", 
+    "\"\<PersistentCacheKeys[M] is equivalent to \
+Keys[PersistentCacheKeys[M]].\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearPersistentCache", "::", "usage"}], "=", 
+    "\"\<ClearPersistentCache[M] deletes whole PersistentCache of object M.\n\
+ClearPersistentCache[M,key] drops key from PersistentCache of object M. \
+Non-String key is translated to String.\n\nClearPersistentCache[M,list] drops \
+alls keys in list from PersistentCache of object M. Non-String keys are \
+translated to Strings.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearPersistentCacheDependingOn", "::", "usage"}], "=", 
+    "\"\<ClearPersistentCacheDependingOn[M,f] searches call graph for \
+persistently cached PackageFunctions calling PackageFunction f and drops \
+their keys from PersistentCache.\n\nClearCacheDependingOn[M,flist] searches \
+call graph for all persistently cached PackageFunctions calling one of the \
+PackageFunctions in flist and drops their keys from PersistentCache.\>\""}], 
+   ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SetPersistentCache", "::", "usage"}], "=", 
+    "\"\<SetPersistentCache[M,k,val] sets the entry with key k in the \
+PersistentCache of object M to val.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"MapToPersistentCache", "::", "usage"}], "=", 
+      "\"\<Highly experimentally. I am still not satisfied with the behavior \
+as depending Cache is not automatically dropped ONLY when needed. Setting \
+\\\"DropDependencies\\\"\[Rule]True as default is very inefficient.\>\""}], 
+     ";"}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearAllCache", "::", "usage"}], "=", 
+    "\"\<ClearAllCache[M] deletes both Cache and PersistentCache of object M.\
+\n\nClearAllCache[M,key] drops key from Cache and PersistentCache of object \
+M. Non-String key is translated to String.\n\nClearAllCache[M,keylist] drops \
+alls keys in keylist from Cache and PersistentCache of object M. Non-String \
+keys are translated to Strings.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearAllCacheDependingOn", "::", "usage"}], "=", 
+    "\"\<ClearAllCacheDependingOn[M,f] searches call graph for both cached \
+and persistently cached PackageFunctions calling PackageFunction f and drops \
+their keys from Cache and PersistentCache, respectively.\n\n\
+ClearAllCacheDependingOn[M,flist] searches call graph for all cached and \
+persistently PackageFunctions calling one of the PackageFunctions in flist \
+and drops their keys from Cache and PersistentCache, respectively.\>\""}], 
+   ";", "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Identifier", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"IDNumber", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Unprotect", "[", "head", "]"}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"head", "::", "usage"}], "=", "\"\<A generic head.\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Protect", "[", "head", "]"}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"LeftArrow", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"LeftArrow", ",", 
+     RowBox[{"{", 
+      RowBox[{"HoldFirst", ",", "SequenceHold"}], "}"}]}], "]"}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"LeftArrow", "[", 
+     RowBox[{"X_", ",", "Y_"}], "]"}], ":=", 
+    RowBox[{"Set", "[", 
+     RowBox[{"X", ",", "Y"}], "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"LeftArrow", "[", 
+     RowBox[{"X__", ",", "Y_", ",", "Z_"}], "]"}], ":=", 
+    RowBox[{"LeftArrow", "[", 
+     RowBox[{"X", ",", 
+      RowBox[{"LeftArrow", "[", 
+       RowBox[{"Y", ",", "Z"}], "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeepCopy", "::", "usage"}], "=", 
+    "\"\<Performs deep copying of objects.\>\""}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeepCopy", "[", "a_Association", "]"}], ":=", 
+    RowBox[{"DeepCopy", "/@", "a"}]}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeepCopy", "[", 
+     RowBox[{"a_", "?", "Developer`PackedArrayQ"}], "]"}], ":=", "a"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeepCopy", "[", "a_List", "]"}], ":=", 
+    RowBox[{"DeepCopy", "/@", "a"}]}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeepCopy", "[", "a_", "]"}], ":=", "a"}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Object", "::", "usage"}], "=", 
+    "\"\<class = Object[] creates a new object with head class. Supply a \
+usage message for class by setting the Option \\\"Description\\\". Other \
+possible options are \\\"CacheActivated\\\" and \
+\\\"PersistentCacheActivated\\\" which are set to True by default.\>\""}], 
+   ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"Object", ",", "HoldAllComplete"}], "]"}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Object", " ", "/:", " ", 
+    RowBox[{"Set", "[", 
+     RowBox[{"S_", ",", 
+      RowBox[{"Object", "[", "args__", "]"}]}], "]"}], ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"data", "=", 
+        RowBox[{"CreateObject", "[", 
+         RowBox[{"S", ",", "args"}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{"PM`Private`$Compiletime", ",", 
+         RowBox[{"Sow", "[", 
+          RowBox[{"data", ",", "\"\<Objects\>\""}], "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{"PM`Private`$Runtime", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Head", "[", 
+              RowBox[{
+              "data", "\[LeftDoubleBracket]", "\"\<PublicDescription\>\"", 
+               "\[RightDoubleBracket]"}], "]"}], "=!=", "Missing"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"s", "=", 
+                RowBox[{"UsageString", "[", 
+                 RowBox[{
+                 "data", "\[LeftDoubleBracket]", "\"\<PublicDescription\>\"", 
+                  "\[RightDoubleBracket]"}], "]"}]}], "}"}], ",", 
+              RowBox[{"ToExpression", "[", "s", "]"}]}], "]"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"ReleaseHold", "[", 
+           RowBox[{
+           "data", "\[LeftDoubleBracket]", "\"\<Private\>\"", 
+            "\[RightDoubleBracket]"}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateObject", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Options", "[", "CreateObject", "]"}], "=", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"\"\<Description\>\"", "\[Rule]", "\"\<???\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<Public\>\"", "\[Rule]", "True"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<CacheActivated\>\"", "\[Rule]", "True"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<PersistentCacheActivated\>\"", "\[Rule]", "True"}]}], 
+     "\[IndentingNewLine]", "}"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateObject", "::", "nousage"}], "=", 
+    "\"\<Warning: No usage message defined.\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"CreateObject", ",", "HoldAllComplete"}], "]"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateObject", "[", 
+     RowBox[{"obj_", ",", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "Lin", ",", "L", ",", "head", ",", "spos", ",", "Lout", ",", "object", 
+        ",", "LUsage", ",", "\[IndentingNewLine]", "activatedcache", ",", 
+        "activatedpcache", ",", "messagetext", ",", "$object", ",", 
+        "$nobject", ",", "objectname"}], "}"}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Description\>\"", "]"}], 
+          "\[Equal]", "\"\<???\>\""}], ",", 
+         RowBox[{"Message", "[", 
+          RowBox[{"CreateObject", "::", "nousage"}], "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"LUsage", "=", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Hold", "[", 
+           RowBox[{
+            RowBox[{"MessageName", "[", 
+             RowBox[{"object", ",", "\"\<usage\>\""}], "]"}], " ", "=", " ", 
+            "messagetext"}], "]"}], "/.", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"object", "\[Rule]", 
+             RowBox[{"Unevaluated", "[", "obj", "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"messagetext", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "\"\<Description\>\"", "]"}]}]}], 
+           "}"}]}], "\[IndentingNewLine]", "}"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"Lin", "=", "\[IndentingNewLine]", 
+        RowBox[{"Join", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<CacheActivated\>\"", "]"}], ",", 
+            
+            RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+              "OptionValue", "[", "\"\<PersistentCacheActivated\>\"", "]"}], 
+              ",", 
+              RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{"Both", " ", "activated"}], "*)"}], 
+              "\[IndentingNewLine]", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+                RowBox[{"object", "/:", 
+                 RowBox[{"ClearAllCache", "[", 
+                  RowBox[{"x_object", ",", 
+                   RowBox[{"arg_", ":", "All"}]}], "]"}], ":=", 
+                 RowBox[{"(", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"ClearCache", "[", 
+                    RowBox[{"x", ",", "arg"}], "]"}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"ClearPersistentCache", "[", 
+                    RowBox[{"x", ",", "arg"}], "]"}], ";"}], 
+                  "\[IndentingNewLine]", ")"}]}], "\[IndentingNewLine]", 
+                "]"}], "\[IndentingNewLine]", "}"}], "\[IndentingNewLine]", 
+              ",", 
+              RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"(*", " ", 
+               RowBox[{
+               "Cache", " ", "but", " ", "no", " ", "PersistentCache"}], 
+               "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+                RowBox[{"object", "/:", 
+                 RowBox[{"ClearAllCache", "[", 
+                  RowBox[{"x_object", ",", 
+                   RowBox[{"arg_", ":", "All"}]}], "]"}], ":=", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"ClearCache", "[", 
+                    RowBox[{"x", ",", "arg"}], "]"}], ";"}], ")"}]}], 
+                "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "}"}]}], 
+             "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+              "OptionValue", "[", "\"\<PersistentCacheActivated\>\"", "]"}], 
+              ",", 
+              RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"(*", " ", 
+               RowBox[{
+               "no", " ", "Cache", " ", "but", " ", "PersistentCache"}], 
+               "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+                RowBox[{"object", "/:", 
+                 RowBox[{"ClearAllCache", "[", 
+                  RowBox[{"x_object", ",", 
+                   RowBox[{"arg_", ":", "All"}]}], "]"}], ":=", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"ClearPersistentCache", "[", 
+                    RowBox[{"x", ",", "arg"}], "]"}], ";"}], ")"}]}], 
+                "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "}"}], 
+              "\[IndentingNewLine]", ",", 
+              RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"(*", " ", 
+               RowBox[{
+               "neither", " ", "Cache", " ", "nor", " ", "PersistentCache"}], 
+               "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+           "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<CacheActivated\>\"", "]"}], "||", 
+             RowBox[{
+             "OptionValue", "[", "\"\<PersistentCacheActivated\>\"", "]"}]}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+              RowBox[{"object", "/:", 
+               RowBox[{"ClearAllCacheDependingOn", "[", 
+                RowBox[{"x_object", ",", "s_"}], "]"}], ":=", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ClearAllCache", "[", 
+                RowBox[{"x", ",", 
+                 RowBox[{"VertexInComponent", "[", 
+                  RowBox[{
+                   RowBox[{"CallGraph", "[", "$PM", "]"}], ",", 
+                   RowBox[{"ToString", "/@", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"List", "[", "s", "]"}], "]"}]}]}], "]"}]}], 
+                "]"}]}], "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+             "}"}]}], "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<CacheActivated\>\"", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"Cache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  "args___"}], "]"}], ":=", 
+                RowBox[{"$object", "\[LeftDoubleBracket]", 
+                 RowBox[{"\"\<Cache\>\"", ",", "args"}], 
+                 "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", "]"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"CacheKeys", "[", 
+                 RowBox[{"x", ":", 
+                  RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+                RowBox[{"Keys", "[", 
+                 RowBox[{
+                 "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                  "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]", 
+               "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{"x", ":", 
+                  RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                   "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                    "\[RightDoubleBracket]"}], "=", 
+                   RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], 
+                  ";"}], ")"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", "All"}], 
+                 "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                   "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                    "\[RightDoubleBracket]"}], "=", 
+                   RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], 
+                  ";"}], ")"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  "s_String"}], "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                   "\[RightDoubleBracket]"}], ",", "s"}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", "p_"}], 
+                 "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                   "\[RightDoubleBracket]"}], ",", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"p", ",", "InputForm"}], "]"}]}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  RowBox[{"{", "s___String", "}"}]}], "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                   "\[RightDoubleBracket]"}], ",", 
+                  RowBox[{"{", "s", "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+               "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  RowBox[{"{", "p__", "}"}]}], "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+                   "\[RightDoubleBracket]"}], ",", 
+                  RowBox[{"Map", "[", 
+                   RowBox[{
+                    RowBox[{"z", "\[Function]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"StringQ", "[", "z", "]"}], ",", "z", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"z", ",", "InputForm"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"{", "p", "}"}], "]"}]}], "]"}]}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearCacheDependingOn", "[", 
+                 RowBox[{"x_object", ",", "s_"}], "]"}], ":=", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ClearCache", "[", 
+                 RowBox[{"x", ",", 
+                  RowBox[{"VertexInComponent", "[", 
+                   RowBox[{
+                    RowBox[{"CallGraph", "[", "$PM", "]"}], ",", 
+                    RowBox[{"ToString", "/@", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"List", "[", "s", "]"}], "]"}]}]}], "]"}]}], 
+                 "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"SetCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", "pos_", 
+                  ",", "val_"}], "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"$object", "\[LeftDoubleBracket]", 
+                    RowBox[{"\"\<Cache\>\"", ",", "pos"}], 
+                    "\[RightDoubleBracket]"}], "=", "val"}], ";"}], ")"}]}], 
+               "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "}"}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}], 
+          "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+            "OptionValue", "[", "\"\<PersistentCacheActivated\>\"", "]"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"{", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"PersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  "args___"}], "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{"$object", "\[LeftDoubleBracket]", 
+                  RowBox[{"\"\<PersistentCache\>\"", ",", "args"}], 
+                  "\[RightDoubleBracket]"}], ")"}]}], "\[IndentingNewLine]", 
+               "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"PersistentCacheKeys", "[", 
+                 RowBox[{"x", ":", 
+                  RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+                RowBox[{"Keys", "[", 
+                 RowBox[{
+                 "$object", "\[LeftDoubleBracket]", "\"\<PersistentCache\>\"",
+                   "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]", 
+               "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{"x", ":", 
+                  RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                   "$object", "\[LeftDoubleBracket]", 
+                    "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], "=", 
+                   RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], 
+                  ";"}], ")"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", "All"}], 
+                 "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                   "$object", "\[LeftDoubleBracket]", 
+                    "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], "=", 
+                   RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], 
+                  ";"}], ")"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  "s_String"}], "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", 
+                   "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], ",", 
+                  "s"}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", "p_"}], 
+                 "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", 
+                   "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], ",", 
+                  
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"p", ",", "InputForm"}], "]"}]}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  RowBox[{"{", "s___String", "}"}]}], "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", 
+                   "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], ",", 
+                  
+                  RowBox[{"{", "s", "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+               "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                  RowBox[{"{", "p__", "}"}]}], "]"}], ":=", 
+                RowBox[{"KeyDropFrom", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "$object", "\[LeftDoubleBracket]", 
+                   "\"\<PersistentCache\>\"", "\[RightDoubleBracket]"}], ",", 
+                  
+                  RowBox[{"Map", "[", 
+                   RowBox[{
+                    RowBox[{"z", "\[Function]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"StringQ", "[", "z", "]"}], ",", "z", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"z", ",", "InputForm"}], "]"}]}], "]"}]}], ",", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"{", "p", "}"}], "]"}]}], "]"}]}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"ClearPersistentCacheDependingOn", "[", 
+                 RowBox[{"x_object", ",", "s_"}], "]"}], ":=", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ClearPersistentCache", "[", 
+                 RowBox[{"x", ",", 
+                  RowBox[{"VertexInComponent", "[", 
+                   RowBox[{
+                    RowBox[{"CallGraph", "[", "$PM", "]"}], ",", 
+                    RowBox[{"ToString", "/@", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"List", "[", "s", "]"}], "]"}]}]}], "]"}]}], 
+                 "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"SetPersistentCache", "[", 
+                 RowBox[{
+                  RowBox[{"x", ":", 
+                   RowBox[{"object", "[", "$object_", "]"}]}], ",", "pos_", 
+                  ",", "val_"}], "]"}], ":=", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"$object", "\[LeftDoubleBracket]", 
+                    RowBox[{"\"\<PersistentCache\>\"", ",", "pos"}], 
+                    "\[RightDoubleBracket]"}], "=", "val"}], ";"}], ")"}]}], 
+               "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{",", "\[IndentingNewLine]", 
+               RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+                RowBox[{"object", "/:", 
+                 RowBox[{"MapToPersistentCache", "[", 
+                  RowBox[{"f_", ",", "x_object", ",", "pos_"}], "]"}], ":=", 
+                 RowBox[{"SetPersistentCache", "[", 
+                  RowBox[{"x", ",", "pos", ",", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{"f", ",", 
+                    RowBox[{"PersistentCache", "[", 
+                    RowBox[{"x", ",", "pos"}], "]"}]}], "]"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "*)"}],
+              "}"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}], 
+          "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"SetAttributes", "[", 
+              RowBox[{"object", ",", "HoldAll"}], "]"}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"ToExpression", "[", 
+              RowBox[{
+               RowBox[{
+               "\"\<PM`Private`$\>\"", "<>", "objectname", "<>", 
+                "\"\<Counter\>\""}], ",", "InputForm", ",", 
+               RowBox[{"Function", "[", 
+                RowBox[{"data", ",", 
+                 RowBox[{"data", "=", "0"}], ",", "HoldAll"}], "]"}]}], "]"}],
+              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Options", "[", "object", "]"}], "=", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                "\"\<CacheActivated\>\"", "\[Rule]", "activatedcache"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<PersistentCacheActivated\>\"", "\[Rule]", 
+                 "activatedpcache"}]}], "\[IndentingNewLine]", "}"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"DeepCopy", "[", 
+                 RowBox[{"x", ":", 
+                  RowBox[{"object", "[", "$nobject_", "]"}]}], "]"}], ":=", 
+                RowBox[{"Module", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"$object", "=", 
+                    RowBox[{"DeepCopy", "/@", "$nobject"}]}], "}"}], ",", 
+                  RowBox[{"object", "[", "$object", "]"}]}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ","}], "*)"}], 
+            "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"DeepCopy", "[", 
+               RowBox[{"x", ":", 
+                RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+              RowBox[{"Initialize", "[", 
+               RowBox[{"object", ",", 
+                RowBox[{"DeepCopy", "/@", "$object"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"LeftArrow", "[", 
+               RowBox[{"y_", ",", 
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$nobject_", "]"}]}]}], "]"}], ":=", 
+              RowBox[{"y", "=", 
+               RowBox[{"DeepCopy", "[", "x", "]"}]}]}], "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"Module", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"$object", "=", "$nobject"}], "}"}], ",", 
+                RowBox[{"y", "=", 
+                 RowBox[{"object", "[", "$object", "]"}]}]}], "]"}], "*)"}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Part", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", "1", ",", 
+                "args__"}], "]"}], ":=", 
+              RowBox[{
+              "$object", "\[LeftDoubleBracket]", "args", 
+               "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", "]"}], ",",
+             "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Part", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", "s_String", 
+                ",", "args___"}], "]"}], ":=", 
+              RowBox[{"$object", "\[LeftDoubleBracket]", 
+               RowBox[{"s", ",", "args"}], "\[RightDoubleBracket]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"x_object", "[", 
+               RowBox[{"s_String", ",", "args___"}], "]"}], ":=", 
+              RowBox[{
+               RowBox[{
+               "x", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"s", ",", "args"}], "\[RightDoubleBracket]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+               RowBox[{"object", "/:", 
+                RowBox[{"Initialize", "[", 
+                 RowBox[{"object", ",", "data0_Association"}], "]"}], ":=", 
+                RowBox[{"Module", "[", 
+                 RowBox[{
+                  RowBox[{"{", "$object", "}"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"$object", "=", "data0"}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"KeyExistsQ", "[", 
+                    RowBox[{"$object", ",", "\"\<Cache\>\""}], "]"}]}], ",", 
+                    RowBox[{"AppendTo", "[", 
+                    RowBox[{"$object", ",", 
+                    RowBox[{"\"\<Cache\>\"", "\[Rule]", 
+                    RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}]}],
+                     "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"KeyExistsQ", "[", 
+                    RowBox[{"$object", ",", "\"\<PersistentCache\>\""}], 
+                    "]"}]}], ",", 
+                    RowBox[{"AppendTo", "[", 
+                    RowBox[{"$object", ",", 
+                    RowBox[{"\"\<PersistentCache\>\"", "\[Rule]", 
+                    RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}]}],
+                     "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"object", "[", "$object", "]"}]}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}],
+               ","}], "*)"}], "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Initialize", "[", 
+               RowBox[{"object", ",", "data0_Association"}], "]"}], ":=", 
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", "\[IndentingNewLine]", 
+                 RowBox[{"c", "=", 
+                  RowBox[{"ToExpression", "[", 
+                   RowBox[{
+                   "\"\<++PM`Private`$\>\"", "<>", "objectname", "<>", 
+                    "\"\<Counter\>\""}], "]"}]}], "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ToExpression", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"StringJoin", "[", 
+                   RowBox[{
+                   "\"\<PM`Objects`$\>\"", ",", "objectname", ",", 
+                    "\"\<$\>\"", ",", 
+                    RowBox[{"ToString", "[", "c", "]"}]}], "]"}], ",", 
+                  "\[IndentingNewLine]", "InputForm", ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Function", "[", 
+                   RowBox[{"data", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"SetAttributes", "[", 
+                    RowBox[{"data", ",", "Temporary"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"data", "=", "data0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"KeyExistsQ", "[", 
+                    RowBox[{"data", ",", "\"\<Cache\>\""}], "]"}]}], ",", 
+                    RowBox[{"AppendTo", "[", 
+                    RowBox[{"data", ",", 
+                    RowBox[{"\"\<Cache\>\"", "\[Rule]", 
+                    RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}]}],
+                     "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"KeyExistsQ", "[", 
+                    RowBox[{"data", ",", "\"\<PersistentCache\>\""}], "]"}]}],
+                     ",", 
+                    RowBox[{"AppendTo", "[", 
+                    RowBox[{"data", ",", 
+                    RowBox[{"\"\<PersistentCache\>\"", "\[Rule]", 
+                    RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}]}],
+                     "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"KeyExistsQ", "[", 
+                    RowBox[{"data", ",", "\"\<Settings\>\""}], "]"}]}], ",", 
+                    RowBox[{"AppendTo", "[", 
+                    RowBox[{"data", ",", 
+                    RowBox[{"\"\<Settings\>\"", "\[Rule]", 
+                    RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}]}],
+                     "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"object", "[", "data", "]"}]}], ",", 
+                    "\[IndentingNewLine]", "HoldAll"}], "]"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+               "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Serialize", "[", "X_object", "]"}], ":=", 
+              RowBox[{
+               RowBox[{"SerializeHold", "[", "Initialize", "]"}], "[", 
+               RowBox[{
+                RowBox[{"Head", "[", "X", "]"}], ",", 
+                RowBox[{"Serialize", "@", 
+                 RowBox[{
+                 "X", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}]}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ExportObject", "[", 
+               RowBox[{"file_", ",", "X_object"}], "]"}], ":=", 
+              RowBox[{"Module", "[", 
+               RowBox[{
+                RowBox[{"{", "Y", "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Y", "\[LeftArrow]", "X"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"ClearCache", "[", "Y", "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"ClearPersistentCache", "[", "Y", "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"!", 
+                    RowBox[{"FileExistsQ", "[", 
+                    RowBox[{"DirectoryName", "[", "file", "]"}], "]"}]}], ",",
+                    "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<Creating directory \>\"", ",", 
+                    RowBox[{"CreateDirectory", "[", 
+                    RowBox[{"DirectoryName", "[", "file", "]"}], "]"}]}], 
+                    "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"Export", "[", 
+                  RowBox[{"file", ",", 
+                   RowBox[{"Serialize", "[", "Y", "]"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", "file"}]}], "\[IndentingNewLine]", 
+               "]"}]}], "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"ImportObject", "[", "file_", "]"}], ":=", 
+              RowBox[{"Deserialize", "[", 
+               RowBox[{"Import", "[", "file", "]"}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Equal", "[", "a__object", "]"}], ":=", 
+              RowBox[{"Equal", "@@", 
+               RowBox[{"KeyDrop", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"List", "[", "a", "]"}], "]"}], 
+                  "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"\"\<Cache\>\"", ",", "\"\<PersistentCache\>\""}], 
+                  "}"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"MBCount", "[", "x_object", "]"}], ":=", 
+              RowBox[{"Total", "[", 
+               RowBox[{"MBCount", "/@", 
+                RowBox[{"Join", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"KeyDrop", "[", 
+                   RowBox[{
+                    RowBox[{
+                    "x", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "\"\<Dimension\>\"", ",", "\"\<Cache\>\"", ",", 
+                    "\"\<PersistentCache\>\""}], "}"}]}], "]"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Cache", "[", "x", "]"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"PersistentCache", "[", "x", "]"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Identifier", "[", 
+               RowBox[{"x", ":", 
+                RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"Unevaluated", "[", "$object", "]"}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"IDNumber", "[", 
+               RowBox[{"x", ":", 
+                RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"s", "=", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"Unevaluated", "[", "$object", "]"}], "]"}]}], 
+                 "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"ToExpression", "[", 
+                 RowBox[{"StringTake", "[", 
+                  RowBox[{"s", ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"StringPosition", "[", 
+                    RowBox[{"s", ",", "\"\<$\>\""}], "]"}], 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], ",", 
+                    RowBox[{"-", "1"}]}], "\[RightDoubleBracket]"}], "+", 
+                    "1"}], ",", 
+                    RowBox[{"-", "1"}]}], "}"}]}], "]"}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ObjectQ", "[", "object", "]"}], ":=", "True"}], 
+             "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "}"}], 
+          ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"Settings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", "args___"}],
+                "]"}], ":=", 
+              RowBox[{"$object", "\[LeftDoubleBracket]", 
+               RowBox[{"\"\<Settings\>\"", ",", "args"}], 
+               "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", "]"}], ",",
+             "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"SettingsKeys", "[", 
+               RowBox[{"x", ":", 
+                RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+              RowBox[{"Keys", "[", 
+               RowBox[{
+               "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]", 
+             "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ClearSettings", "[", 
+               RowBox[{"x", ":", 
+                RowBox[{"object", "[", "$object_", "]"}]}], "]"}], ":=", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                 "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                  "\[RightDoubleBracket]"}], "=", 
+                 RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], 
+                ";"}], ")"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ClearSettings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", "All"}], 
+               "]"}], ":=", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                 "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                  "\[RightDoubleBracket]"}], "=", 
+                 RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], 
+                ";"}], ")"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ClearSettings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                "s_String"}], "]"}], ":=", 
+              RowBox[{"KeyDropFrom", "[", 
+               RowBox[{
+                RowBox[{
+                "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                 "\[RightDoubleBracket]"}], ",", "s"}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ClearSettings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", "p_"}], 
+               "]"}], ":=", 
+              RowBox[{"KeyDropFrom", "[", 
+               RowBox[{
+                RowBox[{
+                "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                 "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"ToString", "[", 
+                 RowBox[{"p", ",", "InputForm"}], "]"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ClearSettings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                RowBox[{"{", "s___String", "}"}]}], "]"}], ":=", 
+              RowBox[{"KeyDropFrom", "[", 
+               RowBox[{
+                RowBox[{
+                "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                 "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"{", "s", "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+             "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"ClearSettings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", 
+                RowBox[{"{", "p__", "}"}]}], "]"}], ":=", 
+              RowBox[{"KeyDropFrom", "[", 
+               RowBox[{
+                RowBox[{
+                "$object", "\[LeftDoubleBracket]", "\"\<Settings\>\"", 
+                 "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{"z", "\[Function]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"StringQ", "[", "z", "]"}], ",", "z", ",", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"z", ",", "InputForm"}], "]"}]}], "]"}]}], ",", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"{", "p", "}"}], "]"}]}], "]"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+             RowBox[{"object", "/:", 
+              RowBox[{"SetSettings", "[", 
+               RowBox[{
+                RowBox[{"x", ":", 
+                 RowBox[{"object", "[", "$object_", "]"}]}], ",", "pos_", ",",
+                 "val_"}], "]"}], ":=", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"$object", "\[LeftDoubleBracket]", 
+                  RowBox[{"\"\<Settings\>\"", ",", "pos"}], 
+                  "\[RightDoubleBracket]"}], "=", "val"}], ";"}], ")"}]}], 
+             "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "}"}]}], 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"L", "=", 
+        RowBox[{"ReplaceAll", "[", 
+         RowBox[{"Lin", ",", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"object", "\[Rule]", 
+             RowBox[{"Unevaluated", "[", "obj", "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"objectname", "\[Rule]", 
+             RowBox[{"ToString", "[", "obj", "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"activatedcache", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "\"\<CacheActivated\>\"", "]"}]}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"activatedpcache", "\[Rule]", 
+             RowBox[{
+             "OptionValue", "[", "\"\<PersistentCacheActivated\>\"", "]"}]}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"$object", "\[Rule]", 
+             RowBox[{"ToExpression", "[", 
+              RowBox[{"\"\<PM`Objects`$\>\"", "<>", 
+               RowBox[{"ToString", "[", "obj", "]"}]}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"$nobject", "\[Rule]", 
+             RowBox[{"ToExpression", "[", 
+              RowBox[{"\"\<PM`Objects`$n\>\"", "<>", 
+               RowBox[{"ToString", "[", "obj", "]"}]}], "]"}]}]}], 
+           "\[IndentingNewLine]", "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"Lout", "=", 
+        RowBox[{"\[LeftAssociation]", 
+         RowBox[{"\"\<Name\>\"", "\[Rule]", 
+          RowBox[{"SymbolName", "[", "obj", "]"}]}], 
+         "\[RightAssociation]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<Public\>\"", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"Lout", ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<PublicDescription\>\"", "\[Rule]", 
+             RowBox[{
+              RowBox[{"SymbolName", "[", 
+               RowBox[{"Unevaluated", "[", "obj", "]"}], "]"}], "\[Rule]", 
+              RowBox[{"OptionValue", "[", "\"\<Description\>\"", "]"}]}]}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"Lout", ",", 
+            RowBox[{"\"\<Private\>\"", "\[Rule]", "L"}]}], "]"}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"Lout", ",", 
+            RowBox[{"\"\<Private\>\"", "\[Rule]", 
+             RowBox[{"Join", "[", 
+              RowBox[{"LUsage", ",", "L"}], "]"}]}]}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "Lout"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.632683308196252*^9, 3.63268331437823*^9}, {
+   3.632688461586093*^9, 3.632688470549876*^9}, {3.6326902944257727`*^9, 
+   3.632690307837308*^9}, {3.632690491737213*^9, 3.632690495902979*^9}, {
+   3.632690533234898*^9, 3.63269053390699*^9}, {3.632690672348688*^9, 
+   3.632690713600967*^9}, {3.632733608758039*^9, 3.6327336109487658`*^9}, {
+   3.632733798408039*^9, 3.632733864310437*^9}, {3.6327340475585938`*^9, 
+   3.632734050426839*^9}, {3.632734859555285*^9, 3.632734869690331*^9}, 
+   3.632735496141547*^9, {3.632735551215147*^9, 3.632735555596387*^9}, {
+   3.632735783257194*^9, 3.632735784846992*^9}, {3.6327358419486027`*^9, 
+   3.632735863853451*^9}, {3.632735946777904*^9, 3.632735976813987*^9}, {
+   3.6327361052238617`*^9, 3.6327361614483347`*^9}, {3.6327364842137117`*^9, 
+   3.6327365008557987`*^9}, {3.632736547160728*^9, 3.6327365802553797`*^9}, {
+   3.632737049716897*^9, 3.632737062961793*^9}, {3.632737158536536*^9, 
+   3.632737160811879*^9}, {3.6327373311551113`*^9, 3.632737334420383*^9}, {
+   3.632737421114868*^9, 3.632737429429944*^9}, {3.632737568011389*^9, 
+   3.632737573882292*^9}, {3.632737660578662*^9, 3.632737665625723*^9}, {
+   3.63273812297968*^9, 3.632738132483119*^9}, {3.6327382130895033`*^9, 
+   3.632738234849987*^9}, {3.632738356507257*^9, 3.6327383588993998`*^9}, {
+   3.632738402543187*^9, 3.632738509685935*^9}, {3.632738547970924*^9, 
+   3.632738584707933*^9}, {3.6327386403620787`*^9, 3.632738676899843*^9}, {
+   3.632738908773238*^9, 3.632738913811348*^9}, {3.632744212849473*^9, 
+   3.632744274846036*^9}, {3.632744687991456*^9, 3.632744708112102*^9}, {
+   3.6327447975339603`*^9, 3.6327448027011023`*^9}, {3.6327449617619247`*^9, 
+   3.63274500322536*^9}, {3.6327451371658792`*^9, 3.632745180742075*^9}, {
+   3.632745211685297*^9, 3.63274522114115*^9}, {3.6327453245255117`*^9, 
+   3.632745327772875*^9}, {3.632745873884075*^9, 3.632745908409301*^9}, {
+   3.632746010119957*^9, 3.632746060471758*^9}, {3.6327464661126738`*^9, 
+   3.632746474727643*^9}, {3.63274656532366*^9, 3.6327466481823606`*^9}, {
+   3.632746793950646*^9, 3.632746806951787*^9}, 3.632747244162355*^9, {
+   3.6327478152267027`*^9, 3.63274785643108*^9}, {3.632748293356628*^9, 
+   3.632748317803338*^9}, {3.6327484131804857`*^9, 3.632748416418564*^9}, {
+   3.632804045851994*^9, 3.632804073469048*^9}, {3.6328043799153833`*^9, 
+   3.632804383458601*^9}, {3.6328186157312403`*^9, 3.6328186717894363`*^9}, {
+   3.632818958925187*^9, 3.6328189814221163`*^9}, {3.632819202840146*^9, 
+   3.63281920657609*^9}, {3.6328192909478693`*^9, 3.63281929287355*^9}, {
+   3.632819652289476*^9, 3.632819673712346*^9}, {3.6328197552226963`*^9, 
+   3.632819764012682*^9}, 3.6328198544141273`*^9, {3.6328199690011797`*^9, 
+   3.632820002783743*^9}, {3.632821920381433*^9, 3.632821939612568*^9}, {
+   3.632827712967061*^9, 3.6328277394472437`*^9}, {3.6331726039686003`*^9, 
+   3.633172677818256*^9}, {3.633172707973596*^9, 3.633172711316498*^9}, 
+   3.633175190138639*^9, {3.6331753704422827`*^9, 3.633175400369074*^9}, {
+   3.633175552962816*^9, 3.633175610044887*^9}, {3.633288021977685*^9, 
+   3.633288044786508*^9}, {3.633288477317976*^9, 3.6332885273423777`*^9}, {
+   3.633288696867593*^9, 3.633288740831311*^9}, {3.633288918621428*^9, 
+   3.633288942506751*^9}, {3.633288984451634*^9, 3.633289055665176*^9}, {
+   3.6332891270312223`*^9, 3.633289164133724*^9}, {3.6336675308256207`*^9, 
+   3.633667549510983*^9}, {3.633667931534811*^9, 3.6336679932438583`*^9}, {
+   3.633668215229476*^9, 3.633668257374838*^9}, {3.633669355807355*^9, 
+   3.633669384497994*^9}, {3.634066130019331*^9, 3.63406614375344*^9}, {
+   3.6340661818036423`*^9, 3.63406619556733*^9}, {3.63407585470611*^9, 
+   3.634075856791832*^9}, {3.634075968824313*^9, 3.634075992965563*^9}, {
+   3.6340760367923098`*^9, 3.6340760470184097`*^9}, {3.6340760834826593`*^9, 
+   3.6340761258753157`*^9}, {3.634076190025714*^9, 3.634076195432767*^9}, {
+   3.634076227156793*^9, 3.6340762279846697`*^9}, 3.634077093507876*^9, {
+   3.6340773146293488`*^9, 3.634077329205491*^9}, 3.6340798006483793`*^9, {
+   3.6340806549674597`*^9, 3.634080663273896*^9}, 3.634080729815358*^9, {
+   3.634123576703896*^9, 3.6341235788629923`*^9}, {3.634157867077773*^9, 
+   3.634157889133169*^9}, {3.6341579258449297`*^9, 3.634157944822176*^9}, {
+   3.6341579808580017`*^9, 3.63415806145485*^9}, 3.6341581434022903`*^9, {
+   3.634158526069319*^9, 3.6341585310112886`*^9}, {3.634158731942013*^9, 
+   3.6341587451909437`*^9}, 3.6341590166995573`*^9, {3.634159646548053*^9, 
+   3.634159674788021*^9}, {3.634159762620613*^9, 3.63415976325846*^9}, 
+   3.6341600727544737`*^9, {3.634160275986301*^9, 3.634160285210889*^9}, {
+   3.634160995825261*^9, 3.6341609995014544`*^9}, 3.6341610364254*^9, 
+   3.634161190817603*^9, {3.6341615986422777`*^9, 3.634161628879019*^9}, {
+   3.634161660019226*^9, 3.634161759611718*^9}, {3.6341620292369757`*^9, 
+   3.634162037640283*^9}, {3.6341620757601767`*^9, 3.634162125486055*^9}, {
+   3.6341622053850393`*^9, 3.634162347707485*^9}, {3.634162387752595*^9, 
+   3.6341623881429777`*^9}, {3.634162535431119*^9, 3.6341625389657784`*^9}, {
+   3.634218590777749*^9, 3.634218606468128*^9}, {3.6342215260728617`*^9, 
+   3.634221533189898*^9}, {3.634221659908761*^9, 3.634221661805295*^9}, {
+   3.634221822164359*^9, 3.634221824963168*^9}, {3.634222764470731*^9, 
+   3.634222793894618*^9}, {3.634224975137993*^9, 3.634224975417759*^9}, {
+   3.634225718013975*^9, 3.634225761417262*^9}, {3.6342258016840353`*^9, 
+   3.63422582378333*^9}, {3.663928931401153*^9, 3.663928931710936*^9}, {
+   3.663933302210175*^9, 3.663933360140011*^9}, {3.663933827964267*^9, 
+   3.66393382830648*^9}, {3.663933889470696*^9, 3.663933914766803*^9}, {
+   3.663933949947402*^9, 3.6639340283478193`*^9}, {3.6639348141507196`*^9, 
+   3.6639348144677753`*^9}, {3.663934880967204*^9, 3.663934912773325*^9}, {
+   3.6653433252815323`*^9, 3.6653433258484592`*^9}, {3.6736786136549873`*^9, 
+   3.673678618553679*^9}, {3.673679289828375*^9, 3.673679290089629*^9}, {
+   3.678607352948906*^9, 3.678607415786641*^9}, {3.678607963602803*^9, 
+   3.678607991159669*^9}, {3.686117432770566*^9, 3.6861174754277153`*^9}, 
+   3.686117540530273*^9, {3.6861185001188097`*^9, 3.686118549310602*^9}, {
+   3.7075648854615717`*^9, 3.7075649771084633`*^9}, {3.70756793933363*^9, 
+   3.7075679757433558`*^9}, {3.707568007297533*^9, 3.707568053660219*^9}, {
+   3.707568219602154*^9, 3.707568222704233*^9}, {3.707568508072124*^9, 
+   3.707568508270771*^9}, {3.707568600991338*^9, 3.707568757398024*^9}, {
+   3.7075687893768*^9, 3.707568790352187*^9}, {3.707568854647943*^9, 
+   3.707568863149466*^9}, {3.707568897999092*^9, 3.707569160967784*^9}, {
+   3.707569780968149*^9, 3.707569821403234*^9}, {3.707572110059187*^9, 
+   3.7075721105789948`*^9}, {3.707656575407276*^9, 3.707656616498171*^9}, {
+   3.707656650818643*^9, 3.707656664413327*^9}, {3.707656721873107*^9, 
+   3.7076567448546333`*^9}, {3.707656874561872*^9, 3.707656948734387*^9}, {
+   3.7076571856967287`*^9, 3.707657244863854*^9}, {3.707657866828883*^9, 
+   3.707657868259918*^9}, {3.707658041938792*^9, 3.7076580779383707`*^9}, {
+   3.707658987417447*^9, 3.70765900955646*^9}, {3.707659153313293*^9, 
+   3.707659231570766*^9}, {3.707660349374426*^9, 3.70766039957498*^9}, {
+   3.707660489911593*^9, 3.707660573481451*^9}, {3.7076606332176733`*^9, 
+   3.7076606368098917`*^9}, {3.707661256006947*^9, 3.707661258758078*^9}, 
+   3.707661462660862*^9, {3.7076660958362494`*^9, 3.7076661144934893`*^9}, {
+   3.70766625079639*^9, 3.707666270472025*^9}, {3.707666756319751*^9, 
+   3.707666773502487*^9}, {3.707671158446959*^9, 3.707671184193252*^9}, {
+   3.707890161339034*^9, 3.707890193753374*^9}, {3.707890257428076*^9, 
+   3.707890260626237*^9}, {3.707890324494647*^9, 3.7078903481380053`*^9}, {
+   3.707890909161071*^9, 3.7078909895100727`*^9}, {3.7078916703138103`*^9, 
+   3.707891690744227*^9}, {3.707892513858468*^9, 3.707892515217485*^9}, 
+   3.707892585581243*^9, {3.707892626847344*^9, 3.707892672123028*^9}, {
+   3.7078936776077957`*^9, 3.7078937307314043`*^9}, {3.707893839209097*^9, 
+   3.707893906345274*^9}, {3.707895873719557*^9, 3.707895937401963*^9}, {
+   3.7078963159670963`*^9, 3.70789644758419*^9}, {3.7078964785372753`*^9, 
+   3.707896589176003*^9}, {3.7078966536677647`*^9, 3.7078966846530037`*^9}, {
+   3.7078967508537397`*^9, 3.7078969161035347`*^9}, {3.707897670903597*^9, 
+   3.707897994750043*^9}, {3.7078980529805326`*^9, 3.707898054721599*^9}, {
+   3.707898544138507*^9, 3.707898898669585*^9}, {3.707898946407632*^9, 
+   3.707899061443618*^9}, {3.707899115096827*^9, 3.707899241198345*^9}, {
+   3.7078992796982603`*^9, 3.707899391208685*^9}, {3.707899425203507*^9, 
+   3.7078994431176987`*^9}, {3.707899473219429*^9, 3.7078995582638607`*^9}, {
+   3.707899611233823*^9, 3.7078996236107073`*^9}, {3.707900704769409*^9, 
+   3.707901660297591*^9}, {3.707901716687338*^9, 3.7079018402695723`*^9}, {
+   3.7079029342128677`*^9, 3.707902936523109*^9}, {3.7079184662169247`*^9, 
+   3.70791848660832*^9}, {3.707918558402686*^9, 3.707918575513761*^9}, {
+   3.707923181450391*^9, 3.70792318180753*^9}, {3.7079234094110937`*^9, 
+   3.707923433287779*^9}, {3.707927117354759*^9, 3.707927122307489*^9}, {
+   3.707927309516901*^9, 3.707927318027532*^9}, {3.707933722255208*^9, 
+   3.707933741119873*^9}, {3.7079338972281733`*^9, 3.707933914875531*^9}, {
+   3.707936018897596*^9, 3.707936042687337*^9}, {3.707976555609797*^9, 
+   3.707976639207418*^9}, 3.707979069184416*^9, {3.707979099197584*^9, 
+   3.707979100838257*^9}, 3.719488968530871*^9, {3.7206016044724073`*^9, 
+   3.7206016142258167`*^9}, {3.720601647690402*^9, 3.720601668408848*^9}, 
+   3.720601711065692*^9, {3.7206019058705673`*^9, 3.72060190618124*^9}, {
+   3.72060210069382*^9, 3.720602104880953*^9}, {3.720602237483438*^9, 
+   3.720602239017112*^9}, {3.720602335768238*^9, 3.7206023463180428`*^9}, {
+   3.720602384308297*^9, 3.72060238837078*^9}, {3.720602462337028*^9, 
+   3.7206024638950367`*^9}, {3.7206044426149063`*^9, 
+   3.7206044499248447`*^9}, {3.726994383428193*^9, 3.7269944575607843`*^9}, {
+   3.7269945185751677`*^9, 3.726994518991229*^9}, {3.726994573904625*^9, 
+   3.726994574767105*^9}, {3.72699693833994*^9, 3.72699693933057*^9}, {
+   3.726997236534252*^9, 3.726997242813526*^9}, 3.726997505252554*^9, {
+   3.727001823021296*^9, 3.727001828719952*^9}, {3.727001899161276*^9, 
+   3.7270018994472713`*^9}, {3.7270019632286987`*^9, 3.727002127911723*^9}, 
+   3.730196591878735*^9, {3.730196672665716*^9, 3.730196678441231*^9}, {
+   3.730196713907037*^9, 3.7301967420600147`*^9}, {3.734434138577753*^9, 
+   3.734434144304459*^9}, {3.734434176641481*^9, 3.734434327182604*^9}, {
+   3.7344352262094517`*^9, 3.734435251103285*^9}, {3.734435283625839*^9, 
+   3.734435292032143*^9}, {3.7356647032937517`*^9, 3.735664755977512*^9}, {
+   3.735664808294045*^9, 3.7356648664767714`*^9}, {3.7356649279219*^9, 
+   3.735664928315173*^9}, {3.735895733997374*^9, 3.735895788332574*^9}, {
+   3.7358961278517303`*^9, 3.735896157477763*^9}, {3.735896281881847*^9, 
+   3.7358962823929253`*^9}, {3.738923771744669*^9, 3.738923780176137*^9}, 
+   3.7389238537041273`*^9, {3.738926530160267*^9, 3.7389265838875933`*^9}, {
+   3.758011489301894*^9, 3.758011495624175*^9}, {3.758011618765668*^9, 
+   3.758011619225362*^9}, 3.7590154403757*^9, {3.78334142920313*^9, 
+   3.783341468009511*^9}, {3.783342588862878*^9, 3.783342590636573*^9}, {
+   3.796814524730776*^9, 3.7968145363267508`*^9}, {3.796814734728684*^9, 
+   3.7968147540350103`*^9}, 3.796814808400098*^9, {3.796814858375284*^9, 
+   3.796814873100185*^9}, {3.7968149320189257`*^9, 3.796814945971676*^9}, {
+   3.797099657580901*^9, 3.797099843930114*^9}, {3.797099887135428*^9, 
+   3.797099899659288*^9}, 3.7970999601186333`*^9, {3.821288175378286*^9, 
+   3.821288176056713*^9}, 3.821289092786213*^9, {3.82128937767614*^9, 
+   3.821289446746529*^9}, 3.821289976544853*^9, {3.825565177107806*^9, 
+   3.825565177312448*^9}, {3.8400859813062487`*^9, 3.840085983011663*^9}, {
+   3.8400875238477573`*^9, 3.840087535839875*^9}, 3.840087626964757*^9, {
+   3.840088027022887*^9, 
+   3.840088028287925*^9}},ExpressionUUID->"acd48605-01f6-4215-883a-\
+6a1268bb7147"],
+
+Cell[BoxData[
+ RowBox[{"MakeRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Init", "::", "usage"}], "=", 
+     "\"\<Init[object] returns an empty object.\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"object", "/:", 
+     RowBox[{"Init", "[", "object", "]"}], ":=", 
+     RowBox[{"Initialize", "[", 
+      RowBox[{"object", ",", 
+       RowBox[{"Association", "[", 
+        RowBox[{
+         RowBox[{"\"\<Cache\>\"", "\[Rule]", 
+          RowBox[{"Association", "[", "]"}]}], ",", 
+         RowBox[{"\"\<PersistentCache\>\"", "\[Rule]", 
+          RowBox[{"Association", "[", "]"}]}]}], "]"}]}], "]"}]}], ";"}], 
+   "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"ClearAll", "[", "Inherit", "]"}], ";", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Inherit", "::", "usage"}], "=", 
+    "\"\<newobject = Init[object] copies all definitions \
+(OwnValues,DownValues,Messages,Options,Attributes,UpValues,FormatValues) \
+attached to object to newobject. Per default, already defined definitions of \
+newobject are not overwritten. You can enforce overwrite with newobject = \
+Init[object, True]\>\""}], ";", "\[IndentingNewLine]", 
+   RowBox[{"SetAttributes", "[", 
+    RowBox[{"Inherit", ",", "HoldAll"}], "]"}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Inherit", "/:", 
+    RowBox[{"Set", "[", 
+     RowBox[{
+      RowBox[{"newobject_", "?", "ObjectQ"}], ",", 
+      RowBox[{"Inherit", "[", 
+       RowBox[{
+        RowBox[{"oldobject_", "?", "ObjectQ"}], ",", 
+        RowBox[{"overwrite_", ":", "False"}]}], "]"}]}], "]"}], ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "minor", ",", "major", ",", "a", ",", "b", ",", "duplicates", ",", 
+          "bslist", ",", "bpos"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{"overwrite", ",", 
+           RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"minor", "=", "newobject"}], ";", 
+            RowBox[{"major", "=", "oldobject"}], ";"}], "\[IndentingNewLine]",
+            ",", 
+           RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"major", "=", "newobject"}], ";", 
+            RowBox[{"minor", "=", "oldobject"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Do", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"f", "=", "fun"}], "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"a", "=", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"f", "[", 
+                  RowBox[{"Evaluate", "[", "major", "]"}], "]"}], "/.", 
+                 RowBox[{"{", 
+                  RowBox[{"major", "\[Rule]", "newobject"}], "}"}]}], ")"}]}],
+               ";", "\[IndentingNewLine]", 
+              RowBox[{"b", "=", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"f", "[", 
+                  RowBox[{"Evaluate", "[", "minor", "]"}], "]"}], "/.", 
+                 RowBox[{"{", 
+                  RowBox[{"minor", "\[Rule]", "newobject"}], "}"}]}], ")"}]}],
+               ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"f", "===", "Attributes"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"a", "=", 
+                  RowBox[{"List", "/@", "a"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"b", "=", 
+                  RowBox[{"List", "/@", "b"}]}], ";"}]}], 
+               "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"duplicates", "=", 
+               RowBox[{"Intersection", "[", 
+                RowBox[{
+                 RowBox[{"a", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                 RowBox[{"b", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+                "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"bslist", "=", 
+               RowBox[{"ToString", "/@", 
+                RowBox[{"b", "\[LeftDoubleBracket]", 
+                 RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}]}], 
+              ";", "\[IndentingNewLine]", 
+              RowBox[{"bpos", "=", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{"Table", "[", 
+                 RowBox[{
+                  RowBox[{"Position", "[", 
+                   RowBox[{"bslist", ",", "z"}], "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"z", ",", 
+                    RowBox[{"ToString", "/@", "duplicates"}]}], "}"}]}], 
+                 "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"f", "[", "newobject", "]"}], "=", 
+               RowBox[{"Join", "[", 
+                RowBox[{"a", ",", 
+                 RowBox[{"b", "\[LeftDoubleBracket]", 
+                  RowBox[{"Complement", "[", 
+                   RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{"Length", "[", "b", "]"}], "]"}], ",", "bpos"}], 
+                   "]"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"fun", ",", 
+             RowBox[{"{", 
+              RowBox[{
+              "OwnValues", ",", "DownValues", ",", "Messages", ",", "Options",
+                ",", "Attributes", ",", "UpValues", ",", "FormatValues"}], 
+              "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      "\"\<Inherit\>\"", ",", " ", 
+      RowBox[{"{", "newobject", "}"}], ",", "oldobject"}], 
+     "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",\
+
+ CellChangeTimes->{{3.8394787452824917`*^9, 3.839478745714429*^9}, {
+  3.839478850510541*^9, 
+  3.839478867934845*^9}},ExpressionUUID->"fb61a319-a274-4d23-a82c-\
+3ac2dc027f10"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"c7f395b1-fe6b-49ca-908d-5446d70ce36f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 75311, 1480, 11567, "Input",ExpressionUUID->"acd48605-01f6-4215-883a-6a1268bb7147"],
+Cell[75872, 1502, 6510, 144, 1117, "Input",ExpressionUUID->"fb61a319-a274-4d23-a82c-3ac2dc027f10"]
+}
+]
+*)
+

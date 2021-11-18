@@ -1,0 +1,149 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5293,        141]
+NotebookOptionsPosition[      5003,        128]
+NotebookOutlinePosition[      5339,        143]
+CellTagsIndexPosition[      5296,        140]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Quiet", "[", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "PP", ",", "P", ",", "X", ",", "Y", ",", "U", ",", "V", ",", "code", ",",
+       "s", ",", "d"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"d", "=", "2"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"PP", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Compile`GetElement", "[", 
+         RowBox[{"P", ",", "i", ",", "j"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", "d"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"X", "=", 
+      RowBox[{
+       RowBox[{"PP", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+       "-", 
+       RowBox[{
+       "PP", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Y", "=", 
+      RowBox[{
+       RowBox[{"PP", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}], 
+       "-", 
+       RowBox[{
+       "PP", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"code", "=", 
+        RowBox[{
+         RowBox[{"ArcTan", "[", 
+          RowBox[{
+           RowBox[{
+           "Y", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], ",", 
+           RowBox[{
+           "Y", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+          "]"}], "-", 
+         RowBox[{"ArcTan", "[", 
+          RowBox[{
+           RowBox[{
+           "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], ",", 
+           RowBox[{
+           "X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+          "]"}]}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"code", "=", 
+      RowBox[{"ArcTan", "@@", 
+       RowBox[{"ComplexExpand", "[", 
+        RowBox[{"ReIm", "[", 
+         RowBox[{"Divide", "[", 
+          RowBox[{
+           RowBox[{"Y", ".", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "I"}], "}"}]}], ",", 
+           RowBox[{"X", ".", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "I"}], "}"}]}]}], "]"}], "]"}], "]"}]}]}], ";",
+      "\[IndentingNewLine]", 
+     RowBox[{"s", "=", "\"\<SignedAngles2D\>\""}], ";", "\[IndentingNewLine]", 
+     RowBox[{"CompileJet", "[", 
+      RowBox[{"s", ",", 
+       RowBox[{"{", 
+        RowBox[{"{", 
+         RowBox[{"P", ",", "_Real", ",", "2"}], "}"}], "}"}], ",", "code", 
+       ",", "PP"}], "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     
+     RowBox[{"ClearAll", "[", "getSignedAngles2D", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"getSignedAngles2D", "=", 
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"code1", "=", 
+          RowBox[{"Mod", "[", 
+           RowBox[{"code", ",", 
+            RowBox[{"2.", "Pi"}], ",", 
+            RowBox[{"-", "Pi"}]}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"CPackageFunction", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"P", ",", "_Real", ",", "2"}], "}"}], "}"}], ",", 
+          "\[IndentingNewLine]", "code1", ",", "\[IndentingNewLine]", 
+          RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"RuntimeAttributes", "\[Rule]", 
+           RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+         "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}]}], 
+   "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.712987107605484*^9, 3.712987116402585*^9}, {
+  3.713005667352724*^9, 3.713005764156396*^9}, {3.713005838599945*^9, 
+  3.713005846168683*^9}, {3.713005882180603*^9, 3.713005900685848*^9}, {
+  3.713005961995802*^9, 3.7130060189225597`*^9}, {3.772188598176012*^9, 
+  3.77218861579801*^9}, {3.7721886738932247`*^9, 3.772188678482296*^9}, {
+  3.772188723797147*^9, 3.7721887247051086`*^9}, {3.772188784041114*^9, 
+  3.772188785049288*^9}, {3.772188838558313*^9, 3.7721888406448812`*^9}},
+ CellLabel->"In[59]:=",ExpressionUUID->"36e11d29-b365-48b5-82ed-1c9b7617d673"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 4441, 106, 567, "Input",ExpressionUUID->"36e11d29-b365-48b5-82ed-1c9b7617d673"]
+}
+]
+*)
+

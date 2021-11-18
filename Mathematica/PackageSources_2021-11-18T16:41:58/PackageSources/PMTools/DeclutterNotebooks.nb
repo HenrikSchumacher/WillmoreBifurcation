@@ -1,0 +1,268 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     10905,        260]
+NotebookOptionsPosition[     10426,        245]
+NotebookOutlinePosition[     10762,        260]
+CellTagsIndexPosition[     10719,        257]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"FindNotebooks", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"path_String", ",", "\[IndentingNewLine]", 
+    RowBox[{"FileNames", "[", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{"path", ",", "\"\<*.nb\>\""}], "}"}], "]"}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.707916532188671*^9, 
+  3.707916566308674*^9}},ExpressionUUID->"0a4c6788-7ff1-40ad-8d38-\
+3759bfbca38f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"DeclutterNotebooks", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"file_String", ",", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "data", ",", "nbfiles", ",", "openednbfiles", ",", "closednbfiles", 
+         ",", "nb", ",", "pos", ",", "nb0", ",", "nb1", ",", "mem0", ",", 
+         "mem1", ",", "c"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"data", "=", 
+         RowBox[{"Association", "[", 
+          RowBox[{
+           RowBox[{"\"\<Opened\>\"", "\[Rule]", 
+            RowBox[{"Association", "[", "]"}]}], ",", 
+           RowBox[{"\"\<Closed\>\"", "\[Rule]", 
+            RowBox[{"Association", "[", "]"}]}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"DirectoryQ", "[", "file", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"nbfiles", "=", 
+            RowBox[{"FindNotebooks", "[", "file", "]"}]}], ";"}], 
+          "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          RowBox[{"nbfiles", "=", 
+           RowBox[{"FileNames", "[", "file", "]"}]}]}], "\[IndentingNewLine]",
+          "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"openednbfiles", "=", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{
+           RowBox[{"NotebookFileName", "/@", 
+            RowBox[{"Most", "[", 
+             RowBox[{"Notebooks", "[", "]"}], "]"}]}], ",", "nbfiles"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"closednbfiles", "=", 
+         RowBox[{"Complement", "[", 
+          RowBox[{"nbfiles", ",", "openednbfiles"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Do", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"nb", "=", 
+            RowBox[{
+            "nbfile", "\[LeftDoubleBracket]", "1", 
+             "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"NotebookFind", "[", 
+            RowBox[{
+            "nb", ",", "\"\<Output\>\"", ",", "All", ",", "CellStyle"}], 
+            "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"SelectedCells", "[", "nb", "]"}], "]"}], ">", "0"}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"name", "=", 
+                  RowBox[{"NotebookFileName", "[", "nb", "]"}]}], "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Print", "[", "name", "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"mem0", "=", 
+                  RowBox[{"Quantity", "[", 
+                   RowBox[{
+                    RowBox[{"FileByteCount", "[", "name", "]"}], ",", 
+                    "\"\<Byte\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"NotebookDelete", "[", 
+                  RowBox[{"nb", ",", 
+                   RowBox[{"AutoScroll", "\[Rule]", "Delete"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"NotebookSave", "[", "nb", "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"mem1", "=", 
+                  RowBox[{"Quantity", "[", 
+                   RowBox[{
+                    RowBox[{"FileByteCount", "[", "name", "]"}], ",", 
+                    "\"\<Byte\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"AppendTo", "[", 
+                  RowBox[{
+                   RowBox[{
+                   "data", "\[LeftDoubleBracket]", "\"\<Opened\>\"", 
+                    "\[RightDoubleBracket]"}], ",", 
+                   RowBox[{"name", "\[Rule]", 
+                    RowBox[{"mem0", "-", "mem1"}]}]}], "]"}]}]}], 
+               "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+            "]"}], ";"}], "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"nbfile", ",", 
+            RowBox[{"Notebooks", "/@", "openednbfiles"}]}], "}"}]}], "]"}], 
+        ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"Do", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"nb0", "=", 
+            RowBox[{"Get", "[", "nbfile", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"pos", "=", 
+            RowBox[{"Position", "[", 
+             RowBox[{"nb0", ",", "_CellGroupData"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "pos", "]"}], ">", "0"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"c", "=", "0"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"nb1", "=", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"c", "++"}], ";", 
+                 RowBox[{"MapAt", "[", 
+                  RowBox[{
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"x", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}]}], 
+                   ",", "nb0", ",", "pos"}], "]"}]}], ")"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{"nb1", "=", 
+                 RowBox[{"MapAt", "[", 
+                  RowBox[{
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"x", ",", 
+                    RowBox[{"Position", "[", 
+                    RowBox[{"x", ",", 
+                    RowBox[{"Cell", "[", 
+                    RowBox[{"_", ",", "\"\<Output\>\"", ",", "___"}], "]"}]}],
+                     "]"}]}], "]"}]}], ",", "nb0", ",", "pos"}], "]"}]}], 
+                ";"}], "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"c", ">", "0"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"mem0", "=", 
+                  RowBox[{"Quantity", "[", 
+                   RowBox[{
+                    RowBox[{"FileByteCount", "[", "nbfile", "]"}], ",", 
+                    "\"\<Byte\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"Put", "[", 
+                  RowBox[{"nb1", ",", "nbfile"}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"mem1", "=", 
+                  RowBox[{"Quantity", "[", 
+                   RowBox[{
+                    RowBox[{"FileByteCount", "[", "nbfile", "]"}], ",", 
+                    "\"\<Byte\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"AppendTo", "[", 
+                  RowBox[{
+                   RowBox[{
+                   "data", "\[LeftDoubleBracket]", "\"\<Closed\>\"", 
+                    "\[RightDoubleBracket]"}], ",", 
+                   RowBox[{"nbfile", "\[Rule]", 
+                    RowBox[{"mem0", "-", "mem1"}]}]}], "]"}], ";"}]}], 
+               "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+            "]"}]}], "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"nbfile", ",", "closednbfiles"}], "}"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", "data"}]}], "\[IndentingNewLine]", "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"DeclutterNotebooks", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"files_List", ",", 
+    RowBox[{"Merge", "[", 
+     RowBox[{
+      RowBox[{"DeclutterNotebooks", "/@", 
+       RowBox[{"Flatten", "[", "files", "]"}]}], ",", 
+      RowBox[{"x", "\[Function]", 
+       RowBox[{"Merge", "[", 
+        RowBox[{"x", ",", "First"}], "]"}]}]}], "]"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{
+  3.7079125891424227`*^9, {3.707913827115334*^9, 3.707914003109123*^9}, {
+   3.7079140461603327`*^9, 3.707914070679207*^9}, {3.70791427993998*^9, 
+   3.707914379115821*^9}, {3.707914410001638*^9, 3.707914410298568*^9}, {
+   3.707914497786903*^9, 3.707914530392372*^9}, {3.707914577549261*^9, 
+   3.707914601348672*^9}, {3.707914639044586*^9, 3.707914668944768*^9}, {
+   3.70791662479001*^9, 3.707916627894249*^9}, {3.7964850441363277`*^9, 
+   3.796485102167156*^9}, {3.796485381267209*^9, 
+   3.79648539786168*^9}},ExpressionUUID->"57b8dc37-22e4-4453-9063-\
+7533881df5e5"],
+
+Cell[BoxData[
+ RowBox[{"PackageSourceDeclutterNotebooks", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_packagemanager", ",", "\[IndentingNewLine]", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"PackageSourceBackup", "[", "M", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"DeclutterNotebooks", "[", 
+       RowBox[{"Subdirectories", "[", 
+        RowBox[{
+         RowBox[{"SourcePath", "[", "M", "]"}], ",", "12"}], "]"}], "]"}]}], 
+     "\[IndentingNewLine]", ")"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.707923769144899*^9, 3.707923777592806*^9}, {
+   3.796484938462502*^9, 3.7964849413774567`*^9}, 
+   3.8394833506503677`*^9},ExpressionUUID->"b02c5ebe-af21-44f9-afe4-\
+b5f195f63c4c"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 462, 11, 92, "Input",ExpressionUUID->"0a4c6788-7ff1-40ad-8d38-3759bfbca38f"],
+Cell[1023, 33, 8633, 191, 1192, "Input",ExpressionUUID->"57b8dc37-22e4-4453-9063-7533881df5e5"],
+Cell[9659, 226, 763, 17, 167, "Input",ExpressionUUID->"b02c5ebe-af21-44f9-afe4-b5f195f63c4c"]
+}
+]
+*)
+

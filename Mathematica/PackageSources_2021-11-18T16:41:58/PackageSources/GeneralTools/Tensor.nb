@@ -1,0 +1,836 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     33807,        828]
+NotebookOptionsPosition[     33227,        812]
+NotebookOutlinePosition[     33563,        827]
+CellTagsIndexPosition[     33520,        824]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"TensorVectorContract", "::", "dim"}], "=", 
+     "\"\<Contraction not possible: Dimensions[A] = `1`, Length/@Ulist0 = \
+`2`, slotlist = `3`.\>\""}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.729593777087246*^9, 3.729593844121118*^9}, {
+  3.7295941295455103`*^9, 3.72959413327976*^9}, {3.7295942350858297`*^9, 
+  3.729594237702434*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"2860a83f-158c-41af-9f09-6faabc3f7e6a"],
+
+Cell[BoxData[
+ RowBox[{"TensorVectorContract", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"A_", "?", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"PackedQ", "[", 
+          RowBox[{"#", ",", "Real"}], "]"}], "&"}], ")"}]}], ",", 
+      RowBox[{"{", 
+       RowBox[{"U__:", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"PackedQ", "[", 
+           RowBox[{"#", ",", "Real"}], "]"}], "&"}], ")"}]}], "}"}], ",", 
+      RowBox[{"{", "s__Integer", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "ordering", ",", "slotlist", ",", "slist", ",", "B", ",", "depth"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"slotlist", "=", 
+        RowBox[{"{", "s", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ordering", "=", 
+        RowBox[{"Reverse", "@", 
+         RowBox[{"Ordering", "[", "slotlist", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"slist", "=", 
+        RowBox[{
+        "slotlist", "\[LeftDoubleBracket]", "ordering", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"B", "=", "A"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"depth", "=", 
+           RowBox[{"ArrayDepth", "[", "B", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Switch", "[", 
+           RowBox[{
+            RowBox[{
+            "slist", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+            ",", "\[IndentingNewLine]", "depth", ",", 
+            RowBox[{"B", "=", 
+             RowBox[{"B", ".", 
+              RowBox[{
+               RowBox[{"{", "U", "}"}], "\[LeftDoubleBracket]", 
+               RowBox[{
+               "ordering", "\[LeftDoubleBracket]", "i", 
+                "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}]}]}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "1", ",", 
+            RowBox[{"B", "=", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", "U", "}"}], "\[LeftDoubleBracket]", 
+               RowBox[{
+               "ordering", "\[LeftDoubleBracket]", "i", 
+                "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], ".", 
+              "B"}]}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "_",
+             ",", 
+            RowBox[{"B", "=", 
+             RowBox[{
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"d", "=", 
+                  RowBox[{"depth", "+", "1", "-", 
+                   RowBox[{
+                   "slist", "\[LeftDoubleBracket]", "i", 
+                    "\[RightDoubleBracket]"}]}]}], "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Compile", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"B", ",", "_Real", ",", "d"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"u", ",", "_Real", ",", "1"}], "}"}]}], "}"}], 
+                  ",", "\[IndentingNewLine]", 
+                  RowBox[{"u", ".", "B"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"RuntimeAttributes", "\[Rule]", 
+                   RowBox[{"{", "Listable", "}"}]}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Parallelization", "\[Rule]", "True"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}],
+               "[", 
+              RowBox[{"B", ",", 
+               RowBox[{
+                RowBox[{"{", "U", "}"}], "\[LeftDoubleBracket]", 
+                RowBox[{
+                "ordering", "\[LeftDoubleBracket]", "i", 
+                 "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}]}], 
+              "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "slist", "]"}]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "B"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellLabel->"In[3]:=",ExpressionUUID->"5d1d090e-77a2-4d50-9b55-5cc29229a94b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"ClearAll", "[", "TensorVectorContract", "]"}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", "_", ",", 
+        RowBox[{"{", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{"TensorVectorContract", ",", "\"\< empty slotlist\>\""}], 
+         "]"}], ";"}], "*)"}], "\[IndentingNewLine]", "A"}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", 
+        RowBox[{"{", "U_", "}"}], ",", 
+        RowBox[{"{", "1", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Flatten", "[", "U", "]"}], ".", "A"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "MatrixQ"}], ",", 
+        RowBox[{"{", "U_", "}"}], ",", 
+        RowBox[{"{", "2", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"A", ".", 
+       RowBox[{"Flatten", "[", "U", "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", 
+        RowBox[{"{", "U_", "}"}], ",", 
+        RowBox[{"{", "2", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Flatten", "[", "U", "]"}], ".", 
+       RowBox[{"Transpose", "[", "A", "]"}]}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "MatrixQ"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{
+       RowBox[{"Flatten", "[", "U", "]"}], ".", 
+       RowBox[{"(", 
+        RowBox[{"A", ".", 
+         RowBox[{"Flatten", "[", "V", "]"}]}], ")"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{
+       RowBox[{"Flatten", "[", "V", "]"}], ".", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Flatten", "[", "U", "]"}], ".", "A"}], ")"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArrayQ", "[", "#", "]"}], "&&", 
+            RowBox[{
+             RowBox[{"ArrayDepth", "[", "#", "]"}], "\[Equal]", "3"}]}], 
+           "&"}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"V_", ",", "W_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"A", ".", 
+         RowBox[{"Flatten", "[", "W", "]"}]}], ")"}], ".", 
+       RowBox[{"Flatten", "[", "V", "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"V_", ",", "W_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{
+       RowBox[{"Flatten", "[", "W", "]"}], ".", 
+       RowBox[{"Transpose", "[", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"Flatten", "[", "V", "]"}], ".", 
+          RowBox[{"Transpose", "[", "A", "]"}]}], ")"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_", ",", "W_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Flatten", "[", "W", "]"}], ".", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Flatten", "[", "V", "]"}], ".", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Flatten", "[", "U", "]"}], ".", "A"}], ")"}]}], ")"}]}]}],
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArrayQ", "[", "#", "]"}], "&&", 
+            RowBox[{
+             RowBox[{"ArrayDepth", "[", "#", "]"}], "\[Equal]", "3"}]}], 
+           "&"}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_", ",", "W_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"A", ".", 
+           RowBox[{"Flatten", "[", "W", "]"}]}], ")"}], ".", 
+         RowBox[{"Flatten", "[", "V", "]"}]}], ")"}], ".", 
+       RowBox[{"Flatten", "[", "U", "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArrayQ", "[", "#", "]"}], "&&", 
+            RowBox[{
+             RowBox[{"ArrayDepth", "[", "#", "]"}], "\[Equal]", "4"}]}], 
+           "&"}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_", ",", "W_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3", ",", "4"}], "}"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"A", ".", 
+           RowBox[{"Flatten", "[", "W", "]"}]}], ")"}], ".", 
+         RowBox[{"Flatten", "[", "V", "]"}]}], ")"}], ".", 
+       RowBox[{"Flatten", "[", "U", "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_", ",", "W_", ",", "Z"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Flatten", "[", "Z", "]"}], ".", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Flatten", "[", "W", "]"}], ".", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Flatten", "[", "V", "]"}], ".", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Flatten", "[", "U", "]"}], ".", "A"}], ")"}]}], ")"}]}],
+         ")"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArrayQ", "[", "#", "]"}], "&&", 
+            RowBox[{
+             RowBox[{"ArrayDepth", "[", "#", "]"}], "\[Equal]", "4"}]}], 
+           "&"}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_", ",", "W_", ",", "Z_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"A", ".", 
+             RowBox[{"Flatten", "[", "Z", "]"}]}], ")"}], ".", 
+           RowBox[{"Flatten", "[", "W", "]"}]}], ")"}], ".", 
+         RowBox[{"Flatten", "[", "V", "]"}]}], ")"}], ".", 
+       RowBox[{"Flatten", "[", "U", "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "VectorQ"}], ",", "Ulist0_", ",", "slotlist0_"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{"TensorVectorContract", ",", "\"\< Vector\>\""}], "]"}], 
+        ";"}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "slotlist0", "]"}], "\[Equal]", "1"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"u", "=", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{
+             "Ulist0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
+              "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"NumberQ", "[", "u", "]"}], ",", 
+            RowBox[{"A", " ", "u"}], ",", 
+            RowBox[{"A", ".", "u"}]}], "]"}]}], "\[IndentingNewLine]", "]"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"TensorVectorContract", "::", "dim"}], ",", 
+           RowBox[{"Dimensions", "[", "A", "]"}], ",", 
+           RowBox[{"Length", "/@", "Ulist0"}], ",", "slotlist0"}], "]"}], 
+         ";"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "MatrixQ"}], ",", "Ulist0_", ",", "slotlist0_"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"slotlist", ",", "order", ",", "c", ",", "Ulist", ",", "b"}],
+          "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Print", "[", 
+           RowBox[{"TensorVectorContract", ",", "\"\< Matrix\>\""}], "]"}], 
+          ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"slotlist", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{
+            RowBox[{"x", "\[Function]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"x", "<", "0"}], ",", 
+               RowBox[{"x", "+", "r", "+", "1"}], ",", "x"}], "]"}]}], ",", 
+            "slotlist0"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"order", "=", 
+          RowBox[{"Ordering", "[", "slotlist", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Ulist", "=", 
+          RowBox[{
+          "Ulist0", "\[LeftDoubleBracket]", "order", 
+           "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"slotlist", "=", 
+          RowBox[{
+          "slotlist", "\[LeftDoubleBracket]", "order", 
+           "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"c", "=", 
+          RowBox[{"Length", "[", "slotlist", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Switch", "[", 
+          RowBox[{
+          "c", ",", "\[IndentingNewLine]", "0", ",", "A", ",", 
+           "\[IndentingNewLine]", "1", ",", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+              "slotlist", "\[LeftDoubleBracket]", "1", 
+               "\[RightDoubleBracket]"}], "\[Equal]", "1"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"b", "=", 
+               RowBox[{
+                RowBox[{"Transpose", "[", "A", "]"}], ".", 
+                RowBox[{
+                "Ulist", "\[LeftDoubleBracket]", "1", 
+                 "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"MatrixQ", "[", "b", "]"}], ",", 
+                RowBox[{"Transpose", "[", "b", "]"}], ",", "b"}], "]"}]}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"A", ".", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+               "Ulist", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}], "]"}]}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", "2", ",", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{
+              "slotlist", "\[LeftDoubleBracket]", "1", 
+               "\[RightDoubleBracket]"}], "\[Equal]", "1"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"A", ".", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{
+                 "Ulist", "\[LeftDoubleBracket]", "2", 
+                  "\[RightDoubleBracket]"}], "]"}]}], ")"}], ".", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+               "Ulist", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"A", ".", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{
+                 "Ulist", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}], "]"}]}], ")"}], ".", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+               "Ulist", "\[LeftDoubleBracket]", "2", 
+                "\[RightDoubleBracket]"}], "]"}]}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", "_", ",", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"TensorVectorContract", "::", "dim"}], ",", 
+              RowBox[{"Dimensions", "[", "A", "]"}], ",", 
+              RowBox[{"Length", "/@", "Ulist0"}], ",", "slotlist0"}], "]"}], 
+            ";"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+       "]"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Very", " ", "Buggy"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"TensorVectorContract", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"A_", "?", "ArrayQ"}], ",", "Ulist0_", ",", "slotlist0_"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "R", ",", "r", ",", "slotlist", ",", "Ulist", ",", "order", ",", "c",
+           ",", "i", ",", "\[Sigma]", ",", "\[Rho]"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Print", "[", 
+           RowBox[{"TensorVectorContract", ",", "\"\< Array\>\""}], "]"}], 
+          ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<!!\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"ArrayDepth", "[", "A", "]"}], ",", "slotlist0"}], 
+            "}"}]}], "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", "slotlist0", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"R", "=", "A"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"r", "=", 
+          RowBox[{"ArrayDepth", "[", "A", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "slotlist0", "]"}], "\[LessEqual]", "r"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"slotlist", "=", 
+             RowBox[{"Map", "[", 
+              RowBox[{
+               RowBox[{"x", "\[Function]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"x", "<", "0"}], ",", 
+                  RowBox[{"x", "+", "r", "+", "1"}], ",", "x"}], "]"}]}], ",",
+                "slotlist0"}], "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"order", "=", 
+             RowBox[{"Ordering", "[", "slotlist", "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Ulist", "=", 
+             RowBox[{
+             "Ulist0", "\[LeftDoubleBracket]", "order", 
+              "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"slotlist", "=", 
+             RowBox[{
+             "slotlist", "\[LeftDoubleBracket]", "order", 
+              "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"c", "=", 
+             RowBox[{"Length", "[", "slotlist", "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"While", "[", 
+             RowBox[{
+              RowBox[{"c", ">", "0"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"i", "=", 
+                RowBox[{
+                "slotlist", "\[LeftDoubleBracket]", "c", 
+                 "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"i", "\[Equal]", "r"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"\[Sigma]", "=", 
+                   RowBox[{"Range", "[", "r", "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"\[Rho]", "=", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{"r", "-", "1"}], "]"}]}], ";"}], 
+                 "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"\[Sigma]", "=", 
+                   RowBox[{"Join", "[", 
+                    RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"i", "-", "1"}]}], "]"}], ",", 
+                    RowBox[{"{", "r", "}"}], ",", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{
+                    RowBox[{"i", "+", "1"}], ",", 
+                    RowBox[{"r", "-", "1"}]}], "]"}], ",", 
+                    RowBox[{"{", "i", "}"}]}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"\[Rho]", "=", 
+                   RowBox[{"Join", "[", 
+                    RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{"1", ",", 
+                    RowBox[{"i", "-", "1"}]}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"r", "-", "1"}], "}"}], ",", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{"i", ",", 
+                    RowBox[{"r", "-", "2"}]}], "]"}]}], "]"}]}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               "\[IndentingNewLine]", 
+               RowBox[{"R", "=", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Transpose", "[", 
+                    RowBox[{"R", ",", "\[Sigma]"}], "]"}], ".", 
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{
+                    "Ulist", "\[LeftDoubleBracket]", "c", 
+                    "\[RightDoubleBracket]"}], "]"}]}], ",", "\[Rho]"}], 
+                 "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "\[Sigma]", "]"}], ">", "0"}], "&&", 
+                    RowBox[{
+                    RowBox[{"Length", "[", "\[Rho]", "]"}], ">", "0"}]}], ",",
+                    "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"R", "=", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"R", ",", "\[Sigma]"}], "]"}], ".", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{
+                    "Ulist", "\[LeftDoubleBracket]", "c", 
+                    "\[RightDoubleBracket]"}], "]"}]}], ",", "\[Rho]"}], 
+                    "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"R", "=", 
+                    RowBox[{"R", ".", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{
+                    "Ulist", "\[LeftDoubleBracket]", "c", 
+                    "\[RightDoubleBracket]"}], "]"}]}]}]}], 
+                  "\[IndentingNewLine]", "]"}], ";"}], "*)"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{"c", "--"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"r", "--"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+            ";", "\[IndentingNewLine]", "R"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"TensorVectorContract", "::", "dim"}], ",", 
+              RowBox[{"Dimensions", "[", "A", "]"}], ",", 
+              RowBox[{"Length", "/@", "Ulist0"}], ",", "slotlist0"}], "]"}], 
+            ";"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+       "]"}]}], "\[IndentingNewLine]", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.700125575702902*^9, 3.700125918476527*^9}, {
+   3.70012599755018*^9, 3.700126077020645*^9}, {3.700126219691193*^9, 
+   3.700126219873117*^9}, {3.700730158323928*^9, 3.700730183320549*^9}, {
+   3.700730217671117*^9, 3.70073027405189*^9}, {3.7007313756199102`*^9, 
+   3.700731488629599*^9}, {3.714041061843185*^9, 3.714041161719351*^9}, 
+   3.717616752006371*^9, {3.7289311877013073`*^9, 3.7289311904920387`*^9}, {
+   3.728933288487102*^9, 3.728933288733403*^9}, {3.72959161606183*^9, 
+   3.72959162243541*^9}, {3.72959197709674*^9, 3.729591987830432*^9}, {
+   3.729592160819528*^9, 3.729592175529272*^9}, {3.7295925058295918`*^9, 
+   3.729592569519895*^9}, {3.729592845624919*^9, 3.729592884230076*^9}, {
+   3.729593755944887*^9, 3.729593776111676*^9}, {3.729593849188429*^9, 
+   3.729593890931126*^9}, {3.729593965273394*^9, 3.729594031452573*^9}, {
+   3.729594138807003*^9, 3.729594140538553*^9}, {3.783963172573567*^9, 
+   3.783963177941051*^9}, {3.783963215230023*^9, 3.783963227411736*^9}, {
+   3.7839633224655*^9, 3.7839633251602297`*^9}, {3.7839633673840837`*^9, 
+   3.7839634043816357`*^9}, {3.783963818158841*^9, 3.783963822552236*^9}, {
+   3.797217297470632*^9, 3.797217301613748*^9}, {3.797217429915537*^9, 
+   3.797217432441454*^9}, {3.797223587194065*^9, 3.7972235902919083`*^9}, {
+   3.797224060543206*^9, 3.797224082884384*^9}, {3.797224274462126*^9, 
+   3.7972242872006073`*^9}, {3.797224327725078*^9, 3.797224330074533*^9}, {
+   3.797224399225038*^9, 3.79722441290674*^9}, {3.797224450758469*^9, 
+   3.79722448051025*^9}, {3.797224537268817*^9, 3.7972245416053247`*^9}, {
+   3.797224578853793*^9, 3.797224614447618*^9}, {3.7972247106800117`*^9, 
+   3.797224795250588*^9}, {3.797224866180578*^9, 3.797224883587834*^9}, {
+   3.797225304527853*^9, 3.797225374792047*^9}, {3.797225436664006*^9, 
+   3.797225577520146*^9}, {3.797225642366682*^9, 3.797225721784788*^9}, {
+   3.797225768977695*^9, 3.797225791232856*^9}, {3.797225843643922*^9, 
+   3.7972258471254873`*^9}, {3.797225913384741*^9, 
+   3.79722592748598*^9}},ExpressionUUID->"73c3458f-9815-4c75-b731-\
+d0522262e765"],
+
+Cell[BoxData[
+ RowBox[{"TensorDot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"T_", "?", "ArrayQ"}], ",", 
+      RowBox[{"S_", "?", "ArrayQ"}], ",", "t_", ",", "s_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"rT", "=", 
+         RowBox[{"ArrayDepth", "[", "T", "]"}]}], ",", 
+        RowBox[{"rS", "=", 
+         RowBox[{"ArrayDepth", "[", "S", "]"}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"A", "=", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"t", "\[Equal]", "rT"}], ",", "T", ",", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"T", ",", 
+               RowBox[{"RotateRight", "[", 
+                RowBox[{
+                 RowBox[{"Range", "[", "rT", "]"}], ",", "t"}], "]"}]}], 
+              "]"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"B", "=", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"s", "\[Equal]", "1"}], ",", "S", ",", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"S", ",", 
+               RowBox[{"RotateRight", "[", 
+                RowBox[{
+                 RowBox[{"Range", "[", "rS", "]"}], ",", 
+                 RowBox[{"s", "-", "1"}]}], "]"}]}], "]"}]}], "]"}]}]}], 
+         "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"t", "\[Equal]", "rT"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Dot", "[", 
+           RowBox[{"A", ",", "B"}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{
+            RowBox[{"Dot", "[", 
+             RowBox[{"A", ",", "B"}], "]"}], ",", 
+            RowBox[{"RotateLeft", "[", 
+             RowBox[{
+              RowBox[{"Range", "[", 
+               RowBox[{"rT", "+", "rS", "-", "2"}], "]"}], ",", 
+              RowBox[{"t", "+", "1"}]}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.729591628067988*^9, 3.729591640316411*^9}, {
+  3.797224047373577*^9, 3.7972240529248037`*^9}, {3.7972241827336073`*^9, 
+  3.7972242125265303`*^9}, {3.797224268848455*^9, 3.7972242693159122`*^9}, {
+  3.797225909385065*^9, 
+  3.79722591061602*^9}},ExpressionUUID->"e183ed71-998f-4255-bce9-\
+e71cb581e417"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 635, 12, 192, "Input",ExpressionUUID->"2860a83f-158c-41af-9f09-6faabc3f7e6a"],
+Cell[1196, 34, 4383, 104, 642, "Input",ExpressionUUID->"5d1d090e-77a2-4d50-9b55-5cc29229a94b"],
+Cell[5582, 140, 25012, 603, 3292, "Input",ExpressionUUID->"73c3458f-9815-4c75-b731-d0522262e765"],
+Cell[30597, 745, 2626, 65, 342, "Input",ExpressionUUID->"e183ed71-998f-4255-bce9-e71cb581e417"]
+}
+]
+*)
+

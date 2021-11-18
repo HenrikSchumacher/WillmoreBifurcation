@@ -1,0 +1,240 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8743,        232]
+NotebookOptionsPosition[      8114,        215]
+NotebookOutlinePosition[      8506,        231]
+CellTagsIndexPosition[      8463,        228]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Do", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "PP", ",", "P", ",", "XX", ",", "X", ",", "x", ",", "\[Omega]", ",", 
+       "x2", ",", "\[Omega]2", ",", "f", ",", "Df", ",", "g", ",", "ginv", 
+       ",", "integrand", ",", "area"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"PP", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"P", ",", "i", ",", "j"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "4"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"j", ",", "1", ",", "d"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"XX", "=", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"X", ",", "1"}], "]"}], ",", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"X", ",", "2"}], "]"}]}], "}"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+      "Needs", "[", "\"\<NumericalDifferentialEquationAnalysis`\>\"", "]"}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"x", ",", "\[Omega]"}], "}"}], "=", 
+       RowBox[{
+        RowBox[{
+        "NumericalDifferentialEquationAnalysis`GaussianQuadratureWeights", 
+         "[", 
+         RowBox[{"2", ",", "0", ",", "1"}], "]"}], "\[Transpose]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\[Omega]2", "=", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"Outer", "[", 
+          RowBox[{"Times", ",", "\[Omega]", ",", "\[Omega]"}], "]"}], ",", 
+         "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"x2", "=", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{
+         RowBox[{"Outer", "[", 
+          RowBox[{"List", ",", "x", ",", "x"}], "]"}], ",", "1"}], "]"}]}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"f", "=", 
+       RowBox[{"X", "\[Function]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+             "PP", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+             RowBox[{"(", 
+              RowBox[{"1", "-", 
+               RowBox[{
+               "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+              ")"}]}], "+", 
+            RowBox[{
+             RowBox[{
+             "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+             RowBox[{
+             "PP", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}]}],
+            ")"}], 
+          RowBox[{"(", 
+           RowBox[{"1", "-", 
+            RowBox[{
+            "X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+           ")"}]}], "+", 
+         RowBox[{
+          RowBox[{"X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+             "PP", "\[LeftDoubleBracket]", "4", "\[RightDoubleBracket]"}], 
+             RowBox[{"(", 
+              RowBox[{"1", "-", 
+               RowBox[{
+               "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+              ")"}]}], "+", 
+            RowBox[{
+             RowBox[{
+             "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+             RowBox[{
+             "PP", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}]}]}],
+            ")"}]}]}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Df", "=", 
+       RowBox[{"X", "\[Function]", 
+        RowBox[{"Evaluate", "[", 
+         RowBox[{"D", "[", 
+          RowBox[{
+           RowBox[{"f", "[", "XX", "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"XX", ",", "1"}], "}"}]}], "]"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"g", "=", 
+       RowBox[{"X", "\[Function]", 
+        RowBox[{"Evaluate", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Df", "[", "XX", "]"}], "\[Transpose]"}], ".", 
+          RowBox[{"Df", "[", "XX", "]"}]}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ginv", "=", 
+       RowBox[{"X", "\[Function]", 
+        RowBox[{"Evaluate", "[", 
+         RowBox[{"Inverse", "[", 
+          RowBox[{"g", "[", "XX", "]"}], "]"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"integrand", "=", 
+       RowBox[{"X", "\[Function]", 
+        RowBox[{"Evaluate", "[", 
+         RowBox[{"Sqrt", "[", 
+          RowBox[{"Det", "[", 
+           RowBox[{"g", "[", "XX", "]"}], "]"}], "]"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"area", "=", 
+       RowBox[{"N", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"integrand", "/@", "x2"}], ")"}], ".", "\[Omega]2"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"CompileJet", "[", 
+       RowBox[{
+        RowBox[{"\"\<QuadAreas\>\"", "<>", 
+         RowBox[{"ToString", "[", "d", "]"}], "<>", "\"\<D\>\""}], ",", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"P", ",", "_Real", ",", "2"}], "}"}], "}"}], ",", "area", 
+        ",", "PP", ",", 
+        RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}]}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"d", ",", 
+     RowBox[{"{", "3", "}"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.6997839819783707`*^9, {3.6997840196769238`*^9, 3.699784019795063*^9}, {
+   3.752595374262773*^9, 3.752595401324995*^9}},
+ CellLabel->"In[31]:=",ExpressionUUID->"13aa0a78-28be-4585-8f4e-030d292ff75b"],
+
+Cell[BoxData[
+ RowBox[{"CreategetFunction", "[", 
+  RowBox[{
+  "\"\<Areas\>\"", ",", "quadmesh", ",", "Quads", ",", "QuadData", ",", 
+   RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "3"}], ",", 
+   RowBox[{"\"\<getFunction\>\"", "\[Rule]", "\"\<QuadAreas\>\""}]}], 
+  "]"}]], "Input",ExpressionUUID->"ad843a91-ef14-49c4-afe9-9791c6615cca"],
+
+Cell[BoxData[
+ RowBox[{"CreateJet", "[", 
+  RowBox[{
+  "\"\<Areas\>\"", ",", "quadmesh", ",", "Quads", ",", "\[IndentingNewLine]", 
+   
+   RowBox[{"\"\<Global\>\"", "\[Rule]", "False"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "1"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<Process\>\"", "\[Rule]", "True"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.699783342085019*^9, 
+  3.69978334361287*^9}},ExpressionUUID->"d3b473a1-1ae9-4221-aa6e-\
+e5af3a0cc898"],
+
+Cell[BoxData[
+ RowBox[{"CreateJet", "[", 
+  RowBox[{
+  "\"\<Area\>\"", ",", "quadmesh", ",", "Quads", ",", "\[IndentingNewLine]", 
+   RowBox[{"\"\<Global\>\"", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+   
+   RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "1"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<Process\>\"", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"\"\<getFunction\>\"", "\[Rule]", "\"\<Areas\>\""}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.69978334773449*^9, 3.699783387861459*^9}, {
+  3.8378700840200872`*^9, 
+  3.8378701017633467`*^9}},ExpressionUUID->"38b91bd2-fb45-4681-910f-\
+031286c17716"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"a495a449-900b-42ef-be85-63e2e9350f1b"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 5695, 148, 492, "Input",ExpressionUUID->"13aa0a78-28be-4585-8f4e-030d292ff75b"],
+Cell[6256, 170, 336, 6, 41, "Input",ExpressionUUID->"ad843a91-ef14-49c4-afe9-9791c6615cca"],
+Cell[6595, 178, 671, 15, 167, "Input",ExpressionUUID->"d3b473a1-1ae9-4221-aa6e-e5af3a0cc898"],
+Cell[7269, 195, 841, 18, 217, "Input",ExpressionUUID->"38b91bd2-fb45-4681-910f-031286c17716"]
+}
+]
+*)
+

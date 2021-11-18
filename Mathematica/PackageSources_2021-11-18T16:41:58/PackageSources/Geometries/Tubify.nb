@@ -1,0 +1,160 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5720,        152]
+NotebookOptionsPosition[      5430,        139]
+NotebookOutlinePosition[      5766,        154]
+CellTagsIndexPosition[      5723,        151]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Tubify", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"M_polygon", "?", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"EmbeddingDimension", "[", "#", "]"}], "\[Equal]", "3"}], 
+       "&"}], ")"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "f", ",", "r", ",", "x", ",", "y", ",", "z", ",", "Rimpl", ",", 
+        "plora", ",", "maxcellmeasure"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"f", "=", 
+        RowBox[{"RegionDistance", "[", 
+         RowBox[{"ToMeshRegion", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"r", "=", 
+        RowBox[{"OptionValue", "[", "Thickness", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "r", "]"}], "===", "Scaled"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"r", "=", 
+          RowBox[{
+           RowBox[{
+           "r", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+           RowBox[{"Norm", "[", 
+            RowBox[{"Subtract", "@@", 
+             RowBox[{"BoundingBox", "[", "M", "]"}]}], "]"}]}]}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"plora", "=", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"List", "@@", 
+            RowBox[{"BoundingBox", "[", "M", "]"}]}], ")"}], "+", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "r"}], ",", 
+              RowBox[{"-", "r"}], ",", 
+              RowBox[{"-", "r"}]}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"r", ",", "r", ",", "r"}], "}"}]}], "}"}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"Rimpl", "=", 
+        RowBox[{"ImplicitRegion", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"f", "[", 
+            RowBox[{"{", 
+             RowBox[{"x", ",", "y", ",", "z"}], "}"}], "]"}], "\[LessEqual]", 
+           "r"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"x", ",", 
+              RowBox[{"plora", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+              RowBox[{"plora", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], "}"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"y", ",", 
+              RowBox[{"plora", "\[LeftDoubleBracket]", 
+               RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+              RowBox[{"plora", "\[LeftDoubleBracket]", 
+               RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}]}], "}"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"z", ",", 
+              RowBox[{"plora", "\[LeftDoubleBracket]", 
+               RowBox[{"3", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+              RowBox[{"plora", "\[LeftDoubleBracket]", 
+               RowBox[{"3", ",", "2"}], "\[RightDoubleBracket]"}]}], "}"}]}], 
+           "\[IndentingNewLine]", "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"maxcellmeasure", "=", 
+        RowBox[{"OptionValue", "[", "MaxCellMeasure", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"maxcellmeasure", "\[Equal]", "Automatic"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"maxcellmeasure", "=", 
+          RowBox[{"r", "/", "2"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ToMesh", "@", 
+        RowBox[{"BoundaryDiscretizeRegion", "[", "\[IndentingNewLine]", 
+         RowBox[{"Rimpl", ",", "\[IndentingNewLine]", 
+          RowBox[{"MaxCellMeasure", "\[Rule]", "maxcellmeasure"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<RegionPlot3D\>\"", ",", 
+             RowBox[{"PlotPoints", "\[Rule]", "60"}]}], "}"}]}]}], 
+         "\[IndentingNewLine]", "]"}]}]}]}], "\[IndentingNewLine]", "]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Thickness", "\[Rule]", 
+        RowBox[{"Scaled", "[", "0.0125", "]"}]}], ",", "\[IndentingNewLine]", 
+       
+       RowBox[{"MaxCellMeasure", "\[Rule]", "Automatic"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.820226204139786*^9, 3.820226206450924*^9}},
+ CellLabel->
+  "In[114]:=",ExpressionUUID->"96a6b4ee-ec89-4610-8fbd-e70b5c1db71b"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 4868, 117, 717, "Input",ExpressionUUID->"96a6b4ee-ec89-4610-8fbd-e70b5c1db71b"]
+}
+]
+*)
+

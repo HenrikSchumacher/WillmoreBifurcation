@@ -1,0 +1,255 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9846,        247]
+NotebookOptionsPosition[      9309,        231]
+NotebookOutlinePosition[      9701,        247]
+CellTagsIndexPosition[      9658,        244]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_quadmesh", ",", "Quads", ",", "Edges"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "k", ",", "m", ",", "n", ",", "data", ",", "q1", ",", "q2", ",", "q3", 
+        ",", "q4"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"n", "=", 
+        RowBox[{"CountOf", "[", 
+         RowBox[{"M", ",", "Edges"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"m", "=", 
+        RowBox[{"CountOf", "[", 
+         RowBox[{"M", ",", "Quads"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"k", "=", "4"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"m", ">", "0"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"data", "=", 
+            RowBox[{"Extract", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"cStandardizeOrientedPolygons", "@", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{
+                 RowBox[{"getOrientedTrianglesFromOcts", "[", 
+                  RowBox[{"Octs", "[", "M", "]"}], "]"}], ",", "1"}], 
+                "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"Quads", "[", "M", "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"data", "=", 
+           RowBox[{"ExtractFromSparseArray", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], "]"}],
+               "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"q2", ",", "q3", ",", "q4", ",", "q1"}], "}"}], "]"}],
+               "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"QuickSparseArray", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"0", ",", 
+              RowBox[{"k", " ", "m"}], ",", "k"}], "]"}], ",", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"Abs", "[", "data", "]"}], ",", "1"}], "]"}], ",", 
+            RowBox[{"Sign", "[", "data", "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"m", ",", "n"}], "}"}]}], "]"}]}], "\[IndentingNewLine]",
+          ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7910130434493923`*^9, 3.791013044360614*^9}, {
+  3.791016463040576*^9, 3.791016495381913*^9}, {3.791018042420175*^9, 
+  3.791018074506659*^9}, {3.7910334416771603`*^9, 3.7910335394209337`*^9}, {
+  3.8355901541997337`*^9, 3.8355901831332293`*^9}},
+ CellLabel->
+  "In[123]:=",ExpressionUUID->"107f6a68-213a-4740-a743-c49d8852c0d6"],
+
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_quadmesh", ",", "Edges", ",", "Quads"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "#", "]"}], ">", "0"}], ",", 
+        RowBox[{"Transpose", "[", "#", "]"}], ",", "#"}], "]"}], "&"}], "@", 
+     RowBox[{"SignedAdjacencyMatrix", "[", 
+      RowBox[{"M", ",", "Quads", ",", "Edges"}], "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7910130989529753`*^9, 3.791013112429263*^9}, {
+   3.791013384326849*^9, 3.791013410842471*^9}, 3.791013444522758*^9, {
+   3.7910180808113527`*^9, 3.79101808308892*^9}, {3.791018138952832*^9, 
+   3.791018144422291*^9}, {3.7910334481579533`*^9, 
+   3.791033479851653*^9}},ExpressionUUID->"618d21ae-dda2-45bb-b294-\
+133f19c4ecc4"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"CheckSignedEdgeQuadAdjacencyMatrix", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_quadmesh", ",", "A_SparseArray"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"ei", ",", "fi", ",", "ai", ",", "cf"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ei", "=", 
+         RowBox[{
+          RowBox[{"A", "[", "\"\<NonzeroPositions\>\"", "]"}], 
+          "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"fi", "=", 
+         RowBox[{
+          RowBox[{"A", "[", "\"\<NonzeroPositions\>\"", "]"}], 
+          "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ai", "=", 
+         RowBox[{"A", "[", "\"\<NonzeroValues\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"cf", "=", 
+         RowBox[{"Compile", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"quad", ",", "_Integer", ",", "1"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"edge", ",", "_Integer", ",", "1"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"sign", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"2", 
+              RowBox[{"Boole", "[", 
+               RowBox[{"MemberQ", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "4", 
+                    "\[RightDoubleBracket]"}]}], "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "4", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], "}"}]}], "}"}], ",", 
+                 "edge"}], "]"}], "]"}]}], "-", "1"}], "\[Equal]", "sign"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"RuntimeAttributes", "\[Rule]", 
+            RowBox[{"{", "Listable", "}"}]}]}], "\[IndentingNewLine]", 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"And", "@@", 
+         RowBox[{"cf", "[", 
+          RowBox[{
+           RowBox[{"Quads", "[", 
+            RowBox[{"M", ",", "fi"}], "]"}], ",", 
+           RowBox[{"Edges", "[", 
+            RowBox[{"M", ",", "ei"}], "]"}], ",", "ai"}], "]"}]}]}]}], 
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.71897564607533*^9, 3.7189756614717503`*^9}, {
+  3.7194002869148197`*^9, 3.719400331194006*^9}, {3.719466467096909*^9, 
+  3.719466476515337*^9}, {3.758904899401104*^9, 
+  3.758904901312388*^9}},ExpressionUUID->"c9076eb2-7c3a-4ac0-8cd3-\
+33f316c17548"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"249db775-b762-4280-a9e9-03a40e764937"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 3641, 82, 592, "Input",ExpressionUUID->"107f6a68-213a-4740-a743-c49d8852c0d6"],
+Cell[4202, 104, 1026, 24, 117, "Input",ExpressionUUID->"618d21ae-dda2-45bb-b294-133f19c4ecc4"],
+Cell[5231, 130, 4074, 99, 317, "Input",ExpressionUUID->"c9076eb2-7c3a-4ac0-8cd3-33f316c17548"]
+}
+]
+*)
+

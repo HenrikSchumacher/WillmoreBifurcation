@@ -1,0 +1,265 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     10501,        257]
+NotebookOptionsPosition[     10098,        242]
+NotebookOutlinePosition[     10451,        258]
+CellTagsIndexPosition[     10408,        255]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ShiftedInversePowerMethod", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"A_SparseArray", ",", "B_SparseArray", ",", 
+       RowBox[{"r0_", "?", "VectorQ"}], ",", "opts___"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "ShiftedSolver", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ShiftedSolver", "=", 
+         RowBox[{"\[Sigma]", "\[Function]", 
+          RowBox[{"LinearSolve", "[", 
+           RowBox[{
+            RowBox[{"A", "-", 
+             RowBox[{"\[Sigma]", " ", "B"}]}], ",", 
+            RowBox[{"Method", "\[Rule]", "\"\<Pardiso\>\""}]}], "]"}]}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"ShiftedInversePowerMethod", "[", 
+         RowBox[{
+          RowBox[{"x", "\[Function]", 
+           RowBox[{"A", ".", "x"}]}], ",", 
+          RowBox[{"x", "\[Function]", 
+           RowBox[{"B", ".", "x"}]}], ",", "ShiftedSolver", ",", "r0", ",", 
+          "opts"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"ShiftedInversePowerMethod", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"A_SparseArray", ",", 
+      RowBox[{"r0_", "?", "VectorQ"}], ",", "opts___"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "ShiftedSolver", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ShiftedSolver", "=", 
+        RowBox[{"\[Sigma]", "\[Function]", 
+         RowBox[{"LinearSolve", "[", 
+          RowBox[{
+           RowBox[{"A", "-", 
+            RowBox[{"\[Sigma]", " ", 
+             RowBox[{"IdentityMatrix", "[", 
+              RowBox[{
+               RowBox[{"Length", "[", "A", "]"}], ",", "SparseArray"}], 
+              "]"}]}]}], ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Pardiso\>\""}]}], "]"}]}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"ShiftedInversePowerMethod", "[", 
+        RowBox[{
+         RowBox[{"x", "\[Function]", 
+          RowBox[{"A", ".", "x"}]}], ",", "Identity", ",", "ShiftedSolver", 
+         ",", "r0", ",", "opts"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->CompressedData["
+1:eJwdyk0ow3EAxvF/Vppa1Chpl5k1L8WmjbhMynt5G///kqLGGBbLzElrSENk
+bWvWJhE5UF4ODl6OO5C1bCxLGm2k7D5bFvb8Dk+fevoWqqYU6gyKonjpQals
++ObhL1Y/UsuEYPRXFIZhnph4yCqLwJLmvAQ8l36lYMgzxnpMO65UcGB1/LII
+qrY5ErgSaKmBXUJ3Hfxwctuh5I7uhr7kEQ0ndd/9sIlnGISynF0NzA9mT0DR
+pm0BRoaiG+S3nDyTzuon7hf7I3DV2vkOM9ey2MG0SfkVH+bS10Lo/SkohcGz
+aAV0mdkSyKe1VfD+1dsABT5HB9SM2hjY5uYOQEoXUEPtIqOHutTFDIwL5kxw
+R+QgnnpZS9AybVqGvZ9963Bv1kmMMbcumDC/EQ/0RvFT2lbllhzaX44bobPy
+m2gs77FCj2HeDv8BIPQMGg==
+  "],
+ CellLabel->"In[32]:=",ExpressionUUID->"2438c96f-5eb9-4930-8064-97a4272f6d12"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"ClearAll", "[", "ShiftedInversePowerMethod", "]"}], ";"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"ShiftedInversePowerMethod", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"A_", ",", "B_", ",", "ShiftedSolver_", ",", 
+       RowBox[{"r0_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "v", ",", "Bv", ",", "w", ",", "\[Alpha]", ",", "\[Sigma]", ",", 
+         "shiftQ", ",", "solver", ",", "residual", ",", "iter", ",", 
+         "maxiter", ",", "TOL"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"TOL", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"maxiter", "=", 
+         RowBox[{"OptionValue", "[", "\"\<MaxIterations\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"shiftQ", "=", 
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "[", "\"\<UpdateShift\>\"", "]"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<Shift\>\"", "]"}], "===", 
+            "None"}], "||", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<Shift\>\"", "]"}], "===", 
+            "False"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\[Sigma]", "=", "0."}], ";", "\[IndentingNewLine]", 
+           RowBox[{"shiftQ", "=", "False"}]}], "\[IndentingNewLine]", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\[Sigma]", "=", 
+            RowBox[{"OptionValue", "[", "\"\<Shift\>\"", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"!", 
+              RowBox[{"NumericQ", "[", "\[Sigma]", "]"}]}], ",", 
+             RowBox[{
+              RowBox[{"\[Sigma]", "=", "0."}], ";"}]}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"v", "=", "r0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Bv", "=", 
+         RowBox[{"B", "[", "v", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"residual", "=", "1."}], ";", "\[IndentingNewLine]", 
+        RowBox[{"iter", "=", "0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"While", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"residual", ">", "TOL"}], "&&", 
+           RowBox[{"iter", "<", "maxiter"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"iter", "++"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"shiftQ", "||", 
+              RowBox[{"iter", "\[Equal]", "1"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"solver", "=", 
+               RowBox[{"ShiftedSolver", "[", "\[Sigma]", "]"}]}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"w", "=", 
+            RowBox[{"solver", "[", "Bv", "]"}]}], ";", "\[IndentingNewLine]", 
+           
+           RowBox[{"\[Alpha]", "=", 
+            RowBox[{"1", "/", 
+             RowBox[{"w", "\[LeftDoubleBracket]", 
+              RowBox[{"IAMAX", "[", "w", "]"}], "\[RightDoubleBracket]"}]}]}],
+            ";", "\[IndentingNewLine]", 
+           RowBox[{"v", "=", 
+            RowBox[{"w", " ", "\[Alpha]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{"shiftQ", ",", 
+             RowBox[{"\[Sigma]", "+=", "\[Alpha]"}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Bv", "=", 
+            RowBox[{"B", "[", "v", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"residual", "=", 
+            RowBox[{"Max", "[", 
+             RowBox[{"Abs", "[", 
+              RowBox[{
+               RowBox[{"A", "[", "v", "]"}], "-", 
+               RowBox[{"\[Sigma]", " ", "Bv"}]}], " ", "]"}], "]"}]}], 
+           ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"residual", ">", "TOL"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Message", "[", 
+            RowBox[{
+             RowBox[{"ShiftedInversePowerMethod", "::", "tolmaxiter"}], ",", 
+             "iter", ",", "TOL", ",", "residual"}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"\[Sigma]", ",", 
+          RowBox[{"v", "/", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"v", ".", "Bv"}], "]"}]}]}], "}"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<Shift\>\"", "\[Rule]", "0."}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<UpdateShift\>\"", "\[Rule]", "True"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "100"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<Tolerance\>\"", "\[Rule]", 
+         RowBox[{"1.", " ", 
+          RowBox[{"10", "^", 
+           RowBox[{"-", "12"}]}]}]}]}], "\[IndentingNewLine]", "}"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<Warnings\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<tolmaxiter\>\"", "\[Rule]", 
+        "\"\<Warning: ShiftedInversePowerMethod stopped after `1` iterations \
+without convergence. Prescribed tolerance is `2`; achieved residual is `3`.\>\
+\""}], "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<InversePowerMethod with shifting to increase speed of convergence.\
+\nShiftedSolver[x,\[Sigma]] is supposed to return the solution of \
+LinearSolve[A - \[Sigma] B,x].\>\""}]}], "\[IndentingNewLine]", 
+    "]"}]}]}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGCQAGIQbWyScuLy/9eOaZZhN0D0439q90D0PWl9ML2KWesR
+iNZwF/kBorcav/oDom8cyWS+AqSzwoN4QLTZt13KIDppHo8BiO685GEBogNU
+ZtuD6KczhHxBtMHp0EAQfe7n6lAQnVfwPRpEu0mXxoNoE/6FGSBa/CpfNohW
+mz65CUQ/Sn7cDxafsP4WWN2ki2B6ifrFRyC6a5L/ExDN1sPJcRVI/7TbrQCi
+hUP3qIDoM78lNUH01Y2P9UD0rHYOAxCtEJpjCqIv3D/jAqKVzk3zA9EZ6ZPD
+QLTXbKE4EM1QcCkVROc0hxWD6II/O0tA9DelmgYQvUBtGpjecIa5FURPKGro
+ANEhzyN7QfTishlg+nXYyVkg+kf7AzANAJ7K7nY=
+  "],
+ CellLabel->"In[41]:=",ExpressionUUID->"9a54ebf7-afbf-42ce-922e-1d51e8611a7f"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2932, 69, 342, "Input",ExpressionUUID->"2438c96f-5eb9-4930-8064-97a4272f6d12"],
+Cell[3493, 91, 6601, 149, 1192, "Input",ExpressionUUID->"9a54ebf7-afbf-42ce-922e-1d51e8611a7f"]
+}
+]
+*)
+

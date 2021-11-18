@@ -1,0 +1,2468 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    116094,       2460]
+NotebookOptionsPosition[    115155,       2440]
+NotebookOutlinePosition[    115547,       2456]
+CellTagsIndexPosition[    115504,       2453]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "getCam", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "getCam2", "]"}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.8378659678460407`*^9, 3.837865984633678*^9}, 
+   3.8378682309210577`*^9},ExpressionUUID->"84904968-4832-4e20-b7a3-\
+91e82fe210be"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"getCam2", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"getCam2", "[", 
+      RowBox[{"M_", ",", 
+       RowBox[{"opts", ":", 
+        RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+     RowBox[{"getCam", "[", 
+      RowBox[{
+       RowBox[{"MeshPlot", "[", "M", "]"}], ",", "opts"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"getCam", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"graphics_Graphics3D", ",", "\[IndentingNewLine]", 
+    RowBox[{"DynamicModule", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+       "cam", ",", "\[IndentingNewLine]", "vp", ",", "vv", ",", "va", ",", 
+        "\[IndentingNewLine]", "cp", ",", "cc", ",", "cv", ",", "ca", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"vc", "=", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0.5", ",", "0.5", ",", "0.5"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0.5", ",", "0.5"}], "}"}]}], "}"}]}], ",", 
+        "\[IndentingNewLine]", "boundingbox", ",", "boundingboxlengths", ",", 
+        "specialscale", ",", "boundingboxcenter", ",", "\[IndentingNewLine]", 
+        
+        RowBox[{"cameraname", "=", "\"\<cam\>\""}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"fieldwidth", "=", "7.5"}], ",", "\[IndentingNewLine]", 
+        "cc2vc", ",", "vc2cc", ",", "cp2vp", ",", "vp2cp", ",", "cv2vv", ",", 
+        "vv2cv", ",", "va2ca", ",", "ca2va", ",", "\[IndentingNewLine]", 
+        "format", ",", "showformat", ",", "\[Sigma]", ",", 
+        "\[IndentingNewLine]", "axes", ",", "num", ",", "makecam", ",", 
+        RowBox[{"exported", "=", "False"}], ",", "ccam"}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"num", "[", "x_", "]"}], ":=", 
+        RowBox[{"NumberForm", "[", 
+         RowBox[{"x", ",", 
+          RowBox[{"{", 
+           RowBox[{"16", ",", "3"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"cam", "=", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<Cam\>\"", "]"}], 
+         "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"format", "=", 
+        RowBox[{
+        "cam", "\[LeftDoubleBracket]", "\"\<Format\>\"", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Sigma]", "=", "0.25"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"showformat", "=", 
+        RowBox[{"format", " ", "\[Sigma]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"boundingbox", "=", 
+        RowBox[{
+         RowBox[{"PlotRange", "[", "graphics", "]"}], "1.002"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"boundingboxlengths", "=", 
+        RowBox[{
+         RowBox[{"boundingbox", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}], "-", 
+         RowBox[{"boundingbox", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"specialscale", "=", 
+        RowBox[{"Max", "[", "boundingboxlengths", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"boundingboxcenter", "=", 
+        RowBox[{"Mean", "/@", "boundingbox"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"ABSOLUTE", " ", "camera", " ", "settings"}], " ", "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"cp", "=", 
+        RowBox[{
+        "cam", "\[LeftDoubleBracket]", "\"\<Position\>\"", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"cc", "=", 
+        RowBox[{
+        "cam", "\[LeftDoubleBracket]", "\"\<LookAt\>\"", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"cv", "=", 
+        RowBox[{
+        "cam", "\[LeftDoubleBracket]", "\"\<Sky\>\"", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ca", "=", 
+        RowBox[{
+        "cam", "\[LeftDoubleBracket]", "\"\<ViewAngle\>\"", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "ViewPoint", " ", "is", " ", "specified", " ", "wrt", " ", "the", " ",
+          "MIDPOINT", " ", "of", " ", "the", " ", "plot", " ", "range", " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"range", " ", "mid"}], "-", 
+           RowBox[{"point", " ", "is", " ", 
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0", ",", "0"}], "}"}]}]}], ")"}]}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "ViewCenter", " ", "is", " ", "specified", " ", "wrt", " ", "the", 
+         " ", "LOWER", " ", "CORNER", " ", "of", " ", "the", " ", "plot", " ",
+          "range", " ", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"range", " ", "mid"}], "-", 
+           RowBox[{"point", " ", "is", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"1", "/", "2"}], ",", 
+              RowBox[{"1", "/", "2"}], ",", 
+              RowBox[{"1", "/", "2"}]}], "}"}]}]}], ")"}]}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "ViewVertical", " ", "is", " ", "independent", " ", "of", " ", "its",
+           " ", "origin"}], ",", " ", 
+         RowBox[{"only", " ", "scaling", " ", "matters", " ", "here"}]}], 
+        "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "ViewAngle", " ", "does", " ", "not", " ", "need", " ", "to", " ", 
+         "be", " ", "transformed"}], "*)"}], "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"transformations", " ", "between", " ", "cc"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{"CameraCenter", " ", "and", " ", "vc"}], " ", "=", " ", 
+          "ViewCenter"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"cc2vc", "[", "x_", "]"}], ":=", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0.5", ",", "0.5", ",", "0.5"}], "}"}], "+", 
+         RowBox[{"N", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"x", "-", "boundingboxcenter"}], ")"}], "/", 
+           "boundingboxlengths"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"vc2cc", "[", "x_", "]"}], ":=", 
+        RowBox[{"N", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"x", "-", 
+             RowBox[{"{", 
+              RowBox[{"0.5", ",", "0.5", ",", "0.5"}], "}"}]}], ")"}], 
+           "boundingboxlengths"}], " ", "+", " ", "boundingboxcenter"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"transformations", " ", "between", " ", "cp"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{"CameraPosition", " ", "and", " ", "vp"}], " ", "=", " ", 
+          "ViewPoint"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"cp2vp", "[", "x_", "]"}], ":=", 
+        RowBox[{"N", "[", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"x", "-", "boundingboxcenter"}], ")"}], "/", 
+          "specialscale"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"vp2cp", "[", "x_", "]"}], ":=", 
+        RowBox[{"N", "[", 
+         RowBox[{
+          RowBox[{"x", " ", "specialscale"}], "+", "boundingboxcenter"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"cv2vv", "[", "x_", "]"}], ":=", 
+        RowBox[{"N", "[", 
+         RowBox[{"x", " ", "/", "boundingboxlengths"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"vv2cv", "[", "x_", "]"}], ":=", 
+        RowBox[{"N", "[", 
+         RowBox[{"x", " ", "boundingboxlengths"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"transformations", " ", "between", " ", "ca"}], " ", "=", 
+         " ", 
+         RowBox[{
+          RowBox[{"CameraAngle", " ", "and", " ", "va"}], " ", "=", " ", 
+          "ViewAngle"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ca2va", "[", "x_", "]"}], ":=", 
+        RowBox[{"2", " ", 
+         RowBox[{"(", 
+          RowBox[{"ArcTan", "[", 
+           RowBox[{
+            RowBox[{"Min", "[", "format", "]"}], " ", 
+            RowBox[{
+             RowBox[{"Tan", "[", 
+              RowBox[{"x", " ", 
+               RowBox[{"\[Pi]", "/", "360"}]}], "]"}], "/", 
+             RowBox[{
+             "format", "\[LeftDoubleBracket]", "1", 
+              "\[RightDoubleBracket]"}]}]}], "]"}], ")"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"va2ca", "[", "va_", "]"}], ":=", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"la", "=", 
+            RowBox[{"Setting", "@", "va"}]}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"NumberQ", "[", "la", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"N", "[", 
+             RowBox[{
+              RowBox[{"360", "/", 
+               RowBox[{"(", 
+                RowBox[{"2", "Pi"}], ")"}]}], "2", 
+              RowBox[{"ArcTan", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Tan", "[", 
+                  RowBox[{"la", "/", "2"}], "]"}], "/", 
+                 RowBox[{"Min", "[", "format", "]"}]}], 
+                RowBox[{
+                "format", "\[LeftDoubleBracket]", "1", 
+                 "\[RightDoubleBracket]"}]}], "]"}]}], "]"}], 
+            "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{"N", "[", 
+               RowBox[{"2", 
+                RowBox[{"ArcTan", "[", 
+                 RowBox[{
+                  RowBox[{"16", "/", "9"}], " ", 
+                  RowBox[{"Tan", "[", 
+                   RowBox[{
+                    RowBox[{"N", "[", "la", "]"}], "/", "2"}], "]"}]}], "]"}],
+                 " ", 
+                RowBox[{"180", "/", "\[Pi]"}]}], "]"}], "2"}], "*)"}], ",", 
+            RowBox[{"N", "[", 
+             RowBox[{"2", 
+              RowBox[{"ArcTan", "[", 
+               RowBox[{
+                RowBox[{"16", "/", "9"}], " ", 
+                RowBox[{"Tan", "[", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"35", "/", "180"}], ")"}], 
+                  RowBox[{"\[Pi]", "/", "2"}]}], "]"}]}], "]"}], " ", 
+              RowBox[{"180", "/", "\[Pi]"}]}], "]"}]}], "\[IndentingNewLine]",
+            "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"vp", "=", 
+        RowBox[{"cp2vp", "[", "cp", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"vc", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+        "=", 
+        RowBox[{"cc2vc", "[", "cc", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"vv", "=", 
+        RowBox[{"cv2vv", "[", "cv", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"va", "=", 
+        RowBox[{"ca2va", "[", "ca", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"makecam", "[", 
+         RowBox[{"{", 
+          RowBox[{"cp_", ",", "cc_", ",", "cv_", ",", "ca_", ",", "format_"}],
+           "}"}], "]"}], ":=", 
+        RowBox[{"Rule", "[", 
+         RowBox[{"\"\<Cam\>\"", ",", 
+          RowBox[{"camera", "[", 
+           RowBox[{"<|", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"\"\<Position\>\"", "\[Rule]", "cp"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<LookAt\>\"", "\[Rule]", "cc"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<Format\>\"", "\[Rule]", "format"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<ViewAngle\>\"", "\[Rule]", "ca"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<Stereo\>\"", "\[Rule]", "False"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<EyeDistance\>\"", "\[Rule]", "0.6"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<Quality\>\"", "\[Rule]", "11"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<Sky\>\"", "\[Rule]", " ", 
+              RowBox[{"Normalize", "[", "cv", "]"}]}]}], 
+            "\[IndentingNewLine]", "|>"}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"axes", "=", 
+        RowBox[{"Graphics3D", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{"Red", ",", 
+           RowBox[{"Arrow", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "}"}], "]"}], ",", 
+           "\[IndentingNewLine]", "Green", ",", 
+           RowBox[{"Arrow", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "1", ",", "0"}], "}"}]}], "}"}], "]"}], ",", 
+           "\[IndentingNewLine]", "Blue", ",", 
+           RowBox[{"Arrow", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "}"}], "]"}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Panel", "[", 
+        RowBox[{"Column", "[", 
+         RowBox[{
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Dynamic", "@", 
+             RowBox[{"Framed", "@", 
+              RowBox[{"Show", "[", 
+               RowBox[{
+                RowBox[{"{", "graphics", "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"ViewPoint", "\[Rule]", 
+                 RowBox[{"Dynamic", "[", 
+                  RowBox[{"vp", ",", 
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cp", "=", 
+                    RowBox[{"vp2cp", "[", "x", "]"}]}], ";", 
+                    RowBox[{"vp", "=", "x"}], ";"}], ")"}]}]}], "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ViewVertical", "\[Rule]", 
+                 RowBox[{"Dynamic", "[", 
+                  RowBox[{"vv", ",", 
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cv", "=", 
+                    RowBox[{"vv2cv", "[", "x", "]"}]}], ";", 
+                    RowBox[{"vv", "=", "x"}], ";"}], ")"}]}]}], "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ViewCenter", "\[Rule]", 
+                 RowBox[{"Dynamic", "[", "vc", "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ViewAngle", "\[Rule]", 
+                 RowBox[{"Dynamic", "[", 
+                  RowBox[{"va", ",", 
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"ca", "=", 
+                    RowBox[{"va2ca", "[", "x", "]"}]}], ";", 
+                    RowBox[{"va", "=", "x"}], ";"}], ")"}]}]}], "]"}]}], ",", 
+                "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                RowBox[{"(*", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Boxed", "\[Rule]", "True"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Axes", "\[Rule]", "True"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"AxesLabel", "\[Rule]", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<x\>\"", ",", "\"\<y\>\"", ",", "\"\<z\>\""}],
+                     "}"}]}], ","}], "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"PlotRegion", "\[Rule]", 
+                 RowBox[{"Dynamic", "[", "boundingbox", "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ImageSize", "\[Rule]", 
+                 RowBox[{"Dynamic", "[", "showformat", "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"ImagePadding", "\[Rule]", "None"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"SphericalRegion", "\[Rule]", "False"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Background", "\[Rule]", "White"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"PlotRangePadding", "\[Rule]", "0"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"RotationAction", "\[Rule]", "\"\<Clip\>\""}]}], 
+               "\[IndentingNewLine]", "]"}]}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Grid", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<Format: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Desired image dimensions.\>\""}], 
+                  "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "format", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    "showformat", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{"x", " ", "\[Sigma]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "format", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "format", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    "showformat", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{"x", " ", "\[Sigma]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "format", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<PreviewFactor: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Preview images has size Format * \
+PreviewFactor.\>\""}], "\[IndentingNewLine]", "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{"\[Sigma]", ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"showformat", "=", " ", 
+                    RowBox[{"format", " ", "x"}]}], ";", 
+                    RowBox[{"\[Sigma]", "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<ViewPoint: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Position of camera in \\\"special scaled \
+coordinates\\\".\>\""}], "\[IndentingNewLine]", "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cp", "=", 
+                    RowBox[{"vp2cp", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", 
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cp", "=", 
+                    RowBox[{"vp2cp", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", "x", ",", 
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cp", "=", 
+                    RowBox[{"vp2cp", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "x"}], "}"}], "]"}]}], 
+                    ";", 
+                    RowBox[{
+                    RowBox[{
+                    "vp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<Position: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Position of camera in absolute coordinates.\>\""}], 
+                  "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vp", "=", 
+                    RowBox[{"cp2vp", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", 
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vp", "=", 
+                    RowBox[{"cp2vp", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", "x", ",", 
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vp", "=", 
+                    RowBox[{"cp2vp", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "x"}], "}"}], "]"}]}], 
+                    ";", 
+                    RowBox[{
+                    RowBox[{
+                    "cp", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<ViewCenter: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Point to look at measured relative to bounding box.\>\
+\""}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}], "]"}],
+                    ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}], "]"}],
+                    ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "3"}], "\[RightDoubleBracket]"}], "]"}],
+                    ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<LookAt: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Point to look at in absolute coordinates.\>\""}], 
+                  "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{
+                    "cc", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{
+                    "cc", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{
+                    "cc", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<ViewCenter2: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Point in the image plane where to map ViewCenter to; \
+also measured relative to bounding box.\>\""}], "\[IndentingNewLine]", "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}], "]"}],
+                    ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}], "]"}],
+                    ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", "\"\<\>\""}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<ViewVertical: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Mathematica's internal ViewVertical.\>\""}], 
+                  "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cv", "=", 
+                    RowBox[{"vv2cv", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", 
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"cv", "=", 
+                    RowBox[{"vv2cv", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", "x", ",", 
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vv", "=", 
+                    RowBox[{"vv2cv", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "x"}], "}"}], "]"}]}], 
+                    ";", 
+                    RowBox[{
+                    RowBox[{
+                    "vv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<Sky: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<POVray's sky vector.\>\""}], "\[IndentingNewLine]", 
+                  "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vv", "=", 
+                    RowBox[{"cv2vv", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", 
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vv", "=", 
+                    RowBox[{"cv2vv", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", "x", ",", 
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"vv", "=", 
+                    RowBox[{"cv2vv", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "x"}], "}"}], "]"}]}], 
+                    ";", 
+                    RowBox[{
+                    RowBox[{
+                    "cv", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], "=", "x"}], ";"}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "\[IndentingNewLine]", "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Tooltip", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                  "\"\<ViewAngle: \>\"", ",", "\[IndentingNewLine]", 
+                   "\"\<Mathematica's interval ViewAngle.\>\""}], 
+                  "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{"va", ",", "\[IndentingNewLine]", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"ca", "=", 
+                    RowBox[{"va2ca", "[", "x", "]"}]}], ";", 
+                    RowBox[{"va", "=", "x"}]}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"N", "[", 
+                    RowBox[{"va", " ", 
+                    RowBox[{"360", "/", 
+                    RowBox[{"(", 
+                    RowBox[{"2", "Pi"}], ")"}]}]}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", "\"\<\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<POV-ViewAngle: \>\"", ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "\[IndentingNewLine]", 
+                    RowBox[{"ca", ",", "\[IndentingNewLine]", 
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"va", "=", 
+                    RowBox[{"ca2va", "[", "x", "]"}]}], ";", 
+                    RowBox[{"ca", "=", "x"}]}], ")"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", "\"\<\>\""}], 
+                "\[IndentingNewLine]", "}"}]}], "}"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Row", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Button", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<Extract Camera Settings\>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"bla", "=", 
+                    RowBox[{"makecam", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "cp", ",", "cc", ",", "cv", ",", "ca", ",", "format"}], 
+                    "}"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"Print", "[", "bla", "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ToExpression", "[", 
+                    RowBox[{"cameraname", "<>", "\"\<=\>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"bla", ",", "InputForm"}], "]"}]}], "]"}], 
+                    ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+                "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"InputField", "[", 
+                RowBox[{
+                 RowBox[{"Dynamic", "[", "cameraname", "]"}], ",", "String"}],
+                 "]"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{"Row", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Button", "[", "\[IndentingNewLine]", 
+                RowBox[{"\"\<Click!\>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"ccam", "=", 
+                   RowBox[{"makecam", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "cp", ",", "cc", ",", "cv", ",", "ca", ",", "format"}], 
+                    "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"light", "=", 
+                   RowBox[{"getLightSource", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "ccam", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"4", ",", "2", ",", "10"}], "}"}]}], "]"}]}], ";",
+                   "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{"exported", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"Framed", "@", 
+                    RowBox[{"TempPOVray", "[", 
+                    RowBox[{"ccam", ",", "light", ",", "paperstyle"}], 
+                    "]"}]}], "]"}], ";"}], "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"Framed", "@", 
+                    RowBox[{"POVray", "[", 
+                    RowBox[{
+                    "M", ",", "ccam", ",", "light", ",", "paperstyle", ",", 
+                    RowBox[{"\"\<Smoothed\>\"", "\[Rule]", "False"}]}], 
+                    "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"exported", "=", "True"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+               "\"\<Options\>\"", ",", "\[IndentingNewLine]", 
+               RowBox[{"InputField", "[", 
+                RowBox[{"Dynamic", "[", 
+                 RowBox[{"\"\<\>\"", ",", "String"}], "]"}], "]"}]}], 
+              "\[IndentingNewLine]", "}"}], "]"}], "*)"}], 
+           "\[IndentingNewLine]", "}"}], ",", 
+          RowBox[{"Alignment", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"Center", ",", "Baseline"}], "}"}]}]}], "]"}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<getCam[graphics] opens an interactive interface for exporting \
+camera settings to POVray.\>\""}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Cam\>\"", "\[RuleDelayed]", "stdcam"}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.6336936651590433`*^9, 3.6336937566306963`*^9}, {
+   3.6336937942082872`*^9, 3.633693794782583*^9}, {3.6336938372366037`*^9, 
+   3.633693838456751*^9}, 3.6336938925752983`*^9, {3.633693939900035*^9, 
+   3.633693949517647*^9}, {3.633694195630741*^9, 3.6336943386152067`*^9}, {
+   3.6336944339812937`*^9, 3.6336944531931677`*^9}, {3.6336948390880117`*^9, 
+   3.633694893225009*^9}, {3.6336950015266943`*^9, 3.633695045622333*^9}, {
+   3.6336951100033407`*^9, 3.6336951351996737`*^9}, {3.6336952831461143`*^9, 
+   3.633695316358412*^9}, {3.633695445578763*^9, 3.633695451680294*^9}, {
+   3.633696365685107*^9, 3.63369637761381*^9}, {3.633696408601574*^9, 
+   3.633696409248475*^9}, {3.633696501928032*^9, 3.633696503361075*^9}, {
+   3.6336968101164722`*^9, 3.633696823602931*^9}, {3.63369723416255*^9, 
+   3.633697238922708*^9}, {3.6336986605444317`*^9, 3.633698703218739*^9}, {
+   3.640587329034293*^9, 3.640587364299376*^9}, {3.640587519877886*^9, 
+   3.640587541302462*^9}, {3.640587778881781*^9, 3.6405879085959177`*^9}, {
+   3.64058800287829*^9, 3.640588004929365*^9}, {3.640588039739406*^9, 
+   3.6405880584937153`*^9}, 3.640588138348105*^9, {3.640588180646927*^9, 
+   3.640588292774466*^9}, {3.640588359922229*^9, 3.640588362903023*^9}, {
+   3.640588426802335*^9, 3.640588492441716*^9}, 3.640588553852872*^9, 
+   3.640588596947578*^9, {3.640588757969578*^9, 3.640588853750555*^9}, {
+   3.640588941153037*^9, 3.640588945000832*^9}, {3.640588994951611*^9, 
+   3.6405890145299788`*^9}, {3.640589046186254*^9, 3.640589053330761*^9}, {
+   3.6405892059248877`*^9, 3.640589307264791*^9}, {3.64058953908208*^9, 
+   3.640589549672099*^9}, {3.6405896427468*^9, 3.640589657528941*^9}, {
+   3.640589699650735*^9, 3.640589706515114*^9}, {3.64059013658689*^9, 
+   3.640590139473413*^9}, {3.640590277340268*^9, 3.6405902946681337`*^9}, {
+   3.640590363989558*^9, 3.640590368125885*^9}, {3.640590401130885*^9, 
+   3.64059045639851*^9}, {3.640590587533441*^9, 3.640590671071436*^9}, {
+   3.640590727096479*^9, 3.640590764808567*^9}, {3.640590851278041*^9, 
+   3.64059090543701*^9}, {3.640590946470471*^9, 3.6405909844446363`*^9}, {
+   3.640591188152997*^9, 3.640591189664356*^9}, {3.640591354930936*^9, 
+   3.6405913658819313`*^9}, {3.640592072051735*^9, 3.640592298702948*^9}, {
+   3.6405924160269213`*^9, 3.64059246133077*^9}, {3.640592629560631*^9, 
+   3.640592655563126*^9}, {3.6405927717866364`*^9, 3.640592784005487*^9}, {
+   3.640592913385248*^9, 3.640593023900962*^9}, {3.6405930545305147`*^9, 
+   3.640593056586775*^9}, 3.640593092874259*^9, {3.640593137944661*^9, 
+   3.6405931606837893`*^9}, {3.640593285580821*^9, 3.640593285958514*^9}, {
+   3.64059338075346*^9, 3.640593381088101*^9}, {3.640594088822102*^9, 
+   3.640594125262117*^9}, {3.640594163301915*^9, 3.640594318860983*^9}, {
+   3.640594352085133*^9, 3.640594398390806*^9}, {3.640594527338209*^9, 
+   3.64059458492616*^9}, {3.640594624031376*^9, 3.640594667108843*^9}, {
+   3.640594773022403*^9, 3.640594777273699*^9}, {3.640594808737102*^9, 
+   3.640594917628858*^9}, {3.640594958165422*^9, 3.6405949653922777`*^9}, {
+   3.64059501227079*^9, 3.640595068065419*^9}, {3.640595177583502*^9, 
+   3.640595260305697*^9}, {3.640595467995974*^9, 3.640595471931448*^9}, {
+   3.6405955371584187`*^9, 3.6405956019488573`*^9}, {3.641099442554265*^9, 
+   3.6410995494065247`*^9}, {3.641099853392951*^9, 3.6410998916897993`*^9}, 
+   3.64109992966098*^9, {3.6411007584542933`*^9, 3.6411007872692337`*^9}, {
+   3.6411012216529217`*^9, 3.6411012230394173`*^9}, 3.64110221436252*^9, 
+   3.641102283597102*^9, 3.6411023151059637`*^9, {3.641102348760261*^9, 
+   3.641102362504345*^9}, {3.641102800866107*^9, 3.641102909977857*^9}, {
+   3.641103711079177*^9, 3.641103711319182*^9}, {3.6411039231311502`*^9, 
+   3.641103944674428*^9}, {3.6411039763865213`*^9, 3.641103986371052*^9}, {
+   3.6411040991881027`*^9, 3.6411041066689987`*^9}, {3.6411041897455053`*^9, 
+   3.641104213813303*^9}, {3.641104763043147*^9, 3.641104793862371*^9}, {
+   3.641104833594946*^9, 3.641104835166654*^9}, {3.641105009231337*^9, 
+   3.641105109336728*^9}, 3.6411051571516953`*^9, {3.641105202216707*^9, 
+   3.641105239467942*^9}, {3.641105297008644*^9, 3.641105347878324*^9}, {
+   3.6411054036828737`*^9, 3.6411054060893373`*^9}, {3.641105468126664*^9, 
+   3.641105678460999*^9}, {3.64110571781778*^9, 3.641105735912158*^9}, {
+   3.64110577890234*^9, 3.641106113935401*^9}, {3.6411062191467648`*^9, 
+   3.64110624960102*^9}, 3.641106479126737*^9, {3.641106534526813*^9, 
+   3.641106539291842*^9}, {3.6411065960641403`*^9, 3.641106596452611*^9}, {
+   3.641106651718727*^9, 3.6411069350121117`*^9}, {3.6411069853408527`*^9, 
+   3.6411072760174294`*^9}, {3.641107348729154*^9, 3.64110736182556*^9}, {
+   3.641107435968536*^9, 3.641107466756219*^9}, {3.6411075009585657`*^9, 
+   3.6411075293465347`*^9}, {3.641107621157434*^9, 3.641107795212308*^9}, {
+   3.641107836944497*^9, 3.6411078593090067`*^9}, 3.641107915348225*^9, {
+   3.64110801822572*^9, 3.6411080413888483`*^9}, {3.641108077614067*^9, 
+   3.641108160474958*^9}, {3.641108196302166*^9, 3.641108216085575*^9}, {
+   3.641108353496867*^9, 3.641108356328712*^9}, 3.64110842771677*^9, {
+   3.641108460907134*^9, 3.641108465467087*^9}, {3.641108501419231*^9, 
+   3.6411085020252237`*^9}, {3.641109468201837*^9, 3.641109470924754*^9}, {
+   3.6411095557523108`*^9, 3.641109573946937*^9}, {3.641109710954133*^9, 
+   3.641109739041875*^9}, {3.64110977233748*^9, 3.641109774970891*^9}, 
+   3.641112933153131*^9, {3.641112982983494*^9, 3.641112985498321*^9}, {
+   3.641113801561201*^9, 3.641113802765802*^9}, {3.641113863834996*^9, 
+   3.641113865705511*^9}, {3.641114107186145*^9, 3.641114110560255*^9}, {
+   3.641114156092094*^9, 3.641114188884715*^9}, 3.64111424325168*^9, {
+   3.641114289955755*^9, 3.6411143334749403`*^9}, {3.641114689009041*^9, 
+   3.64111470146541*^9}, {3.6411149285824223`*^9, 3.6411149850059633`*^9}, {
+   3.641115048020575*^9, 3.641115117705056*^9}, {3.6411151923924294`*^9, 
+   3.641115195757056*^9}, {3.641115295077932*^9, 3.6411153172810917`*^9}, {
+   3.641530582497552*^9, 3.6415306937982616`*^9}, {3.6415308076726847`*^9, 
+   3.641530882693934*^9}, {3.641530931867525*^9, 3.6415309382856207`*^9}, {
+   3.641530999096596*^9, 3.641530999338373*^9}, {3.641531202415872*^9, 
+   3.641531205826812*^9}, 3.641531262144477*^9, 3.641531389086452*^9, {
+   3.641531677751883*^9, 3.64153179628146*^9}, {3.64153183616568*^9, 
+   3.641531836284891*^9}, {3.6415319014185867`*^9, 3.641531917490745*^9}, {
+   3.641531957812827*^9, 3.6415319625006447`*^9}, {3.6415370506227694`*^9, 
+   3.641537097291863*^9}, {3.682920462724888*^9, 3.682920555297785*^9}, {
+   3.6829206335970907`*^9, 3.682920741318006*^9}, {3.682921584248907*^9, 
+   3.6829216678078337`*^9}, {3.6829217758806753`*^9, 3.682921823258071*^9}, {
+   3.682923287536868*^9, 3.682923308857888*^9}, {3.6829233676768503`*^9, 
+   3.682923377643422*^9}, {3.6829234890232487`*^9, 3.682923596139275*^9}, {
+   3.7871106755946207`*^9, 3.787110687874319*^9}, 3.837865973056456*^9, 
+   3.8378660397177258`*^9},
+ CellLabel->
+  "In[195]:=",ExpressionUUID->"5c02008c-d479-4d2b-96c4-89f0b1c5241a"],
+
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{
+   RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"getLightSource", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"getLightSource", "[", 
+       RowBox[{"cam_Rule", ",", "args__"}], "]"}], ":=", 
+      RowBox[{"getLightSource", "[", 
+       RowBox[{
+        RowBox[{"cam", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+         ",", "args"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"getLightSource", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"cam_camera", ",", "vdata_"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "camdata", ",", "direction", ",", "xdirection", ",", "ydirection", 
+          ",", "zdirection", ",", "v", ",", "intensities", ",", "k", ",", 
+          "colors"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"v", "=", 
+          RowBox[{"Partition", "[", 
+           RowBox[{
+            RowBox[{"Flatten", "[", 
+             RowBox[{"List", "[", "vdata", "]"}], "]"}], ",", "3"}], "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"colors", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Colors\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"VectorQ", "[", "colors", "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"colors", "=", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"colors", ",", 
+              RowBox[{"Length", "[", "v", "]"}]}], "]"}]}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"intensities", "=", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"List", "[", 
+            RowBox[{"OptionValue", "[", "\"\<Intensities\>\"", "]"}], "]"}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"k", "=", 
+          RowBox[{
+           RowBox[{"Length", "[", "v", "]"}], "-", 
+           RowBox[{"Length", "[", "intensities", "]"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"k", ">", "0"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"intensities", "=", 
+            RowBox[{"Join", "[", "\[IndentingNewLine]", 
+             RowBox[{"intensities", ",", "\[IndentingNewLine]", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "\"\<DefaultIntensity\>\"", "]"}],
+                 ",", "k"}], "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"camdata", "=", 
+          RowBox[{
+          "cam", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"direction", "=", 
+          RowBox[{
+           RowBox[{
+           "camdata", "\[LeftDoubleBracket]", "\"\<LookAt\>\"", 
+            "\[RightDoubleBracket]"}], "-", 
+           RowBox[{
+           "camdata", "\[LeftDoubleBracket]", "\"\<Position\>\"", 
+            "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"zdirection", "=", 
+          RowBox[{"-", 
+           RowBox[{"Normalize", "@", "direction"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"xdirection", "=", 
+          RowBox[{"-", 
+           RowBox[{"Normalize", "@", 
+            RowBox[{"Cross", "[", 
+             RowBox[{"zdirection", ",", 
+              RowBox[{
+              "camdata", "\[LeftDoubleBracket]", "\"\<Sky\>\"", 
+               "\[RightDoubleBracket]"}]}], "]"}]}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"ydirection", "=", 
+          RowBox[{"-", 
+           RowBox[{"Cross", "[", 
+            RowBox[{"xdirection", ",", "zdirection"}], "]"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<LightSource\>\"", "\[Rule]", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"StringJoin", "[", 
+              RowBox[{"\"\<light_source {\>\"", ",", 
+               RowBox[{"POVrayVectorString", "[", 
+                RowBox[{"N", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"v", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "1"}], "\[RightDoubleBracket]"}], " ", 
+                   "xdirection"}], "+", 
+                  RowBox[{
+                   RowBox[{"v", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "2"}], "\[RightDoubleBracket]"}], " ", 
+                   "ydirection"}], "+", 
+                  RowBox[{
+                   RowBox[{"v", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "3"}], "\[RightDoubleBracket]"}], " ", 
+                   "zdirection"}]}], "]"}], "]"}], ",", "\"\< color rgb\>\"", 
+               ",", 
+               RowBox[{"POVrayVectorString", "[", 
+                RowBox[{
+                 RowBox[{
+                 "intensities", "\[LeftDoubleBracket]", "i", 
+                  "\[RightDoubleBracket]"}], 
+                 RowBox[{
+                 "colors", "\[LeftDoubleBracket]", "i", 
+                  "\[RightDoubleBracket]"}]}], "]"}], ",", "\"\<}\\n\>\""}], 
+              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"Length", "[", "v", "]"}]}], "}"}]}], "]"}], 
+           "]"}]}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Options", "\[Rule]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<Intensities\>\"", "\[Rule]", 
+          RowBox[{"{", "1.", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<DefaultIntensity\>\"", "\[Rule]", ".2"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Colors\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"1.", ",", "1.", ",", "1."}], "}"}]}]}], 
+        "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+     "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.6415364921427803`*^9, 3.641536512837487*^9}, {
+   3.641536701166297*^9, 3.641536709900621*^9}, {3.648122306207184*^9, 
+   3.648122312366623*^9}, {3.648122349042458*^9, 3.648122378659692*^9}, {
+   3.681635762416492*^9, 3.681635847537345*^9}, {3.681635880364788*^9, 
+   3.681635884387492*^9}, {3.6829236595604973`*^9, 3.6829240045438538`*^9}, {
+   3.6829240589024277`*^9, 3.682924077451474*^9}, {3.6829241325847797`*^9, 
+   3.68292416398346*^9}, {3.682924334102703*^9, 3.682924334382964*^9}, {
+   3.6829244875063667`*^9, 3.682924499305944*^9}, {3.7231086347796993`*^9, 
+   3.723108726550166*^9}, 3.747742496936665*^9, {3.7883643456823874`*^9, 
+   3.788364346528133*^9}, {3.788367305698339*^9, 3.7883673118638*^9}, {
+   3.824390252727758*^9, 
+   3.82439026243431*^9}},ExpressionUUID->"5d55f096-972d-4791-bed4-\
+dc90d999d448"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"getLabelRotation", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"getLabelRotation", "[", 
+      RowBox[{"cam_Rule", ",", "args___"}], "]"}], ":=", 
+     RowBox[{"getLabelRotation", "[", 
+      RowBox[{
+       RowBox[{"cam", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+       ",", "args"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"getLabelRotation", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", "cam_camera", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "camdata", ",", "direction", ",", "xdirection", ",", "ydirection", ",",
+         "zdirection", ",", "intensities", ",", "k", ",", "colors"}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"camdata", "=", 
+        RowBox[{
+        "cam", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"direction", "=", 
+        RowBox[{
+         RowBox[{
+         "camdata", "\[LeftDoubleBracket]", "\"\<LookAt\>\"", 
+          "\[RightDoubleBracket]"}], "-", 
+         RowBox[{
+         "camdata", "\[LeftDoubleBracket]", "\"\<Position\>\"", 
+          "\[RightDoubleBracket]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"zdirection", "=", 
+        RowBox[{"-", 
+         RowBox[{"Normalize", "@", "direction"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"xdirection", "=", 
+        RowBox[{"-", 
+         RowBox[{"Normalize", "@", 
+          RowBox[{"Cross", "[", 
+           RowBox[{"zdirection", ",", 
+            RowBox[{
+            "camdata", "\[LeftDoubleBracket]", "\"\<Sky\>\"", 
+             "\[RightDoubleBracket]"}]}], "]"}]}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ydirection", "=", 
+        RowBox[{"-", 
+         RowBox[{"Cross", "[", 
+          RowBox[{"xdirection", ",", "zdirection"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Transpose", "[", 
+        RowBox[{"{", 
+         RowBox[{"xdirection", ",", "ydirection", ",", "zdirection"}], "}"}], 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.747743112900556*^9, 3.747743117462757*^9}},
+ CellLabel->
+  "In[520]:=",ExpressionUUID->"4e4a0727-31bd-4c93-a44b-8fc0215a1870"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"getCameraFrame", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"c_camera", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "pos", ",", "at", ",", "dir", ",", "e2", ",", "e3", ",", "e1", ",", 
+         "\[Phi]", ",", "A"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"pos", "=", 
+         RowBox[{"c", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<Position\>\""}], "\[RightDoubleBracket]"}]}],
+         ";", "\[IndentingNewLine]", 
+        RowBox[{"at", "=", 
+         RowBox[{"c", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<LookAt\>\""}], "\[RightDoubleBracket]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"dir", "=", 
+         RowBox[{"Normalize", "[", 
+          RowBox[{"at", "-", "pos"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"e2", "=", 
+         RowBox[{"Normalize", "[", 
+          RowBox[{"c", "\[LeftDoubleBracket]", 
+           RowBox[{"1", ",", "\"\<Sky\>\""}], "\[RightDoubleBracket]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"e3", "=", 
+         RowBox[{"-", 
+          RowBox[{"Normalize", "[", 
+           RowBox[{"dir", "-", 
+            RowBox[{
+             RowBox[{"dir", ".", "e2"}], " ", "e2"}]}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"e1", "=", 
+         RowBox[{"Cross", "[", 
+          RowBox[{"e2", ",", "e3"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"\[Phi]", "=", 
+         RowBox[{"ArcTan", "[", 
+          RowBox[{
+           RowBox[{"-", 
+            RowBox[{"e2", ".", "dir"}]}], "/", 
+           RowBox[{"e3", ".", "dir"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"A", "=", 
+         RowBox[{"RotationMatrix", "[", 
+          RowBox[{"\[Phi]", ",", "e1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"A", ".", "e1"}], ",", 
+          RowBox[{"A", ".", "e2"}], ",", 
+          RowBox[{"A", ".", "e3"}]}], "}"}]}]}], "\[IndentingNewLine]", 
+      "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"getZoom", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"c0_camera", ",", "box_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "c", ",", "corners", ",", "pos", ",", "at", ",", "v", ",", "e1", ",", 
+         "e2", ",", "e3", ",", "xangle", ",", "yangle", ",", "\[Sigma]", ",", 
+         "offset"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"c", "=", "c0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"\[Sigma]", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"offset", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Offset\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"e1", ",", "e2", ",", "e3"}], "}"}], "=", 
+         RowBox[{"getCameraFrame", "[", "c", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"corners", "=", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"x", ",", "y", ",", "z"}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"x", ",", 
+               RowBox[{
+               "box", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"y", ",", 
+               RowBox[{
+               "box", "\[LeftDoubleBracket]", "2", 
+                "\[RightDoubleBracket]"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"z", ",", 
+               RowBox[{
+               "box", "\[LeftDoubleBracket]", "3", 
+                "\[RightDoubleBracket]"}]}], "}"}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"pos", "=", 
+         RowBox[{"c", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<Position\>\""}], "\[RightDoubleBracket]"}]}],
+         ";", "\[IndentingNewLine]", 
+        RowBox[{"at", "=", 
+         RowBox[{"c", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<LookAt\>\""}], "\[RightDoubleBracket]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"v", "=", 
+         RowBox[{"corners", "-", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"pos", ",", "8"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"yangle", "=", 
+         RowBox[{"Max", "[", 
+          RowBox[{"Abs", "[", 
+           RowBox[{"ArcTan", "[", 
+            RowBox[{"\[Sigma]", " ", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"v", ".", "e2"}], "+", "offset"}], ")"}], "/", 
+              RowBox[{"v", ".", "e3"}]}], " ", 
+             RowBox[{
+              RowBox[{"c", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ",", "\"\<Format\>\"", ",", "1"}], 
+               "\[RightDoubleBracket]"}], "/", 
+              RowBox[{"c", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ",", "\"\<Format\>\"", ",", "2"}], 
+               "\[RightDoubleBracket]"}]}]}], "]"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"xangle", "=", 
+         RowBox[{"Max", "[", 
+          RowBox[{"Abs", "[", 
+           RowBox[{"ArcTan", "[", 
+            RowBox[{"\[Sigma]", " ", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"v", ".", "e1"}], "+", "offset"}], ")"}], "/", 
+              RowBox[{"v", ".", "e3"}]}]}], "]"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"c", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<ViewAngle\>\""}], "\[RightDoubleBracket]"}], 
+         "=", 
+         RowBox[{
+          RowBox[{"360", "/", "Pi"}], " ", 
+          RowBox[{"Max", "[", 
+           RowBox[{"xangle", ",", "yangle"}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", "c"}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "1.05"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<Offset\>\"", "\[Rule]", "0."}]}], "\[IndentingNewLine]", 
+       "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"getZoom2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"c0_camera", ",", "pts_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "c", ",", "corners", ",", "pos", ",", "at", ",", "v", ",", "e1", ",", 
+        "e2", ",", "e3", ",", "xangle", ",", "yangle", ",", "\[Sigma]", ",", 
+        "offset"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"c", "=", "c0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Sigma]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"offset", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Offset\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"e1", ",", "e2", ",", "e3"}], "}"}], "=", 
+        RowBox[{"getCameraFrame", "[", "c", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"corners", "=", 
+          RowBox[{"VertexCoordinates", "[", 
+           RowBox[{"ConvexHullSurface", "[", "pts", "]"}], "]"}]}], ";"}], 
+        "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"corners", "=", "pts"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{"c", "\[LeftDoubleBracket]", 
+         RowBox[{"1", ",", "\"\<Position\>\""}], "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"at", "=", 
+        RowBox[{"c", "\[LeftDoubleBracket]", 
+         RowBox[{"1", ",", "\"\<LookAt\>\""}], "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"v", "=", 
+        RowBox[{"corners", "-", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"pos", ",", 
+           RowBox[{"Length", "[", "corners", "]"}]}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"yangle", "=", 
+        RowBox[{"Max", "[", 
+         RowBox[{"Abs", "[", 
+          RowBox[{"ArcTan", "[", 
+           RowBox[{"\[Sigma]", " ", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"v", ".", "e2"}], "+", "offset"}], ")"}], "/", 
+             RowBox[{"v", ".", "e3"}]}], " ", 
+            RowBox[{
+             RowBox[{"c", "\[LeftDoubleBracket]", 
+              RowBox[{"1", ",", "\"\<Format\>\"", ",", "1"}], 
+              "\[RightDoubleBracket]"}], "/", 
+             RowBox[{"c", "\[LeftDoubleBracket]", 
+              RowBox[{"1", ",", "\"\<Format\>\"", ",", "2"}], 
+              "\[RightDoubleBracket]"}]}]}], "]"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"xangle", "=", 
+        RowBox[{"Max", "[", 
+         RowBox[{"Abs", "[", 
+          RowBox[{"ArcTan", "[", 
+           RowBox[{"\[Sigma]", " ", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"v", ".", "e1"}], "+", "offset"}], ")"}], "/", 
+             RowBox[{"v", ".", "e3"}]}]}], "]"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"c", "\[LeftDoubleBracket]", 
+         RowBox[{"1", ",", "\"\<ViewAngle\>\""}], "\[RightDoubleBracket]"}], 
+        "=", 
+        RowBox[{
+         RowBox[{"360", "/", "Pi"}], " ", 
+         RowBox[{"Max", "[", 
+          RowBox[{"xangle", ",", "yangle"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", "c"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "1.05"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Offset\>\"", "\[Rule]", "0."}]}], "\[IndentingNewLine]", 
+      "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{
+  3.673788387418356*^9, {3.673791576077177*^9, 3.6737915793303843`*^9}, 
+   3.67379254296277*^9, {3.6737963238988934`*^9, 3.673796324975143*^9}, {
+   3.6737964592721853`*^9, 3.6737964803441677`*^9}, {3.6755205135996923`*^9, 
+   3.6755205401509247`*^9}, {3.6755232351532097`*^9, 3.675523235360173*^9}, {
+   3.675877948363762*^9, 3.675877992946972*^9}, {3.7148999311408052`*^9, 
+   3.7148999320411997`*^9}, {3.723107496005197*^9, 3.723107499553974*^9}, {
+   3.732287836414126*^9, 3.7322878680443897`*^9}, {3.7322880647970467`*^9, 
+   3.732288072970786*^9}, {3.7640451485067387`*^9, 3.7640451654124727`*^9}, {
+   3.771083464970449*^9, 3.7710834697980824`*^9}},
+ CellLabel->
+  "In[347]:=",ExpressionUUID->"8b01a16a-a516-4b84-ab6f-f2f1e634ccc9"],
+
+Cell[BoxData[
+ RowBox[{"getCam", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"P_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "M", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"M", "=", 
+        RowBox[{"TubeMesh", "[", "P", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"getCam2", "[", 
+        RowBox[{"M", ",", 
+         RowBox[{"\"\<Cam\>\"", "\[Rule]", 
+          RowBox[{"OptionValue", "[", "\"\<Cam\>\"", "]"}]}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<getCam[M] opens an interactive interface for exporting camera \
+settings to POVray.\>\""}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Cam\>\"", "\[RuleDelayed]", "stdcam"}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6336936651590433`*^9, 3.6336937566306963`*^9}, {
+   3.6336937942082872`*^9, 3.633693794782583*^9}, {3.6336938372366037`*^9, 
+   3.633693838456751*^9}, 3.6336938925752983`*^9, {3.633693939900035*^9, 
+   3.633693949517647*^9}, {3.633694195630741*^9, 3.6336943386152067`*^9}, {
+   3.6336944339812937`*^9, 3.6336944531931677`*^9}, {3.6336948390880117`*^9, 
+   3.633694893225009*^9}, {3.6336950015266943`*^9, 3.633695045622333*^9}, {
+   3.6336951100033407`*^9, 3.6336951351996737`*^9}, {3.6336952831461143`*^9, 
+   3.633695316358412*^9}, {3.633695445578763*^9, 3.633695451680294*^9}, {
+   3.633696365685107*^9, 3.63369637761381*^9}, {3.633696408601574*^9, 
+   3.633696409248475*^9}, {3.633696501928032*^9, 3.633696503361075*^9}, {
+   3.6336968101164722`*^9, 3.633696823602931*^9}, {3.63369723416255*^9, 
+   3.633697238922708*^9}, {3.6336986605444317`*^9, 3.633698703218739*^9}, {
+   3.640587329034293*^9, 3.640587364299376*^9}, {3.640587519877886*^9, 
+   3.640587541302462*^9}, {3.640587778881781*^9, 3.6405879085959177`*^9}, {
+   3.64058800287829*^9, 3.640588004929365*^9}, {3.640588039739406*^9, 
+   3.6405880584937153`*^9}, 3.640588138348105*^9, {3.640588180646927*^9, 
+   3.640588292774466*^9}, {3.640588359922229*^9, 3.640588362903023*^9}, {
+   3.640588426802335*^9, 3.640588492441716*^9}, 3.640588553852872*^9, 
+   3.640588596947578*^9, {3.640588757969578*^9, 3.640588853750555*^9}, {
+   3.640588941153037*^9, 3.640588945000832*^9}, {3.640588994951611*^9, 
+   3.6405890145299788`*^9}, {3.640589046186254*^9, 3.640589053330761*^9}, {
+   3.6405892059248877`*^9, 3.640589307264791*^9}, {3.64058953908208*^9, 
+   3.640589549672099*^9}, {3.6405896427468*^9, 3.640589657528941*^9}, {
+   3.640589699650735*^9, 3.640589706515114*^9}, {3.64059013658689*^9, 
+   3.640590139473413*^9}, {3.640590277340268*^9, 3.6405902946681337`*^9}, {
+   3.640590363989558*^9, 3.640590368125885*^9}, {3.640590401130885*^9, 
+   3.64059045639851*^9}, {3.640590587533441*^9, 3.640590671071436*^9}, {
+   3.640590727096479*^9, 3.640590764808567*^9}, {3.640590851278041*^9, 
+   3.64059090543701*^9}, {3.640590946470471*^9, 3.6405909844446363`*^9}, {
+   3.640591188152997*^9, 3.640591189664356*^9}, {3.640591354930936*^9, 
+   3.6405913658819313`*^9}, {3.640592072051735*^9, 3.640592298702948*^9}, {
+   3.6405924160269213`*^9, 3.64059246133077*^9}, {3.640592629560631*^9, 
+   3.640592655563126*^9}, {3.6405927717866364`*^9, 3.640592784005487*^9}, {
+   3.640592913385248*^9, 3.640593023900962*^9}, {3.6405930545305147`*^9, 
+   3.640593056586775*^9}, 3.640593092874259*^9, {3.640593137944661*^9, 
+   3.6405931606837893`*^9}, {3.640593285580821*^9, 3.640593285958514*^9}, {
+   3.64059338075346*^9, 3.640593381088101*^9}, {3.640594088822102*^9, 
+   3.640594125262117*^9}, {3.640594163301915*^9, 3.640594318860983*^9}, {
+   3.640594352085133*^9, 3.640594398390806*^9}, {3.640594527338209*^9, 
+   3.64059458492616*^9}, {3.640594624031376*^9, 3.640594667108843*^9}, {
+   3.640594773022403*^9, 3.640594777273699*^9}, {3.640594808737102*^9, 
+   3.640594917628858*^9}, {3.640594958165422*^9, 3.6405949653922777`*^9}, {
+   3.64059501227079*^9, 3.640595068065419*^9}, {3.640595177583502*^9, 
+   3.640595260305697*^9}, {3.640595467995974*^9, 3.640595471931448*^9}, {
+   3.6405955371584187`*^9, 3.6405956019488573`*^9}, {3.641099442554265*^9, 
+   3.6410995494065247`*^9}, {3.641099853392951*^9, 3.6410998916897993`*^9}, 
+   3.64109992966098*^9, {3.6411007584542933`*^9, 3.6411007872692337`*^9}, {
+   3.6411012216529217`*^9, 3.6411012230394173`*^9}, 3.64110221436252*^9, 
+   3.641102283597102*^9, 3.6411023151059637`*^9, {3.641102348760261*^9, 
+   3.641102362504345*^9}, {3.641102800866107*^9, 3.641102909977857*^9}, {
+   3.641103711079177*^9, 3.641103711319182*^9}, {3.6411039231311502`*^9, 
+   3.641103944674428*^9}, {3.6411039763865213`*^9, 3.641103986371052*^9}, {
+   3.6411040991881027`*^9, 3.6411041066689987`*^9}, {3.6411041897455053`*^9, 
+   3.641104213813303*^9}, {3.641104763043147*^9, 3.641104793862371*^9}, {
+   3.641104833594946*^9, 3.641104835166654*^9}, {3.641105009231337*^9, 
+   3.641105109336728*^9}, 3.6411051571516953`*^9, {3.641105202216707*^9, 
+   3.641105239467942*^9}, {3.641105297008644*^9, 3.641105347878324*^9}, {
+   3.6411054036828737`*^9, 3.6411054060893373`*^9}, {3.641105468126664*^9, 
+   3.641105678460999*^9}, {3.64110571781778*^9, 3.641105735912158*^9}, {
+   3.64110577890234*^9, 3.641106113935401*^9}, {3.6411062191467648`*^9, 
+   3.64110624960102*^9}, 3.641106479126737*^9, {3.641106534526813*^9, 
+   3.641106539291842*^9}, {3.6411065960641403`*^9, 3.641106596452611*^9}, {
+   3.641106651718727*^9, 3.6411069350121117`*^9}, {3.6411069853408527`*^9, 
+   3.6411072760174294`*^9}, {3.641107348729154*^9, 3.64110736182556*^9}, {
+   3.641107435968536*^9, 3.641107466756219*^9}, {3.6411075009585657`*^9, 
+   3.6411075293465347`*^9}, {3.641107621157434*^9, 3.641107795212308*^9}, {
+   3.641107836944497*^9, 3.6411078593090067`*^9}, 3.641107915348225*^9, {
+   3.64110801822572*^9, 3.6411080413888483`*^9}, {3.641108077614067*^9, 
+   3.641108160474958*^9}, {3.641108196302166*^9, 3.641108216085575*^9}, {
+   3.641108353496867*^9, 3.641108356328712*^9}, 3.64110842771677*^9, {
+   3.641108460907134*^9, 3.641108465467087*^9}, {3.641108501419231*^9, 
+   3.6411085020252237`*^9}, {3.641109468201837*^9, 3.641109470924754*^9}, {
+   3.6411095557523108`*^9, 3.641109573946937*^9}, {3.641109710954133*^9, 
+   3.641109739041875*^9}, {3.64110977233748*^9, 3.641109774970891*^9}, 
+   3.641112933153131*^9, {3.641112982983494*^9, 3.641112985498321*^9}, {
+   3.641113801561201*^9, 3.641113802765802*^9}, {3.641113863834996*^9, 
+   3.641113865705511*^9}, {3.641114107186145*^9, 3.641114110560255*^9}, {
+   3.641114156092094*^9, 3.641114188884715*^9}, 3.64111424325168*^9, {
+   3.641114289955755*^9, 3.6411143334749403`*^9}, {3.641114689009041*^9, 
+   3.64111470146541*^9}, {3.6411149285824223`*^9, 3.6411149850059633`*^9}, {
+   3.641115048020575*^9, 3.641115117705056*^9}, {3.6411151923924294`*^9, 
+   3.641115195757056*^9}, {3.641115295077932*^9, 3.6411153172810917`*^9}, {
+   3.641530582497552*^9, 3.6415306937982616`*^9}, {3.6415308076726847`*^9, 
+   3.641530882693934*^9}, {3.641530931867525*^9, 3.6415309382856207`*^9}, {
+   3.641530999096596*^9, 3.641530999338373*^9}, {3.641531202415872*^9, 
+   3.641531205826812*^9}, 3.641531262144477*^9, 3.641531389086452*^9, {
+   3.641531677751883*^9, 3.64153179628146*^9}, {3.64153183616568*^9, 
+   3.641531836284891*^9}, {3.6415319014185867`*^9, 3.641531917490745*^9}, {
+   3.641531957812827*^9, 3.6415319625006447`*^9}, {3.6415370506227694`*^9, 
+   3.641537097291863*^9}, {3.675865323423841*^9, 3.675865386242915*^9}, {
+   3.726910278486731*^9, 3.726910280347549*^9}, {3.765987108187509*^9, 
+   3.765987126675344*^9}, 3.8378660030698223`*^9},
+ CellLabel->"In[35]:=",ExpressionUUID->"6203d758-ef91-49b5-beda-3304f5f62e3c"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"getCam", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"obj_", ",", 
+     RowBox[{"DynamicModule", "[", 
+      RowBox[{
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"vp", "=", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "0", ",", "10"}], "}"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"vv", "=", 
+          RowBox[{"{", 
+           RowBox[{"0", ",", "1", ",", "0"}], "}"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"va", "=", 
+          RowBox[{"N", "[", 
+           RowBox[{
+            RowBox[{"8", "/", "360"}], " ", "2", "Pi"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"vc", "=", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"0.5", ",", "0.5", ",", "0.5"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"0.5", ",", "0.5"}], "}"}]}], "}"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"pr", "=", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "}"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"result", "=", 
+          RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", "plotorig", ",", 
+         "plotdims", ",", "angle", ",", "\[IndentingNewLine]", 
+         RowBox[{"cameraname", "=", "\"\<cam\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"fieldwidth", "=", "10"}], ",", "\[IndentingNewLine]", 
+         "graphics", ",", "\[IndentingNewLine]", "ec", ",", 
+         "\[IndentingNewLine]", "center"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"plotorig", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"pr", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"plotdims", "=", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"pr", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "2"}], "]"}], "]"}], "-", 
+            RowBox[{"pr", "[", 
+             RowBox[{"[", 
+              RowBox[{"i", ",", "1"}], "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "ViewPoint", " ", "is", " ", "specified", " ", "wrt", " ", "the", 
+          " ", "MIDPOINT", " ", "of", " ", "the", " ", "plot", " ", "range", 
+          " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"range", " ", "mid"}], "-", 
+            RowBox[{"point", " ", "is", " ", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", "0", ",", "0"}], "}"}]}]}], ")"}]}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "ViewCenter", " ", "is", " ", "specified", " ", "wrt", " ", "the", 
+          " ", "LOWER", " ", "CORNER", " ", "of", " ", "the", " ", "plot", 
+          " ", "range", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"range", " ", "mid"}], "-", 
+            RowBox[{"point", " ", "is", " ", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"1", "/", "2"}], ",", 
+               RowBox[{"1", "/", "2"}], ",", 
+               RowBox[{"1", "/", "2"}]}], "}"}]}]}], ")"}]}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "ViewVertical", " ", "is", " ", "independent", " ", "of", " ", 
+           "its", " ", "origin"}], ",", " ", 
+          RowBox[{"only", " ", "scaling", " ", "matters", " ", "here"}]}], 
+         "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "ViewAngle", " ", "does", " ", "not", " ", "need", " ", "to", " ", 
+          "be", " ", "transformed"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"ec", "[", 
+          RowBox[{"{", 
+           RowBox[{"vp_", ",", "vc_", ",", "vv_", ",", "va_", ",", "pr_"}], 
+           "}"}], "]"}], ":=", 
+         RowBox[{"Rule", "[", 
+          RowBox[{"\"\<Cam\>\"", ",", 
+           RowBox[{"camera", "[", 
+            RowBox[{"<|", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"\"\<pos\>\"", "\[Rule]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"plotorig", "+", 
+                    RowBox[{
+                    RowBox[{"1", "/", "2"}], " ", "plotdims"}]}], ")"}], "+", 
+                  
+                  RowBox[{"(", 
+                   RowBox[{"plotdims", "*", "vp"}], ")"}]}], ","}], "*)"}], 
+               " ", "vp"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<format\>\"", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"1920", ",", "1080"}], "}"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{"\"\<direction\>\"", "\[Rule]", 
+                 RowBox[{"Block", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"la", "=", 
+                    RowBox[{"Setting", "@", "va"}]}], ",", "dirlen"}], "}"}], 
+                   ",", 
+                   RowBox[{
+                    RowBox[{"dirlen", "=", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"NumberQ", "[", "la", "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"16", "/", "18"}], ")"}], "/", 
+                    RowBox[{"Tan", "[", "la", "]"}]}], " ", ",", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"16", "/", "18"}], ")"}], "/", 
+                    RowBox[{"Tan", "[", 
+                    RowBox[{"35", "*", "Degree"}], "]"}]}]}], "]"}]}], ";", 
+                    " ", 
+                    RowBox[{
+                    RowBox[{"-", "dirlen"}], " ", 
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{"plotdims", "*", "vc"}]}], ")"}], "-", 
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{
+                    RowBox[{"1", "/", "2"}], "plotdims"}]}], ")"}], "+", 
+                    RowBox[{"(", 
+                    RowBox[{"plotdims", "*", "vp"}], ")"}]}], "]"}]}]}]}], 
+                  "]"}]}], ","}], "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"\"\<frame\>\"", "\[Rule]", 
+               RowBox[{"Block", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"x", ",", "y", ",", "z"}], "}"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{"z", " ", "=", " ", 
+                    RowBox[{"-", 
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{"plotdims", "*", "vc"}]}], ")"}], "-", 
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{
+                    RowBox[{"1", "/", "2"}], "plotdims"}]}], ")"}], "+", 
+                    RowBox[{"(", 
+                    RowBox[{"plotdims", "*", "vp"}], ")"}]}], "]"}]}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"y", " ", "=", " ", 
+                    RowBox[{
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{"plotdims", "*", "vv"}], "]"}], "-", 
+                    RowBox[{"z", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{"plotdims", "*", "vv"}], "]"}], ".", "z"}], 
+                    ")"}]}]}]}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"x", " ", "=", " ", 
+                    RowBox[{"-", 
+                    RowBox[{"y", "\[Cross]", "z"}]}]}], ";"}], "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"x", "=", 
+                   RowBox[{"{", 
+                    RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"y", "=", 
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "1", ",", "0"}], "}"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"z", "=", 
+                   RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{"plotdims", "*", "vv"}], "]"}], "\[Cross]", 
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{"plotdims", "*", "vc"}]}], ")"}], "-", 
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{
+                    RowBox[{"1", "/", "2"}], "plotdims"}]}], ")"}], "+", 
+                    RowBox[{"(", 
+                    RowBox[{"plotdims", "*", "vp"}], ")"}]}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{"plotdims", "*", "vv"}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Normalize", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{"plotdims", "*", "vc"}]}], ")"}], "-", 
+                    RowBox[{"(", 
+                    RowBox[{"plotorig", "+", 
+                    RowBox[{
+                    RowBox[{"1", "/", "2"}], "plotdims"}]}], ")"}], "+", 
+                    RowBox[{"(", 
+                    RowBox[{"plotdims", "*", "vp"}], ")"}]}], "]"}]}], "*)"}],
+                    "\[IndentingNewLine]", 
+                   RowBox[{"x", ",", "y", ",", 
+                    RowBox[{"-", "z"}]}], "\[IndentingNewLine]", "}"}]}]}], 
+                "]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<angle\>\"", "\[Rule]", 
+               RowBox[{"Block", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"la", "=", 
+                   RowBox[{"Setting", "@", "va"}]}], "}"}], ",", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"NumberQ", "[", "la", "]"}], ",", 
+                   RowBox[{"N", "[", 
+                    RowBox[{"2", 
+                    RowBox[{"ArcTan", "[", 
+                    RowBox[{
+                    RowBox[{"16", "/", "9"}], " ", 
+                    RowBox[{"Tan", "[", 
+                    RowBox[{
+                    RowBox[{"N", "[", "la", "]"}], "/", "2"}], "]"}]}], "]"}],
+                     " ", 
+                    RowBox[{"180", "/", "\[Pi]"}]}], "]"}], ",", 
+                   RowBox[{"N", "[", 
+                    RowBox[{"2", 
+                    RowBox[{"ArcTan", "[", 
+                    RowBox[{
+                    RowBox[{"16", "/", "9"}], " ", 
+                    RowBox[{"Tan", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"35", "/", "180"}], ")"}], 
+                    RowBox[{"\[Pi]", "/", "2"}]}], "]"}]}], "]"}], " ", 
+                    RowBox[{"180", "/", "\[Pi]"}]}], "]"}]}], "]"}]}], 
+                "]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<stereo\>\"", "\[Rule]", "False"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<eyedistance\>\"", "\[Rule]", "0.6"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<quality\>\"", "\[Rule]", "11"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<verticalsize\>\"", "\[Rule]", "1"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<Sky\>\"", "\[Rule]", " ", 
+               RowBox[{"Normalize", "[", 
+                RowBox[{"vv", "/", "plotdims"}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<LookAt\>\"", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", "0"}], "}"}]}]}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"\"\<Position\>\"", "\[Rule]", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"plotorig", "+", 
+                   RowBox[{
+                    RowBox[{"1", "/", "2"}], " ", "plotdims"}]}], ")"}], "+", 
+                 
+                 RowBox[{"(", 
+                  RowBox[{"plotdims", "*", "vp"}], ")"}]}]}], ","}], "*)"}], 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"\"\<Format\>\"", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"1920", ",", "1080"}], "}"}]}], ","}], "*)"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+               RowBox[{"\"\<Angle\>\"", "\[Rule]", 
+                RowBox[{"Block", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"la", "=", 
+                    RowBox[{"Setting", "@", "va"}]}], "}"}], ",", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"NumberQ", "[", "la", "]"}], ",", 
+                    RowBox[{"N", "[", "la", "]"}], ",", 
+                    RowBox[{"N", "[", 
+                    RowBox[{"35", 
+                    RowBox[{"\[Pi]", "/", "180"}]}], "]"}]}], "]"}]}], 
+                 "]"}]}], ","}], "*)"}], "\[IndentingNewLine]", "|>"}], 
+            "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"graphics", "=", 
+         RowBox[{"MeshPlot3D", "[", "obj", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"center", "=", 
+         RowBox[{"Mean", "/@", 
+          RowBox[{"PlotRange", "[", "graphics", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Panel", "[", 
+         RowBox[{"Column", "[", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Dynamic", "@", 
+             RowBox[{"Show", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"graphics", ",", 
+                 RowBox[{"Graphics3D", "[", 
+                  RowBox[{"{", 
+                   RowBox[{"Red", ",", 
+                    RowBox[{"Arrow", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], "}"}], "]"}], 
+                    ",", "Green", ",", 
+                    RowBox[{"Arrow", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "1", ",", "0"}], "}"}]}], "}"}], "]"}], 
+                    ",", "Blue", ",", 
+                    RowBox[{"Arrow", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0", ",", "1"}], "}"}]}], "}"}], 
+                    "]"}]}], "}"}], "]"}]}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ViewPoint", "\[Rule]", 
+                RowBox[{"Dynamic", "[", "vp", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ViewVertical", "\[Rule]", 
+                RowBox[{"Dynamic", "[", "vv", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ViewCenter", "\[Rule]", 
+                RowBox[{"Dynamic", "[", "vc", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ViewAngle", "\[Rule]", 
+                RowBox[{"Dynamic", "[", "va", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"Boxed", "\[Rule]", "True"}], ","}], "*)"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"Axes", "\[Rule]", "True"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"AxesLabel", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{"\"\<x\>\"", ",", "\"\<y\>\"", ",", "\"\<z\>\""}], 
+                   "}"}]}], ","}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{"PlotRegion", "\[Rule]", 
+                RowBox[{"Dynamic", "[", "pr", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ImageSize", "\[Rule]", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"1920", ",", "1080"}], "}"}], "/", "4"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"ImagePadding", "\[Rule]", "None"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"SphericalRegion", "\[Rule]", "False"}]}], 
+              "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Grid", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<Rel. Position (vp): \>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", 
+               RowBox[{"(*", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"{", "\[IndentingNewLine]", 
+                  RowBox[{"\"\<LookAt: \>\"", ",", "\[IndentingNewLine]", 
+                   RowBox[{"InputField", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ",", "1"}], "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                   ",", "\[IndentingNewLine]", 
+                   RowBox[{"InputField", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ",", "2"}], "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                   ",", "\[IndentingNewLine]", 
+                   RowBox[{"InputField", "[", 
+                    RowBox[{
+                    RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ",", "3"}], "]"}], "]"}], "]"}], ",", 
+                    RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}],
+                   "\[IndentingNewLine]", "}"}], ","}], "*)"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<ViewCenter1 (vc1): \>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "2"}], "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "3"}], "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<ViewCenter2 (vc2): \>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ",", "1"}], "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vc", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"2", ",", "2"}], "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", "\"\<\>\""}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vp", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 "*)"}], "\[IndentingNewLine]", "}"}], ",", 
+               "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{"\"\<Sky (vv): \>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vv", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vv", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"vv", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{"\"\<Angle (va): \>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", "va", "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{"InputField", "[", 
+                  RowBox[{
+                   RowBox[{"Dynamic", "[", 
+                    RowBox[{"N", "[", 
+                    RowBox[{"2", 
+                    RowBox[{"ArcTan", "[", 
+                    RowBox[{
+                    RowBox[{"16", "/", "9"}], " ", 
+                    RowBox[{"Tan", "[", 
+                    RowBox[{
+                    RowBox[{"N", "[", "va", "]"}], "/", "2"}], "]"}]}], "]"}],
+                     " ", 
+                    RowBox[{"180", "/", "\[Pi]"}]}], "]"}], "]"}], ",", 
+                   RowBox[{"FieldSize", "\[Rule]", "fieldwidth"}]}], "]"}], 
+                 ",", "\[IndentingNewLine]", "\"\<\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<\>\""}], "\[IndentingNewLine]", 
+                "}"}]}], "}"}], "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Row", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"InputField", "[", 
+                RowBox[{
+                 RowBox[{"Dynamic", "[", "cameraname", "]"}], ",", "String"}],
+                 "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"Button", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<Extract Camera settings\>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"ToExpression", "[", 
+                   RowBox[{"cameraname", "<>", "\"\<=\>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{
+                    RowBox[{"ec", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "vp", ",", "vc", ",", "vv", ",", "va", ",", "pr"}], "}"}],
+                     "]"}], ",", "InputForm"}], "]"}]}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "}"}], 
+             "]"}]}], "\[IndentingNewLine]", "}"}], "]"}], 
+         "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"InputType", "\[Rule]", "mesh"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "\"\<Description\>\"", "\[Rule]", 
+      "\"\<getCam[M] opens an interactive interface for exporting camera \
+settings to POVray.\>\""}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]", "*)"}]], "Input",
+ CellChangeTimes->{{3.6336936651590433`*^9, 3.6336937566306963`*^9}, {
+   3.6336937942082872`*^9, 3.633693794782583*^9}, {3.6336938372366037`*^9, 
+   3.633693838456751*^9}, 3.6336938925752983`*^9, {3.633693939900035*^9, 
+   3.633693949517647*^9}, {3.633694195630741*^9, 3.6336943386152067`*^9}, {
+   3.6336944339812937`*^9, 3.6336944531931677`*^9}, {3.6336948390880117`*^9, 
+   3.633694893225009*^9}, {3.6336950015266943`*^9, 3.633695045622333*^9}, {
+   3.6336951100033407`*^9, 3.6336951351996737`*^9}, {3.6336952831461143`*^9, 
+   3.633695316358412*^9}, {3.633695445578763*^9, 3.633695451680294*^9}, {
+   3.633696365685107*^9, 3.63369637761381*^9}, {3.633696408601574*^9, 
+   3.633696409248475*^9}, {3.633696501928032*^9, 3.633696503361075*^9}, {
+   3.6336968101164722`*^9, 3.633696823602931*^9}, {3.63369723416255*^9, 
+   3.633697238922708*^9}, {3.6336986605444317`*^9, 3.633698703218739*^9}, {
+   3.64153079296279*^9, 3.641530794659215*^9}, {3.6673119656796*^9, 
+   3.667311967352167*^9}, {3.667311997449891*^9, 3.667312006137094*^9}, {
+   3.682920623480525*^9, 
+   3.682920630989314*^9}},ExpressionUUID->"586fac30-83cc-4e01-9646-\
+db62d4db2d43"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ad5403c4-612c-41d4-96f8-819bb1e8663b"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 351, 8, 92, "Input",ExpressionUUID->"84904968-4832-4e20-b7a3-91e82fe210be"],
+Cell[912, 30, 56138, 1156, 6517, "Input",ExpressionUUID->"5c02008c-d479-4d2b-96c4-89f0b1c5241a"],
+Cell[57053, 1188, 7243, 160, 1017, "Input",ExpressionUUID->"5d55f096-972d-4791-bed4-dc90d999d448"],
+Cell[64299, 1350, 2741, 67, 517, "Input",ExpressionUUID->"4e4a0727-31bd-4c93-a44b-8fc0215a1870"],
+Cell[67043, 1419, 11353, 269, 1542, "Input",ExpressionUUID->"8b01a16a-a516-4b84-ab6f-f2f1e634ccc9"],
+Cell[78399, 1690, 7841, 116, 267, "Input",ExpressionUUID->"6203d758-ef91-49b5-beda-3304f5f62e3c"],
+Cell[86243, 1808, 28908, 630, 3117, "Input",ExpressionUUID->"586fac30-83cc-4e01-9646-db62d4db2d43"]
+}
+]
+*)
+

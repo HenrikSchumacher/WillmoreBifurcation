@@ -1,0 +1,177 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8152,        169]
+NotebookOptionsPosition[      7577,        153]
+NotebookOutlinePosition[      7913,        168]
+CellTagsIndexPosition[      7870,        165]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"libfun", "[", "\[IndentingNewLine]", 
+  RowBox[{
+  "Integer", ",", "\[IndentingNewLine]", "\"\<FactorizeSymbolically\>\"", ",",
+    "\[IndentingNewLine]", 
+   RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{
+   "{", "\[IndentingNewLine]", 
+    "\"\<\n\t\tif(!initialized)\n\t\t{\n\t\t\tmma::print(\\\"Pardiso has to \
+be initialized before symbolic factorization.\\\");\n\t\t\terror = -111;\n\t\t\
+\treturn error;\n\t\t}\n        //mma::print(\\\"Starting symbolic \
+factorization.\\\");\n\t\tphase = 11;\n\t\tpardiso (pt, &maxfct, &mnum, \
+&mtype, &phase, &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, &ddum, &ddum, \
+&error);\n\t\tif(error!=0)\n\t\t{\n\t\t\tsymfactorized = 0;\n            \
+mma::print(\\\"Pardiso reported an error in symbolic factorization.\\\");\n\t\
+\t}\n        else\n        {\n            //mma::print(\\\"Symbolic \
+factorization completed.\\\");\n            symfactorized = 1;\n        }\n   \
+     return error;\n\>\"", "\[IndentingNewLine]", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6860646533311357`*^9, 3.686064667178239*^9}, {
+   3.686153284179809*^9, 3.686153512208002*^9}, 3.68615389241302*^9, {
+   3.6861546589619303`*^9, 3.6861546883629627`*^9}, {3.686154967252244*^9, 
+   3.6861549684044456`*^9}, {3.716737609125865*^9, 3.716737636564156*^9}, 
+   3.723296940038157*^9, {3.723312973837167*^9, 3.723312975666404*^9}, {
+   3.723315079427414*^9, 3.723315082640477*^9}, {3.723317454063958*^9, 
+   3.72331749361283*^9}, 3.797739170516081*^9, 3.797741343768477*^9, {
+   3.7977430854096527`*^9, 3.797743118601111*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"cc9e9ee7-ffc9-4caf-a99f-96dfa4fc85c1"],
+
+Cell[BoxData[
+ RowBox[{"libfun", "[", "\[IndentingNewLine]", 
+  RowBox[{
+  "Integer", ",", "\[IndentingNewLine]", "\"\<FactorizeNumerically\>\"", ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{
+   "{", "\[IndentingNewLine]", 
+    "\"\<\n\t\tif(!symfactorized)\n\t\t{\n\t\t\tFactorizeSymbolically();\n\t\t\
+}\n\t\tphase = 22;\n        //mma::print(\\\"Starting numeric \
+factorization.\\\");\n\t\tpardiso (pt, &maxfct, &mnum, &mtype, &phase, &n, a, \
+ia, ja, perm, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);\n\t\tif(error!=0)\
+\n\t\t{\n            numfactorized = 0;\n            mma::print(\\\"Pardiso \
+reported an error in numeric factorization.\\\");\n\t\t}\n        else\n      \
+  {\n            //mma::print(\\\"Numeric factorization completed.\\\");\n    \
+        numfactorized = 1;\n        }\n\t\treturn error;\n\>\"", 
+    "\[IndentingNewLine]", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.686064615073803*^9, 3.686064619767918*^9}, {
+   3.686064669617819*^9, 3.6860646698426123`*^9}, {3.686153309017062*^9, 
+   3.6861533123463507`*^9}, {3.686154391216139*^9, 3.686154432230701*^9}, {
+   3.686154463006403*^9, 3.6861545056898527`*^9}, {3.686154570754746*^9, 
+   3.686154584714251*^9}, 3.686154615210142*^9, {3.6861547026142273`*^9, 
+   3.686154714330915*^9}, {3.686154754536016*^9, 3.6861548062013407`*^9}, {
+   3.6861548376849823`*^9, 3.6861548643799686`*^9}, {3.686154961060384*^9, 
+   3.686154964130492*^9}, 3.723296938270606*^9, 3.72329711651292*^9, {
+   3.723312978723958*^9, 3.723312979172442*^9}, {3.723315045586237*^9, 
+   3.723315068161516*^9}, {3.7233175203695583`*^9, 3.723317526592445*^9}, 
+   3.797739171343045*^9, {3.797741346105259*^9, 3.797741360242114*^9}, {
+   3.7977431520402927`*^9, 
+   3.797743175958555*^9}},ExpressionUUID->"06a6d1a9-65af-445c-bfed-\
+7d86d965daac"],
+
+Cell[BoxData[
+ RowBox[{"libfun", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"Real", ",", "1"}], "}"}], ",", "\[IndentingNewLine]", 
+   "\"\<LinearSolve\>\"", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\"\<b\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "1"}], "}"}], ",", "\"\<Constant\>\""}], "}"}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<mode\>\"", ",", "Integer"}], "}"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+   "{", "\[IndentingNewLine]", 
+    "\"\<\n\t\tif(!numfactorized)\n\t\t{\n\t\t\tFactorizeNumerically();\n\t\t\
+}\n\t\tauto x = mma::makeVector<mreal>(b.length());\n\t\tphase = 33;\n\t\t\
+iparm[11] = mode;\n\t\tnrhs = 1;\n\t\tpardiso (pt, &maxfct, &mnum, &mtype, \
+&phase, &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, b.data(), x.data(), \
+&error);\n\t\tif(error!=0)\n\t\t{\n\t\t\tmma::print(\\\"Pardiso reported an \
+error in solving phase.\\\");\n\t\t}\n\t\tnrhs = 1;\n\t\tiparm[11] = 0;\n\t\t\
+return x;\n\>\"", "\[IndentingNewLine]", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.716737720131546*^9, 3.716737723365265*^9}, {
+   3.716739835610632*^9, 3.716739849326706*^9}, 3.716781088903077*^9, 
+   3.716781144461166*^9, {3.716781186506319*^9, 3.716781199817327*^9}, {
+   3.723296839691203*^9, 3.723296872617841*^9}, {3.7232970331241007`*^9, 
+   3.723297035990417*^9}, 3.723312985419778*^9, {3.723315008769844*^9, 
+   3.723315025359375*^9}, {3.723317543073097*^9, 3.723317556191352*^9}, {
+   3.7284028806038933`*^9, 3.728402943047221*^9}, {3.7284030193510313`*^9, 
+   3.728403019596434*^9}, {3.728403282342834*^9, 3.728403294979293*^9}, {
+   3.72840336349187*^9, 3.728403368776784*^9}, {3.728407013826005*^9, 
+   3.728407027465294*^9}, 3.728407090319683*^9, 3.728409259907474*^9, 
+   3.797739171881201*^9, {3.797741367151538*^9, 3.7977413716120043`*^9}, {
+   3.797743208990673*^9, 3.797743254507833*^9}, 
+   3.83213619871432*^9},ExpressionUUID->"cc2dd98b-5706-4305-a6dc-\
+31a4d7857dd7"],
+
+Cell[BoxData[
+ RowBox[{"libfun", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"Real", ",", "2"}], "}"}], ",", "\[IndentingNewLine]", 
+   "\"\<LinearSolveMatrix\>\"", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\"\<B\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "2"}], "}"}], ",", "\"\<Constant\>\""}], "}"}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<mode\>\"", ",", "Integer"}], "}"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+   "{", "\[IndentingNewLine]", 
+    "\"\<\n\t\tif(!numfactorized)\n        {\n            \
+FactorizeNumerically();\n        }\n        auto X = \
+mma::makeMatrix<mreal>(B.dimensions()[0],B.dimensions()[1]);\n        phase = \
+33;\n        iparm[11] = mode;\n        nrhs = B.dimensions()[0];\n        \
+pardiso (pt, &maxfct, &mnum, &mtype, &phase, &n, a, ia, ja, perm, &nrhs, \
+iparm, &msglvl, B.data(), X.data(), &error);\n        if(error!=0)\n        {\
+\n            mma::print(\\\"Pardiso reported an error in solving \
+phase.\\\");\n        }\n        nrhs = 1;\n        iparm[11] = 0;\n        \
+return X;\n\>\"", "\[IndentingNewLine]", "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.797743268071587*^9, 3.797743273922855*^9}, {
+   3.797743329354012*^9, 3.797743335368891*^9}, {3.797743451011263*^9, 
+   3.797743461549098*^9}, 
+   3.7993766329787683`*^9},ExpressionUUID->"ec58a182-6ce5-4f6e-adbf-\
+fd9da6be25c9"]
+},
+WindowSize->{1363, 851},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1669, 26, 742, "Input",ExpressionUUID->"cc9e9ee7-ffc9-4caf-a99f-96dfa4fc85c1"],
+Cell[2230, 48, 1854, 30, 692, "Input",ExpressionUUID->"06a6d1a9-65af-445c-bfed-7d86d965daac"],
+Cell[4087, 80, 2023, 38, 642, "Input",ExpressionUUID->"cc2dd98b-5706-4305-a6dc-31a4d7857dd7"],
+Cell[6113, 120, 1460, 31, 642, "Input",ExpressionUUID->"ec58a182-6ce5-4f6e-adbf-fd9da6be25c9"]
+}
+]
+*)
+

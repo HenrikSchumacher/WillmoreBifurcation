@@ -1,0 +1,312 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12460,        304]
+NotebookOptionsPosition[     11730,        286]
+NotebookOutlinePosition[     12122,        302]
+CellTagsIndexPosition[     12079,        299]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"CheckSignedEdgeQuadAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_hexmesh", ",", "A_SparseArray"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"ei", ",", "fi", ",", "ai", ",", "cf"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ei", "=", 
+        RowBox[{
+         RowBox[{"A", "[", "\"\<NonzeroPositions\>\"", "]"}], 
+         "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"fi", "=", 
+        RowBox[{
+         RowBox[{"A", "[", "\"\<NonzeroPositions\>\"", "]"}], 
+         "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ai", "=", 
+        RowBox[{"A", "[", "\"\<NonzeroValues\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"cf", "=", 
+        RowBox[{"Compile", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"quad", ",", "_Integer", ",", "1"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"edge", ",", "_Integer", ",", "1"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"sign", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"2", 
+             RowBox[{"Boole", "[", 
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "4", 
+                    "\[RightDoubleBracket]"}]}], "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "4", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "quad", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], "}"}]}], "}"}], ",", 
+                "edge"}], "]"}], "]"}]}], "-", "1"}], "\[Equal]", "sign"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"RuntimeAttributes", "\[Rule]", 
+           RowBox[{"{", "Listable", "}"}]}]}], "\[IndentingNewLine]", "]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"And", "@@", 
+        RowBox[{"cf", "[", 
+         RowBox[{
+          RowBox[{"Quads", "[", 
+           RowBox[{"M", ",", "fi"}], "]"}], ",", 
+          RowBox[{"Edges", "[", 
+           RowBox[{"M", ",", "ei"}], "]"}], ",", "ai"}], "]"}]}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.71897564607533*^9, 3.7189756614717503`*^9}, {
+   3.7194002869148197`*^9, 3.719400331194006*^9}, {3.719466467096909*^9, 
+   3.719466476515337*^9}, 3.7233766540669327`*^9, {3.758904414603373*^9, 
+   3.7589044174088907`*^9}},
+ CellLabel->"In[69]:=",ExpressionUUID->"1becd624-7cc1-4b3a-a864-b7dd980d1fd0"],
+
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_hexmesh", ",", "Quads", ",", "Edges"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "k", ",", "m", ",", "n", ",", "data", ",", "q1", ",", "q2", ",", "q3", 
+        ",", "q4"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"n", "=", 
+        RowBox[{"CountOf", "[", 
+         RowBox[{"M", ",", "Edges"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"m", "=", 
+        RowBox[{"CountOf", "[", 
+         RowBox[{"M", ",", "Quads"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"k", "=", "4"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"m", ">", "0"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"Quads", "[", "M", "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"data", "=", 
+           RowBox[{"ExtractFromSparseArray", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], "]"}],
+               "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"q2", ",", "q3", ",", "q4", ",", "q1"}], "}"}], "]"}],
+               "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"QuickSparseArray", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"0", ",", 
+              RowBox[{"k", " ", "m"}], ",", "k"}], "]"}], ",", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"Abs", "[", "data", "]"}], ",", "1"}], "]"}], ",", 
+            RowBox[{"Sign", "[", "data", "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"m", ",", "n"}], "}"}]}], "]"}]}], "\[IndentingNewLine]",
+          ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7910130434493923`*^9, 3.791013044360614*^9}, {
+   3.791016463040576*^9, 3.791016495381913*^9}, {3.791018042420175*^9, 
+   3.791018074506659*^9}, {3.7910334416771603`*^9, 3.7910335394209337`*^9}, {
+   3.8355901541997337`*^9, 3.8355901831332293`*^9}, 3.835590264572338*^9, {
+   3.835590299866081*^9, 
+   3.835590300089643*^9}},ExpressionUUID->"36d35250-ffbe-4f53-b9ae-\
+5278e7866645"],
+
+Cell[BoxData[
+ RowBox[{"SignedAdjacencyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_hexmesh", ",", "Edges", ",", "Quads"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "#", "]"}], ">", "0"}], ",", 
+        RowBox[{"Transpose", "[", "#", "]"}], ",", "#"}], "]"}], "&"}], "@", 
+     RowBox[{"SignedAdjacencyMatrix", "[", 
+      RowBox[{"M", ",", "Quads", ",", "Edges"}], "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7910130989529753`*^9, 3.791013112429263*^9}, {
+   3.791013384326849*^9, 3.791013410842471*^9}, 3.791013444522758*^9, {
+   3.7910180808113527`*^9, 3.79101808308892*^9}, {3.791018138952832*^9, 
+   3.791018144422291*^9}, {3.7910334481579533`*^9, 3.791033479851653*^9}, 
+   3.835590264778687*^9},
+ CellLabel->
+  "In[127]:=",ExpressionUUID->"a1cb4630-c865-418f-b572-87fa1fe6a4e9"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"SignedQuadsNeighEdges", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_hexmesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], "=", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{"Quads", "[", "M", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ExtractFromSparseArray", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"EdgeLookupFunction", "[", "M", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}], "]"}], 
+           "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"q2", ",", "q3", ",", "q4", ",", "q1"}], "}"}], "]"}], 
+           "]"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   "*)"}]], "Input",
+ CellChangeTimes->{{3.7188860129825172`*^9, 3.718886015597084*^9}, {
+   3.7188861643510923`*^9, 3.718886164907031*^9}, {3.7194003621541977`*^9, 
+   3.719400405190524*^9}, 3.719466477003776*^9, 3.723376654917686*^9, {
+   3.758904410650074*^9, 3.758904412288937*^9}},
+ CellLabel->"In[70]:=",ExpressionUUID->"fca7675f-6a09-4391-a5b7-ed2eb1518682"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"(*", 
+   RowBox[{"Padding", " ", "nur", " ", "als", " ", 
+    RowBox[{
+     RowBox[{"\[CapitalUDoubleDot]bergangl\[ODoubleDot]sung", "!!"}], "!"}]}],
+    "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"EdgesNeighQuads", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{"M_hexmesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"A", "=", 
+          RowBox[{"SignedEdgeQuadAdjacencyMatrix", "[", "M", "]"}]}], "}"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"PadRight", "[", 
+         RowBox[{"A", "[", "\"\<AdjacencyLists\>\"", "]"}], "]"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.718881106352915*^9, 3.718881114740738*^9}, {
+   3.718884681904584*^9, 3.718884692717678*^9}, {3.718885400124878*^9, 
+   3.7188854015963984`*^9}, 3.7188855303163967`*^9, {3.71889211596201*^9, 
+   3.718892163684422*^9}, {3.7189683573766727`*^9, 3.71896836961654*^9}, 
+   3.718971844559424*^9, {3.719400540851706*^9, 3.7194005507845984`*^9}, 
+   3.7233766555031*^9, {3.758904390203644*^9, 3.758904395587471*^9}},
+ CellLabel->"In[73]:=",ExpressionUUID->"a3c66493-8edc-42df-ad0d-e931c6f25665"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"83c148a3-9dc7-49a0-96d6-3dcc1d7421d6"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 4029, 98, 342, "Input",ExpressionUUID->"1becd624-7cc1-4b3a-a864-b7dd980d1fd0"],
+Cell[4590, 120, 3063, 69, 492, "Input",ExpressionUUID->"36d35250-ffbe-4f53-b9ae-5278e7866645"],
+Cell[7656, 191, 1073, 25, 117, "Input",ExpressionUUID->"a1cb4630-c865-418f-b572-87fa1fe6a4e9"],
+Cell[8732, 218, 1731, 38, 292, "Input",ExpressionUUID->"fca7675f-6a09-4391-a5b7-ed2eb1518682"],
+Cell[10466, 258, 1260, 26, 143, "Input",ExpressionUUID->"a3c66493-8edc-42df-ad0d-e931c6f25665"]
+}
+]
+*)
+

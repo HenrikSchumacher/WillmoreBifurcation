@@ -1,0 +1,251 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9861,        243]
+NotebookOptionsPosition[      9098,        225]
+NotebookOutlinePosition[      9434,        240]
+CellTagsIndexPosition[      9391,        237]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.7910426614044847`*^9, 3.791042685054419*^9}},
+ CellLabel->
+  "In[148]:=",ExpressionUUID->"c12332fb-2276-4a53-b14b-93bd8f5748b3"],
+
+Cell[BoxData[
+ RowBox[{"EdgesOppVerticesMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"SparseArray", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Transpose", "[", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Flatten", "[", 
+           RowBox[{"AdjacencyLists", "[", 
+            RowBox[{"M", ",", "Triangles", ",", "Edges"}], "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Triangles", "[", "M", "]"}], "]"}]}], 
+         "\[IndentingNewLine]", "}"}], "]"}], "\[Rule]", "1"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"EdgeCount", "[", "M", "]"}], ",", 
+        RowBox[{"VertexCount", "[", "M", "]"}]}], "}"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7587230920018044`*^9, 3.758723105992919*^9}, 
+   3.758954854358927*^9, {3.791026456494114*^9, 3.791026467203704*^9}, 
+   3.791026514091071*^9, {3.791026633407312*^9, 3.791026634700883*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"bd154121-c75c-4323-b454-21cf3807e9cc"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"EdgesOppVerticesMatrix", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"B", "=", 
+         RowBox[{
+          RowBox[{"EdgeVertexAdjacencyMatrix", "[", "M", "]"}], ".", 
+          RowBox[{"VertexVertexAdjacencyMatrix", "[", "M", "]"}]}]}], "}"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"SparseArray", "[", "\[IndentingNewLine]", 
+        RowBox[{"Times", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Unitize", "[", 
+           RowBox[{
+            RowBox[{"EdgeTriangleAdjacencyMatrix", "[", "M", "]"}], ".", 
+            RowBox[{"TriangleVertexAdjacencyMatrix", "[", "M", "]"}]}], "]"}],
+           ",", "\[IndentingNewLine]", 
+          RowBox[{"SparseArray", "@@", 
+           RowBox[{"{", 
+            RowBox[{"Automatic", ",", 
+             RowBox[{"Dimensions", "[", "B", "]"}], ",", "0", ",", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"B", "[", "\"\<RowPointers\>\"", "]"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"B", "[", "\"\<ColumnIndices\>\"", "]"}]}], 
+                "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"UnitStep", "[", 
+                RowBox[{
+                 RowBox[{"B", "[", "\"\<NonzeroValues\>\"", "]"}], "-", "2"}],
+                 "]"}]}], "\[IndentingNewLine]", "}"}]}], "}"}]}]}], "]"}], 
+        "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.7587230920018044`*^9, 3.758723105992919*^9}, 
+   3.758954845690117*^9},ExpressionUUID->"05b5987c-1829-4b63-9b96-\
+16a7f2bb001f"],
+
+Cell[BoxData[
+ RowBox[{"getEdgesOppVertices", "=", 
+  RowBox[{"CPackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"ilist", ",", "_Integer", ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"jlist", ",", "_Integer", ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"m", ",", "_Integer"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"n", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "b", ",", "l", ",", "i"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"a", "=", 
+        RowBox[{"Table", "[", 
+         RowBox[{"0", ",", 
+          RowBox[{"{", "m", "}"}], ",", 
+          RowBox[{"{", "n", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"i", "=", 
+           RowBox[{"Compile`GetElement", "[", 
+            RowBox[{"ilist", ",", "k"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          
+          RowBox[{"l", "=", "1"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"a", ",", "i", ",", "l"}], "]"}], "\[NotEqual]", "0"}],
+              "&&", 
+             RowBox[{"l", "<", "n"}]}], ",", 
+            RowBox[{"++", "l"}]}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"a", "\[LeftDoubleBracket]", 
+            RowBox[{"i", ",", "l"}], "\[RightDoubleBracket]"}], "=", 
+           RowBox[{"Compile`GetElement", "[", 
+            RowBox[{"jlist", ",", "k"}], "]"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "1", ",", 
+           RowBox[{"Length", "[", "ilist", "]"}]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "a"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellLabel->
+  "In[345]:=",ExpressionUUID->"24add7d7-a0bf-49ef-926b-329ec862cb7e"],
+
+Cell[BoxData[
+ RowBox[{"EdgesOppVertices", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"A", "=", 
+           RowBox[{"EdgesOppVerticesMatrix", "[", "M", "]"}]}], "}"}], ",", 
+         RowBox[{"A", "[", "\"\<AdjacencyLists\>\"", "]"}]}], "]"}], ","}], 
+      "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"getEdgesOppVertices", "[", 
+      RowBox[{
+       RowBox[{"AdjacencyLists", "[", 
+        RowBox[{"M", ",", "Triangles", ",", "Edges"}], "]"}], ",", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{"Triangles", "[", "M", "]"}], "]"}], ",", 
+       RowBox[{"EdgeCount", "[", "M", "]"}], ",", "2"}], "]"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"AdjacencyLists", "[", 
+     RowBox[{"EdgesOppVerticesMatrix", "[", "M", "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.718884565792984*^9, 3.718884568734551*^9}, 
+   3.7188849515065193`*^9, {3.718968389006291*^9, 3.718968390622074*^9}, {
+   3.71948277503393*^9, 3.7194827760252857`*^9}, {3.7589549245255013`*^9, 
+   3.7589549262295856`*^9}, {3.7589550038057756`*^9, 3.7589550138838387`*^9}, 
+   3.758978501093462*^9, {3.791026474966836*^9, 3.791026478901188*^9}, {
+   3.7910426924434757`*^9, 3.791042696161224*^9}},
+ CellLabel->
+  "In[149]:=",ExpressionUUID->"e955e44e-125c-4caf-abc1-77c7fbae59d5"],
+
+Cell[BoxData[
+ RowBox[{"VerticesOppEdges", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"A", "=", 
+          RowBox[{
+           RowBox[{"EdgesOppVerticesMatrix", "[", "M", "]"}], 
+           "\[Transpose]"}]}], "}"}], ",", 
+        RowBox[{"A", "[", "\"\<AdjacencyLists\>\"", "]"}]}], "]"}], ","}], 
+     "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"AdjacencyLists", "[", 
+     RowBox[{"Transpose", "[", 
+      RowBox[{"EdgesOppVerticesMatrix", "[", "M", "]"}], "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.718884588279663*^9, 3.718884594143951*^9}, 
+   3.7188847667176228`*^9, {3.7189683860615063`*^9, 3.718968387550201*^9}, {
+   3.719482777053133*^9, 3.7194827796947927`*^9}, {3.758954928019562*^9, 
+   3.75895492946061*^9}, {3.758955019232717*^9, 3.75895502800935*^9}},
+ CellLabel->
+  "In[150]:=",ExpressionUUID->"0853f56f-e5c2-4e6f-97c4-b2005e291f6d"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 177, 3, 41, "Input",ExpressionUUID->"c12332fb-2276-4a53-b14b-93bd8f5748b3"],
+Cell[738, 25, 1307, 28, 267, "Input",ExpressionUUID->"bd154121-c75c-4323-b454-21cf3807e9cc"],
+Cell[2048, 55, 1981, 43, 392, "Input",ExpressionUUID->"05b5987c-1829-4b63-9b96-16a7f2bb001f"],
+Cell[4032, 100, 2361, 59, 417, "Input",ExpressionUUID->"24add7d7-a0bf-49ef-926b-329ec862cb7e"],
+Cell[6396, 161, 1560, 34, 167, "Input",ExpressionUUID->"e955e44e-125c-4caf-abc1-77c7fbae59d5"],
+Cell[7959, 197, 1135, 26, 142, "Input",ExpressionUUID->"0853f56f-e5c2-4e6f-97c4-b2005e291f6d"]
+}
+]
+*)
+

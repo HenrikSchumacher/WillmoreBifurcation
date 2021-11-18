@@ -1,0 +1,127 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4373,        119]
+NotebookOptionsPosition[      4084,        106]
+NotebookOutlinePosition[      4420,        121]
+CellTagsIndexPosition[      4377,        118]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"OptimalTransport", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"u1_Association", ",", "u2_Association", ",", 
+      RowBox[{"p_:", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"c", ",", "A", ",", "b", ",", "x", ",", "n1", ",", "n2"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"n1", "=", 
+        RowBox[{"Length", "[", "u1", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"n2", "=", 
+        RowBox[{"Length", "[", "u2", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"A", "=", 
+        RowBox[{"Join", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"KroneckerProduct", "[", 
+            RowBox[{
+             RowBox[{"IdentityMatrix", "[", 
+              RowBox[{"n1", ",", "SparseArray"}], "]"}], ",", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"1.", ",", 
+               RowBox[{"{", 
+                RowBox[{"n2", ",", "1"}], "}"}]}], "]"}]}], "]"}], "]"}], ",",
+           "\[IndentingNewLine]", 
+          RowBox[{"KroneckerProduct", "[", 
+           RowBox[{
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"1.", ",", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "n1"}], "}"}]}], "]"}], ",", 
+            RowBox[{"IdentityMatrix", "[", 
+             RowBox[{"n2", ",", "SparseArray"}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"c", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"DistanceMatrix", "[", 
+           RowBox[{
+            RowBox[{"Keys", "[", "u1", "]"}], ",", 
+            RowBox[{"Keys", "[", "u2", "]"}]}], "]"}], "^", "p"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"b", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"Normalize", "[", 
+           RowBox[{
+            RowBox[{"Values", "[", "u1", "]"}], ",", "Total"}], "]"}], ",", 
+          RowBox[{"Normalize", "[", 
+           RowBox[{
+            RowBox[{"Values", "[", "u2", "]"}], ",", "Total"}], "]"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"x", "=", 
+        RowBox[{"LinearProgramming", "[", 
+         RowBox[{"c", ",", "A", ",", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"b", ",", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"0", ",", 
+               RowBox[{"Length", "[", "b", "]"}]}], "]"}]}], "}"}], "]"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"<|", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<TransportPlan\>\"", "\[Rule]", 
+          RowBox[{"SparseArray", "@", 
+           RowBox[{"ArrayReshape", "[", 
+            RowBox[{"x", ",", 
+             RowBox[{"{", 
+              RowBox[{"n1", ",", "n2"}], "}"}]}], "]"}]}]}], ",", " ", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<WassersteinDistance\>\"", "\[Rule]", 
+          RowBox[{"Power", "[", 
+           RowBox[{
+            RowBox[{"c", ".", "x"}], ",", 
+            RowBox[{"1", "/", "p"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<p\>\"", "\[Rule]", "p"}]}], "\[IndentingNewLine]", 
+        "|>"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",ExpressionUUID->"1ad2490a-945e-4667-9203-323a9d0325e3"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 3522, 84, 492, "Input",ExpressionUUID->"1ad2490a-945e-4667-9203-323a9d0325e3"]
+}
+]
+*)
+

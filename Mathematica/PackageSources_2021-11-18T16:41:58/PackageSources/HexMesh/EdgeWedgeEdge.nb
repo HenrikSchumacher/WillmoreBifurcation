@@ -1,0 +1,294 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11208,        286]
+NotebookOptionsPosition[     10765,        271]
+NotebookOutlinePosition[     11157,        287]
+CellTagsIndexPosition[     11114,        284]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Block", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "idx", ",", "quadedges", ",", "a", ",", "aa", ",", "b", ",", "bb", ",", 
+     "signs", ",", "a12", ",", "a23", ",", "a43", ",", "a14", ",", "b12", ",",
+      "b23", ",", "b43", ",", "b14", ",", "\[Alpha]", ",", "\[Beta]", ",", 
+     "x", ",", "y", ",", "dx", ",", "dy", ",", "int", ",", "A"}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"idx", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"quadedges", ",", "i"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "4"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"aa", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"a", ",", "#"}], "]"}], "&"}], "/@", "idx"}]}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"a12", "=", 
+     RowBox[{
+      RowBox[{"Compile`GetElement", "[", 
+       RowBox[{"signs", ",", "1"}], "]"}], 
+      RowBox[{"aa", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"a23", "=", 
+     RowBox[{
+      RowBox[{"Compile`GetElement", "[", 
+       RowBox[{"signs", ",", "2"}], "]"}], 
+      RowBox[{"aa", "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"a43", "=", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"signs", ",", "3"}], "]"}]}], 
+      RowBox[{"aa", "[", 
+       RowBox[{"[", "3", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"a14", "=", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"signs", ",", "4"}], "]"}]}], 
+      RowBox[{"aa", "[", 
+       RowBox[{"[", "4", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"bb", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"b", ",", "#"}], "]"}], "&"}], "/@", "idx"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"b12", "=", 
+     RowBox[{
+      RowBox[{"Compile`GetElement", "[", 
+       RowBox[{"signs", ",", "1"}], "]"}], 
+      RowBox[{"bb", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"b23", "=", 
+     RowBox[{
+      RowBox[{"Compile`GetElement", "[", 
+       RowBox[{"signs", ",", "2"}], "]"}], 
+      RowBox[{"bb", "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"b43", "=", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"signs", ",", "3"}], "]"}]}], 
+      RowBox[{"bb", "[", 
+       RowBox[{"[", "3", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"b14", "=", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"signs", ",", "4"}], "]"}]}], 
+      RowBox[{"bb", "[", 
+       RowBox[{"[", "4", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"dx", "=", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0"}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"dy", "=", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "1"}], "}"}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[Alpha]", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", "x"}], ")"}], "a14", " ", "dy"}], "+", 
+      RowBox[{"x", " ", "a23", " ", "dy"}], "+", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", "y"}], ")"}], "a12", " ", "dx"}], "+", 
+      RowBox[{"y", " ", "a43", " ", "dx"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Beta]", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", "x"}], ")"}], "b14", " ", "dy"}], "+", 
+      RowBox[{"x", " ", "b23", " ", "dy"}], "+", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", "y"}], ")"}], "b12", " ", "dx"}], "+", 
+      RowBox[{"y", " ", "b43", " ", "dx"}]}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"int", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"dy", ".", 
+          RowBox[{"TensorWedge", "[", 
+           RowBox[{"\[Alpha]", ",", "\[Beta]"}], "]"}], ".", "dx"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "0", ",", "1"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"y", ",", "0", ",", "1"}], "}"}]}], "]"}], "//", "Expand"}],
+       "//", "Together"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"A", "=", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{"D", "[", 
+       RowBox[{"int", ",", 
+        RowBox[{"{", 
+         RowBox[{"aa", ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"bb", ",", "1"}], "}"}]}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"code", "=", 
+        RowBox[{"A", "[", "\"\<NonzeroValues\>\"", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"computeEdgeWedgeEdgeNonzeroes", "=", 
+       RowBox[{"CPackageFunction", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"signs", ",", "_Integer", ",", "1"}], "}"}], "}"}], ",", 
+         "\[IndentingNewLine]", "code", ",", "\[IndentingNewLine]", 
+         RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"RuntimeAttributes", "\[Rule]", 
+          RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+    "\[IndentingNewLine]", "\n", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"code", "=", 
+        RowBox[{"Map", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Prepend", "[", "quadindex", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Map", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Compile`GetElement", "[", 
+              RowBox[{"quadedges", ",", "#"}], "]"}], "&"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"SparseArray", "[", "A", "]"}], "[", 
+             "\"\<NonzeroPositions\>\"", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"{", "2", "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"computeEdgeWedgeEdgePattern", "=", 
+       RowBox[{"CPackageFunction", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"quadindex", ",", "_Integer"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"quadedges", ",", "_Integer", ",", "1"}], "}"}]}], "}"}], 
+         ",", "\[IndentingNewLine]", "code", ",", "\[IndentingNewLine]", 
+         RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"RuntimeAttributes", "\[Rule]", 
+          RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+    ";"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.8356143049310703`*^9, 3.835614415133355*^9}, {
+  3.835614507595999*^9, 3.8356145135617943`*^9}, {3.835614642508717*^9, 
+  3.835614748104529*^9}, {3.83561479562366*^9, 3.835614803221176*^9}, {
+  3.835614991663838*^9, 3.835615011309758*^9}, {3.835615059238256*^9, 
+  3.835615064733412*^9}, {3.8356152194149723`*^9, 3.835615249550394*^9}, {
+  3.83561566431059*^9, 3.835615765676242*^9}, {3.8356158514005337`*^9, 
+  3.835615855022011*^9}, {3.835616936444758*^9, 3.835616944112159*^9}},
+ CellLabel->
+  "In[421]:=",ExpressionUUID->"50dab00f-0268-4218-945a-18c00cd731d9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WedgeProduct", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_hexmesh", ",", "Edge", ",", "Edges"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{
+       RowBox[{"Rule", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Join", "@@", 
+          RowBox[{"computeEdgeWedgeEdgePattern", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"QuadCount", "[", "M", "]"}], "]"}], ",", 
+            RowBox[{"AdjacencyLists", "[", 
+             RowBox[{
+              RowBox[{"SignedAdjacencyMatrix", "[", 
+               RowBox[{"M", ",", "Quads", ",", "Edges"}], "]"}], ",", "4"}], 
+             "]"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"computeEdgeWedgeEdgeNonzeroes", "[", 
+           RowBox[{"Partition", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"SignedAdjacencyMatrix", "[", 
+               RowBox[{"M", ",", "Quads", ",", "Edges"}], "]"}], "[", 
+              "\"\<NonzeroValues\>\"", "]"}], ",", "4"}], "]"}], "]"}], 
+          "]"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"QuadCount", "[", "M", "]"}], ",", 
+         RowBox[{"EdgeCount", "[", "M", "]"}], ",", 
+         RowBox[{"EdgeCount", "[", "M", "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", "0."}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.835615582753819*^9, 3.8356156414466143`*^9}, {
+  3.8356157621556377`*^9, 3.83561576292714*^9}, {3.835615824055901*^9, 
+  3.835615859893805*^9}, {3.8356169473188553`*^9, 3.835616963821774*^9}},
+ CellLabel->
+  "In[422]:=",ExpressionUUID->"98622403-9d5c-48aa-a3cd-4fc048bca8b8"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"e8bef00f-d55b-4ce4-93ef-eabda5dd69c2"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 8219, 203, 1292, "Input",ExpressionUUID->"50dab00f-0268-4218-945a-18c00cd731d9"],
+Cell[8780, 225, 1981, 44, 342, "Input",ExpressionUUID->"98622403-9d5c-48aa-a3cd-4fc048bca8b8"]
+}
+]
+*)
+

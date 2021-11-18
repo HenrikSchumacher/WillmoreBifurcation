@@ -1,0 +1,230 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9843,        222]
+NotebookOptionsPosition[      9552,        209]
+NotebookOutlinePosition[      9888,        224]
+CellTagsIndexPosition[      9845,        221]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"ClearAll", "[", "TensorMapThread", "]"}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"TensorMapThread", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f_", ",", 
+         RowBox[{"{", "}"}], ",", "depth_"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"TensorMapThread", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f_", ",", 
+         RowBox[{"data", ":", 
+          RowBox[{"{", "__", "}"}]}], ",", 
+         RowBox[{"depth_:", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TensorMapThread", "[", 
+        RowBox[{"f", ",", 
+         RowBox[{"Developer`ToPackedArray", "/@", "data"}], ",", "depth", ",",
+          "Automatic"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"TensorMapThread", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f_", ",", 
+         RowBox[{"data", ":", 
+          RowBox[{"{", 
+           RowBox[{"__", "?", "Developer`PackedArrayQ"}], "}"}]}], ",", 
+         "depth_", ",", "Automatic"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"args", "=", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"\"\<a\>\"", "<>", 
+               RowBox[{"ToString", "[", "i", "]"}]}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", 
+                RowBox[{"Length", "[", "data", "]"}]}], "}"}]}], "]"}]}], ",",
+            "\[IndentingNewLine]", 
+           RowBox[{"ranks", "=", 
+            RowBox[{"ToString", "/@", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"TensorRank", "/@", "data"}], "-", "depth"}], 
+              ")"}]}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"types", "=", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"\"\<_\>\"", "<>", 
+                RowBox[{
+                 RowBox[{"StringSplit", "[", 
+                  RowBox[{
+                   RowBox[{"ToString", "[", 
+                    RowBox[{"Developer`PackedArrayForm", "[", "#", "]"}], 
+                    "]"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<[\>\"", ",", "\"\<,\>\""}], "}"}]}], "]"}], 
+                 "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+               "&"}], ",", "data"}], "]"}]}]}], "\[IndentingNewLine]", "}"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"cf", "=", 
+             RowBox[{"ReleaseHold", "[", 
+              RowBox[{
+               RowBox[{"MakeExpression", "[", 
+                RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+                 RowBox[{"\"\<Block[{\>\"", ",", 
+                  RowBox[{"Riffle", "[", 
+                   RowBox[{"args", ",", "\"\<,\>\""}], "]"}], ",", 
+                  "\"\<},\\n\>\"", ",", "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{"\"\<\\tWith[{code=\>\"", ",", 
+                    RowBox[{"ToString", "[", "f", "]"}], ",", "\"\<[\>\"", 
+                    ",", 
+                    RowBox[{"Riffle", "[", 
+                    RowBox[{"args", ",", "\"\<,\>\""}], "]"}], ",", 
+                    "\"\<]},\\n\>\"", ","}], "*)"}], "\[IndentingNewLine]", 
+                  "\"\<\\t\\tCompile[{\>\"", ",", 
+                  RowBox[{"Riffle", "[", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", "t", ",", "r"}], "}"}], "\[Function]", 
+                    RowBox[{"StringJoin", "[", 
+                    RowBox[{
+                    "\"\<{\>\"", ",", "a", ",", "\"\<,\>\"", ",", "t", ",", 
+                    "\"\<,\>\"", ",", "r", ",", "\"\<}\>\""}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"args", ",", "types", ",", "ranks"}], "}"}]}], 
+                    "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                    "\"\<,\>\""}], "\[IndentingNewLine]", "]"}], ",", 
+                  "\"\<},\\n\>\"", ",", "\[IndentingNewLine]", 
+                  "\"\<\\t\\t\\t\\\"f\\\"\>\"", ",", "\"\<[\>\"", ",", 
+                  RowBox[{"Riffle", "[", 
+                   RowBox[{"args", ",", "\"\<,\>\""}], "]"}], ",", 
+                  "\"\<]\>\"", ",", "\"\<,\\n\>\"", ",", 
+                  "\[IndentingNewLine]", 
+                  "\"\<\\t\\t\\tRuntimeAttributes\[Rule]{Listable},\\n\>\"", 
+                  ",", "\[IndentingNewLine]", 
+                  "\"\<\\t\\t\\tParallelization\[Rule]True\\n\>\"", ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{
+                   "\"\<\\t\\t\\tCompilationOptions\[Rule]{\\\"\
+InlineCompiledFunctions\\\"\[Rule]True}\\n\>\"", ","}], "*)"}], 
+                  "\[IndentingNewLine]", "\"\<\\t\\t]\\n\>\"", ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{"\"\<\\t]\\n\>\"", ","}], "*)"}], 
+                  "\[IndentingNewLine]", "\"\<]\>\""}], "\[IndentingNewLine]",
+                  "]"}], "]"}], "/.", 
+               RowBox[{"\"\<f\>\"", "\[Rule]", "f"}]}], "]"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"cf", "@@", "data"}]}], "\[IndentingNewLine]", "]"}]}], 
+        "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}],
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"TensorMapThread", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f_", ",", 
+         RowBox[{"data", ":", 
+          RowBox[{"{", "__", "}"}]}], ",", "depth_", ",", "Automatic"}], 
+        "}"}], ",", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{"f", ",", "data", ",", "depth"}], "]"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"TensorMapThread", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f_", ",", 
+         RowBox[{"data", ":", 
+          RowBox[{"{", "__", "}"}]}], ",", "0", ",", "Automatic"}], "}"}], 
+       ",", 
+       RowBox[{"f", "@@", "data"}]}], "]"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.717746792648745*^9, 3.717746848847221*^9}, {
+   3.717746882486472*^9, 3.7177469742814074`*^9}, {3.7177470511266737`*^9, 
+   3.7177470801974573`*^9}, {3.717747303052232*^9, 3.717747312524364*^9}, {
+   3.717747343714942*^9, 3.717747346700884*^9}, {3.71774750865248*^9, 
+   3.717747510604713*^9}, {3.717747562345723*^9, 3.717747564454921*^9}, 
+   3.717747637777637*^9, {3.7177478142499*^9, 3.717747827082995*^9}, {
+   3.717747871753305*^9, 3.717747904221661*^9}, 3.71774794341116*^9, {
+   3.7177482271916943`*^9, 3.717748253826515*^9}, {3.7177710618924103`*^9, 
+   3.71777106222709*^9}, {3.717771161918675*^9, 3.717771164662878*^9}, {
+   3.717773342946498*^9, 3.717773343210245*^9}, 3.717774110615424*^9, {
+   3.717774200910026*^9, 3.717774238902042*^9}, {3.717774297331955*^9, 
+   3.717774303592197*^9}, {3.717774339390688*^9, 3.7177743727033033`*^9}, {
+   3.717774469823043*^9, 3.7177744724401217`*^9}, {3.717774510033639*^9, 
+   3.717774513466515*^9}, {3.717774553916224*^9, 3.717774565256641*^9}, {
+   3.717774633476063*^9, 3.717774777137974*^9}, 3.717774818571107*^9, {
+   3.717774862304514*^9, 3.7177749446139936`*^9}, {3.7177750405833*^9, 
+   3.717775061216292*^9}, {3.717775204049087*^9, 3.7177752176306*^9}, {
+   3.7177752723058653`*^9, 3.717775290519017*^9}, {3.717775346738468*^9, 
+   3.717775358018173*^9}, {3.7177755831637573`*^9, 3.717775583363703*^9}, {
+   3.717775709393346*^9, 3.717775713992*^9}, {3.7177757445066767`*^9, 
+   3.7177757503705597`*^9}, {3.717775832924449*^9, 3.7177758874125137`*^9}, 
+   3.717775947117696*^9, {3.717776019615679*^9, 3.71777605149762*^9}, {
+   3.717776255528747*^9, 3.717776277334124*^9}, {3.7177774894712353`*^9, 
+   3.717777489695573*^9}, {3.717777540910997*^9, 3.717777562478217*^9}, {
+   3.7177780738212748`*^9, 3.717778075251195*^9}, {3.717778489077106*^9, 
+   3.717778494307747*^9}, {3.717778549473609*^9, 3.717778552743305*^9}, 
+   3.717778721430564*^9, {3.717778900603342*^9, 3.717778935294839*^9}, {
+   3.717779353031815*^9, 
+   3.717779387043357*^9}},ExpressionUUID->"02208506-d95c-4a82-b456-\
+8f3766a4e9d4"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 8990, 187, 1067, "Input",ExpressionUUID->"02208506-d95c-4a82-b456-8f3766a4e9d4"]
+}
+]
+*)
+

@@ -1,0 +1,443 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20691,        435]
+NotebookOptionsPosition[     20308,        421]
+NotebookOutlinePosition[     20644,        436]
+CellTagsIndexPosition[     20601,        433]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"$ffmpegString", "::", "usage"}], "=", "\"\<\>\""}], ";"}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.797935587053729*^9, 3.797935595594667*^9}},
+ CellLabel->"In[75]:=",ExpressionUUID->"39a1862b-f4a9-4265-bb5e-cbc905982f31"],
+
+Cell[BoxData[
+ RowBox[{"POVray", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_meshlist", ",", 
+      RowBox[{"name_String", ":", "\"\<Video\>\""}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "outpath", ",", "Mi", ",", "ZoomFun", ",", "cam", ",", "step", ",", 
+        "light", ",", "return", ",", "s", ",", "moviefile", ",", 
+        "pathpresentQ", ",", "pre", ",", "scenefun"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"outpath", "=", 
+        RowBox[{"FileNameJoin", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<OutputPath\>\"", "]"}], ",", 
+           "name"}], "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pathpresentQ", "=", 
+        RowBox[{"FileExistsQ", "[", "outpath", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"FileExistsQ", "[", "outpath", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"DeleteDirectory", "[", 
+           RowBox[{"outpath", ",", 
+            RowBox[{"DeleteContents", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "\"\<DeleteContents\>\"", "]"}]}]}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<Deleting working directory \>\"", ",", "outpath"}], 
+           "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"FileExistsQ", "[", "outpath", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"CreateDirectory", "[", "outpath", "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<Created working directory \>\"", ",", "outpath"}], 
+           "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pre", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Preprocessor\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"scenefun", "=", 
+        RowBox[{"OptionValue", "[", "\"\<SceneFunction\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"step", "=", 
+        RowBox[{"OptionValue", "[", "\"\<StepSize\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ZoomFun", "=", 
+        RowBox[{"OptionValue", "[", "\"\<ZoomFunction\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"cam", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Cam\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"light", "=", 
+        RowBox[{"OptionValue", "[", "\"\<LightSource\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"ZoomFun", "===", "Automatic"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{
+          RowBox[{"cam", "=", 
+           RowBox[{"getZoom", "[", 
+            RowBox[{"cam", ",", 
+             RowBox[{"BoundingBox", "[", "M", "]"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ZoomFun", "=", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"Q", ",", "cam", ",", "light"}], "}"}], "\[Function]", 
+            RowBox[{"Sequence", "@@", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\"\<Cam\>\"", "\[Rule]", "cam"}], ",", 
+               RowBox[{"\"\<LightSource\>\"", "\[Rule]", "light"}]}], 
+              "}"}]}]}]}]}], "\[IndentingNewLine]", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"TrueQ", "[", "ZoomFun", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"ZoomFun", "=", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"Q", ",", "cam", ",", "light"}], "}"}], "\[Function]", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"\"\<Cam\>\"", "\[Rule]", 
+                 RowBox[{"getZoom2", "[", 
+                  RowBox[{"cam", ",", 
+                   RowBox[{"VertexCoordinates", "[", "Q", "]"}]}], "]"}]}], 
+                ",", 
+                RowBox[{"\"\<LightSource\>\"", "\[Rule]", "light"}]}], 
+               "}"}]}]}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"ZoomFun", "===", "False"}], "||", 
+              RowBox[{"ZoomFun", "===", "None"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"ZoomFun", "=", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"Q", ",", "cam", ",", "light"}], "}"}], "\[Function]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"\"\<Cam\>\"", "\[Rule]", "cam"}], ",", 
+                  RowBox[{"\"\<LightSource\>\"", "\[Rule]", "light"}]}], 
+                 "}"}]}]}]}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{
+        "\"\<Writing output to working directory \>\"", ",", "outpath", ",", 
+         "\"\< ...\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "[", "\"\<Render\>\"", "]"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Do", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Mi", "=", 
+              RowBox[{"pre", "@", 
+               RowBox[{"M", "[", "i", "]"}]}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+               "OptionValue", "[", "\"\<FixBoundingBoxLength\>\"", "]"}], ",",
+                "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"SetCache", "[", 
+                 RowBox[{"Mi", ",", "\"\<BoundingBoxLength\>\"", ",", 
+                  RowBox[{"BoundingBoxLength", "[", "M", "]"}]}], "]"}], 
+                ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Print", "[", 
+              RowBox[{"\"\<Creating file \>\"", ",", 
+               RowBox[{"name", "<>", "\"\<_Frame_\>\"", "<>", 
+                RowBox[{"IntegerString", "[", 
+                 RowBox[{"i", ",", "10", ",", "6"}], "]"}], "<>", 
+                "\"\<.png\>\""}]}], "]"}], ";", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", 
+             RowBox[{"POVrayClearFile", "[", 
+              RowBox[{"OptionValue", "[", "\"\<POVFile\>\"", "]"}], "]"}], 
+             ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"scenefun", "[", "Mi", "]"}], ";", "\[IndentingNewLine]",
+              "\[IndentingNewLine]", 
+             RowBox[{"POVray", "[", 
+              RowBox[{"Mi", ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<POVFile\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<POVFile\>\"", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<File\>\"", "\[Rule]", 
+                RowBox[{"FileNameJoin", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"outpath", ",", 
+                   RowBox[{"name", "<>", "\"\<_Frame_\>\"", "<>", 
+                    RowBox[{"IntegerString", "[", 
+                    RowBox[{"i", ",", "10", ",", "6"}], "]"}], "<>", 
+                    "\"\<.png\>\""}]}], "}"}], "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<Background\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<Background\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{"\"\<LightSource\>\"", "\[Rule]", 
+                  RowBox[{"OptionValue", "[", "\"\<LightSource\>\"", "]"}]}], 
+                 ","}], "*)"}], "\[IndentingNewLine]", 
+               RowBox[{"\"\<AmbientLight\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<AmbientLight\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Radiosity\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<Radiosity\>\"", "]"}]}], ",",
+                "\[IndentingNewLine]", 
+               RowBox[{"ZoomFun", "[", 
+                RowBox[{"Mi", ",", "cam", ",", "light"}], "]"}], ",", 
+               "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               RowBox[{"\"\<PrintMessages\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<PrintMessages\>\"", "]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Render\>\"", "\[Rule]", "True"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<Import\>\"", "\[Rule]", "False"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"OverwriteTarget", "\[Rule]", "False"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"OptionValue", "[", "\"\<Options\>\"", "]"}], "}"}],
+                  "]"}]}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "0", ",", 
+              RowBox[{
+               RowBox[{"MeshCount", "[", "M", "]"}], "-", "1"}], ",", 
+              "step"}], "}"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", "Experimental", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"return", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"TrueQ", "[", 
+           RowBox[{"OptionValue", "[", "\"\<FFMPEG\>\"", "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Print", "[", "\"\<Running ffmpeg...\>\"", "]"}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"moviefile", "=", 
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<OutputPath\>\"", "]"}], ",", 
+               RowBox[{"name", "<>", "\"\<.mp4\>\""}]}], "}"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"$ffmpegString", "=", 
+            RowBox[{"s", "=", 
+             RowBox[{"StringJoin", "[", 
+              RowBox[{"\"\<! \>\"", ",", 
+               RowBox[{"FileNameJoin", "[", 
+                RowBox[{"{", 
+                 RowBox[{"$ffmpegPath", ",", "\"\<ffmpeg\>\""}], "}"}], "]"}],
+                ",", "\"\< -y -f image2 -pattern_type glob -i '\>\"", ",", 
+               "outpath", ",", "\"\</\>\"", ",", 
+               RowBox[{
+               "name", "<>", 
+                "\"\<_Frame_*.png' -vcodec libx264 -crf 12  -pix_fmt yuv420p \
+'\>\""}], ",", "moviefile", ",", "\"\<'\>\""}], "]"}]}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"$ffmpegMessage", "=", 
+            RowBox[{"Import", "[", 
+             RowBox[{"s", ",", "\"\<Text\>\""}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"FileExistsQ", "[", "moviefile", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Print", "[", 
+               RowBox[{
+               "\"\<Done. File \>\"", "<>", "moviefile", "<>", 
+                "\"\< created.\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+              "Print", "[", 
+               "\"\<Error: Something with ffmpeg went wrong.\>\"", "]"}], 
+              ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+           "\[IndentingNewLine]", "moviefile"}], "\[IndentingNewLine]", ",", 
+          "\[IndentingNewLine]", "outpath"}], "\[IndentingNewLine]", "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<DeleteWorkingDirectory\>\"", "]"}],
+           "&&", 
+          RowBox[{"Not", "[", "pathpresentQ", "]"}], "&&", 
+          RowBox[{"FileExistsQ", "[", "outpath", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"DeleteDirectory", "[", 
+           RowBox[{"outpath", ",", 
+            RowBox[{"DeleteContents", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "\"\<DeleteContents\>\"", "]"}]}]}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<Deleting working directory \>\"", ",", "outpath"}], 
+           "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "return"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", "\[IndentingNewLine]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"\"\<Path\>\"", "\[RuleDelayed]", "$POVrayInputPath"}], ","}],
+        "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<OutputPath\>\"", "\[RuleDelayed]", "$POVrayOutputPath"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<POVFile\>\"", "\[RuleDelayed]", "$POVrayGeometryFile"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"\"\<File\>\"", "\[RuleDelayed]", "stdfile"}], ","}], "*)"}],
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<Background\>\"", "\[RuleDelayed]", "stdbackground"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<LightSource\>\"", "\[RuleDelayed]", "stdlight"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AmbientLight\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "1"}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Radiosity\>\"", "\[RuleDelayed]", "stdrad"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Cam\>\"", "\[RuleDelayed]", "stdcam"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ZoomFunction\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Options\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<StepSize\>\"", "\[Rule]", "1"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintMessages\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Render\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<FFMPEG\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"DeleteContents", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<DeleteWorkingDirectory\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Preprocessor\>\"", "\[Rule]", "Identity"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SceneFunction\>\"", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"Null", "&"}], ")"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<FixBoundingBoxLength\>\"", "\[Rule]", "True"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.764040398321809*^9, 3.764040472198821*^9}, {
+   3.764040510680811*^9, 3.7640407324504232`*^9}, {3.76404086143566*^9, 
+   3.764040872290079*^9}, {3.76404093638756*^9, 3.764040946800227*^9}, {
+   3.7640437002828503`*^9, 3.764043707512265*^9}, {3.7640437541338263`*^9, 
+   3.764043793359054*^9}, {3.764043862044614*^9, 3.764043904876667*^9}, {
+   3.7640439599813623`*^9, 3.76404396386436*^9}, {3.7640447683088913`*^9, 
+   3.764044795259048*^9}, {3.764044962068338*^9, 3.76404496580371*^9}, {
+   3.764045062107542*^9, 3.764045073933957*^9}, {3.764045185005013*^9, 
+   3.7640452425403767`*^9}, {3.764045352937133*^9, 3.764045421869416*^9}, {
+   3.764045463227318*^9, 3.764045621303172*^9}, {3.764045657715884*^9, 
+   3.764045667131085*^9}, {3.7640483101993017`*^9, 3.7640483144132833`*^9}, 
+   3.764401935166854*^9, {3.7699382162620993`*^9, 3.7699382176690483`*^9}, {
+   3.769938273728554*^9, 3.769938283758237*^9}, {3.7710839557989397`*^9, 
+   3.771083956476819*^9}, {3.775847402175058*^9, 3.775847428828286*^9}, {
+   3.775939292041448*^9, 3.775939324262944*^9}, {3.7759393701671543`*^9, 
+   3.775939378767683*^9}, {3.775939444549802*^9, 3.7759394993274107`*^9}, {
+   3.777569795468997*^9, 3.7775698804643583`*^9}, 3.777569920798472*^9, {
+   3.777570039298395*^9, 3.777570039823832*^9}, {3.7871437711159554`*^9, 
+   3.787143797513776*^9}, {3.787143891785433*^9, 3.787144040185115*^9}, {
+   3.787144187685565*^9, 3.787144189716074*^9}, {3.787144249325314*^9, 
+   3.787144295450082*^9}, 3.787144474528973*^9, {3.787144521433898*^9, 
+   3.7871445216239157`*^9}, {3.788606268025836*^9, 3.7886063191303797`*^9}, {
+   3.795249925853509*^9, 3.7952500516250896`*^9}, {3.7952500864098253`*^9, 
+   3.795250089520018*^9}, {3.795250164501924*^9, 3.795250169091961*^9}, {
+   3.795250221718779*^9, 3.7952502486904716`*^9}, {3.795250312290889*^9, 
+   3.7952503463659163`*^9}, {3.795250394357678*^9, 3.795250451618902*^9}, {
+   3.79525049064102*^9, 3.795250544109666*^9}, {3.7952506392846127`*^9, 
+   3.7952506478519983`*^9}, {3.795250856596376*^9, 3.795250886772029*^9}, {
+   3.795250924038406*^9, 3.795250966692768*^9}, {3.795251044030262*^9, 
+   3.795251058403932*^9}, {3.795251112263588*^9, 3.795251177958804*^9}, {
+   3.795251212257287*^9, 3.795251256287243*^9}, {3.795251308896331*^9, 
+   3.79525131339188*^9}, 3.79525142224922*^9, {3.7952514633099413`*^9, 
+   3.795251528867096*^9}, 3.795251681688781*^9, {3.795251745286862*^9, 
+   3.79525176780403*^9}, {3.795251926526528*^9, 3.795251935429862*^9}, 
+   3.797929636188744*^9, {3.797935149977757*^9, 3.797935161241144*^9}, {
+   3.797935262255102*^9, 3.797935270285822*^9}, {3.797935476886346*^9, 
+   3.7979354934102383`*^9}, {3.7979355320759172`*^9, 3.797935542688471*^9}, {
+   3.797935581194601*^9, 3.797935584552555*^9}, {3.7979356258548603`*^9, 
+   3.7979356292315903`*^9}, {3.803544106760933*^9, 3.803544129000064*^9}, {
+   3.8088298325705*^9, 3.808829851791607*^9}, {3.817548716638197*^9, 
+   3.8175487176595163`*^9}, 3.817548889647728*^9, 3.817548945849012*^9, 
+   3.817549118167297*^9, {3.824185471616413*^9, 3.824185474086484*^9}, {
+   3.824185650808897*^9, 3.824185656702343*^9}, {3.824185944828515*^9, 
+   3.824185945692367*^9}, 3.8241862532495823`*^9, {3.828521728906465*^9, 
+   3.828521731017611*^9}, {3.828521800125464*^9, 3.828521808208139*^9}, {
+   3.828521845654173*^9, 3.8285218608228817`*^9}, {3.828521911907549*^9, 
+   3.828521937114513*^9}, {3.828521968267499*^9, 3.82852199502411*^9}, {
+   3.8285222111926947`*^9, 3.82852224838371*^9}, {3.828524647459588*^9, 
+   3.828524651603449*^9}, {3.8443270533209543`*^9, 3.844327068386854*^9}},
+ CellLabel->"In[99]:=",ExpressionUUID->"9a6a6aa9-57bd-4ff3-b0f9-e26038fc2703"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 352, 7, 92, "Input",ExpressionUUID->"39a1862b-f4a9-4265-bb5e-cbc905982f31"],
+Cell[913, 29, 19391, 390, 2892, "Input",ExpressionUUID->"9a6a6aa9-57bd-4ff3-b0f9-e26038fc2703"]
+}
+]
+*)
+

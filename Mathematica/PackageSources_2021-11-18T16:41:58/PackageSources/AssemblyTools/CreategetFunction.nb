@@ -1,0 +1,245 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11485,        237]
+NotebookOptionsPosition[     11193,        224]
+NotebookOutlinePosition[     11529,        239]
+CellTagsIndexPosition[     11486,        236]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"CreategetFunction", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Attributes", "[", "CreategetFunction", "]"}], "=", 
+    RowBox[{"{", "HoldAllComplete", "}"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreategetFunction", "[", 
+     RowBox[{
+     "name_", ",", "type_", ",", "tuplefun_", ",", "calllist_", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"OptionsPattern", "[", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Dimensions\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"2", ",", "3"}], "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<Caching\>\"", "\[Rule]", "False"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Flatten\>\"", "\[Rule]", "False"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Process\>\"", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<PrintDriver\>\"", "\[Rule]", "Column"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<getFunction\>\"", "\[Rule]", "Automatic"}]}], "}"}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "callname", ",", "der", ",", "argstring", ",", "fullfunname", ",", "s",
+         ",", "calls", ",", "commandstrings", ",", "s1", ",", "s2", ",", 
+        "\[IndentingNewLine]", "M", ",", "Ulist0", ",", "slotlist0"}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"calls", "=", 
+        RowBox[{"Riffle", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Function", "[", 
+            RowBox[{"x", ",", 
+             RowBox[{
+              RowBox[{"ToString", "[", "x", "]"}], "<>", "\"\<[M]\>\""}]}], 
+            "]"}], "/@", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"{", "calllist", "}"}], "]"}]}], ",", "\"\<,\>\""}], 
+         "]"}]}], ";", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<getFunction\>\"", "]"}], "===", 
+          "Automatic"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"callname", "=", "name"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"callname", "=", 
+          RowBox[{"OptionValue", "[", "\"\<getFunction\>\"", "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"commandstrings", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Table", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"alloweddims", "=", 
+                RowBox[{"ToString", "[", 
+                 RowBox[{"OptionValue", "[", "\"\<Dimensions\>\"", "]"}], 
+                 "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"k", "=", "der"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"funname", "=", 
+                RowBox[{"\"\<get\>\"", "<>", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"\"\<D\>\"", ",", "der"}], "]"}], "<>", "name"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{"funcallname", "=", 
+                RowBox[{"\"\<get\>\"", "<>", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"\"\<D\>\"", ",", "der"}], "]"}], "<>", 
+                 "callname"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"caching", "=", 
+                RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}]}]}], 
+              "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"s1", "=", 
+               RowBox[{
+               "funname", "<>", "\"\< = \>\"", "<>", 
+                "\"\<PackageFunction[M_\>\"", "<>", 
+                RowBox[{"ToString", "[", "type", "]"}], "<>", 
+                "\"\<, \nWith[{d=EmbeddingDimension[M]},\n\tIf[MemberQ[\>\"", 
+                "<>", "alloweddims", "<>", "\"\<, d],\n      If[Length[\>\"", 
+                "<>", 
+                RowBox[{"ToString", "[", 
+                 RowBox[{
+                 "calls", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}], "]"}], "<>", 
+                "\"\<]>0,\n\t\tModule[{fun}, \n\t\t\tfun = \
+ToExpression[StringJoin[\\\"\>\"", "<>", "funcallname", "<>", 
+                "\"\<\\\",ToString[d], \\\"D\\\"]]; \n\t\t\tfun @@ \
+Table[f[M], {f, \>\"", "<>", 
+                RowBox[{"ToString", "[", 
+                 RowBox[{"Flatten", "[", 
+                  RowBox[{"{", "calllist", "}"}], "]"}], "]"}], "<>", 
+                "\"\<}]\n\t\t],\n        {}\n      ], \n      \
+Print[StringJoin[\\\"Error: Derivative of get\\\", \\\"\>\"", "<>", "name", 
+                "<>", "\"\<\\\", \\\" of order \\\", \\\"\>\"", "<>", 
+                RowBox[{"ToString", "[", "k", "]"}], "<>", 
+                "\"\<\\\", \\\" not implemented for EmbeddingDimension \\\"], \
+ToString[d]]; \n\t\tAbort[]; \n\t]\n], \nCaching -> \>\"", "<>", 
+                RowBox[{"ToString", "[", "caching", "]"}], "<>", 
+                "\"\<]\>\""}]}], ";", "\[IndentingNewLine]", 
+              "\[IndentingNewLine]", 
+              RowBox[{"s2", "=", 
+               RowBox[{
+               "funname", "<>", "\"\< = \>\"", "<>", 
+                "\"\<PackageFunction[{M_\>\"", "<>", 
+                RowBox[{"ToString", "[", "type", "]"}], "<>", 
+                "\"\<, Ulist0_, slotlist0_},\nWith[{d=EmbeddingDimension[M]},\
+\nIf[MemberQ[\>\"", "<>", "alloweddims", "<>", 
+                "\"\<, d], \n\tModule[{fun, slotlist, len, numt, Ulist, \
+order}, \n\t\tslotlist = Function[x, If[x < 0, \>\"", "<>", 
+                RowBox[{"ToString", "[", 
+                 RowBox[{"k", " ", "+", " ", "2"}], "]"}], "<>", 
+                "\"\< + x, x]] /@ slotlist0; \n\t\torder = \
+Ordering[slotlist]; \n\t\tslotlist = slotlist[[order]]; \n\t\tfun = \
+ToExpression[StringJoin[\\\"\>\"", "<>", "funcallname", "<>", 
+                "\"\<\\\", ToString[d], \\\"D\\\", ToString /@ slotlist]]; \n\
+\t\tUlist = Ulist0[[order]]; \n\t\tfun @@ Join[\n\t\t\tTable[f[M], {f,  \>\"",
+                 "<>", 
+                RowBox[{"ToString", "[", 
+                 RowBox[{"Flatten", "[", 
+                  RowBox[{"{", "calllist", "}"}], "]"}], "]"}], "<>", 
+                "\"\<}], \n\t\t\tTable[\n\t\t\t\tIf[slotlist[[j]] == 1, \n\t\t\
+\t\t\tlen = Times @@ Dimensions[Ulist[[j]]]; \n\t\t\t\t\tnumt = Length[\>\"", 
+                "<>", 
+                RowBox[{"ToString", "[", "tuplefun", "]"}], "<>", 
+                "\"\<[M]]; \n\t\t\t\t\tIf[Divisible[len, numt], \n\t\t\t\t\t\t\
+ArrayReshape[Ulist[[j]], {numt, len/numt}], \n\t\t\t\t\t\tPrint[\\\"Error: \
+Vector in first slot is not compatible.\\\"];\n\t\t\t\t\t\tAbort[]; \n\t\t\t\t\
+\t], \n\t\t\t\t\tDistributeVector[M, \>\"", "<>", 
+                RowBox[{"ToString", "[", "tuplefun", "]"}], "<>", 
+                "\"\<, Ulist[[j]]]\n\t\t\t\t], {j, 1, Length[slotlist]}]]], \n\
+\tPrint[StringJoin[\\\"Error: Derivative of get\\\", \\\"\>\"", "<>", "name", 
+                "<>", "\"\<\\\", \\\" of order \\\", \\\"\>\"", "<>", 
+                RowBox[{"ToString", "[", "k", "]"}], "<>", 
+                "\"\<\\\", \\\" not implemented for EmbeddingDimension \\\"], \
+ToString[d]]; \n\tAbort[]; ]\n]\n]\>\""}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "\"\<Process\>\"", "]"}], ",", 
+                RowBox[{"ToExpression", "/@", 
+                 RowBox[{"{", 
+                  RowBox[{"s1", ",", "s2"}], "}"}]}]}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"s1", ",", "s2"}], "}"}]}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"der", ",", "0", ",", 
+             RowBox[{"OptionValue", "[", "\"\<Derivatives\>\"", "]"}]}], 
+            "}"}]}], "]"}], "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<PrintCode\>\"", "]"}], ",", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<PrintDriver\>\"", "]"}], "[", 
+          "commandstrings", "]"}]}], "]"}]}]}], "\[IndentingNewLine]", 
+     "]"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]], "Input",\
+
+ CellChangeTimes->{{3.6999602619169397`*^9, 3.699960442852597*^9}, {
+   3.699960499057281*^9, 3.699960515529426*^9}, {3.699960570708404*^9, 
+   3.699960590386516*^9}, {3.699961279133037*^9, 3.699961317194716*^9}, 
+   3.6999625165829268`*^9, {3.6999625801854763`*^9, 3.69996259712885*^9}, {
+   3.699962731453167*^9, 3.699962732362431*^9}, {3.699962786794235*^9, 
+   3.699962850279595*^9}, {3.699962894919335*^9, 3.699962957900751*^9}, {
+   3.6999629900410547`*^9, 3.6999632488406277`*^9}, {3.699963291482737*^9, 
+   3.699963301161882*^9}, {3.699963334991061*^9, 3.699963410150539*^9}, {
+   3.6999636155640507`*^9, 3.699963630714076*^9}, {3.699963764503098*^9, 
+   3.699963793106677*^9}, {3.69996392098277*^9, 3.699963924269793*^9}, {
+   3.6999639797278767`*^9, 3.699963991669435*^9}, {3.699964046166209*^9, 
+   3.6999640988817596`*^9}, 3.6999641691689663`*^9, {3.69996488759039*^9, 
+   3.699964888181143*^9}, {3.699964972303768*^9, 3.699964972623623*^9}, {
+   3.699965071706729*^9, 3.699965095148144*^9}, {3.6999652734825497`*^9, 
+   3.699965295994117*^9}, {3.700020172528616*^9, 3.700020173461116*^9}, 
+   3.7000263398129797`*^9, 3.700026895182447*^9, {3.7007244178206873`*^9, 
+   3.7007244561910152`*^9}, 3.700724497793146*^9, {3.700724540709833*^9, 
+   3.700724617739962*^9}, {3.700725172980639*^9, 3.7007251731705103`*^9}, {
+   3.709564363648147*^9, 3.709564368208547*^9}, {3.709564460278062*^9, 
+   3.709564523280883*^9}, {3.709564578049738*^9, 3.7095645810942507`*^9}, {
+   3.70956466487169*^9, 3.709564696799181*^9}, {3.7095647955946093`*^9, 
+   3.709564893672022*^9}, {3.720179750937339*^9, 3.720179776112754*^9}, {
+   3.720179810477187*^9, 3.7201798793925333`*^9}, {3.815629349603347*^9, 
+   3.8156293856561527`*^9}},ExpressionUUID->"7da54ab6-3081-4fdb-9514-\
+022c2d83d716"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 10631, 202, 2167, "Input",ExpressionUUID->"7da54ab6-3081-4fdb-9514-022c2d83d716"]
+}
+]
+*)
+

@@ -1,0 +1,432 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     17391,        424]
+NotebookOptionsPosition[     16151,        401]
+NotebookOutlinePosition[     16487,        416]
+CellTagsIndexPosition[     16444,        413]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"NeumannEdges", "=", 
+   RowBox[{"SettingFunction", "[", 
+    RowBox[{"M_mesh", ",", 
+     RowBox[{"{", "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.788781496031085*^9, 3.788781509172735*^9}},
+ CellLabel->
+  "In[100]:=",ExpressionUUID->"93802372-c995-4034-a669-9ef79f44e8e8"],
+
+Cell[BoxData[
+ RowBox[{"DesiredNeumannNormals", "=", 
+  RowBox[{"SettingFunction", "[", 
+   RowBox[{"M_mesh", ",", 
+    RowBox[{"NeumannNormals", "[", "M", "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{3.7887818453461857`*^9},
+ CellLabel->"In[25]:=",ExpressionUUID->"7b8096da-3fe9-4b80-98fb-383eec7ab1ca"],
+
+Cell[BoxData[
+ RowBox[{"CreateCombinatorics", "[", 
+  RowBox[{
+  "\"\<NeumannTriple\>\"", ",", "mesh", ",", "3", ",", "M", ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "neumannelist", ",", "EOP", ",", "plist", ",", "bndcheck", ",", 
+       "neumannplist", ",", "\[IndentingNewLine]", "dofcheck", ",", 
+       "neumannedeges"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"neumannelist", "=", 
+       RowBox[{"ToPack", "[", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"NeumannEdges", "[", "M", "]"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"EOP", "=", 
+       RowBox[{"EdgesOppVertices", "[", "M", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"plist", "=", 
+       RowBox[{"ToPack", "[", 
+        RowBox[{
+        "EOP", "\[LeftDoubleBracket]", "neumannelist", 
+         "\[RightDoubleBracket]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"bndcheck", "=", 
+       RowBox[{
+        RowBox[{"Max", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{
+           RowBox[{"Unitize", "[", "plist", "]"}], ",", 
+           RowBox[{"{", "2", "}"}]}], "]"}], "]"}], "\[LessEqual]", " ", 
+        "1"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"neumannplist", "=", 
+       RowBox[{"plist", "\[LeftDoubleBracket]", 
+        RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"dofcheck", "=", 
+       RowBox[{"DuplicateFreeQ", "[", "neumannplist", "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<bndcheck: \>\"", ",", "bndcheck"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<dofcheck: \>\"", ",", "dofcheck"}], "]"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"neumannedeges", "=", 
+       RowBox[{"Edges", "[", 
+        RowBox[{"M", ",", 
+         RowBox[{"Flatten", "[", "neumannelist", "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Transpose", "[", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"neumannedeges", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"neumannedeges", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}], ",", 
+         "\[IndentingNewLine]", "neumannplist"}], "\[IndentingNewLine]", 
+        "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.720103776439337*^9, 
+  3.720103786526063*^9}},ExpressionUUID->"7a4f51ab-0632-4840-b7f0-\
+6538a979f660"],
+
+Cell[BoxData[
+ RowBox[{"NeumannFlippableEdges", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "neumanntriangles", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"neumanntriangles", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"AdjacencyLists", "[", 
+          RowBox[{
+           RowBox[{"EdgeTriangleAdjacencyMatrix", "[", "M", "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"NeumannEdges", "[", "M", "]"}], "\[RightDoubleBracket]"}],
+           "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"IntegerPositions", "[", 
+        RowBox[{
+         RowBox[{"Total", "[", 
+          RowBox[{
+           RowBox[{"TriangleEdgeAdjacencyMatrix", "[", "M", "]"}], 
+           "\[LeftDoubleBracket]", "neumanntriangles", 
+           "\[RightDoubleBracket]"}], "]"}], ",", "0"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Returns those edges whose DelaunayFlip does not affect the \
+conditions for NeumannTriples.\>\""}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellLabel->
+  "In[807]:=",ExpressionUUID->"9c989c73-b2bd-4c53-b0c3-96a07edcaff2"],
+
+Cell[BoxData[
+ RowBox[{"NeumannConstraintProjector", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"\[Nu]", "=", 
+        RowBox[{"NeumannNormals", "[", "M", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "\[Nu]", "]"}], "\[Equal]", "0"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"SparseDiagonalBlockMatrix", "[", "\[IndentingNewLine]", 
+         RowBox[{"getFrames3D", "[", 
+          RowBox[{"Partition", "[", 
+           RowBox[{"\[Nu]", ",", 
+            RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}], "]"}], 
+         "]"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.684749214710223*^9, 3.684749293369608*^9}, {
+   3.684749374425823*^9, 3.684749401466296*^9}, {3.684753068810752*^9, 
+   3.68475307590862*^9}, 3.684756194460705*^9, {3.6847582421116257`*^9, 
+   3.684758245159482*^9}, {3.7583704492514677`*^9, 3.7583704596331377`*^9}, {
+   3.7887816798954077`*^9, 3.788781698038116*^9}, {3.7887821648609133`*^9, 
+   3.7887821695171127`*^9}, {3.788782249882279*^9, 3.788782271763939*^9}, {
+   3.788782373406563*^9, 3.788782375534266*^9}, 
+   3.7887865865550756`*^9},ExpressionUUID->"ff5b3909-8cf4-4f6c-bf1c-\
+beb3cf4698a5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NeumannConstraint", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\[Nu]", "=", 
+         RowBox[{
+          RowBox[{"NeumannNormals", "[", "M", "]"}], "-", 
+          RowBox[{"DesiredNeumannNormals", "[", "M", "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "\[Nu]", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"NeumannConstraintProjector", "[", "M", "]"}], ".", 
+          "\[Nu]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NeumannConstraint", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\[Nu]", "=", 
+         RowBox[{
+          RowBox[{"NeumannNormals", "'"}], "[", "M", "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "\[Nu]", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"NeumannConstraintProjector", "[", "M", "]"}], ".", 
+          "\[Nu]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NeumannConstraint", "''"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"\[Nu]", "=", 
+        RowBox[{
+         RowBox[{"NeumannNormals", "''"}], "[", "M", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "\[Nu]", "]"}], ">", "0"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"NeumannConstraintProjector", "[", "M", "]"}], ".", 
+         "\[Nu]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], "Input",\
+
+ CellChangeTimes->{{3.684749483978196*^9, 3.6847495314254093`*^9}, {
+  3.6847550163154507`*^9, 3.684755068493476*^9}, {3.684756196903831*^9, 
+  3.6847561995336447`*^9}, {3.758370419269017*^9, 3.758370440089509*^9}, {
+  3.7887822684592247`*^9, 3.7887822893987923`*^9}, {3.788782376774469*^9, 
+  3.788782383740447*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"616af790-14bd-429c-9142-613f366bcab5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CreategetFunction", "[", 
+   RowBox[{
+   "\"\<NeumannNormals\>\"", ",", "mesh", ",", "Triangles", ",", 
+    "NeumannTripleData", ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<getFunction\>\"", "\[Rule]", "\"\<NeumannNormals2D\>\""}]}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.684748435159811*^9, 3.684748442180952*^9}, {
+  3.686303844440342*^9, 3.686303858623087*^9}, {3.6890744470448914`*^9, 
+  3.689074449326393*^9}},ExpressionUUID->"eee50332-2467-44b7-a265-\
+6e70c3f6d80e"],
+
+Cell[BoxData[
+ RowBox[{"CreateJet", "[", 
+  RowBox[{
+  "\"\<NeumannNormals\>\"", ",", "\[IndentingNewLine]", "mesh", ",", 
+   "\[IndentingNewLine]", "NeumannTriples", ",", "\[IndentingNewLine]", 
+   RowBox[{"\"\<Global\>\"", "\[Rule]", "False"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "3"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"\"\<getFunction\>\"", "\[Rule]", "\"\<NeumannNormals\>\""}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.684748300655107*^9, 3.684748384343013*^9}, 
+   3.684748451702423*^9, {3.686303117002873*^9, 3.686303133433319*^9}, {
+   3.6863038396638813`*^9, 
+   3.686303852086338*^9}},ExpressionUUID->"a754ebb8-5ac7-49ac-9836-\
+7cf1c0c7ab08"],
+
+Cell[BoxData[
+ RowBox[{"NeumannEdgeMidpoints", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"p", "=", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"VertexCoordinates", "[", 
+           RowBox[{"M", ",", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Edges", "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"NeumannEdges", "[", "M", "]"}]}], "]"}], "]"}]}], 
+           "]"}], ",", "2"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"1", "/", "2"}], 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"p", "\[LeftDoubleBracket]", " ", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], "+", 
+         RowBox[{"p", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}], ")"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{
+  3.684749653019404*^9, 3.720103786939681*^9, 3.720103825759836*^9, {
+   3.758370475971114*^9, 
+   3.75837047879185*^9}},ExpressionUUID->"a0b443f6-b593-4a6c-9a98-\
+db8b8c5e4079"],
+
+Cell[BoxData[
+ RowBox[{"PlotNeumannNormals", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"Plist", "=", 
+        RowBox[{"NeumannEdgeMidpoints", "[", "M", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Graphics3D", "[", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Arrowheads", "[", "0", "]"}], ",", 
+          RowBox[{"Sequence", "@@", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"{", 
+             RowBox[{"OptionValue", "[", "\"\<VectorStyle\>\"", "]"}], "}"}], 
+            "]"}]}], ",", 
+          RowBox[{"Arrow", "@", 
+           RowBox[{"Transpose", "@", 
+            RowBox[{"{", 
+             RowBox[{"Plist", ",", 
+              RowBox[{"Plist", "+", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "\"\<VectorScale\>\"", "]"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"Partition", "[", 
+                 RowBox[{
+                  RowBox[{"NeumannNormals", "[", "M", "]"}], ",", 
+                  RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], 
+                 "]"}]}]}]}], "}"}]}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Darker", "@", 
+           RowBox[{"Darker", "@", "Red"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Arrow", "@", 
+           RowBox[{"Transpose", "@", 
+            RowBox[{"{", 
+             RowBox[{"Plist", ",", 
+              RowBox[{"Plist", "+", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "\"\<VectorScale\>\"", "]"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"Partition", "[", 
+                 RowBox[{
+                  RowBox[{"DesiredNeumannNormals", "[", "M", "]"}], ",", 
+                  RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], 
+                 "]"}]}]}]}], "}"}]}]}]}], "\[IndentingNewLine]", "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Lighting", "\[Rule]", "\"\<Neutral\>\""}]}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"VectorStyle", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", 
+       RowBox[{"\"\<VectorScale\>\"", "\[Rule]", "0.1"}]}], "}"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.638003747561754*^9, 3.638003753098917*^9}, {
+  3.6380038862870293`*^9, 3.6380038935455313`*^9}, {3.6847486906345463`*^9, 
+  3.684748699814878*^9}, {3.684758191279779*^9, 3.6847581971985397`*^9}, {
+  3.6847582843840322`*^9, 3.684758298785832*^9}, {3.720103847211618*^9, 
+  3.7201038483146772`*^9}, {3.7583704830845203`*^9, 
+  3.7583704903441563`*^9}},ExpressionUUID->"718ca7c5-bfb0-41fc-bd6f-\
+d943c4997a1f"],
+
+Cell[BoxData[
+ RowBox[{"NonNeumannVertices", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Complement", "[", 
+     RowBox[{
+      RowBox[{"Range", "[", 
+       RowBox[{"VertexCount", "[", "M", "]"}], "]"}], ",", 
+      RowBox[{"Union", "@@", 
+       RowBox[{"Edges", "[", 
+        RowBox[{"M", ",", 
+         RowBox[{"NeumannEdges", "[", "M", "]"}]}], "]"}]}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.686761912562667*^9, 3.686761918371357*^9}, 
+   3.720103787303772*^9, {3.720103833275985*^9, 3.720103868474392*^9}, {
+   3.7583704930608873`*^9, 
+   3.758370497009654*^9}},ExpressionUUID->"01329288-2881-47cf-9eb9-\
+55631aa50199"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 321, 8, 42, "Input",ExpressionUUID->"93802372-c995-4034-a669-9ef79f44e8e8"],
+Cell[882, 30, 306, 6, 42, "Input",ExpressionUUID->"7b8096da-3fe9-4b80-98fb-383eec7ab1ca"],
+Cell[1191, 38, 2830, 66, 592, "Input",ExpressionUUID->"7a4f51ab-0632-4840-b7f0-6538a979f660"],
+Cell[4024, 106, 1294, 30, 192, "Input",ExpressionUUID->"9c989c73-b2bd-4c53-b0c3-96a07edcaff2"],
+Cell[5321, 138, 1598, 33, 267, "Input",ExpressionUUID->"ff5b3909-8cf4-4f6c-bf1c-beb3cf4698a5"],
+Cell[6922, 173, 2959, 74, 667, "Input",ExpressionUUID->"616af790-14bd-429c-9142-613f366bcab5"],
+Cell[9884, 249, 521, 11, 67, "Input",ExpressionUUID->"eee50332-2467-44b7-a265-6e70c3f6d80e"],
+Cell[10408, 262, 818, 16, 217, "Input",ExpressionUUID->"a754ebb8-5ac7-49ac-9836-7cf1c0c7ab08"],
+Cell[11229, 280, 1220, 31, 142, "Input",ExpressionUUID->"a0b443f6-b593-4a6c-9a98-db8b8c5e4079"],
+Cell[12452, 313, 2882, 65, 392, "Input",ExpressionUUID->"718ca7c5-bfb0-41fc-bd6f-d943c4997a1f"],
+Cell[15337, 380, 810, 19, 117, "Input",ExpressionUUID->"01329288-2881-47cf-9eb9-55631aa50199"]
+}
+]
+*)
+

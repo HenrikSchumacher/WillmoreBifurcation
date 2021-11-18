@@ -1,0 +1,384 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15656,        376]
+NotebookOptionsPosition[     15269,        362]
+NotebookOutlinePosition[     15605,        377]
+CellTagsIndexPosition[     15562,        374]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"getCutTriangles", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f", ",", "_Integer", ",", "1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"v", ",", "_Integer", ",", "1"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"f1", ",", "f2", ",", "f3", ",", "v1", ",", "v2", ",", "v3"}],
+         "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"f1", "=", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"f", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"f2", "=", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"f", ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"f3", "=", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"f", ",", "3"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"v1", "=", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"v", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"v2", "=", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"v", ",", "2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"v3", "=", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"v", ",", "3"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"v1", "\[Equal]", "v2"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"f1", ",", "f2", ",", "f3"}], "}"}], "\[IndentingNewLine]",
+           ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"v2", "\[Equal]", "v3"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"f2", ",", "f3", ",", "f1"}], "}"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{"v1", "\[Equal]", "v3"}], "*)"}], "\[IndentingNewLine]", 
+            
+            RowBox[{"{", 
+             RowBox[{"f3", ",", "f1", ",", "f2"}], "}"}]}], 
+           "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"RuntimeAttributes", "\[Rule]", 
+      RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.757697452087248*^9, 3.757697468135358*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"f8f3ef3f-4c73-415e-897a-f6c9eca4cc37"],
+
+Cell[BoxData[
+ RowBox[{"NodalCut", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", 
+      RowBox[{"v0_", "?", "VectorQ"}], ",", 
+      RowBox[{"\[Lambda]_:", "0."}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "v", ",", "triangles", ",", "signs", ",", "cutelist", ",", "offset", 
+        ",", "\[Sigma]", ",", "n", ",", "i", ",", "j", ",", "pts", ",", "t", 
+        ",", "cutpts", ",", "cuttlist", ",", "triangledata", ",", "f1", ",", 
+        "f2", ",", "f3", ",", "e23", ",", "e31", ",", "quads1", ",", "quads2",
+         ",", "P", ",", "vnew", ",", "picker"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"v", "=", 
+        RowBox[{"v0", "-", "\[Lambda]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"signs", "=", 
+        RowBox[{"Sign", "[", "v", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"cutelist", "=", 
+        RowBox[{"IntegerPositions", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"EdgeVertexAdjacencyMatrix", "[", "M", "]"}], ".", 
+           "signs"}], ",", "0"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "cutelist", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"offset", "=", 
+           RowBox[{"Length", "[", "cutelist", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\[Sigma]", "=", 
+           RowBox[{"AssociationThread", "[", 
+            RowBox[{"cutelist", ",", 
+             RowBox[{"Range", "[", 
+              RowBox[{
+               RowBox[{"n", "+", "1"}], ",", 
+               RowBox[{"n", "+", "offset"}]}], "]"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"VertexCount", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"i", ",", "j"}], "}"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{
+             RowBox[{"Edges", "[", "M", "]"}], "\[LeftDoubleBracket]", 
+             "cutelist", "\[RightDoubleBracket]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"pts", "=", 
+           RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"t", "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+             "v", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], "/", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+               "v", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+               "-", 
+               RowBox[{
+               "v", "\[LeftDoubleBracket]", "j", "\[RightDoubleBracket]"}]}], 
+              ")"}]}], ")"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"cutpts", "=", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+             "pts", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+             " ", 
+             RowBox[{"(", 
+              RowBox[{"1", "-", "t"}], ")"}]}], "+", " ", 
+            RowBox[{"t", " ", 
+             RowBox[{
+             "pts", "\[LeftDoubleBracket]", "j", 
+              "\[RightDoubleBracket]"}]}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"picker", "=", 
+           RowBox[{
+            RowBox[{"TriangleVertexAdjacencyMatrix", "[", "M", "]"}], ".", 
+            "signs"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"triangles", "=", 
+           RowBox[{"Triangles", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"cuttlist", "=", 
+           RowBox[{"IntegerPositions", "[", 
+            RowBox[{"picker", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"triangledata", "=", 
+           RowBox[{"Partition", "[", 
+            RowBox[{
+             RowBox[{"signs", "\[LeftDoubleBracket]", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+               "triangles", "\[LeftDoubleBracket]", "cuttlist", 
+                "\[RightDoubleBracket]"}], "]"}], "\[RightDoubleBracket]"}], 
+             ",", "3"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"f1", ",", "f2", ",", "f3"}], "}"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"getCutTriangles", "[", 
+             RowBox[{
+              RowBox[{
+              "triangles", "\[LeftDoubleBracket]", "cuttlist", 
+               "\[RightDoubleBracket]"}], ",", "triangledata"}], "]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"e23", "=", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{"\[Sigma]", ",", 
+             RowBox[{"EdgeLookup", "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"Transpose", "[", 
+                RowBox[{"{", 
+                 RowBox[{"f2", ",", "f3"}], "}"}], "]"}]}], "]"}]}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"e31", "=", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{"\[Sigma]", ",", 
+             RowBox[{"EdgeLookup", "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"Transpose", "[", 
+                RowBox[{"{", 
+                 RowBox[{"f3", ",", "f1"}], "}"}], "]"}]}], "]"}]}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"quads1", "=", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "f2", ",", 
+                RowBox[{"e23", "+", "offset"}], ",", 
+                RowBox[{"e31", "+", "offset"}]}], "}"}], "]"}]}], ";"}], 
+           "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"quads1", "=", 
+           RowBox[{"Join", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "f2", ",", 
+                RowBox[{"e23", "+", "offset"}]}], "}"}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", 
+                RowBox[{"e23", "+", "offset"}], ",", 
+                RowBox[{"e31", "+", "offset"}]}], "}"}], "]"}]}], 
+            "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "triangles", "\[LeftDoubleBracket]", "cuttlist", 
+            "\[RightDoubleBracket]"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"e23", ",", "f3", ",", "e31"}], "}"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"cuttlist", "=", 
+           RowBox[{"IntegerPositions", "[", 
+            RowBox[{"picker", ",", 
+             RowBox[{"-", "1"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"triangledata", "=", 
+           RowBox[{"Partition", "[", 
+            RowBox[{
+             RowBox[{"signs", "\[LeftDoubleBracket]", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+               "triangles", "\[LeftDoubleBracket]", "cuttlist", 
+                "\[RightDoubleBracket]"}], "]"}], "\[RightDoubleBracket]"}], 
+             ",", "3"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"f1", ",", "f2", ",", "f3"}], "}"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"getCutTriangles", "[", 
+             RowBox[{
+              RowBox[{
+              "triangles", "\[LeftDoubleBracket]", "cuttlist", 
+               "\[RightDoubleBracket]"}], ",", "triangledata"}], "]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"e23", "=", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{"\[Sigma]", ",", 
+             RowBox[{"EdgeLookup", "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"Transpose", "[", 
+                RowBox[{"{", 
+                 RowBox[{"f2", ",", "f3"}], "}"}], "]"}]}], "]"}]}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"e31", "=", 
+           RowBox[{"Lookup", "[", 
+            RowBox[{"\[Sigma]", ",", 
+             RowBox[{"EdgeLookup", "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"Transpose", "[", 
+                RowBox[{"{", 
+                 RowBox[{"f3", ",", "f1"}], "}"}], "]"}]}], "]"}]}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"quads2", "=", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "f2", ",", "e23", ",", "e31"}], "}"}], 
+              "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"quads2", "=", 
+           RowBox[{"Join", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "f2", ",", "e23"}], "}"}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", 
+               RowBox[{"f1", ",", "e23", ",", "e31"}], "}"}], "]"}]}], 
+            "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+           "triangles", "\[LeftDoubleBracket]", "cuttlist", 
+            "\[RightDoubleBracket]"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"e23", "+", "offset"}], ",", "f3", ",", 
+              RowBox[{"e31", "+", "offset"}]}], "}"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"P", "=", 
+           RowBox[{"Init", "[", 
+            RowBox[{"mesh", ",", 
+             RowBox[{"Join", "[", 
+              RowBox[{"pts", ",", "cutpts", ",", "cutpts"}], "]"}], ",", 
+             RowBox[{"Join", "[", 
+              RowBox[{"triangles", ",", "quads1", ",", "quads2"}], "]"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"vnew", "=", 
+           RowBox[{"Join", "[", 
+            RowBox[{"v0", ",", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"\[Lambda]", ",", 
+               RowBox[{"2", "offset"}]}], "]"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"MeshPart", "[", 
+               RowBox[{"P", ",", "#"}], "]"}], ",", 
+              RowBox[{
+              "vnew", "\[LeftDoubleBracket]", "#", 
+               "\[RightDoubleBracket]"}]}], "}"}], "&"}], "/@", 
+           RowBox[{"ConnectedComponents", "[", "P", "]"}]}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"M", ",", "v0"}], "}"}], "}"}]}], "\[IndentingNewLine]", 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7576959677437477`*^9, 3.757696240457306*^9}, 
+   3.757696388636249*^9, {3.757696659476042*^9, 3.757696670556818*^9}, {
+   3.757697110859745*^9, 3.757697124106914*^9}, {3.7576971716609373`*^9, 
+   3.757697279473309*^9}, {3.757697702945489*^9, 3.7576977047602377`*^9}, {
+   3.757697964041029*^9, 3.757697965072134*^9}, {3.757698405294883*^9, 
+   3.7576984065187607`*^9}, {3.757698636602202*^9, 3.757698687197356*^9}, {
+   3.757698807417955*^9, 3.7576988999142933`*^9}, 3.7576991388427143`*^9, {
+   3.7576992179939117`*^9, 3.757699263960294*^9}, {3.757700240711293*^9, 
+   3.757700252852161*^9}, {3.758035299171318*^9, 3.7580353256243668`*^9}, {
+   3.772733681179818*^9, 
+   3.772733681618702*^9}},ExpressionUUID->"49a8158a-070f-4d49-b1c9-\
+ca56532ce078"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2849, 64, 592, "Input",ExpressionUUID->"f8f3ef3f-4c73-415e-897a-f6c9eca4cc37"],
+Cell[3410, 86, 11855, 274, 1217, "Input",ExpressionUUID->"49a8158a-070f-4d49-b1c9-ca56532ce078"]
+}
+]
+*)
+

@@ -1,0 +1,681 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     31773,        673]
+NotebookOptionsPosition[     31094,        656]
+NotebookOutlinePosition[     31430,        671]
+CellTagsIndexPosition[     31387,        668]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"AssemblyFunctionNameGenerator", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+       RowBox[{"\"\<c\>\"", ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Parallelization\>\"", "]"}], ",", 
+          "\"\<p\>\"", ",", "\"\<\>\""}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Vectors\>\"", "]"}], ",", 
+          "\"\<Vector\>\"", ",", "\"\<\>\""}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Global\>\"", "]"}], ",", 
+          "\"\<\>\"", ",", "\"\<Tuple\>\""}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"\"\<D\>\"", ",", 
+          RowBox[{"OptionValue", "[", "\"\<Derivatives\>\"", "]"}]}], "]"}], 
+        ",", "\[IndentingNewLine]", "\"\<Combinatorics\>\""}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "1"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Vectors\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Global\>\"", "\[Rule]", "True"}]}], "\[IndentingNewLine]",
+       "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6641952541533527`*^9, 
+  3.66419545000946*^9}},ExpressionUUID->"0acfd1c1-7675-4c54-ba48-\
+949ee469e026"],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{"AssemblyCombinatorics3", "=", 
+   RowBox[{"PackageFunction", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "tuples_List", ",", "dim_Integer", ",", "type_String", ",", 
+       "der_Integer"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"funname", ",", "vectorQ", ",", 
+         RowBox[{"s", "=", "\"\<\>\""}], ",", 
+         RowBox[{"args", "=", 
+          RowBox[{"{", "}"}]}], ",", "vdim", ",", "parallelQ", ",", "opts", 
+         ",", "globalQ", ",", "fun"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"vdim", "=", 
+         RowBox[{"OptionValue", "[", "\"\<VectorDimension\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"vectorQ", "=", 
+         RowBox[{"vdim", ">", "1"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"parallelQ", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Parallelization\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"globalQ", "=", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"type", "\[Equal]", "\"\<Scalar\>\""}], ",", "True", ",", 
+           "False"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"opts", "=", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "der"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "parallelQ"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Vectors\>\"", "\[Rule]", "vectorQ"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Global\>\"", "\[Rule]", "globalQ"}]}], 
+          "\[IndentingNewLine]", "}"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"funname", "=", 
+         RowBox[{"AssemblyFunctionNameGenerator", "[", "opts", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"fun", "=", 
+         RowBox[{"ToExpression", "[", "funname", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"parallelQ", "&&", 
+           RowBox[{"(", 
+            RowBox[{"!", "globalQ"}], ")"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"args", ",", 
+            RowBox[{"Range", "[", 
+             RowBox[{"Length", "[", "tuples", "]"}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"args", ",", "tuples"}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"args", ",", "dim"}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{"vectorQ", ",", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"args", ",", "vdim"}], "]"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"fun", "@@", "args"}], ",", "1"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<Options\>\"", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "1"}]}], 
+       "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "\"\<Description\>\"", "\[Rule]", 
+      "\"\<AssemblyCombinatorics[tuples,dim,type,k] returns data for \
+assembling the k-th derivative of a function. The argument type may have the \
+values \\\"Scalar\\\" for scalar-valued functions or \\\"Tuple\\\" for fields \
+that assign a scalar value to each tuple\>\""}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]", "*)"}]], "Input",
+ CellChangeTimes->{{3.664197385112097*^9, 3.664197413462187*^9}, {
+   3.664197639287752*^9, 3.664197701260024*^9}, {3.664197794403688*^9, 
+   3.66419800259305*^9}, {3.664198171990788*^9, 3.664198187787222*^9}, {
+   3.664198229392619*^9, 3.664198230552401*^9}, {3.664200632248987*^9, 
+   3.664200641836907*^9}, 3.664200672593047*^9, {3.664219581321808*^9, 
+   3.6642195984643908`*^9}, 3.6643528523696623`*^9, {3.664387515619508*^9, 
+   3.664387520466611*^9}},ExpressionUUID->"a7ceee20-6a52-4b9e-8b5c-\
+7f276c5fbdf6"],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{"AssemblyCombinatorics2", "=", 
+   RowBox[{"PackageFunction", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "tuples_List", ",", "dim_Integer", ",", "type_String", ",", 
+       "der_Integer"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"fun", ",", "funname", ",", "vectorQ", ",", 
+         RowBox[{"s", "=", "\"\<\>\""}], ",", 
+         RowBox[{"args", "=", 
+          RowBox[{"{", "}"}]}], ",", "vdim", ",", "newtype"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"vdim", "=", 
+         RowBox[{"OptionValue", "[", "\"\<VectorDimension\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"vectorQ", "=", 
+         RowBox[{"vdim", ">", "1"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"newtype", "=", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"type", "\[Equal]", "\"\<Scalar\>\""}], ",", 
+           "\"\<Global\>\"", ",", "type"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"funname", "=", 
+         RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+          RowBox[{"\"\<c\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<Parallelization\>\"", "]"}], 
+             ",", "\"\<p\>\"", ",", "\"\<\>\""}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"newtype", "<>", 
+            RowBox[{"If", "[", 
+             RowBox[{"vectorQ", ",", "\"\<Vector\>\"", ",", "\"\<\>\""}], 
+             "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"\"\<D\>\"", ",", "der"}], "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<Combinatorics\>\""}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"fun", "=", 
+         RowBox[{"ToExpression", "[", "funname", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Parallelization\>\"", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{"vectorQ", ",", "\[IndentingNewLine]", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"args", ",", 
+              RowBox[{"vdim", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"Range", "[", 
+                  RowBox[{"Length", "[", "tuples", "]"}], "]"}], "-", "1"}], 
+                ")"}]}]}], "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"args", ",", 
+              RowBox[{"Range", "[", 
+               RowBox[{"Length", "[", "tuples", "]"}], "]"}]}], "]"}]}], 
+           "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"args", ",", "tuples"}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"newtype", "\[Equal]", "\"\<Tuple\>\""}], ",", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"args", ",", "dim"}], "]"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{"vectorQ", ",", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"args", ",", "vdim"}], "]"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"fun", "@@", "args"}], ",", "1"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<Options\>\"", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "1"}]}], 
+       "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "\"\<Description\>\"", "\[Rule]", 
+      "\"\<AssemblyCombinatorics[tuples,dim,type,k] returns data for \
+assembling the k-th derivative of a function. The argument type may have the \
+values \\\"Scalar\\\" for scalar-valued functions or \\\"Tuple\\\" for fields \
+that assign a scalar value to each tuple\>\""}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]", "*)"}]], "Input",
+ CellChangeTimes->{{3.6542373168786592`*^9, 3.654237420078189*^9}, {
+   3.654237465914287*^9, 3.654237519122794*^9}, {3.654237630167911*^9, 
+   3.654237630814505*^9}, {3.6542377272860203`*^9, 3.654237809479416*^9}, {
+   3.654238105108655*^9, 3.654238123445524*^9}, {3.654238180647584*^9, 
+   3.65423829288477*^9}, {3.6542390680513363`*^9, 3.654239073749189*^9}, 
+   3.654241920474958*^9, {3.664183870045397*^9, 3.6641838729007063`*^9}, {
+   3.6641839579943533`*^9, 3.664183965392516*^9}, {3.664184069792617*^9, 
+   3.664184098214365*^9}, {3.664184360773917*^9, 3.664184401555394*^9}, {
+   3.664184446206819*^9, 3.66418444785187*^9}, {3.6641845643019333`*^9, 
+   3.664184582111609*^9}, {3.664184666169366*^9, 3.664184755491249*^9}, {
+   3.6641847983188143`*^9, 3.6641848138797617`*^9}, {3.6641848895456743`*^9, 
+   3.664185092958364*^9}, {3.6641851428942747`*^9, 3.664185250286806*^9}, {
+   3.664185309399623*^9, 3.664185337108807*^9}, {3.664185462133119*^9, 
+   3.6641854849939013`*^9}, {3.664185563898337*^9, 3.664185569287627*^9}, {
+   3.664185624306099*^9, 3.6641856451847878`*^9}, {3.664185713391141*^9, 
+   3.664185840146762*^9}, {3.664186075943981*^9, 3.6641860789457703`*^9}, {
+   3.664186248980687*^9, 3.664186291309556*^9}, {3.6641880792835407`*^9, 
+   3.664188092661046*^9}, {3.664188267271532*^9, 3.664188348491229*^9}, 
+   3.664200670346723*^9, {3.6643875226665077`*^9, 
+   3.664387526577454*^9}},ExpressionUUID->"2c17f213-4c8c-4f97-8689-\
+71722941fd93"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"AssemblyFunctionCodeGenerator", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"tabcounter", "=", "0"}], ",", "der", ",", 
+          "loopvariablenames", ",", "helpervariablenames", ",", 
+          "\[IndentingNewLine]", "parallelQ", ",", "globalQ", ",", "vectorQ", 
+          ",", "fillstring"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"parallelQ", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Parallelization\>\"", "]"}]}], ";",
+          "\[IndentingNewLine]", 
+         RowBox[{"globalQ", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Global\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"vectorQ", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Vectors\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"der", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Derivatives\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"loopvariablenames", "=", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"\"\<i\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"k", ",", "1", ",", "der"}], "}"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"helpervariablenames", "=", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"\"\<li\>\"", "<>", 
+             RowBox[{"ToString", "[", "k", "]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"k", ",", "1", ",", "der"}], "}"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"fillstring", "[", "s__", "]"}], ":=", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"\"\<\\t\>\"", ",", "tabcounter"}], "]"}], ",", "s"}], 
+           "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+          RowBox[{"\"\<CPackageFunction[{\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"!", "globalQ"}], ")"}], "&&", 
+              RowBox[{"(", "parallelQ", ")"}]}], ",", 
+             "\"\<\\n\\t{tupleindex,_Integer},\>\"", ",", "\"\<\>\""}], "]"}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+            "parallelQ", ",", "\"\<\\n\\t{tuple,_Integer,1},\>\"", ",", 
+             "\"\<\\n\\t{tuples,_Integer,2},\>\""}], "]"}], ",", "\n", "\t", 
+           "\"\<\\n\\t{domdim,_Integer}\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+            "vectorQ", ",", "\"\<,\\n\\t{vectordim,_Integer}\>\"", ",", 
+             "\"\<\>\""}], "]"}], ",", "\[IndentingNewLine]", "\"\<},\>\"", 
+           ",", "\[IndentingNewLine]", "\"\<\\n\>\"", ",", 
+           "\[IndentingNewLine]", "\"\<Module[{\>\"", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+            "parallelQ", ",", "\[IndentingNewLine]", 
+             "\"\<tt=domdim(tuple-1),tuplelength=Length[tuple],\>\"", ",", 
+             "\[IndentingNewLine]", 
+             "\"\<rowcounter=0,tuplelength=Dimensions[tuples]\
+\[LeftDoubleBracket]2\[RightDoubleBracket],\>\""}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", "\"\<list,\>\"", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Riffle", "[", 
+            RowBox[{"helpervariablenames", ",", "\"\<,\>\""}], "]"}], ",", 
+           "\"\<},\\n\>\"", ",", "\[IndentingNewLine]", "\"\<Flatten[\\n\>\"",
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"!", "parallelQ"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"tabcounter", "++"}], ";", 
+              RowBox[{
+              "fillstring", "[", "\"\<Table[rowcounter++;\\n\>\"", "]"}]}], 
+             ",", "\[IndentingNewLine]", "\"\<\>\""}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"tabcounter", "++"}], ";", "\[IndentingNewLine]", 
+            RowBox[{
+            "fillstring", "[", 
+             "\"\<list=Flatten[Table[Compile`GetElement[tt,i]+j,{i,1,\
+tuplelength},{j,1,domdim}]];\\n\>\"", "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"tabcounter", "--"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{"vectorQ", ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"tabcounter", "++"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"fillstring", "[", 
+                RowBox[{"\"\<Table[\\n\>\"", ",", "\"\<\>\""}], "]"}]}], ",", 
+              "\[IndentingNewLine]", "\"\<\>\""}], "\[IndentingNewLine]", 
+             "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"tabcounter", "++"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"fillstring", "[", 
+               RowBox[{
+               "\"\<Table[l\>\"", ",", "varname", ",", 
+                "\"\<=Compile`GetElement[list,\>\"", ",", "varname", ",", 
+                "\"\<];\\n\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"varname", ",", "loopvariablenames"}], "}"}]}], "]"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"tabcounter", "++"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"fillstring", "[", 
+             RowBox[{"\"\<{\>\"", ",", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"!", "globalQ"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"{", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{"parallelQ", ",", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    "vectorQ", ",", "\"\<vectordim(tupleindex-1)+k\>\"", ",", 
+                    "\"\<tupleindex\>\""}], "]"}], ",", 
+                    "\[IndentingNewLine]", "\"\<rowcounter\>\""}], 
+                   "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                  "\"\<,\>\""}], "\[IndentingNewLine]", "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{"vectorQ", ",", "\"\<k,\>\"", ",", "\"\<\>\""}], 
+                 "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Riffle", "[", 
+               RowBox[{
+                RowBox[{"Reverse", "[", "helpervariablenames", "]"}], ",", 
+                "\"\<,\>\""}], "]"}], ",", "\"\<}\\n\>\""}], "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"tabcounter", "--"}], ";", "\[IndentingNewLine]", 
+              "\[IndentingNewLine]", 
+              RowBox[{"fillstring", "[", 
+               RowBox[{
+               "\"\<,{\>\"", ",", "varname", ",", 
+                "\"\<,1,Length[list]}]\n\>\""}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"varname", ",", 
+               RowBox[{"Reverse", "[", "loopvariablenames", "]"}]}], "}"}]}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{"vectorQ", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"tabcounter", "--"}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+              "fillstring", "[", "\"\<,{k,1,vectordim}]\\n\>\"", "]"}]}], 
+             "\[IndentingNewLine]", ",", "\"\<\>\""}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+            "parallelQ", ",", "\[IndentingNewLine]", "\"\<\>\"", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"tabcounter", "--"}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+              "fillstring", "[", "\"\<,{tt,domdim(tuples-1)}]\\n\>\"", 
+               "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<,\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{"vectorQ", ",", 
+             RowBox[{"ToString", "[", "der", "]"}], ",", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"der", "-", "1"}], "]"}]}], "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<]\\n\>\"", ",", "\[IndentingNewLine]", 
+           "\"\<]\>\"", ",", "\[IndentingNewLine]", 
+           "\"\<,\\nRuntimeAttributes\[Rule]Listable\>\"", ",", 
+           "\[IndentingNewLine]", "\"\<,\\nParallelization\[Rule]\>\"", ",", 
+           RowBox[{"ToString", "[", "parallelQ", "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<\\n]\>\""}], "\[IndentingNewLine]", 
+          "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Options\>\"", "\[Rule]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "1"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Vectors\>\"", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Global\>\"", "\[Rule]", "True"}]}], 
+        "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Do", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ToExpression", "[", "\[IndentingNewLine]", 
+     RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"AssemblyFunctionNameGenerator", "@@", "s"}], ",", 
+       "\[IndentingNewLine]", "\"\<=\>\"", ",", "\[IndentingNewLine]", 
+       RowBox[{"AssemblyFunctionCodeGenerator", "@@", "s"}]}], 
+      "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{"s", ",", "\[IndentingNewLine]", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "der"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "p"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Vectors\>\"", "\[Rule]", "v"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Global\>\"", "\[Rule]", "g"}]}], 
+           "\[IndentingNewLine]", "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", 
+            RowBox[{"{", "True", "}"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"v", ",", 
+            RowBox[{"{", 
+             RowBox[{"False", ",", "True"}], "}"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"g", ",", 
+            RowBox[{"{", 
+             RowBox[{"True", ",", "False"}], "}"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"der", ",", "1", ",", "3"}], "}"}]}], "]"}], ",", "3"}], 
+       "]"}]}], "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.664196784690899*^9, 3.664196817712502*^9}, {
+   3.664196870988562*^9, 3.66419689610249*^9}, {3.6641969890109367`*^9, 
+   3.664197004423519*^9}, {3.6641971343021603`*^9, 3.664197136730081*^9}, {
+   3.664197177764134*^9, 3.664197198251212*^9}, {3.664198427029058*^9, 
+   3.664198431319854*^9}, 3.6641984778131123`*^9, 3.664199605296578*^9, {
+   3.6641996978704357`*^9, 3.66419970457611*^9}, {3.66419986649146*^9, 
+   3.664199914117957*^9}, {3.6641999621231613`*^9, 3.664199965796235*^9}, {
+   3.664200103336793*^9, 3.664200104088381*^9}, {3.664200197884348*^9, 
+   3.664200203061413*^9}, {3.664200300747814*^9, 3.6642003337175217`*^9}, {
+   3.6642003772689734`*^9, 3.664200378111515*^9}, {3.664200471964855*^9, 
+   3.664200472275057*^9}, {3.664292899854072*^9, 3.664292900705763*^9}, {
+   3.664296375083366*^9, 3.6642963756021957`*^9}, 3.6643528767268553`*^9, 
+   3.664387534227254*^9, {3.66541716527221*^9, 3.665417165935185*^9}, 
+   3.695559181442092*^9, {3.697112256816456*^9, 3.6971122639389067`*^9}, 
+   3.69711260064601*^9, {3.718289897418414*^9, 3.718289902128097*^9}, 
+   3.738674904128339*^9, 3.738674975830038*^9, {3.78592314588027*^9, 
+   3.785923152500957*^9}, {3.785923213051909*^9, 3.7859232216904716`*^9}},
+ CellLabel->"In[89]:=",ExpressionUUID->"0b109eee-c9d8-4315-b382-1c89cfe9cd41"],
+
+Cell[BoxData[
+ RowBox[{"AssemblyCombinatorics", "=", 
+  RowBox[{"PackageFunction", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "tuples_List", ",", "dim_Integer", ",", "localglobal_", ",", 
+      "der_Integer"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "funname", ",", "vectorQ", ",", "s", ",", "args", ",", "vdim", ",", 
+        "parallelQ", ",", "opts", ",", "globalQ", ",", "fun"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"args", "=", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"s", "=", "\"\<\>\""}], ";", "\[IndentingNewLine]", 
+       RowBox[{"vdim", "=", 
+        RowBox[{"OptionValue", "[", "\"\<VectorDimension\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"der", "\[Equal]", "0"}], "||", 
+          RowBox[{"vdim", "\[Equal]", "0"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"vectorQ", "=", 
+           RowBox[{"vdim", ">", "1"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"parallelQ", "=", 
+           RowBox[{"OptionValue", "[", "\"\<Parallelization\>\"", "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"globalQ", "=", 
+           RowBox[{"(", 
+            RowBox[{"localglobal", "\[Equal]", "\"\<Global\>\""}], ")"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"opts", "=", 
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "der"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "parallelQ"}], ",",
+              "\[IndentingNewLine]", 
+             RowBox[{"\"\<Vectors\>\"", "\[Rule]", "vectorQ"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\"\<Global\>\"", "\[Rule]", "globalQ"}]}], 
+            "\[IndentingNewLine]", "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"funname", "=", 
+           RowBox[{"AssemblyFunctionNameGenerator", "[", "opts", "]"}]}], ";",
+           "\[IndentingNewLine]", 
+          RowBox[{"fun", "=", 
+           RowBox[{"ToExpression", "[", "funname", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"parallelQ", "&&", 
+             RowBox[{"(", 
+              RowBox[{"!", "globalQ"}], ")"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"args", ",", 
+              RowBox[{"Range", "[", 
+               RowBox[{"Length", "[", "tuples", "]"}], "]"}]}], "]"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"args", ",", "tuples"}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"args", ",", "dim"}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{"vectorQ", ",", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"args", ",", "vdim"}], "]"}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"fun", "@@", "args"}], ",", "1"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "1"}]}], 
+      "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<Description\>\"", "\[Rule]", 
+     "\"\<AssemblyCombinatorics[tuples,dim,type,k] returns data for \
+assembling the k-th derivative of a function. The argument type may have the \
+values \\\"Scalar\\\" for scalar-valued functions or \\\"Tuple\\\" for fields \
+that assign a scalar value to each tuple\>\""}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.664197385112097*^9, 3.664197413462187*^9}, {
+   3.664197639287752*^9, 3.664197701260024*^9}, {3.664197794403688*^9, 
+   3.66419800259305*^9}, {3.664198171990788*^9, 3.664198187787222*^9}, {
+   3.664198229392619*^9, 3.664198230552401*^9}, {3.664200632248987*^9, 
+   3.664200641836907*^9}, 3.664200672593047*^9, {3.664219581321808*^9, 
+   3.6642195984643908`*^9}, {3.664350777348768*^9, 3.664350790459807*^9}, {
+   3.664351708073964*^9, 3.664351709384727*^9}, {3.664351944043754*^9, 
+   3.6643519565061913`*^9}, {3.6643521070036983`*^9, 3.664352111776615*^9}, {
+   3.664352144085369*^9, 3.664352147634742*^9}, {3.664352588413954*^9, 
+   3.664352590227377*^9}, 3.6643528666706543`*^9, {3.6643552973184147`*^9, 
+   3.664355317802355*^9}, {3.664355349524323*^9, 3.664355349801998*^9}, {
+   3.738674696802359*^9, 3.738674706685548*^9}},
+ CellLabel->"In[91]:=",ExpressionUUID->"025e8283-e83c-4ca9-92e7-b876d5a8c7ae"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1959, 43, 467, "Input",ExpressionUUID->"0acfd1c1-7675-4c54-ba48-949ee469e026"],
+Cell[2520, 65, 4394, 92, 867, "Input",ExpressionUUID->"a7ceee20-6a52-4b9e-8b5c-7f276c5fbdf6"],
+Cell[6917, 159, 5947, 120, 967, "Input",ExpressionUUID->"2c17f213-4c8c-4f97-8689-71722941fd93"],
+Cell[12867, 281, 13078, 266, 2667, "Input",ExpressionUUID->"0b109eee-c9d8-4315-b382-1c89cfe9cd41"],
+Cell[25948, 549, 5142, 105, 942, "Input",ExpressionUUID->"025e8283-e83c-4ca9-92e7-b876d5a8c7ae"]
+}
+]
+*)
+

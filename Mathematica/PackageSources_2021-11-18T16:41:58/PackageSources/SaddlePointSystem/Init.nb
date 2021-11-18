@@ -1,0 +1,764 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     37815,        756]
+NotebookOptionsPosition[     37329,        741]
+NotebookOutlinePosition[     37665,        756]
+CellTagsIndexPosition[     37622,        753]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"Init", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"saddlepointsystem", "/:", 
+    RowBox[{"Init", "[", 
+     RowBox[{
+     "saddlepointsystem", ",", "\[IndentingNewLine]", "metric0_", ",", 
+      "cons0_", ",", "stab0_", ",", "n_", ",", "d_", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"OptionsPattern", "[", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<SparseQ\>\"", "\[Rule]", "Automatic"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<NonDirichletVertices\>\"", "\[Rule]", "All"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MetricSolveFunction\>\"", "\[Rule]", "Automatic"}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{"\"\<SystemSolveFunction\>\"", "\[Rule]", "Automatic"}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{"\"\<MetricPostProcessor\>\"", "\[Rule]", "Identity"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MetricDuplicates\>\"", "\[Rule]", "Automatic"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MetricStabilizationMatrix\>\"", "\[Rule]", 
+          RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<DofReordering\>\"", "\[Rule]", "False"}]}], 
+        "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", "]"}], ":=", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "scalarQ", ",", "sparseQ", ",", "duplicates", ",", "metric", ",", 
+          "cons", ",", "stab", ",", "metstab", ",", "S", ",", "ndplist", ",", 
+          "doflist", ",", "\[IndentingNewLine]", "readmetric", ",", 
+          "readmetstab", ",", "readmatrix", ",", "numDOFs", ",", 
+          "dofreorderingQ", ","}], "\[IndentingNewLine]", "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "Print", "[", "\"\<Creating new saddlepointsystem.\>\"", "]"}], 
+          ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"scalarQ", "=", 
+          RowBox[{
+           RowBox[{"Length", "[", "metric0", "]"}], "<", 
+           RowBox[{"n", " ", "d"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"sparseQ", "=", 
+          RowBox[{"OptionValue", "[", "\"\<SparseQ\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"sparseQ", "===", "Automatic"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"sparseQ", "=", 
+            RowBox[{
+             RowBox[{"Head", "[", "metric0", "]"}], "===", "SparseArray"}]}], 
+           ",", "\[IndentingNewLine]", "True"}], "\[IndentingNewLine]", "]"}],
+          ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"duplicates", "=", 
+          RowBox[{"OptionValue", "[", "\"\<MetricDuplicates\>\"", "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"duplicates", "\[Equal]", "Automatic"}], " ", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{"scalarQ", ",", 
+             RowBox[{"duplicates", "=", "d"}], ",", 
+             RowBox[{"duplicates", "=", "1"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"ndplist", "=", 
+            RowBox[{"ToPack", "[", 
+             RowBox[{
+             "OptionValue", "[", "\"\<NonDirichletVertices\>\"", "]"}], 
+             "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"ndplist", "=", "All"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"metstab", "=", 
+          RowBox[{
+          "OptionValue", "[", "\"\<MetricStabilizationMatrix\>\"", "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"dofreorderingQ", "=", 
+          RowBox[{"TrueQ", "[", 
+           RowBox[{"OptionValue", "[", "\"\<DofReordering\>\"", "]"}], 
+           "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{"dofreorderingQ", ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Reorder", " ", "and", " ", "consider", " ", "only", " ", 
+             "NonDirichletVertices"}], "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"Style", "[", 
+              RowBox[{
+              "\"\<Caution: The option \\\"DofReordering\\\" of \
+saddlepointsystem is set to true.\>\"", ",", "Red"}], "]"}], "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"doflist", "=", 
+             RowBox[{"ToPack", "@", 
+              RowBox[{"With", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"allndpQ", "=", 
+                  RowBox[{"(", 
+                   RowBox[{"ndplist", "===", "All"}], ")"}]}], "}"}], 
+                "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"numDOFs", "=", 
+                  RowBox[{"If", "[", 
+                   RowBox[{"allndpQ", ",", " ", 
+                    RowBox[{"n", " ", "d"}], ",", 
+                    RowBox[{
+                    RowBox[{"Length", "[", "ndplist", "]"}], "d"}]}], "]"}]}],
+                  ";", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                  "scalarQ", "\[IndentingNewLine]", ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    "Reorder", " ", "for", " ", "easy", " ", "access", " ", 
+                    "to", " ", "metric"}], "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    "allndpQ", "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"plist", "=", 
+                    RowBox[{"d", 
+                    RowBox[{"(", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{"0", ",", 
+                    RowBox[{"n", "-", "1"}]}], "]"}], ")"}]}]}], "}"}], ",", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"plist", "+", "i"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "d"}], "}"}]}], "]"}], 
+                    "]"}]}], "]"}], "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"plist", "=", 
+                    RowBox[{"d", 
+                    RowBox[{"(", 
+                    RowBox[{"ndplist", "-", "1"}], ")"}]}]}], "}"}], ",", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"plist", "+", "i"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "d"}], "}"}]}], "]"}], 
+                    "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+                    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    "Do", " ", "not", " ", "reorder", " ", "but", " ", 
+                    "consider", " ", "only", " ", "NonDirichletVertices"}], 
+                    "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    "allndpQ", "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", "All", "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"plist", "=", 
+                    RowBox[{"d", 
+                    RowBox[{"(", 
+                    RowBox[{"ndplist", "-", "1"}], ")"}]}]}], "}"}], ",", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"plist", "+", "i"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "d"}], "}"}]}], "]"}], "]"}], 
+                    "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+                  "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+               "]"}]}]}], ";"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Do", " ", "not", " ", "reorder", " ", "but", " ", "consider", 
+             " ", "only", " ", "NonDirichletVertices"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"ndplist", "===", "All"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"doflist", "=", "All"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"numDOFs", "=", 
+                RowBox[{"n", " ", "d"}]}], ";"}], "\[IndentingNewLine]", ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"doflist", "=", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"plist", "=", 
+                    RowBox[{"d", 
+                    RowBox[{"(", 
+                    RowBox[{"ndplist", "-", "1"}], ")"}]}]}], "}"}], ",", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"Transpose", "[", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"plist", "+", "i"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "d"}], "}"}]}], "]"}], "]"}], 
+                   "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"numDOFs", "=", 
+                RowBox[{
+                 RowBox[{"Length", "[", "ndplist", "]"}], "d"}]}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"metmodifier", "=", 
+              RowBox[{"If", "[", 
+               RowBox[{"sparseQ", ",", "Sparsify", ",", "Normal"}], "]"}]}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{"modifier", "=", 
+               RowBox[{"If", "[", 
+                RowBox[{"sparseQ", ",", "Sparsify", ",", "Normal"}], "]"}]}], 
+              "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"modifier", "=", 
+              RowBox[{"If", "[", 
+               RowBox[{"sparseQ", ",", "Sparsify", ",", "Identity"}], 
+               "]"}]}]}], "\[IndentingNewLine]", "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"readmetric", "=", 
+             RowBox[{"If", "[", 
+              RowBox[{
+              "scalarQ", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"x", ",", "ndplist", ",", "doflist"}], "}"}], 
+                "\[Function]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"ndplist", "===", "All"}], "\[IndentingNewLine]", 
+                  ",", "\[IndentingNewLine]", 
+                  RowBox[{"metmodifier", "[", "x", "]"}], 
+                  "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                  RowBox[{"metmodifier", "[", 
+                   RowBox[{"x", "\[LeftDoubleBracket]", 
+                    RowBox[{"ndplist", ",", "ndplist"}], 
+                    "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]",
+                  "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"x", ",", "ndplist", ",", "doflist"}], "}"}], 
+                "\[Function]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"doflist", "===", "All"}], "\[IndentingNewLine]", 
+                  ",", "\[IndentingNewLine]", 
+                  RowBox[{"metmodifier", "[", "x", "]"}], 
+                  "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                  RowBox[{"metmodifier", "[", 
+                   RowBox[{"x", "\[LeftDoubleBracket]", 
+                    RowBox[{"doflist", ",", "doflist"}], 
+                    "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]",
+                  "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"readmetstab", "=", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x", ",", "ndplist", ",", "doflist"}], "}"}], 
+              "\[Function]", 
+              RowBox[{"If", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Length", "[", "x", "]"}], "\[Equal]", "0"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                 "scalarQ", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"ndplist", "===", "All"}], "\[IndentingNewLine]", 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"modifier", "[", "x", "]"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{"modifier", "[", 
+                    RowBox[{"x", "\[LeftDoubleBracket]", 
+                    RowBox[{"All", ",", "ndplist"}], 
+                    "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]",
+                    "]"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"doflist", "===", "All"}], "\[IndentingNewLine]", 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"modifier", "[", "x", "]"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{"modifier", "[", 
+                    RowBox[{"x", "\[LeftDoubleBracket]", 
+                    RowBox[{"All", ",", "doflist"}], 
+                    "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]",
+                    "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+               "\[IndentingNewLine]", "]"}]}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"readmatrix", "=", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"x", ",", "doflist"}], "}"}], "\[Function]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Length", "[", "x", "]"}], "\[Equal]", "0"}], 
+                "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                RowBox[{"{", "}"}], "\[IndentingNewLine]", ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"doflist", "===", "All"}], "\[IndentingNewLine]", 
+                  ",", "\[IndentingNewLine]", 
+                  RowBox[{"modifier", "[", "x", "]"}], "\[IndentingNewLine]", 
+                  ",", "\[IndentingNewLine]", 
+                  RowBox[{"modifier", "[", 
+                   RowBox[{"x", "\[LeftDoubleBracket]", 
+                    RowBox[{"All", ",", "doflist"}], 
+                    "\[RightDoubleBracket]"}], "]"}]}], "\[IndentingNewLine]",
+                  "]"}]}], "\[IndentingNewLine]", "]"}]}]}]}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"S", "=", 
+          RowBox[{"Initialize", "[", 
+           RowBox[{"saddlepointsystem", ",", "\[IndentingNewLine]", 
+            RowBox[{"Association", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"\"\<Metric\>\"", "\[Rule]", 
+               RowBox[{"readmetric", "[", 
+                RowBox[{"metric0", ",", "ndplist", ",", "doflist"}], "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<ConstraintMatrix\>\"", "\[Rule]", 
+               RowBox[{"readmatrix", "[", 
+                RowBox[{"cons0", ",", "doflist"}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<StabilizationMatrix\>\"", "\[Rule]", 
+               RowBox[{"readmatrix", "[", 
+                RowBox[{"stab0", ",", "doflist"}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<MetricStabilizationMatrix\>\"", "\[Rule]", 
+               RowBox[{"readmetstab", "[", 
+                RowBox[{"metstab", ",", "ndplist", ",", "doflist"}], "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<MetricScalarQ\>\"", "\[Rule]", "scalarQ"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<MetricSparseQ\>\"", "\[Rule]", "sparseQ"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<DofReorderingQ\>\"", "\[Rule]", "dofreorderingQ"}],
+               ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<MetricDuplicates\>\"", "\[Rule]", "duplicates"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<EmbeddingDimension\>\"", "\[Rule]", "d"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<VertexCount\>\"", "\[Rule]", "n"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<NonDirichletVertices\>\"", "\[Rule]", "ndplist"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{"\"\<DofList\>\"", "\[Rule]", "doflist"}], ","}], 
+               "*)"}], "\[IndentingNewLine]", 
+              RowBox[{"\"\<MetricPostProcessor\>\"", "\[Rule]", 
+               RowBox[{
+               "OptionValue", "[", "\"\<MetricPostProcessor\>\"", "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{
+              "\"\<ReadMetricStabilizationMatrix\>\"", "\[Rule]", 
+               "readmetstab"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<ReadMetric\>\"", "\[Rule]", "readmetric"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<ReadMatrix\>\"", "\[Rule]", "readmatrix"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<DofCount\>\"", "\[Rule]", "numDOFs"}]}], 
+             "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+         ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<MetricSolveFunction\>\"", "]"}], 
+            "=!=", "Automatic"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"SetMetricSolveFunction", "[", 
+            RowBox[{"S", ",", 
+             RowBox[{
+             "OptionValue", "[", "\"\<MetricSolveFunction\>\"", "]"}]}], 
+            "]"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<SystemSolveFunction\>\"", "]"}], 
+            "=!=", "Automatic"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"SetSystemSolveFunction", "[", 
+            RowBox[{"S", ",", 
+             RowBox[{
+             "OptionValue", "[", "\"\<SystemSolveFunction\>\"", "]"}]}], 
+            "]"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]",
+          "\[IndentingNewLine]", 
+         RowBox[{"SetPersistentCache", "[", 
+          RowBox[{"S", ",", "\"\<DofList\>\"", ",", "doflist"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"TimeStamp", "[", "S", "]"}], ";", "\[IndentingNewLine]", 
+         "S"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      "Init", ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<saddlepointsystem\>\"", ",", "\"\<metric0_\>\"", ",", 
+        "\"\<cons0_\>\"", ",", "\"\<stab0_\>\"", ",", "\"\<n_\>\"", ",", 
+        "\"\<d_\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+      "saddlepointsystem"}], "\[IndentingNewLine]", "]"}]}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.6811321683851757`*^9, 3.681132310322715*^9}, {
+   3.6811324618441877`*^9, 3.681132464993331*^9}, {3.681134785703697*^9, 
+   3.6811347965284452`*^9}, {3.681135625437714*^9, 3.6811356269799433`*^9}, {
+   3.6811359671310663`*^9, 3.68113598066352*^9}, 3.6811445208607264`*^9, {
+   3.681200022082737*^9, 3.6812000231174593`*^9}, {3.6812012634290648`*^9, 
+   3.6812012686281567`*^9}, {3.681290286094648*^9, 3.681290326662993*^9}, {
+   3.681290851572365*^9, 3.681290898364396*^9}, 3.681290940157605*^9, {
+   3.681311219104185*^9, 3.681311296674086*^9}, {3.681311493064481*^9, 
+   3.6813114972053223`*^9}, {3.681311594421053*^9, 3.681311658487636*^9}, 
+   3.6813119299610653`*^9, {3.681312142198049*^9, 3.6813121462964687`*^9}, {
+   3.6813130830308733`*^9, 3.6813131712195463`*^9}, {3.6813132033177567`*^9, 
+   3.6813132042832623`*^9}, {3.681313501517391*^9, 3.6813135036858*^9}, {
+   3.684142536837372*^9, 3.684142607592991*^9}, {3.693551197201179*^9, 
+   3.693551219785631*^9}, {3.6935513083852987`*^9, 3.693551312024106*^9}, {
+   3.693551363654882*^9, 3.693551378759986*^9}, {3.693551551036154*^9, 
+   3.693551573684247*^9}, {3.693551700624045*^9, 3.693551786140831*^9}, {
+   3.693551917067464*^9, 3.69355196062882*^9}, {3.693552051801117*^9, 
+   3.693552205390679*^9}, {3.6935522452339497`*^9, 3.693552270419518*^9}, {
+   3.6935523751592913`*^9, 3.693552399047945*^9}, {3.69355254254661*^9, 
+   3.693552611117516*^9}, {3.693552922800435*^9, 3.693553008684906*^9}, {
+   3.693553053499577*^9, 3.6935531069110126`*^9}, {3.6935532458310337`*^9, 
+   3.693553297056085*^9}, {3.6935533681696253`*^9, 3.693553390152961*^9}, {
+   3.6935534286429358`*^9, 3.6935534468497133`*^9}, 3.693553487051043*^9, {
+   3.693553550700004*^9, 3.693553752290262*^9}, {3.6935538032497263`*^9, 
+   3.6935538181424427`*^9}, {3.693553858821226*^9, 3.693553862428916*^9}, {
+   3.693554005120288*^9, 3.693554132303481*^9}, {3.6935542085133038`*^9, 
+   3.693554210128868*^9}, {3.693554250424527*^9, 3.693554265981387*^9}, {
+   3.6935543161813993`*^9, 3.693554659403964*^9}, {3.6935547615360126`*^9, 
+   3.693554833543947*^9}, {3.693554878475543*^9, 3.693554939932605*^9}, {
+   3.693555121436738*^9, 3.693555123052837*^9}, {3.693555613952001*^9, 
+   3.6935556146704807`*^9}, {3.693555813281946*^9, 3.693555823422621*^9}, {
+   3.693556029188127*^9, 3.693556054370721*^9}, {3.693556602089526*^9, 
+   3.693556610376052*^9}, {3.693556640542911*^9, 3.693556641141664*^9}, {
+   3.693569658033745*^9, 3.693569659104632*^9}, {3.693583197038045*^9, 
+   3.693583212333288*^9}, {3.693583279762395*^9, 3.693583334093317*^9}, {
+   3.6935833800297813`*^9, 3.693583435846951*^9}, {3.693583467906164*^9, 
+   3.693583520721786*^9}, {3.6935835880362177`*^9, 3.6935836460987167`*^9}, {
+   3.693583774309799*^9, 3.6935837835492697`*^9}, 3.693583969700905*^9, {
+   3.693584264722337*^9, 3.693584271446187*^9}, {3.693584311254421*^9, 
+   3.6935843699770403`*^9}, {3.693642229094617*^9, 3.69364242845007*^9}, {
+   3.6936427858884783`*^9, 3.6936429408230953`*^9}, {3.693643816197404*^9, 
+   3.69364381872583*^9}, {3.693804491478572*^9, 3.693804512392949*^9}, {
+   3.69380524426898*^9, 3.693805247617907*^9}, {3.6954722850121317`*^9, 
+   3.695472287476112*^9}, {3.695474441154531*^9, 3.6954744413371563`*^9}, {
+   3.696406142448498*^9, 3.696406147262227*^9}, {3.696483389543453*^9, 
+   3.696483421159754*^9}, {3.696483599023883*^9, 3.696483631113502*^9}, {
+   3.6964837006734447`*^9, 3.696483716977158*^9}, {3.696483761986445*^9, 
+   3.696483766006556*^9}, {3.696483796408873*^9, 3.696483814713238*^9}, {
+   3.6964840056746893`*^9, 3.6964840074837923`*^9}, 3.696491077179179*^9, 
+   3.696497768692615*^9, {3.697214050946659*^9, 3.697214064384336*^9}, {
+   3.697461260939374*^9, 3.6974613124530163`*^9}, {3.697461516588423*^9, 
+   3.697461525803706*^9}, {3.6975253097504*^9, 3.697525410490205*^9}, {
+   3.697527422271575*^9, 3.697527425233448*^9}, {3.697527602718959*^9, 
+   3.697527612432479*^9}, {3.697527643832451*^9, 3.697527661475504*^9}, {
+   3.6975277047140923`*^9, 3.697527722001728*^9}, {3.6975278170362387`*^9, 
+   3.697527879557808*^9}, {3.6975279216415243`*^9, 3.6975280539414377`*^9}, {
+   3.69752814443946*^9, 3.69752835526331*^9}, {3.697528403353382*^9, 
+   3.697528475555533*^9}, {3.697528533928738*^9, 3.6975285563830023`*^9}, {
+   3.697528622932221*^9, 3.697528660793882*^9}, {3.697528709727551*^9, 
+   3.697528726030744*^9}, {3.697528764692586*^9, 3.697528826193119*^9}, {
+   3.6975291150041924`*^9, 3.6975291502483387`*^9}, {3.6975292014484673`*^9, 
+   3.6975292029277554`*^9}, {3.697529258688899*^9, 3.697529280435526*^9}, {
+   3.6975293511975737`*^9, 3.697529422541234*^9}, {3.6975294584248247`*^9, 
+   3.6975295754505367`*^9}, {3.697529615789425*^9, 3.697529641912117*^9}, {
+   3.6975296860080976`*^9, 3.697529687455022*^9}, 3.69752972027035*^9, {
+   3.6975298221708107`*^9, 3.697529829433383*^9}, {3.697530458324785*^9, 
+   3.6975305070362587`*^9}, {3.6975306025666924`*^9, 3.697530627444674*^9}, {
+   3.697530696520728*^9, 3.6975306974153757`*^9}, {3.69753387361626*^9, 
+   3.697533919180119*^9}, {3.697533989960636*^9, 3.697534000944189*^9}, {
+   3.697534049534665*^9, 3.697534089610877*^9}, 3.697534458997551*^9, 
+   3.697534965568218*^9, {3.707667171502173*^9, 3.707667188877202*^9}, {
+   3.71966261012641*^9, 3.7196626256303883`*^9}, {3.720099543618359*^9, 
+   3.720099546319675*^9}, 3.720099972991811*^9, {3.720177295456697*^9, 
+   3.720177316863759*^9}, {3.7346918351358356`*^9, 3.734691838295776*^9}, {
+   3.7382388691676073`*^9, 3.738238936987605*^9}, {3.738238978182927*^9, 
+   3.7382389823680553`*^9}, 3.738243477798499*^9, {3.73824962623293*^9, 
+   3.738249651423605*^9}, {3.7386514268645477`*^9, 3.7386514296342077`*^9}, {
+   3.738651653441729*^9, 3.7386516611674557`*^9}, {3.73865229553546*^9, 
+   3.738652436841765*^9}, {3.738653114478689*^9, 3.738653116814596*^9}, {
+   3.7386536129764338`*^9, 3.7386536131738863`*^9}, {3.744034560228348*^9, 
+   3.744034576514491*^9}, {3.7440348557212543`*^9, 3.74403485924372*^9}, {
+   3.744035249926215*^9, 3.744035250377322*^9}, {3.744035551176841*^9, 
+   3.744035554272242*^9}, {3.748689719534403*^9, 3.748689733299073*^9}, {
+   3.795520180957243*^9, 3.7955202129989243`*^9}, {3.7955202536160603`*^9, 
+   3.79552028373146*^9}, {3.796576043490479*^9, 3.79657604562792*^9}, {
+   3.796576135093018*^9, 3.79657613890512*^9}, {3.796576375238317*^9, 
+   3.79657637565392*^9}, {3.797386975500299*^9, 3.7973869802348833`*^9}, {
+   3.79738722866396*^9, 3.7973872315527697`*^9}, {3.7973872830030317`*^9, 
+   3.797387284088578*^9}, {3.79738739715858*^9, 3.797387442820899*^9}, {
+   3.797387610686718*^9, 3.7973876119243793`*^9}, {3.7973876523185053`*^9, 
+   3.797387724233931*^9}, {3.797388535965254*^9, 3.797388537860589*^9}, {
+   3.7973893301926603`*^9, 3.79738933328874*^9}, 3.797389469843446*^9, {
+   3.797389509082468*^9, 3.7973895427511063`*^9}, {3.797389601756855*^9, 
+   3.797389645619254*^9}, {3.79738972653759*^9, 3.797389749854973*^9}, {
+   3.797389784518093*^9, 3.7973898114444637`*^9}, {3.797392878212687*^9, 
+   3.7973928784111767`*^9}, {3.7974157731074266`*^9, 3.797415812215509*^9}, {
+   3.797425103125235*^9, 3.797425103315791*^9}, {3.797859082345777*^9, 
+   3.797859097287656*^9}, 3.797865462181026*^9},
+ CellLabel->
+  "In[1645]:=",ExpressionUUID->"96a40c2c-3564-45f9-ac3f-d2040d9f23a1"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.696521353822723*^9, 
+  3.6965213541551523`*^9}},ExpressionUUID->"e32da724-d35c-460d-bfaf-\
+23846012922c"],
+
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"InternalUpdate", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"saddlepointsystem", "/:", 
+    RowBox[{"InternalUpdate", "[", 
+     RowBox[{
+      RowBox[{"S", ":", 
+       RowBox[{"saddlepointsystem", "[", "$saddlepointsystem_", "]"}]}], ",", 
+      "metric0_", ",", "cons0_", ",", "stab0_", ",", "\[IndentingNewLine]", 
+      RowBox[{"OptionsPattern", "[", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<MetricPostProcessor\>\"", "\[Rule]", "Automatic"}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{
+         "\"\<MetricStabilizationMatrix\>\"", "\[Rule]", "Automatic"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MetricSolveFunction\>\"", "\[Rule]", "Automatic"}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{"\"\<SystemSolveFunction\>\"", "\[Rule]", "Automatic"}]}], 
+        "\[IndentingNewLine]", "}"}], "]"}]}], "]"}], ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "ndplist", ",", "readmetric", ",", "readmatrix", ",", "readmetstab", 
+          ",", "doflist"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Print", "[", "\"\<Updating saddlepointsystem.\>\"", "]"}], 
+          ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"ndplist", "=", 
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", 
+           "\"\<NonDirichletVertices\>\"", "\[RightDoubleBracket]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"doflist", "=", 
+          RowBox[{"DofList", "[", "S", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", "\"\<Cache\>\"", 
+           "\[RightDoubleBracket]"}], "=", 
+          RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{"readmetric", "=", 
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", "\"\<ReadMetric\>\"", 
+           "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"readmatrix", "=", 
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", "\"\<ReadMatrix\>\"", 
+           "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"readmetstab", "=", 
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", 
+           "\"\<ReadMetricStabilizationMatrix\>\"", 
+           "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", "\"\<Metric\>\"", 
+           "\[RightDoubleBracket]"}], "=", 
+          RowBox[{"readmetric", "[", 
+           RowBox[{"metric0", ",", "ndplist", ",", "doflist"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", 
+           "\"\<ConstraintMatrix\>\"", "\[RightDoubleBracket]"}], "=", 
+          RowBox[{"readmatrix", "[", 
+           RowBox[{"cons0", ",", "doflist"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "$saddlepointsystem", "\[LeftDoubleBracket]", 
+           "\"\<StabilizationMatrix\>\"", "\[RightDoubleBracket]"}], "=", 
+          RowBox[{"readmatrix", "[", 
+           RowBox[{"stab0", ",", "doflist"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"metstab", "=", 
+             RowBox[{"readmetstab", "[", 
+              RowBox[{
+               RowBox[{
+               "OptionValue", "[", "\"\<MetricStabilizationMatrix\>\"", "]"}],
+                ",", "ndplist", ",", "doflist"}], "]"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"metstab", "=!=", "Automatic"}], ",", 
+             RowBox[{
+              RowBox[{
+              "$saddlepointsystem", "\[LeftDoubleBracket]", 
+               "\"\<MetricStabilizationMatrix\>\"", "\[RightDoubleBracket]"}],
+               "=", "metstab"}]}], "]"}]}], "\[IndentingNewLine]", "]"}], ";",
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"postproc", "=", 
+             RowBox[{
+             "OptionValue", "[", "\"\<MetricPostProcessor\>\"", "]"}]}], 
+            "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"postproc", "=!=", "Automatic"}], ",", 
+             RowBox[{
+              RowBox[{
+              "$saddlepointsystem", "\[LeftDoubleBracket]", 
+               "\"\<MetricPostProcessor\>\"", "\[RightDoubleBracket]"}], "=", 
+              "postproc"}]}], "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"metsol", "=", 
+             RowBox[{
+             "OptionValue", "[", "\"\<MetricSolveFunction\>\"", "]"}]}], 
+            "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"metsol", "=!=", "Automatic"}], ",", 
+             RowBox[{"SetMetricSolveFunction", "[", 
+              RowBox[{"S", ",", "metsol"}], "]"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"syssol", "=", 
+             RowBox[{
+             "OptionValue", "[", "\"\<SystemSolveFunction\>\"", "]"}]}], 
+            "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"syssol", "=!=", "Automatic"}], ",", 
+             RowBox[{"SetSystemSolveFunction", "[", 
+              RowBox[{"S", ",", "syssol"}], "]"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"SetPersistentCache", "[", 
+          RowBox[{"S", ",", "\"\<TimeStamp\>\"", ",", 
+           RowBox[{"AbsoluteTime", "[", "]"}]}], "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      "InternalUpdate", ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<S_\>\"", ",", "\"\<metric0_\>\"", ",", "\"\<cons0_\>\"", ",", 
+        "\"\<stab0_\>\""}], "}"}], ",", "\[IndentingNewLine]", 
+      "saddlepointsystem"}], "\[IndentingNewLine]", "]"}]}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.696484052963746*^9, 3.6964840535389423`*^9}, {
+   3.6964841265827312`*^9, 3.696484180074789*^9}, {3.6964842339091377`*^9, 
+   3.696484237510728*^9}, {3.696484278055921*^9, 3.6964844093476267`*^9}, 
+   3.6964911151227207`*^9, {3.6964961443682613`*^9, 3.6964961533321447`*^9}, {
+   3.696496208324566*^9, 3.696496326510263*^9}, {3.696496356742716*^9, 
+   3.6964963612415447`*^9}, {3.696497024743163*^9, 3.696497295716851*^9}, {
+   3.6965213526290627`*^9, 3.6965213529494333`*^9}, {3.697214076486171*^9, 
+   3.697214082694018*^9}, {3.697441355387022*^9, 3.69744147393716*^9}, {
+   3.69752714506601*^9, 3.69752719889463*^9}, {3.697529934974518*^9, 
+   3.697530275318656*^9}, {3.707970501106406*^9, 3.7079705566780977`*^9}, {
+   3.707970732647018*^9, 3.707970807158607*^9}, {3.707970865808683*^9, 
+   3.7079711821206503`*^9}, 3.72009954696206*^9, {3.7201773008461657`*^9, 
+   3.720177301049201*^9}, {3.748689751494666*^9, 3.748689761518448*^9}, {
+   3.7705782112865763`*^9, 3.77057822449358*^9}, {3.771087670459351*^9, 
+   3.771087670827034*^9}, {3.797388992840053*^9, 3.797389043662011*^9}, {
+   3.797859105558713*^9, 3.797859110901791*^9}, 3.79786546764126*^9},
+ CellLabel->
+  "In[1644]:=",ExpressionUUID->"f3a7d6e1-226e-4c9f-a55b-554e1e0c5853"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 28242, 533, 4092, "Input",ExpressionUUID->"96a40c2c-3564-45f9-ac3f-d2040d9f23a1"],
+Cell[28803, 555, 234, 5, 117, "Input",ExpressionUUID->"e32da724-d35c-460d-bfaf-23846012922c"],
+Cell[29040, 562, 8285, 177, 1217, "Input",ExpressionUUID->"f3a7d6e1-226e-4c9f-a55b-554e1e0c5853"]
+}
+]
+*)
+

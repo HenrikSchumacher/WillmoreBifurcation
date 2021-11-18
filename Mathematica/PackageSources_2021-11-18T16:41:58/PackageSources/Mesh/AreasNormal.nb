@@ -1,0 +1,606 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     25448,        598]
+NotebookOptionsPosition[     25063,        581]
+NotebookOutlinePosition[     25421,        597]
+CellTagsIndexPosition[     25378,        594]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Quiet", "[", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"P", ",", "PP", ",", "ranges", ",", "NBdl", ",", "area2"}], 
+     "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"PP", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"P", "[", 
+         RowBox[{"[", 
+          RowBox[{"i", ",", "j"}], "]"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"area2", "=", 
+      RowBox[{"P", "\[Function]", 
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"1", "/", "4"}], 
+         RowBox[{"Det", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"PP", "[", 
+               RowBox[{"[", "2", "]"}], "]"}], "-", 
+              RowBox[{"PP", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+             RowBox[{
+              RowBox[{"PP", "[", 
+               RowBox[{"[", "3", "]"}], "]"}], "-", 
+              RowBox[{"PP", "[", 
+               RowBox[{"[", "1", "]"}], "]"}]}]}], "}"}], ".", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"PP", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "-", 
+               RowBox[{"PP", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+              RowBox[{
+               RowBox[{"PP", "[", 
+                RowBox[{"[", "3", "]"}], "]"}], "-", 
+               RowBox[{"PP", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}]}], "}"}], "\[Transpose]"}]}],
+           "]"}]}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"expression", "=", 
+         RowBox[{"Partition", "[", 
+          RowBox[{
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{"area2", "[", "PP", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Flatten", "[", "PP", "]"}], ",", "1"}], "}"}]}], 
+            "]"}], ",", "3"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"getNAreas2Data", "=", 
+         RowBox[{"CPackageFunction", "[", 
+          RowBox[{
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"PPlist", ",", "_Real", ",", "2"}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"fflist", ",", "_Integer", ",", "2"}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"NBdl", ",", "_Real", ",", "2"}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"ranges", ",", "_Integer", ",", "2"}], "}"}]}], 
+            "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Block", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"P", ",", "Bag", ",", "ran", ",", "ni", ",", "A"}], 
+              "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Bag", "=", 
+               RowBox[{"Internal`Bag", "[", 
+                RowBox[{"Most", "[", 
+                 RowBox[{"{", "0.", "}"}], "]"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Do", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"P", "=", 
+                  RowBox[{
+                  "PPlist", "\[LeftDoubleBracket]", "ff", 
+                   "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"ran", "=", 
+                  RowBox[{
+                  "ranges", "\[LeftDoubleBracket]", "ff", 
+                   "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"A", "=", "expression"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"ni", "=", 
+                    RowBox[{"NBdl", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    RowBox[{"ran", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "1"}], "\[RightDoubleBracket]"}], ";;", 
+                    
+                    RowBox[{"ran", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Internal`StuffBag", "[", 
+                    RowBox[{"Bag", ",", 
+                    RowBox[{
+                    RowBox[{"A", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ".", 
+                    RowBox[{
+                    "ni", "\[LeftDoubleBracket]", "j", 
+                    "\[RightDoubleBracket]"}]}]}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"j", ",", "1", ",", 
+                    RowBox[{"Length", "[", "ni", "]"}]}], "}"}]}], "]"}]}], 
+                   ",", "\[IndentingNewLine]", 
+                   RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"ff", ",", "fflist"}], "}"}]}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"Bag", ",", "All"}], "]"}]}]}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+      "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"expression", "=", 
+         RowBox[{"Partition", "[", 
+          RowBox[{
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{"area2", "[", "PP", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Flatten", "[", "PP", "]"}], ",", "2"}], "}"}]}], 
+            "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"3", ",", "3"}], "}"}]}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{"getD2Area2", "=", 
+           RowBox[{"Compile", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"{", 
+               RowBox[{"P", ",", "_Real", ",", "2"}], "}"}], "}"}], ",", 
+             RowBox[{"Evaluate", "[", "expression", "]"}], ",", 
+             RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}]}], "]"}]}],
+           "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"getNNAreas2Data", "=", 
+           RowBox[{"CPackageFunction", "[", 
+            RowBox[{
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"PPlist", ",", "_Real", ",", "2"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"fflist", ",", "_Integer", ",", "2"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"NBdl", ",", "_Real", ",", "2"}], "}"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"ranges", ",", "_Integer", ",", "2"}], "}"}]}], 
+              "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Block", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                "P", ",", "BB", ",", "Bag", ",", "ran", ",", "Bi", ",", "Bij",
+                  ",", "ni", ",", "nj"}], "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Bag", "=", 
+                 RowBox[{"Internal`Bag", "[", 
+                  RowBox[{"Most", "[", 
+                   RowBox[{"{", "0.", "}"}], "]"}], "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"BB", "=", 
+                    RowBox[{"getD2Area2", "[", 
+                    RowBox[{
+                    "PPlist", "\[LeftDoubleBracket]", "ff", 
+                    "\[RightDoubleBracket]"}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"ran", "=", 
+                    RowBox[{
+                    "ranges", "\[LeftDoubleBracket]", "ff", 
+                    "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                   RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Bi", "=", 
+                    RowBox[{"BB", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"ni", "=", 
+                    RowBox[{"Part", "[", 
+                    RowBox[{"NBdl", ",", 
+                    RowBox[{
+                    RowBox[{"ran", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "1"}], "\[RightDoubleBracket]"}], ";;", 
+                    
+                    RowBox[{"ran", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "2"}], "\[RightDoubleBracket]"}]}]}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Bij", "=", 
+                    RowBox[{"Bi", "[", 
+                    RowBox[{"[", "j", "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"nj", "=", 
+                    RowBox[{"Part", "[", 
+                    RowBox[{"NBdl", ",", 
+                    RowBox[{
+                    RowBox[{"ran", "\[LeftDoubleBracket]", 
+                    RowBox[{"j", ",", "1"}], "\[RightDoubleBracket]"}], ";;", 
+                    
+                    RowBox[{"ran", "\[LeftDoubleBracket]", 
+                    RowBox[{"j", ",", "2"}], "\[RightDoubleBracket]"}]}]}], 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Internal`StuffBag", "[", 
+                    RowBox[{"Bag", ",", 
+                    RowBox[{
+                    RowBox[{
+                    "ni", "\[LeftDoubleBracket]", "k", 
+                    "\[RightDoubleBracket]"}], ".", 
+                    RowBox[{"(", 
+                    RowBox[{"Bij", ".", 
+                    RowBox[{
+                    "nj", "\[LeftDoubleBracket]", "l", 
+                    "\[RightDoubleBracket]"}]}], ")"}]}]}], "]"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"k", ",", "1", ",", 
+                    RowBox[{"Length", "[", "ni", "]"}]}], "}"}]}], "]"}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"l", ",", "1", ",", 
+                    RowBox[{"Length", "[", "nj", "]"}]}], "}"}]}], "]"}]}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"j", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"{", 
+                   RowBox[{"ff", ",", "fflist"}], "}"}]}], "]"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Internal`BagPart", "[", 
+                 RowBox[{"Bag", ",", "All"}], "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"CompilationOptions", "\[Rule]", 
+              RowBox[{"{", 
+               RowBox[{"\"\<InlineCompiledFunctions\>\"", "\[Rule]", "True"}],
+                "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}]}], "]"}], ";"}]}], "\[IndentingNewLine]",
+    "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.637408683677094*^9, 3.637408697217617*^9}, {
+   3.637408731948649*^9, 3.637408760355611*^9}, {3.637409396668346*^9, 
+   3.637409397949134*^9}, {3.63740960846799*^9, 3.6374096361920443`*^9}, {
+   3.637409858644106*^9, 3.637409866612118*^9}, {3.637409912231442*^9, 
+   3.637409912440189*^9}, {3.637409944993636*^9, 3.63741002389084*^9}, {
+   3.6374101056763783`*^9, 3.637410216038656*^9}, {3.6374103187491083`*^9, 
+   3.637410365275889*^9}, {3.63741160620936*^9, 3.637411747587782*^9}, {
+   3.637412903582082*^9, 3.637412945590304*^9}, {3.6374133668019743`*^9, 
+   3.637413367352365*^9}, {3.637413441060645*^9, 3.637413499960623*^9}, 
+   3.637413553167942*^9, 3.637413583815859*^9, {3.637413949332095*^9, 
+   3.6374139559823847`*^9}, {3.637414012858178*^9, 3.637414056830352*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"getNAreas2Combinatorics", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"fflist", ",", "_Integer", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"Ranges", ",", "_Integer", ",", "2"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"result", "=", 
+          RowBox[{"Internal`Bag", "[", 
+           RowBox[{"Most", "[", 
+            RowBox[{"{", "0", "}"}], "]"}], "]"}]}], ",", "ff", ",", "di", 
+         ",", "dj", ",", "ran", ",", "\[IndentingNewLine]", 
+         RowBox[{"facecounter", "=", "0"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Do", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"facecounter", "++"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"ran", "=", 
+            RowBox[{"Ranges", "[", 
+             RowBox[{"[", "ff", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"Do", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"di", "=", 
+               RowBox[{"Table", "[", 
+                RowBox[{"a", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"a", ",", 
+                   RowBox[{"ran", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+                   RowBox[{"ran", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "2"}], "]"}], "]"}]}], "}"}]}], "]"}]}],
+               ";", "\[IndentingNewLine]", 
+              RowBox[{"Do", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Internal`StuffBag", "[", 
+                 RowBox[{"result", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"facecounter", ",", "k"}], "}"}], ",", "2"}], 
+                 "]"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"k", ",", "di"}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"ff", ",", "fflist"}], "}"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"Internal`BagPart", "[", 
+           RowBox[{"result", ",", "All"}], "]"}], ",", "2"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"CompilationOptions", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<InlineCompiledFunctions\>\"", "\[Rule]", "True"}], 
+       "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.637413557270237*^9, 3.637413572386758*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"getNNAreas2Combinatorics", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"fflist", ",", "_Integer", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"Ranges", ",", "_Integer", ",", "2"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"result", "=", 
+          RowBox[{"Internal`Bag", "[", 
+           RowBox[{"Most", "[", 
+            RowBox[{"{", "0", "}"}], "]"}], "]"}]}], ",", "ff", ",", "di", 
+         ",", "dj", ",", "ran", ",", "\[IndentingNewLine]", 
+         RowBox[{"facecounter", "=", "0"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Do", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"facecounter", "++"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"ran", "=", 
+            RowBox[{"Ranges", "[", 
+             RowBox[{"[", "ff", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"Do", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"di", "=", 
+               RowBox[{"Table", "[", 
+                RowBox[{"a", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"a", ",", 
+                   RowBox[{"ran", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "1"}], "]"}], "]"}], ",", 
+                   RowBox[{"ran", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"i", ",", "2"}], "]"}], "]"}]}], "}"}]}], "]"}]}],
+               ";", "\[IndentingNewLine]", 
+              RowBox[{"Do", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"dj", "=", 
+                  RowBox[{"Table", "[", 
+                   RowBox[{"a", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"a", ",", 
+                    RowBox[{"ran", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"ran", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"j", ",", "2"}], "]"}], "]"}]}], "}"}]}], "]"}]}],
+                  ";", "\[IndentingNewLine]", 
+                 RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Internal`StuffBag", "[", 
+                    RowBox[{"result", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"facecounter", ",", "k", ",", "l"}], "}"}], ",", 
+                    "3"}], "]"}], "\[IndentingNewLine]", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"k", ",", "di"}], "}"}]}], "]"}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"{", 
+                    RowBox[{"l", ",", "dj"}], "}"}]}], "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"{", 
+                 RowBox[{"j", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"ff", ",", "fflist"}], "}"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"Internal`BagPart", "[", 
+           RowBox[{"result", ",", "All"}], "]"}], ",", "3"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"CompilationOptions", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<InlineCompiledFunctions\>\"", "\[Rule]", "True"}], 
+       "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"NAreas2Combinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"getNAreas2Combinatorics", "[", 
+      RowBox[{
+       RowBox[{"Triangles", "[", "M", "]"}], ",", 
+       RowBox[{"NormalBundleRanges", "[", "M", "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<InputType\>\"", "\[Rule]", "mesh"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<Caching\>\"", "\[Rule]", "\"\<Persistent\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NAreas2", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"MySparseArray", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"NAreas2Combinatorics", "[", "M", "]"}], "\[Rule]", " ", 
+        RowBox[{"getNAreas2Data", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Triangles", "[", "M", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"NormalBundle", "[", "M", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"NormalBundleRanges", "[", "M", "]"}]}], "]"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"TriangleCount", "[", "M", "]"}], ",", 
+         RowBox[{"Length", "[", 
+          RowBox[{"NormalBundle", "[", "M", "]"}], "]"}]}], "}"}], ",", 
+       "Total"}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<InputType\>\"", "\[Rule]", "mesh"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NNAreas2Combinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_", ",", "\[IndentingNewLine]", 
+     RowBox[{"getNNAreas2Combinatorics", "[", 
+      RowBox[{
+       RowBox[{"Triangles", "[", "M", "]"}], ",", 
+       RowBox[{"NormalBundleRanges", "[", "M", "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<InputType\>\"", "\[Rule]", "mesh"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<Caching\>\"", "\[Rule]", "\"\<Persistent\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"NNAreas2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_", ",", "\[IndentingNewLine]", 
+    RowBox[{"MySparseArray", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"NNAreas2Combinatorics", "[", "M", "]"}], "\[Rule]", 
+       RowBox[{"getNNAreas2Data", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Triangles", "[", "M", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"NormalBundle", "[", "M", "]"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{"NormalBundleRanges", "[", "M", "]"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"TriangleCount", "[", "M", "]"}], ",", 
+        RowBox[{"Length", "[", 
+         RowBox[{"NormalBundle", "[", "M", "]"}], "]"}], ",", 
+        RowBox[{"Length", "[", 
+         RowBox[{"NormalBundle", "[", "M", "]"}], "]"}]}], "}"}], ",", 
+      "Total"}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<InputType\>\"", "\[Rule]", "mesh"}]}], "\[IndentingNewLine]",
+    "]"}]}]}], "Input",
+ CellChangeTimes->{{3.637412979158499*^9, 3.637412980420232*^9}, 
+   3.637413017889924*^9, {3.637413106313307*^9, 3.637413186905582*^9}, {
+   3.637413323240589*^9, 3.6374133537280073`*^9}, {3.71948512802297*^9, 
+   3.7194852080894957`*^9}}]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 13778, 305, 1719, "Input"],
+Cell[14339, 327, 2959, 71, 469, "Input"],
+Cell[17301, 400, 3968, 94, 594, "Input"],
+Cell[21272, 496, 3787, 83, 919, "Input"]
+}
+]
+*)
+

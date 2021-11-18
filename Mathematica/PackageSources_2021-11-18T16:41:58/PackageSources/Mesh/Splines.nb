@@ -1,0 +1,694 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     29604,        686]
+NotebookOptionsPosition[     28618,        665]
+NotebookOutlinePosition[     28971,        681]
+CellTagsIndexPosition[     28928,        678]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Gamma]", "=", 
+       RowBox[{"BSplineFunction", "[", 
+        RowBox[{"RandomReal", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"6", ",", "3"}], "}"}]}], "]"}], "]"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+     "ToExpression", "@", 
+      "\"\<ElisionsDump`makeSplineBoxes[ElisionsDump`spline_, BoxForm`fmt_] \
+:= Module[{BoxForm`rank, BoxForm`dims, ElisionsDump`plot, BoxForm`s, \
+BoxForm`t, ElisionsDump`points, ElisionsDump`numPoints, ElisionsDump`degree, \
+ElisionsDump`periodic, ElisionsDump`alwaysGrid, ElisionsDump`sometimesGrid, \
+ElisionsDump`weights, ElisionsDump`rational, ElisionsDump`knots}, \
+BoxForm`rank = ElisionsDump`spline[\\\"Rank\\\"]; ElisionsDump`points = \
+ElisionsDump`spline[\\\"ControlPoints\\\"]; BoxForm`dims = \
+Drop[Dimensions[ElisionsDump`points], BoxForm`rank]; Which[BoxForm`rank == 1 \
+&& BoxForm`dims == {2}, ElisionsDump`plot = \
+ElisionsDump`parametricPlot2D[ElisionsDump`spline[BoxForm`t], {{BoxForm`t, \
+ElisionsDump`spline\[LeftDoubleBracket]2,1,1\[RightDoubleBracket],\
+ElisionsDump`spline\[LeftDoubleBracket]2,1,2\[RightDoubleBracket]}}], \
+BoxForm`rank == 2 && BoxForm`dims == {2}, ElisionsDump`plot = \
+ElisionsDump`parametricPlot2D[ElisionsDump`spline[BoxForm`s, BoxForm`t], \
+{{BoxForm`s, \
+ElisionsDump`spline\[LeftDoubleBracket]2,1,1\[RightDoubleBracket],\
+ElisionsDump`spline\[LeftDoubleBracket]2,1,2\[RightDoubleBracket]}, \
+{BoxForm`t, \
+ElisionsDump`spline\[LeftDoubleBracket]2,2,1\[RightDoubleBracket],\
+ElisionsDump`spline\[LeftDoubleBracket]2,2,2\[RightDoubleBracket]}}], \
+BoxForm`rank == 1 && BoxForm`dims == {3}, ElisionsDump`plot = \
+ElisionsDump`parametricPlot3D[ElisionsDump`spline[BoxForm`t], {{BoxForm`t, \
+ElisionsDump`spline[[2,1,1]],ElisionsDump`spline[[2,1,2]]}}], BoxForm`rank == \
+2 && BoxForm`dims == {3}, ElisionsDump`plot = \
+ElisionsDump`parametricPlot3D[ElisionsDump`spline[BoxForm`s, BoxForm`t], \
+{{BoxForm`s, \
+ElisionsDump`spline\[LeftDoubleBracket]2,1,1\[RightDoubleBracket],\
+ElisionsDump`spline\[LeftDoubleBracket]2,1,2\[RightDoubleBracket]}, \
+{BoxForm`t, \
+ElisionsDump`spline\[LeftDoubleBracket]2,2,1\[RightDoubleBracket],\
+ElisionsDump`spline\[LeftDoubleBracket]2,2,2\[RightDoubleBracket]}}], True, \
+ElisionsDump`plot = BoxForm`GenericIcon[Head[ElisionsDump`spline]]; ]; \
+ElisionsDump`degree = Replace[ElisionsDump`spline[\\\"Degree\\\"], \
+{BoxForm`n_} :> BoxForm`n]; If[Head[ElisionsDump`spline] === BSplineFunction, \
+ElisionsDump`periodic = ElisionsDump`spline[\\\"Closed\\\"]; \
+ElisionsDump`periodic = Which[ !Or @@ ElisionsDump`periodic, False, And @@ \
+ElisionsDump`periodic, True, True, ElisionsDump`periodic]; \
+ElisionsDump`weights = Replace[ElisionsDump`spline[\\\"Weights\\\"], \
+BoxForm`l_List :> Flatten[BoxForm`l]]; ElisionsDump`rational =  \
+!MatchQ[ElisionsDump`weights, Automatic | {1...}]; \
+If[Length[ElisionsDump`weights] > 10, ElisionsDump`weights = \
+Append[Take[ElisionsDump`weights, 9], \\\"...\\\"]]; ElisionsDump`knots = \
+Flatten[ElisionsDump`spline[\\\"Knots\\\"]]; If[Length[ElisionsDump`knots] > \
+10, ElisionsDump`knots = Append[Take[ElisionsDump`knots, 9], \\\"...\\\"]]]; \
+ElisionsDump`numPoints = Times @@ Take[Dimensions[ElisionsDump`points], \
+BoxForm`rank]; If[ !MatchQ[BoxForm`dims, {BoxForm`d_} /; BoxForm`d < 6] || \
+MatchQ[ElisionsDump`points, _SparseArray], ElisionsDump`points = \
+{BoxForm`SummaryItem[{\\\"Control points: \\\", ElisionsDump`numPoints}]}, \
+ElisionsDump`points = Flatten[ElisionsDump`points, BoxForm`rank - 1]; \
+ElisionsDump`points = If[Length[ElisionsDump`points] < 6, \
+ElisionsDump`points, Append[Take[ElisionsDump`points, 4], \
+\\\"\[Ellipsis]\\\"]]; ElisionsDump`points = \
+{BoxForm`SummaryItem[{\\\"Control points: \\\", ElisionsDump`numPoints}], \
+ElisionsDump`expandablePane[ElisionsDump`points]}]; ElisionsDump`alwaysGrid = \
+{BoxForm`SummaryItem[{\\\"Argument count: \\\", BoxForm`rank}], \
+Switch[BoxForm`dims, {BoxForm`d_}, BoxForm`SummaryItem[{\\\"Output dimension: \
+\\\", First[BoxForm`dims]}], {__}, BoxForm`SummaryItem[{\\\"Output \
+dimensions: \\\", BoxForm`dims}], _, BoxForm`SummaryItem[{\\\"Output: \\\", \
+\\\"scalar\\\"}]]}; ElisionsDump`sometimesGrid = \
+{BoxForm`SummaryItem[{\\\"Degree: \\\", ElisionsDump`degree}], \
+If[Head[ElisionsDump`spline] === BSplineFunction, Sequence @@ \
+{BoxForm`SummaryItem[{\\\"Periodic: \\\", ElisionsDump`periodic}], \
+BoxForm`SummaryItem[{\\\"Rational: \\\", ElisionsDump`rational}], \
+BoxForm`SummaryItem[{\\\"Weights: \\\", ElisionsDump`weights}], \
+BoxForm`SummaryItem[{\\\"Knots: \\\", ElisionsDump`knots}]}, Sequence @@ {}], \
+Sequence @@ ElisionsDump`points}; \
+BoxForm`ArrangeSummaryBox[Head[ElisionsDump`spline], ElisionsDump`spline, \
+ElisionsDump`plot, ElisionsDump`alwaysGrid, ElisionsDump`sometimesGrid, \
+BoxForm`fmt, \\\"Interpretable\\\" -> False]]\>\""}]}], "\[IndentingNewLine]",
+     "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.729276507025272*^9, 3.7292765075585737`*^9}, 
+   3.729276571373356*^9, {3.729276769392508*^9, 3.729276769772544*^9}, {
+   3.7292769555726233`*^9, 3.729277021294977*^9}, {3.72927713456778*^9, 
+   3.729277148894383*^9}, {3.7292774743542*^9, 3.729277598465679*^9}, {
+   3.729277637023781*^9, 
+   3.7292776635774813`*^9}},ExpressionUUID->"965f771a-8a77-45f5-9624-\
+72ffd5c2a200"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"parametrizeCurve", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x_List", ",", 
+       RowBox[{"a", ":", 
+        RowBox[{"(", 
+         RowBox[{"_", "?", "NumericQ"}], ")"}], ":", 
+        RowBox[{"1", "/", "2"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Developer`ToPackedArray", "@", 
+      RowBox[{"N", "@", 
+       RowBox[{"FoldList", "[", "\[IndentingNewLine]", 
+        RowBox[{"Plus", ",", "0.", ",", 
+         RowBox[{"Normalize", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"cNorm3", "[", 
+             RowBox[{"Differences", "[", "x", "]"}], "]"}], "^", "a"}], ",", 
+           "Total"}], "]"}]}], "\[IndentingNewLine]", "]"}]}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<See Eugene Lee: Choosing nodes in parametric curve \
+interpolation.\>\""}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7292711171779423`*^9, 3.72927116516761*^9}, {
+   3.7294912140196123`*^9, 3.729491222738227*^9}, 3.7294983897417297`*^9, {
+   3.7321745717655983`*^9, 3.7321745823775177`*^9}},
+ CellLabel->
+  "In[157]:=",ExpressionUUID->"9ff5a646-a82b-4620-976e-21e2e705400b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"periodicSplineSlopesOld", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"pts_", "?", "MatrixQ"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"n", ",", "dy", ",", "ha", ",", "xa", ",", "ya"}], "}"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"n", "=", 
+         RowBox[{"Length", "[", "pts", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"xa", ",", "ya"}], "}"}], "=", 
+         RowBox[{"Transpose", "[", "pts", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"ha", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"##", ",", "#1"}], "}"}], "&"}], "@@", 
+          RowBox[{"Differences", "[", "xa", "]"}]}]}], ";", 
+        RowBox[{"dy", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"##", ",", "#1"}], "}"}], "&"}], "@@", 
+            RowBox[{"Differences", "[", "ya", "]"}]}], ")"}], "/", "ha"}]}], 
+        ";", 
+        RowBox[{"dy", "=", 
+         RowBox[{"LinearSolve", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"SparseArray", "[", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Band", "[", 
+                RowBox[{"{", 
+                 RowBox[{"2", ",", "1"}], "}"}], "]"}], "\[Rule]", 
+               RowBox[{"Drop", "[", 
+                RowBox[{"ha", ",", "2"}], "]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Band", "[", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "1"}], "}"}], "]"}], "\[Rule]", 
+               RowBox[{"ListConvolve", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"2", ",", "2"}], "}"}], ",", "ha"}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Band", "[", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "2"}], "}"}], "]"}], "\[Rule]", 
+               RowBox[{"Drop", "[", 
+                RowBox[{"ha", ",", 
+                 RowBox[{"-", "2"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"1", ",", 
+                 RowBox[{"n", "-", "1"}]}], "}"}], "\[Rule]", 
+               RowBox[{"ha", "[", 
+                RowBox[{"[", "2", "]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+              
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"n", "-", "1"}], ",", "1"}], "}"}], "\[Rule]", 
+               RowBox[{"ha", "[", 
+                RowBox[{"[", 
+                 RowBox[{"-", "2"}], "]"}], "]"}]}]}], "\[IndentingNewLine]", 
+             "}"}], "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"3", " ", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Dot", "[", 
+                RowBox[{"#1", ",", 
+                 RowBox[{"Reverse", "[", "#2", "]"}]}], "]"}], "&"}], ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Partition", "[", 
+                 RowBox[{"#", ",", "2", ",", "1"}], "]"}], "&"}], "/@", 
+               RowBox[{"{", 
+                RowBox[{"ha", ",", "dy"}], "}"}]}]}], "]"}]}]}], "]"}]}], ";", 
+        RowBox[{"Prepend", "[", 
+         RowBox[{"dy", ",", 
+          RowBox[{"Last", "[", "dy", "]"}]}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<By user J.M., see \
+http://mathematica.stackexchange.com/questions/10273.\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6318747009516983`*^9, 3.631874722632977*^9}, {
+  3.631875014086854*^9, 3.631875018277602*^9}, {3.632739438342455*^9, 
+  3.6327394538461246`*^9}, {3.632739631172164*^9, 3.632739652299438*^9}, {
+  3.670994190692238*^9, 3.670994191002471*^9}, {3.672634877520034*^9, 
+  3.672634879606225*^9}, {3.6726426124704237`*^9, 3.672642687271027*^9}, {
+  3.729147596770032*^9, 3.729147604887678*^9}, {3.729147648519161*^9, 
+  3.729147681729226*^9}, {3.729153304485756*^9, 3.729153306859692*^9}, {
+  3.7291579763565063`*^9, 3.729157980795004*^9}, {3.7292615061950912`*^9, 
+  3.729261562288754*^9}, {3.729261831320387*^9, 3.7292618729820633`*^9}, {
+  3.729269030817298*^9, 3.729269067455503*^9}, {3.729269120933497*^9, 
+  3.729269121244549*^9}, {3.7292691685641336`*^9, 
+  3.72926936644678*^9}},ExpressionUUID->"498722cf-6d2e-401b-be08-\
+2f5ec0523138"],
+
+Cell[BoxData[
+ RowBox[{"ClosedSplineOld", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"x_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"tvals", ",", "slopes", ",", "b"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"b", "=", "x"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"b", "\[LeftDoubleBracket]", 
+         RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "=", 
+        RowBox[{"b", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"tvals", "=", 
+        RowBox[{"2", "Pi", " ", 
+         RowBox[{"parametrizeCurve", "[", 
+          RowBox[{"b", ",", "1"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"slopes", "=", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"periodicSplineSlopes", "[", 
+            RowBox[{"Transpose", "[", 
+             RowBox[{"{", 
+              RowBox[{"tvals", ",", "#"}], "}"}], "]"}], "]"}], "&"}], "/@", 
+          RowBox[{"Transpose", "[", "b", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Interpolation", "[", 
+        RowBox[{
+         RowBox[{"Transpose", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"List", "/@", "tvals"}], ",", "b", ",", "slopes"}], "}"}],
+           "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Method", "->", "\"\<Hermite\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"InterpolationOrder", "->", "3"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"PeriodicInterpolation", "\[Rule]", "True"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Constructs an interpolation by a closed cubic spline.\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7292692619471893`*^9, 3.729269273459179*^9}, {
+  3.7292693208733053`*^9, 3.729269321629108*^9}, {3.729270074674008*^9, 
+  3.7292700864260817`*^9}},ExpressionUUID->"81002a68-8b0d-4a51-b185-\
+414f6b20d8c3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"OpenSplineOld", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"b_", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "tvals", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"tvals", "=", 
+         RowBox[{"2", "Pi", " ", 
+          RowBox[{"parametrizeCurve", "[", 
+           RowBox[{"b", ",", "1"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Interpolation", "[", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"List", "/@", "tvals"}], ",", "b"}], "}"}], "]"}], ",", 
+          " ", "\[IndentingNewLine]", 
+          RowBox[{"Method", "->", "\"\<Hermite\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"InterpolationOrder", "->", "3"}]}], "\[IndentingNewLine]", 
+         "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<Constructs an interpolation by an open cubic spline.\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7292693174343233`*^9, 
+  3.7292693241875067`*^9}},ExpressionUUID->"71b6d280-e6ab-43c1-8bb6-\
+b93e07fd78e5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"periodicSplineSlopes", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"t_", "?", "VectorQ"}], ",", 
+       RowBox[{"x_", "?", "ArrayQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "n", ",", "\[CapitalDelta]t", ",", "\[CapitalDelta]x", ",", "A", ",", 
+         "b", ",", "Ainv", ",", "U", ",", "sol"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"n", "=", 
+         RowBox[{
+          RowBox[{"Length", "[", "x", "]"}], "-", "1"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\[CapitalDelta]t", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Join", "[", 
+            RowBox[{"#", ",", 
+             RowBox[{"{", 
+              RowBox[{
+              "#", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+              "}"}]}], "]"}], "&"}], "@", 
+          RowBox[{"Differences", "[", "t", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\[CapitalDelta]x", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Join", "[", 
+             RowBox[{"#", ",", 
+              RowBox[{"{", 
+               RowBox[{
+               "#", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+               "}"}]}], "]"}], "&"}], "@", 
+           RowBox[{"Differences", "[", "x", "]"}]}], "/", 
+          "\[CapitalDelta]t"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"A", "=", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"ci", "=", 
+              RowBox[{"Join", "[", 
+               RowBox[{
+                RowBox[{"{", "0", "}"}], ",", 
+                RowBox[{"Range", "[", 
+                 RowBox[{"2", ",", 
+                  RowBox[{"3", " ", 
+                   RowBox[{"(", 
+                    RowBox[{"n", "-", "1"}], ")"}]}], ",", "3"}], "]"}], ",", 
+                
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"3", "n"}], "-", "2"}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"rp", "=", 
+              RowBox[{"Partition", "[", 
+               RowBox[{
+                RowBox[{"Join", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"1", ",", "2"}], "}"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"Flatten", "@", 
+                   RowBox[{"Partition", "[", 
+                    RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{"1", ",", "n"}], "]"}], ",", "3", ",", "1"}], 
+                    "]"}]}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"n", "-", "1"}], ",", "n"}], "}"}]}], 
+                 "\[IndentingNewLine]", "]"}], ",", "1"}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[Alpha]", "=", 
+              RowBox[{"\[CapitalDelta]t", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", 
+                RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[Beta]", "=", 
+              RowBox[{"\[CapitalDelta]t", "\[LeftDoubleBracket]", 
+               RowBox[{"2", ";;", 
+                RowBox[{"-", "1"}]}], "\[RightDoubleBracket]"}]}]}], 
+            "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"vals", "=", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"Transpose", "[", 
+                  RowBox[{"{", 
+                   RowBox[{"\[Beta]", ",", 
+                    RowBox[{"2.", 
+                    RowBox[{"(", 
+                    RowBox[{"\[Alpha]", "+", "\[Beta]"}], ")"}]}], ",", 
+                    "\[Alpha]"}], "}"}], "]"}], "]"}], "\[LeftDoubleBracket]", 
+                RowBox[{"2", ";;", 
+                 RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}]}], "}"}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"SparseArray", "@@", 
+              RowBox[{"{", 
+               RowBox[{"Automatic", ",", 
+                RowBox[{"{", 
+                 RowBox[{"n", ",", "n"}], "}"}], ",", "0", ",", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"ci", ",", "rp"}], "}"}], ",", "vals"}], "}"}]}], 
+               "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"b", "=", 
+         RowBox[{"3.", 
+          RowBox[{"Plus", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\[CapitalDelta]t", "\[LeftDoubleBracket]", 
+              RowBox[{"1", ";;", 
+               RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}], 
+             RowBox[{"\[CapitalDelta]x", "\[LeftDoubleBracket]", 
+              RowBox[{"2", ";;", 
+               RowBox[{"-", "1"}]}], "\[RightDoubleBracket]"}]}], ",", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]t", "\[LeftDoubleBracket]", 
+              RowBox[{"2", ";;", 
+               RowBox[{"-", "1"}]}], "\[RightDoubleBracket]"}], 
+             RowBox[{"\[CapitalDelta]x", "\[LeftDoubleBracket]", 
+              RowBox[{"1", ";;", 
+               RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}]}]}], "]"}]}]}],
+         ";", "\[IndentingNewLine]", 
+        RowBox[{"Ainv", "=", 
+         RowBox[{"LinearSolve", "[", 
+          RowBox[{"A", ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Banded\>\""}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"U", "=", 
+         RowBox[{"SparseArray", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], "\[Rule]", 
+              RowBox[{
+              "\[CapitalDelta]t", "\[LeftDoubleBracket]", "1", 
+               "\[RightDoubleBracket]"}]}], ",", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"n", ",", "1"}], "}"}], "\[Rule]", 
+              RowBox[{"\[CapitalDelta]t", "\[LeftDoubleBracket]", 
+               RowBox[{"-", "1"}], "\[RightDoubleBracket]"}]}]}], "}"}], ",", 
+           
+           RowBox[{"{", 
+            RowBox[{"n", ",", "2"}], "}"}], ",", "0."}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"sol", "=", 
+         RowBox[{"Ainv", "[", 
+          RowBox[{"Join", "[", 
+           RowBox[{"U", ",", "b", ",", "2"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"#", "\[LeftDoubleBracket]", 
+              RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "}"}], ",", 
+            "#"}], "]"}], "&"}], "@", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"AinvU", "=", 
+              RowBox[{"sol", "\[LeftDoubleBracket]", 
+               RowBox[{"All", ",", 
+                RowBox[{"1", ";;", "2"}]}], "\[RightDoubleBracket]"}]}], ",", 
+             
+             RowBox[{"b1", "=", 
+              RowBox[{"sol", "\[LeftDoubleBracket]", 
+               RowBox[{"All", ",", 
+                RowBox[{"3", ";;"}]}], "\[RightDoubleBracket]"}]}]}], "}"}], 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{"b1", "-", 
+            RowBox[{"AinvU", ".", 
+             RowBox[{"LinearSolve", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"IdentityMatrix", "[", "2", "]"}], "+", 
+                RowBox[{"AinvU", "\[LeftDoubleBracket]", 
+                 RowBox[{"{", 
+                  RowBox[{"1", ",", "n"}], "}"}], "\[RightDoubleBracket]"}]}],
+                ",", 
+               RowBox[{"b1", "\[LeftDoubleBracket]", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "n"}], "}"}], "\[RightDoubleBracket]"}]}], 
+              "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<Abstracted from the post \
+http://mathematica.stackexchange.com/questions/10273 by J.M..\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"ClosedSpline", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"x_", "?", "MatrixQ"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"t", "=", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"2", "Pi"}], ")"}], " ", 
+         RowBox[{"parametrizeCurve", "[", 
+          RowBox[{"x", ",", "1"}], "]"}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"InterpolatingFunction", "@@", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"0.", ",", 
+            RowBox[{"2.", "Pi"}]}], "}"}], "}"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{"{", 
+          RowBox[{"5", ",", "3", ",", "1", ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Length", "[", "x", "]"}], "-", "1"}], "}"}], ",", 
+           RowBox[{"{", "4", "}"}], ",", "0", ",", 
+           RowBox[{"{", "1", "}"}], ",", "0", ",", "0", ",", "Automatic", ",", 
+           RowBox[{"{", "}"}], ",", 
+           RowBox[{"{", "}"}], ",", "False"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", "t", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"x", "\[LeftDoubleBracket]", 
+             RowBox[{"1", ";;", 
+              RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"periodicSplineSlopes", "[", 
+              RowBox[{"t", ",", "x"}], "]"}], "\[LeftDoubleBracket]", 
+             RowBox[{"1", ";;", 
+              RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}]}], 
+           "\[IndentingNewLine]", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "Automatic", "}"}]}], "\[IndentingNewLine]", "}"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Constructs an interpolation by a closed cubic spline.\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.729270023576915*^9, 3.729270050923584*^9}, {
+  3.72927062221726*^9, 3.729270625025119*^9}, {3.729270747589416*^9, 
+  3.729270765932169*^9}, {3.7292710990147142`*^9, 
+  3.7292711003342113`*^9}},ExpressionUUID->"119251df-4638-4aa5-b2d5-\
+79e31ac16cc7"],
+
+Cell[BoxData[
+ RowBox[{"OpenSpline", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"x_", "?", "MatrixQ"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"t", "=", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"2", "Pi"}], ")"}], " ", 
+         RowBox[{"parametrizeCurve", "[", 
+          RowBox[{"x", ",", "1"}], "]"}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"InterpolatingFunction", "@@", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"0.", ",", 
+            RowBox[{"2.", "Pi"}]}], "}"}], "}"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{"{", 
+          RowBox[{"5", ",", "3", ",", "0", ",", 
+           RowBox[{"{", 
+            RowBox[{"Length", "[", "x", "]"}], "}"}], ",", 
+           RowBox[{"{", "4", "}"}], ",", "0", ",", "0", ",", "0", ",", "0", 
+           ",", "Automatic", ",", 
+           RowBox[{"{", "}"}], ",", 
+           RowBox[{"{", "}"}], ",", "False"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", "t", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Partition", "[", 
+          RowBox[{"x", ",", "1"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "Automatic", "}"}]}], "\[IndentingNewLine]", "}"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Constructs an interpolation by an open cubic spline.\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.729270321957152*^9, 3.729270351103203*^9}, {
+   3.729270403627384*^9, 3.729270413769414*^9}, {3.729270655396497*^9, 
+   3.72927069142737*^9}, {3.729270745872747*^9, 3.729270774011611*^9}, {
+   3.729271056317698*^9, 3.7292710580826187`*^9}, 
+   3.729271104617124*^9},ExpressionUUID->"92ddd647-e902-4747-98bd-\
+283d838c20c5"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 5618, 96, 1417, "Input",ExpressionUUID->"965f771a-8a77-45f5-9624-72ffd5c2a200"],
+Cell[6179, 118, 1253, 30, 167, "Input",ExpressionUUID->"9ff5a646-a82b-4620-976e-21e2e705400b"],
+Cell[7435, 150, 4731, 110, 442, "Input",ExpressionUUID->"498722cf-6d2e-401b-be08-2f5ec0523138"],
+Cell[12169, 262, 2181, 51, 367, "Input",ExpressionUUID->"81002a68-8b0d-4a51-b185-414f6b20d8c3"],
+Cell[14353, 315, 1269, 31, 267, "Input",ExpressionUUID->"71b6d280-e6ab-43c1-8bb6-b93e07fd78e5"],
+Cell[15625, 348, 8594, 208, 767, "Input",ExpressionUUID->"631cae3f-c7d5-4de7-9906-f4c54c8c034d"],
+Cell[24222, 558, 2438, 57, 392, "Input",ExpressionUUID->"119251df-4638-4aa5-b2d5-79e31ac16cc7"],
+Cell[26663, 617, 1951, 46, 317, "Input",ExpressionUUID->"92ddd647-e902-4747-98bd-283d838c20c5"]
+}
+]
+*)
+

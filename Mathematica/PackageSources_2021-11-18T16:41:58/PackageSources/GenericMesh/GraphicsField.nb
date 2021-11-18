@@ -1,0 +1,730 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     32692,        722]
+NotebookOptionsPosition[     32142,        706]
+NotebookOutlinePosition[     32538,        722]
+CellTagsIndexPosition[     32495,        719]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"TriangleFieldPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "w_"}], "}"}], ",", "\[IndentingNewLine]", 
+    " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "pplist", ",", "\[Lambda]", ",", "n", ",", "Q", ",", "selector", ",", 
+        RowBox[{"c", "=", "0"}], ",", "plotfun", ",", "arrow"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"plotfun", "=", 
+        RowBox[{"PlotFunction", "[", "M", "]"}]}], ";", "\[IndentingNewLine]",
+        "\[IndentingNewLine]", 
+       RowBox[{"arrow", "=", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\[Theta]", "=", 
+            RowBox[{"OptionValue", "[", "\"\<ArrowThickness\>\"", "]"}]}], 
+           "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"OptionValue", "[", "\"\<Tubes\>\"", "]"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Arrow", "@", 
+              RowBox[{"Tube", "[", 
+               RowBox[{"#", ",", "\[Theta]"}], "]"}]}], "&"}], ",", 
+            "\[IndentingNewLine]", "Arrow"}], "\[IndentingNewLine]", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Magnitude\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "\[Lambda]", "]"}], "===", "Scaled"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\[Lambda]", "=", 
+           RowBox[{
+            RowBox[{
+            "\[Lambda]", "\[LeftDoubleBracket]", "1", 
+             "\[RightDoubleBracket]"}], 
+            RowBox[{
+             RowBox[{"BoundingBoxLength", "[", "M", "]"}], "/", 
+             RowBox[{"Max", "[", 
+              RowBox[{"cNorm3", "[", "w", "]"}], "]"}]}]}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"!", 
+             RowBox[{"NumberQ", "[", "\[Lambda]", "]"}]}], ",", 
+            RowBox[{
+             RowBox[{"\[Lambda]", "=", "1."}], ";"}]}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"selector", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Selector\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"selector", "===", "All"}], "\[IndentingNewLine]", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pplist", "=", "All"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"TriangleCount", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Q", "=", 
+           RowBox[{"TriangleMidpoints", "[", "M", "]"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pplist", "=", 
+           RowBox[{"selector", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          
+          RowBox[{"Q", "=", 
+           RowBox[{"Part", "[", 
+            RowBox[{
+             RowBox[{"TriangleMidpoints", "[", "M", "]"}], ",", "pplist"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"Length", "[", "Q", "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "w", "]"}], "\[Equal]", "n"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"TensorRank", "[", "w", "]"}], "\[Equal]", "2"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"plotfun", "[", 
+            RowBox[{
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Arrowheads", "[", "0.005", "]"}], ",", "Black", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"List", "@", 
+                  RowBox[{"OptionValue", "[", "PlotStyle", "]"}]}]}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"arrow", "/@", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"Q", ",", 
+                   RowBox[{"Q", "+", 
+                    RowBox[{"\[Lambda]", " ", "w"}]}]}], "}"}], "]"}]}]}], 
+              "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"PlotOptions", "[", "M", "]"}]}]}], "]"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"TensorRank", "[", "w", "]"}], "\[Equal]", "3"}], 
+             "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+             RowBox[{"plotfun", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"c", "++"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Darker", "@", "Red"}], ",", 
+                    RowBox[{"Darker", "@", 
+                    RowBox[{"Darker", "@", "Green"}]}], ",", 
+                    RowBox[{"Darker", "@", "Blue"}]}], "}"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Mod", "[", 
+                    RowBox[{"c", ",", "3", ",", "1"}], "]"}], "]"}], "]"}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"Arrowheads", "[", "0.0025", "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Flatten", "@", 
+                    RowBox[{"List", "@", 
+                    RowBox[{"OptionValue", "[", "PlotStyle", "]"}]}]}]}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"arrow", "/@", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"Q", ",", 
+                    RowBox[{"Q", "+", 
+                    RowBox[{"\[Lambda]", " ", "ww"}]}]}], "}"}], "]"}]}]}], 
+                   "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"{", 
+                  RowBox[{"ww", ",", 
+                   RowBox[{"Transpose", "[", 
+                    RowBox[{"w", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"2", ",", "1", ",", "3"}], "}"}]}], "]"}]}], 
+                  "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"PlotOptions", "[", "M", "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Message", "[", 
+               RowBox[{"TriangleFieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"TriangleFieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{"TriangleFieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Selector\>\"", "\[Rule]", "All"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotStyle", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Tubes\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArrowThickness\>\"", "\[Rule]", "0.001"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Magnitude\>\"", "\[Rule]", "0.1"}]}], 
+      "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<dim\>\"", "\[Rule]", "\"\<Error: Dimensions do not fit.\>\""}], 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7301822602923193`*^9, 3.730182269026134*^9}, {
+   3.8157209026991577`*^9, 3.8157209065632343`*^9}, {3.8157209771211348`*^9, 
+   3.815721009287463*^9}, {3.815721112724003*^9, 3.8157211789713306`*^9}, {
+   3.815721228375803*^9, 3.815721261623451*^9}, 3.815721612684236*^9, 
+   3.815725853312374*^9, {3.829710456162511*^9, 
+   3.829710456394493*^9}},ExpressionUUID->"6689b447-2a0c-43a3-8f24-\
+ced824f08312"],
+
+Cell[BoxData[
+ RowBox[{"EdgeFieldPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "w_"}], "}"}], ",", "\[IndentingNewLine]", 
+    " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "pplist", ",", "\[Lambda]", ",", "n", ",", "Q", ",", "selector", ",", 
+        RowBox[{"c", "=", "0"}], ",", "plotfun", ",", "arrow"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"plotfun", "=", 
+        RowBox[{"PlotFunction", "[", "M", "]"}]}], ";", "\[IndentingNewLine]",
+        "\[IndentingNewLine]", 
+       RowBox[{"arrow", "=", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\[Theta]", "=", 
+            RowBox[{"OptionValue", "[", "\"\<ArrowThickness\>\"", "]"}]}], 
+           "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"OptionValue", "[", "\"\<Tubes\>\"", "]"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Arrow", "@", 
+              RowBox[{"Tube", "[", 
+               RowBox[{"#", ",", "\[Theta]"}], "]"}]}], "&"}], ",", 
+            "\[IndentingNewLine]", "Arrow"}], "\[IndentingNewLine]", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Magnitude\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "\[Lambda]", "]"}], "===", "Scaled"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\[Lambda]", "=", 
+           RowBox[{
+            RowBox[{
+            "\[Lambda]", "\[LeftDoubleBracket]", "1", 
+             "\[RightDoubleBracket]"}], 
+            RowBox[{
+             RowBox[{"BoundingBoxLength", "[", "M", "]"}], "/", 
+             RowBox[{"Max", "[", 
+              RowBox[{"cNorm3", "[", "w", "]"}], "]"}]}]}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"!", 
+             RowBox[{"NumberQ", "[", "\[Lambda]", "]"}]}], ",", 
+            RowBox[{
+             RowBox[{"\[Lambda]", "=", "1."}], ";"}]}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"selector", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Selector\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"selector", "===", "All"}], "\[IndentingNewLine]", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pplist", "=", "All"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"EdgeCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Q", "=", 
+           RowBox[{"EdgeMidpoints", "[", "M", "]"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pplist", "=", 
+           RowBox[{"selector", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          
+          RowBox[{"Q", "=", 
+           RowBox[{"Part", "[", 
+            RowBox[{
+             RowBox[{"EdgeMidpoints", "[", "M", "]"}], ",", "pplist"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"Length", "[", "Q", "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "w", "]"}], "\[Equal]", "n"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"TensorRank", "[", "w", "]"}], "\[Equal]", "2"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"plotfun", "[", 
+            RowBox[{
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Arrowheads", "[", "0.005", "]"}], ",", "Black", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"List", "@", 
+                  RowBox[{"OptionValue", "[", "PlotStyle", "]"}]}]}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"arrow", "/@", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"Q", ",", 
+                   RowBox[{"Q", "+", 
+                    RowBox[{"\[Lambda]", " ", "w"}]}]}], "}"}], "]"}]}]}], 
+              "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"PlotOptions", "[", "M", "]"}]}]}], "]"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"TensorRank", "[", "w", "]"}], "\[Equal]", "3"}], 
+             "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+             RowBox[{"plotfun", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"c", "++"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Darker", "@", "Red"}], ",", 
+                    RowBox[{"Darker", "@", 
+                    RowBox[{"Darker", "@", "Green"}]}], ",", 
+                    RowBox[{"Darker", "@", "Blue"}]}], "}"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"Mod", "[", 
+                    RowBox[{"c", ",", "3", ",", "1"}], "]"}], "]"}], "]"}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"Arrowheads", "[", "0.0025", "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Flatten", "@", 
+                    RowBox[{"List", "@", 
+                    RowBox[{"OptionValue", "[", "PlotStyle", "]"}]}]}]}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"arrow", "/@", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"Q", ",", 
+                    RowBox[{"Q", "+", 
+                    RowBox[{"\[Lambda]", " ", "ww"}]}]}], "}"}], "]"}]}]}], 
+                   "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"{", 
+                  RowBox[{"ww", ",", 
+                   RowBox[{"Transpose", "[", 
+                    RowBox[{"w", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"2", ",", "1", ",", "3"}], "}"}]}], "]"}]}], 
+                  "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"PlotOptions", "[", "M", "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Message", "[", 
+               RowBox[{"EdgeFieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"EdgeFieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{"EdgeFieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Selector\>\"", "\[Rule]", "All"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotStyle", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Tubes\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArrowThickness\>\"", "\[Rule]", "0.001"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Magnitude\>\"", "\[Rule]", "0.1"}]}], 
+      "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<dim\>\"", "\[Rule]", "\"\<Error: Dimensions do not fit.\>\""}], 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6319697815058117`*^9, 3.6319700332367353`*^9}, {
+   3.631970139260428*^9, 3.631970184450596*^9}, {3.631970600099037*^9, 
+   3.631970621394752*^9}, {3.6319706942416983`*^9, 3.631970698347245*^9}, {
+   3.631970742400725*^9, 3.631970754431018*^9}, {3.632063664234652*^9, 
+   3.6320637426211042`*^9}, {3.6320638566513653`*^9, 3.632063883893499*^9}, {
+   3.632065330062633*^9, 3.6320653703201313`*^9}, {3.632065498021649*^9, 
+   3.63206549826994*^9}, {3.632697389715293*^9, 3.6326974475333014`*^9}, {
+   3.6327300456368933`*^9, 3.6327300474848537`*^9}, {3.63689176282899*^9, 
+   3.636891763190987*^9}, {3.63689183557865*^9, 3.636891836014502*^9}, {
+   3.638003256166811*^9, 3.638003271989574*^9}, 3.643081608605564*^9, {
+   3.6443145129893084`*^9, 3.644314514943514*^9}, {3.644314559469881*^9, 
+   3.644314582185652*^9}, {3.6545219250631647`*^9, 3.6545219261029577`*^9}, {
+   3.6547843590027037`*^9, 3.654784359199563*^9}, {3.656684466738832*^9, 
+   3.65668454051587*^9}, {3.656684628717822*^9, 3.6566846323645687`*^9}, {
+   3.67042826690516*^9, 3.6704283197702427`*^9}, {3.67445509322115*^9, 
+   3.674455124573518*^9}, {3.674455201259197*^9, 3.674455231098275*^9}, {
+   3.67446206636305*^9, 3.674462067274502*^9}, {3.67973465523776*^9, 
+   3.679734661243958*^9}, {3.683101525370225*^9, 3.6831015319209137`*^9}, 
+   3.683101600012663*^9, 3.683101664270466*^9, {3.6831017650972567`*^9, 
+   3.6831017712658787`*^9}, {3.683103220962365*^9, 3.683103226402117*^9}, 
+   3.7201200458956957`*^9, 3.721307545374288*^9, {3.7301822723959217`*^9, 
+   3.730182275627548*^9}, {3.8157208934051332`*^9, 3.815720897250701*^9}, {
+   3.815721015006185*^9, 3.815721027687211*^9}, {3.8157210600282*^9, 
+   3.815721064693473*^9}, {3.8157211424824266`*^9, 3.815721142723565*^9}, {
+   3.8157211860491753`*^9, 3.815721193241871*^9}, {3.8157212319974203`*^9, 
+   3.815721232283272*^9}, {3.815721279718315*^9, 3.815721303946972*^9}, 
+   3.815721607946106*^9, 3.815725850407489*^9, {3.8297102565275993`*^9, 
+   3.8297102807840014`*^9}},
+ CellLabel->"In[90]:=",ExpressionUUID->"dffcb49a-c3f5-4f0e-b161-3a2d1a17a526"],
+
+Cell[BoxData[
+ RowBox[{"FieldPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "w_"}], "}"}], ",", "\[IndentingNewLine]", 
+    " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "pplist", ",", "\[Lambda]", ",", "n", ",", "Q", ",", "selector", ",", 
+        RowBox[{"c", "=", "0"}], ",", "plotfun", ",", "arrow"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"plotfun", "=", 
+        RowBox[{"PlotFunction", "[", "M", "]"}]}], ";", "\[IndentingNewLine]",
+        "\[IndentingNewLine]", 
+       RowBox[{"arrow", "=", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\[Theta]", "=", 
+            RowBox[{"OptionValue", "[", "\"\<ArrowThickness\>\"", "]"}]}], 
+           "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"OptionValue", "[", "\"\<Tubes\>\"", "]"}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Arrow", "@", 
+              RowBox[{"Tube", "[", 
+               RowBox[{"#", ",", "\[Theta]"}], "]"}]}], "&"}], ",", 
+            "\[IndentingNewLine]", "Arrow"}], "\[IndentingNewLine]", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Magnitude\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Head", "[", "\[Lambda]", "]"}], "===", "Scaled"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\[Lambda]", "=", 
+           RowBox[{
+            RowBox[{
+            "\[Lambda]", "\[LeftDoubleBracket]", "1", 
+             "\[RightDoubleBracket]"}], 
+            RowBox[{
+             RowBox[{"BoundingBoxLength", "[", "M", "]"}], "/", 
+             RowBox[{"Max", "[", 
+              RowBox[{"cNorm3", "[", "w", "]"}], "]"}]}]}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"!", 
+             RowBox[{"NumberQ", "[", "\[Lambda]", "]"}]}], ",", 
+            RowBox[{
+             RowBox[{"\[Lambda]", "=", "1."}], ";"}]}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"selector", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Selector\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"selector", "===", "All"}], "\[IndentingNewLine]", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pplist", "=", "All"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"VertexCount", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Q", "=", 
+           RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"pplist", "=", 
+           RowBox[{"selector", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          
+          RowBox[{"Q", "=", 
+           RowBox[{"VertexCoordinates", "[", 
+            RowBox[{"M", ",", "pplist"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"n", "=", 
+           RowBox[{"Length", "[", "pplist", "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "w", "]"}], "\[Equal]", "n"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"TensorRank", "[", "w", "]"}], "\[Equal]", "2"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"plotfun", "[", 
+            RowBox[{
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Arrowheads", "[", "0.01", "]"}], ",", "Black", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"Flatten", "@", 
+                 RowBox[{"List", "@", 
+                  RowBox[{"OptionValue", "[", "PlotStyle", "]"}]}]}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"arrow", "/@", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"Q", ",", 
+                   RowBox[{"Q", "+", 
+                    RowBox[{"\[Lambda]", " ", "w"}]}]}], "}"}], "]"}]}]}], 
+              "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"PlotOptions", "[", "M", "]"}]}]}], 
+            "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"TensorRank", "[", "w", "]"}], "\[Equal]", "3"}], 
+             "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+             RowBox[{"plotfun", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"c", "++"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Darker", "@", "Red"}], ",", 
+                    RowBox[{"Darker", "@", 
+                    RowBox[{"Darker", "@", "Green"}]}], ",", 
+                    RowBox[{"Darker", "@", "Blue"}]}], "}"}], 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"Mod", "[", 
+                    RowBox[{"c", ",", "3", ",", "1"}], "]"}], 
+                    "\[RightDoubleBracket]"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"Arrowheads", "[", "0.005", "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Flatten", "@", 
+                    RowBox[{"List", "@", 
+                    RowBox[{"OptionValue", "[", "PlotStyle", "]"}]}]}]}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"arrow", "/@", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"Q", ",", 
+                    RowBox[{"Q", "+", 
+                    RowBox[{"\[Lambda]", " ", "ww"}]}]}], "}"}], "]"}]}]}], 
+                   "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"{", 
+                  RowBox[{"ww", ",", 
+                   RowBox[{"Transpose", "[", 
+                    RowBox[{"w", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"2", ",", "1", ",", "3"}], "}"}]}], "]"}]}], 
+                  "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Sequence", "@@", 
+                RowBox[{"PlotOptions", "[", "M", "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Message", "[", 
+               RowBox[{"FieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"FieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{"FieldPlot", "::", "dim"}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Selector\>\"", "\[Rule]", "All"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotStyle", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Tubes\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Tubes\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArrowThickness\>\"", "\[Rule]", "0.001"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Magnitude\>\"", "\[Rule]", "0.1"}]}], 
+      "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<dim\>\"", "\[Rule]", "\"\<Error: Dimensions do not fit.\>\""}], 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6319697815058117`*^9, 3.6319700332367353`*^9}, {
+   3.631970139260428*^9, 3.631970184450596*^9}, {3.631970600099037*^9, 
+   3.631970621394752*^9}, {3.6319706942416983`*^9, 3.631970698347245*^9}, {
+   3.631970742400725*^9, 3.631970754431018*^9}, {3.632063664234652*^9, 
+   3.6320637426211042`*^9}, {3.6320638566513653`*^9, 3.632063883893499*^9}, {
+   3.632065330062633*^9, 3.6320653703201313`*^9}, {3.632065498021649*^9, 
+   3.63206549826994*^9}, {3.632697389715293*^9, 3.6326974475333014`*^9}, {
+   3.6327300456368933`*^9, 3.6327300474848537`*^9}, {3.63689176282899*^9, 
+   3.636891763190987*^9}, {3.63689183557865*^9, 3.636891836014502*^9}, {
+   3.638003256166811*^9, 3.638003271989574*^9}, 3.643081608605564*^9, {
+   3.6443145129893084`*^9, 3.644314514943514*^9}, {3.644314559469881*^9, 
+   3.644314582185652*^9}, {3.6545219250631647`*^9, 3.6545219261029577`*^9}, {
+   3.6547843590027037`*^9, 3.654784359199563*^9}, {3.670158259678928*^9, 
+   3.6701583106671658`*^9}, {3.67015842925098*^9, 3.6701584324930468`*^9}, {
+   3.6704285054000597`*^9, 3.670428513781918*^9}, {3.6704288751745*^9, 
+   3.67042887761405*^9}, {3.6718931729078217`*^9, 3.67189317450427*^9}, 
+   3.671893240702273*^9, {3.683103122311758*^9, 3.6831031279024687`*^9}, {
+   3.7194835482377*^9, 3.719483548862*^9}, 3.7201197538976097`*^9, {
+   3.730182635819476*^9, 3.7301826366744003`*^9}, {3.7584449629889107`*^9, 
+   3.7584450503938227`*^9}, {3.758445130998128*^9, 3.758445160285364*^9}, {
+   3.7584455787262506`*^9, 3.758445580876335*^9}, {3.7584456226225157`*^9, 
+   3.75844565515559*^9}, {3.758445749394446*^9, 3.758445751287755*^9}, {
+   3.758459126159778*^9, 3.758459130841096*^9}, {3.7627935661707373`*^9, 
+   3.762793570007477*^9}, 3.795501738451476*^9, {3.815720198629908*^9, 
+   3.8157202047246647`*^9}, {3.8157202521692057`*^9, 3.815720384710884*^9}, {
+   3.815720834408133*^9, 3.8157208413993483`*^9}, 3.815720889551991*^9, 
+   3.8157209672873096`*^9, {3.8157210516637497`*^9, 3.8157210533424597`*^9}, {
+   3.815721292984768*^9, 3.8157212975571833`*^9}, 3.815721372589036*^9, 
+   3.815721619476459*^9, {3.815725842541499*^9, 3.815725860412814*^9}, {
+   3.829710265281385*^9, 
+   3.829710272024522*^9}},ExpressionUUID->"4942497c-8912-4cf0-bcb9-\
+d39c9c1fb0fa"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.2 for Mac OS X x86 (64-bit) (December 12, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"6f19f6e9-fffd-4e2c-813e-ce74c3d01068"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 9296, 210, 1767, "Input",ExpressionUUID->"6689b447-2a0c-43a3-8f24-ced824f08312"],
+Cell[9857, 232, 11049, 233, 1867, "Input",ExpressionUUID->"dffcb49a-c3f5-4f0e-b161-3a2d1a17a526"],
+Cell[20909, 467, 11229, 237, 1842, "Input",ExpressionUUID->"4942497c-8912-4cf0-bcb9-d39c9c1fb0fa"]
+}
+]
+*)
+

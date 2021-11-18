@@ -1,0 +1,471 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     19602,        463]
+NotebookOptionsPosition[     18451,        441]
+NotebookOutlinePosition[     18787,        456]
+CellTagsIndexPosition[     18744,        453]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Singular", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"MakePolygons", "[", 
+      RowBox[{"SingularVertexCoordinates", "[", "M", "]"}], "]"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CreateSingularPolygons", "[", "M", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"KeySelect", "[", 
+      RowBox[{
+       RowBox[{"Subpolygons", "[", "M", "]"}], ",", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Head", "[", "#", "]"}], "===", "Singular"}], "&"}]}], 
+      "]"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.664003854755533*^9, 3.664003855425602*^9}, {
+   3.670428451588976*^9, 3.6704284534549627`*^9}, {3.716717703138839*^9, 
+   3.716717733592272*^9}, 3.7167177702809668`*^9, {3.719483546981412*^9, 
+   3.719483547402817*^9}, {3.726843979139779*^9, 3.726843984441391*^9}, {
+   3.726844204874805*^9, 3.726844218530142*^9}, {3.787731441575713*^9, 
+   3.787731443389619*^9}, {3.7877317296195803`*^9, 3.787731729938233*^9}, {
+   3.79077521329016*^9, 3.790775223075016*^9}},
+ CellLabel->"In[39]:=",ExpressionUUID->"648768b2-5115-4042-9809-e0cd7c1d5f6c"],
+
+Cell[BoxData[
+ RowBox[{"SingularEdges", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Edges", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{"Values", "[", 
+        RowBox[{"Delete", "[", 
+         RowBox[{
+          RowBox[{"ValenceList", "[", 
+           RowBox[{"M", ",", "Edges", ",", "Triangles"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"Key", "[", "1", "]"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"Key", "[", "2", "]"}], "}"}]}], "}"}]}], "]"}], "]"}], 
+       "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "False"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.728274356456414*^9, 3.728274384218773*^9}, {
+  3.787731432181128*^9, 3.787731446100128*^9}, {3.79102533722423*^9, 
+  3.791025367316558*^9}},ExpressionUUID->"4c6f3b4a-86de-4479-a54d-\
+01327a97d4f6"],
+
+Cell[BoxData[
+ RowBox[{"SingularStrata", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"singedges", ",", "badplist", ",", "bndplist0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"bndplist0", "=", 
+        RowBox[{"BoundaryStrata", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"singedges", "=", 
+        RowBox[{"SingularEdges", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{
+         "badplist", " ", "contains", " ", "those", " ", "boundary", " ", 
+          "points", " ", "that", " ", "are", " ", "part", " ", "of", " ", 
+          "singular", " ", "dim"}], "-", 
+         RowBox[{"1", " ", "strata"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"badplist", "=", 
+        RowBox[{"Intersection", "[", 
+         RowBox[{
+          RowBox[{"DeleteDuplicates", "[", 
+           RowBox[{"Flatten", "@", "singedges"}], "]"}], ",", 
+          RowBox[{"DeleteDuplicates", "[", 
+           RowBox[{"Flatten", "[", "bndplist0", "]"}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{
+         "We", " ", "have", " ", "to", " ", "tell", " ", "MakeStrata"}], ",", 
+         " ", 
+         RowBox[{"which", " ", "points", " ", "are", " ", 
+          RowBox[{"bad", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"MakeStrata", "[", 
+        RowBox[{"singedges", ",", 
+         RowBox[{"\"\<ExceptionalVertices\>\"", "\[Rule]", "badplist"}]}], 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.719488003364399*^9, 3.719488003841555*^9}, {
+   3.726732231759858*^9, 3.726732234261909*^9}, {3.728274392403638*^9, 
+   3.728274394498667*^9}, 3.72916570125184*^9, {3.7877314477904673`*^9, 
+   3.787731449189624*^9}},ExpressionUUID->"174ee896-614a-4bf9-aaed-\
+474124dd6002"],
+
+Cell[BoxData[
+ RowBox[{"SingularVertexCoordinates", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{"x", "\[Function]", 
+       RowBox[{"VertexCoordinates", "[", 
+        RowBox[{"M", ",", "x"}], "]"}]}], ",", 
+      RowBox[{"SingularStrata", "[", "M", "]"}], ",", 
+      RowBox[{"{", "2", "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<SingularVertexCoordinates[M] returns lists of coordinates of \
+singular points. Order is consistent with SingularStrata[M].\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.719488219231409*^9, 3.719488223325848*^9}, {
+  3.719488362903154*^9, 3.719488391434826*^9}, {3.7661550701108294`*^9, 
+  3.766155073254642*^9}},ExpressionUUID->"232bd67b-6837-44d0-a3e0-\
+5d1054655152"],
+
+Cell[BoxData[
+ RowBox[{"SingularStrataEdges", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{"x", "\[Function]", 
+         RowBox[{"EdgeLookup", "[", 
+          RowBox[{"M", ",", 
+           RowBox[{"Transpose", "[", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Most", "[", "x", "]"}], ",", 
+              RowBox[{"Rest", "[", "x", "]"}]}], "}"}], "]"}]}], "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"SingularStrata", "[", "M", "]"}], "\[LeftDoubleBracket]", 
+         "1", "\[RightDoubleBracket]"}]}], "]"}], ",", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{"x", "\[Function]", 
+         RowBox[{"EdgeLookup", "[", 
+          RowBox[{"M", ",", 
+           RowBox[{"Transpose", "[", " ", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Most", "[", "x", "]"}], ",", 
+              RowBox[{"Rest", "[", "x", "]"}]}], "}"}], "]"}]}], "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"SingularStrata", "[", "M", "]"}], "\[LeftDoubleBracket]", 
+         "2", "\[RightDoubleBracket]"}]}], "]"}]}], "\[IndentingNewLine]", 
+     "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "False"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.787731453286111*^9, 
+  3.787731454629136*^9}},ExpressionUUID->"1b6ffccd-1f0c-4c1f-9ec6-\
+45c20bc9f27d"],
+
+Cell[BoxData[
+ RowBox[{"RegularSingularVertices", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "singplist0", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"singplist0", "=", 
+        RowBox[{"SingularStrata", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Catenate", "[", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"x", "\[Function]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Length", "[", "x", "]"}], "\[GreaterEqual]", "3"}], 
+               ",", 
+               RowBox[{"x", "\[LeftDoubleBracket]", 
+                RowBox[{"2", ";;", 
+                 RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}], ",", 
+               RowBox[{"{", "}"}]}], "]"}]}], ")"}], "/@", 
+           RowBox[{
+           "singplist0", "\[LeftDoubleBracket]", "1", 
+            "\[RightDoubleBracket]"}]}], ",", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"x", "\[Function]", 
+             RowBox[{"x", "\[LeftDoubleBracket]", 
+              RowBox[{"1", ";;", 
+               RowBox[{"-", "2"}]}], "\[RightDoubleBracket]"}]}], ")"}], "/@", 
+           RowBox[{
+           "singplist0", "\[LeftDoubleBracket]", "2", 
+            "\[RightDoubleBracket]"}]}]}], "]"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7877314560302362`*^9, 
+  3.787731458277157*^9}},ExpressionUUID->"bf07cfd7-586a-44ba-a9e5-\
+eed0a591a736"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"RegularSingularVertexCoordinates", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"VertexCoordinates", "[", 
+      RowBox[{"M", ",", 
+       RowBox[{"RegularSingularVertices", "[", "M", "]"}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.719488509115995*^9, 3.7194885140095177`*^9}, {
+  3.7877314608377323`*^9, 
+  3.787731467747963*^9}},ExpressionUUID->"687f245b-6f80-4f96-ae7c-\
+722633d3f8cb"],
+
+Cell[BoxData[
+ RowBox[{"IrregularSingularVertices", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"singedges", ",", "badplist", ",", "bndplist0"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"bndplist0", "=", 
+        RowBox[{"BoundaryStrata", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"singedges", "=", 
+        RowBox[{"Edges", "[", 
+         RowBox[{"M", ",", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Values", "[", 
+            RowBox[{"Delete", "[", 
+             RowBox[{
+              RowBox[{"ValenceList", "[", 
+               RowBox[{"M", ",", "Edges", ",", "Triangles"}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"Key", "[", "1", "]"}], "}"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"Key", "[", "2", "]"}], "}"}]}], "}"}]}], "]"}], 
+            "]"}], "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{
+         "badplist", " ", "contains", " ", "those", " ", "boundary", " ", 
+          "points", " ", "that", " ", "are", " ", "part", " ", "of", " ", 
+          "singular", " ", "dim"}], "-", 
+         RowBox[{"1", " ", "strata"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"badplist", "=", 
+        RowBox[{"Intersection", "[", 
+         RowBox[{
+          RowBox[{"Union", "@@", "singedges"}], ",", " ", 
+          RowBox[{"Union", "[", 
+           RowBox[{"Flatten", "[", "bndplist0", "]"}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Complement", "[", 
+        RowBox[{
+         RowBox[{"DeleteDuplicates", "[", 
+          RowBox[{"Catenate", "[", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"x", "\[Function]", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{
+                "x", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+                ",", 
+                RowBox[{"x", "\[LeftDoubleBracket]", 
+                 RowBox[{"-", "1"}], "\[RightDoubleBracket]"}]}], "}"}]}], 
+             ")"}], "/@", 
+            RowBox[{
+             RowBox[{"SingularStrata", "[", "M", "]"}], 
+             "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], "]"}], 
+          "]"}], ",", "badplist"}], "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.719488127255266*^9, 3.7194881316925898`*^9}, 
+   3.787731433037018*^9, {3.787731469741725*^9, 3.7877314721089897`*^9}, {
+   3.791025451092329*^9, 
+   3.791025455154662*^9}},ExpressionUUID->"0750ee9b-efab-4457-a3b1-\
+66fde351ed98"],
+
+Cell[BoxData[
+ RowBox[{"IrregularSingularVertexCoordinates", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"VertexCoordinates", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"IrregularSingularVertices", "[", "M", "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Description", "\[Rule]", "\"\<???\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.719488502869348*^9, 3.719488536058262*^9}, {
+  3.787731474347733*^9, 
+  3.78773147748383*^9}},ExpressionUUID->"4d07f276-a76d-4758-8368-\
+9aed3a9271ae"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"SingularPolygonsQ", "=", 
+    RowBox[{"SettingFunction", "[", 
+     RowBox[{"M_mesh", ",", "False"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"CreateSingularPolygons", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "strata", ",", "strataedges", ",", "dir", ",", "tubedir", ",", "h", 
+         ",", "pointsize"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"Not", "[", 
+           RowBox[{"SingularPolygonsQ", "[", "M", "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"strata", "=", 
+            RowBox[{"SingularStrata", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"strataedges", "=", 
+            RowBox[{"SingularStrataEdges", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"dir", "=", 
+            RowBox[{"SingularGraphicsDirectives", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"tubedir", "=", 
+            RowBox[{"SingularTubeGraphicsDirectives", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"h", "=", "Singular"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"pointsize", "=", 
+            RowBox[{"SingularThickness", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Do", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Do", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"AppendToSubpolygons", "[", 
+                RowBox[{"M", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"h", "[", 
+                   RowBox[{"i", ",", "j"}], "]"}], "\[Rule]", 
+                  RowBox[{"strataedges", "\[LeftDoubleBracket]", 
+                   RowBox[{"i", ",", "j"}], "\[RightDoubleBracket]"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"\"\<InitializationFunction\>\"", "\[Rule]", 
+                  RowBox[{"(", 
+                   RowBox[{"P", "\[Function]", 
+                    RowBox[{"(", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"i", "\[Equal]", "1"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"SetPersistentCache", "[", 
+                    RowBox[{"P", ",", "\"\<Strata\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"strata", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "j"}], "\[RightDoubleBracket]"}], "}"}],
+                     ",", 
+                    RowBox[{"{", "}"}]}], "}"}]}], "]"}], ";"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"SetPersistentCache", "[", 
+                    RowBox[{"P", ",", "\"\<Strata\>\"", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"strata", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", ",", "j"}], "\[RightDoubleBracket]"}], 
+                    "}"}]}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"SetGraphicsDirectives", "[", 
+                    RowBox[{"P", ",", "dir"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"SetTubeGraphicsDirectives", "[", 
+                    RowBox[{"P", ",", "tubedir"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"SetMeshPointSize", "[", 
+                    RowBox[{"P", ",", "pointsize"}], "]"}], ";", 
+                    "\[IndentingNewLine]", "P"}], "\[IndentingNewLine]", 
+                    ")"}]}], ")"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", "1", ",", 
+                 RowBox[{"Length", "[", 
+                  RowBox[{
+                  "strataedges", "\[LeftDoubleBracket]", "i", 
+                   "\[RightDoubleBracket]"}], "]"}]}], "}"}]}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "2"}], "}"}]}], "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"SetBoundaryPolygonsQ", "[", 
+            RowBox[{"M", ",", "True"}], "]"}], ";"}]}], "\[IndentingNewLine]",
+          "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+   "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.790768344829184*^9, 3.790768395993762*^9}, {
+   3.790768484486845*^9, 3.790768549581984*^9}, 3.7907687237696133`*^9, {
+   3.7907688008529177`*^9, 3.790768802955225*^9}},
+ CellLabel->"In[56]:=",ExpressionUUID->"032b01b8-ca0b-4ac7-975f-348b44ddf3e8"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1216, 25, 142, "Input",ExpressionUUID->"648768b2-5115-4042-9809-e0cd7c1d5f6c"],
+Cell[1777, 47, 1000, 24, 117, "Input",ExpressionUUID->"4c6f3b4a-86de-4479-a54d-01327a97d4f6"],
+Cell[2780, 73, 2151, 48, 292, "Input",ExpressionUUID->"174ee896-614a-4bf9-aaed-474124dd6002"],
+Cell[4934, 123, 887, 19, 167, "Input",ExpressionUUID->"232bd67b-6837-44d0-a3e0-5d1054655152"],
+Cell[5824, 144, 1511, 37, 192, "Input",ExpressionUUID->"1b6ffccd-1f0c-4c1f-9ec6-45c20bc9f27d"],
+Cell[7338, 183, 1756, 43, 192, "Input",ExpressionUUID->"bf07cfd7-586a-44ba-a9e5-eed0a591a736"],
+Cell[9097, 228, 548, 12, 117, "Input",ExpressionUUID->"687f245b-6f80-4f96-ae7c-722633d3f8cb"],
+Cell[9648, 242, 2900, 69, 267, "Input",ExpressionUUID->"0750ee9b-efab-4457-a3b1-66fde351ed98"],
+Cell[12551, 313, 594, 13, 117, "Input",ExpressionUUID->"4d07f276-a76d-4758-8368-9aed3a9271ae"],
+Cell[13148, 328, 5299, 111, 867, "Input",ExpressionUUID->"032b01b8-ca0b-4ac7-975f-348b44ddf3e8"]
+}
+]
+*)
+

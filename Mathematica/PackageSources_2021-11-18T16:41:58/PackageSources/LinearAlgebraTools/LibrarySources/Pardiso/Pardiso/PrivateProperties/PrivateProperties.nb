@@ -1,0 +1,138 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5739,        130]
+NotebookOptionsPosition[      5352,        116]
+NotebookOutlinePosition[      5691,        131]
+CellTagsIndexPosition[      5648,        128]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"{", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mint\>\"", ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<i\>\"", ",", "\"\<n\>\"", ",", "\"\<nnz\>\"", ",", "\"\<nrhs\>\"",
+         ",", "\"\<mtype\>\"", ",", "\"\<maxfct\>\"", ",", "\"\<mnum\>\"", 
+        ",", "\"\<phase\>\"", ",", "\"\<error\>\"", ",", "\"\<msglvl\>\""}], 
+       "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mint\>\"", ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<*ia\>\"", ",", "\"\<*ja\>\""}], "}"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mreal*\>\"", ",", "\"\<a\>\""}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mint\>\"", ",", 
+      RowBox[{"{", "\"\<*perm\>\"", "}"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mint\>\"", ",", "\"\<iparm[64]\>\""}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<void*\>\"", ",", "\"\<pt[64]\>\""}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"CDeclare", "[", 
+       RowBox[{"\"\<mint\>\"", ",", "\"\<x\>\""}], "]"}], ","}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mreal\>\"", ",", "\"\<ddum\>\""}], "]"}], ",", 
+    RowBox[{"CComment", "[", "\"\<Double dummy\>\"", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"CDeclare", "[", 
+       RowBox[{"\"\<mint\>\"", ",", "\"\<idum\>\""}], "]"}], ",", 
+      RowBox[{"CComment", "[", "\"\<Integer dummy\>\"", "]"}], ","}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclare", "[", 
+     RowBox[{"\"\<mreal\>\"", ",", "\"\<timestamp\>\""}], "]"}], ",", 
+    RowBox[{"CComment", "[", "\"\<Time stamp\>\"", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"CDeclareAssign", "[", 
+     RowBox[{"\"\<mint\>\"", ",", "\"\<initialized\>\"", ",", "\"\<0\>\""}], 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"CDeclareAssign", "[", 
+     RowBox[{"\"\<mint\>\"", ",", "\"\<symfactorized\>\"", ",", "\"\<0\>\""}],
+      "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"CDeclareAssign", "[", 
+     RowBox[{"\"\<mint\>\"", ",", "\"\<numfactorized\>\"", ",", "\"\<0\>\""}],
+      "]"}]}], "\[IndentingNewLine]", "}"}], "\[IndentingNewLine]", 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6861529113632107`*^9, 3.68615292379286*^9}, {
+   3.686153084269681*^9, 3.686153119963654*^9}, {3.6861531905233517`*^9, 
+   3.68615320965479*^9}, 3.6936409097810802`*^9, {3.696405427569871*^9, 
+   3.696405453003644*^9}, 3.69640567218414*^9, {3.723308249696641*^9, 
+   3.7233082579108562`*^9}, {3.754813734431218*^9, 3.754813766294284*^9}, 
+   3.7548138780894947`*^9, {3.7548141457693453`*^9, 3.754814146999349*^9}, {
+   3.754814405008106*^9, 3.754814416905664*^9}, 3.7967054029778843`*^9, {
+   3.797738444508904*^9, 3.797738446011324*^9}, {3.7977389153798227`*^9, 
+   3.797738916841758*^9}},ExpressionUUID->"ab6e5ce5-0b64-4a60-af37-\
+0ee6851be195"],
+
+Cell[BoxData[
+ RowBox[{"{", "\[IndentingNewLine]", 
+  "\"\<\n    mint n =0;                      /* Length of matrix */\n    mint \
+nnz =0;                    /* Number of nonzeroes */\n    mint nrhs =1;       \
+            /* Number of right hand sides */\n    mint mtype =0;              \
+    /* Matrix type */\n    mint mnum = 1;                  /* Which \
+factorization to use */\n    mint error = 0;                 /* Error flag */\
+\n    mint msglvl = 0;                /* Do not pint statistical information \
+to file */\n    mint maxfct = 1;                /* Maximum number of \
+numerical factorizations */\n    mint phase = 0;                 /* Phase of \
+pardiso */\n    mint *perm = NULL;              /* Permutation */\n    mint \
+*ia = NULL;                /* Row pointers */\n    mint *ja = NULL;           \
+     /* Column indices */\n\\tmreal* a = NULL;                /* Array of \
+nonzero values */\n\\tmint iparm[64];                 /* Integer parameter \
+array for controlling pardiso */\n\n\\tvoid* pt[64];                   /* \
+Pointer used internally by pardiso to store its data */\n\\tmreal ddum;       \
+              /* double dummy pointer */\n\\tmreal timestamp = 0;            \
+/* time stamp of the numerica factorization */\n\n    /* a couple of flags */\
+\n\\tmint initialized = 0;\n\\tmint symfactorized = 0;\n\\tmint numfactorized \
+= 0;\n    mint checkmatrix = 1;\n\>\"", "\[IndentingNewLine]", "}"}]], "Input",\
+
+ CellChangeTimes->{{3.797738815520423*^9, 3.79773883011779*^9}, {
+  3.823593464915258*^9, 
+  3.8235934652350082`*^9}},ExpressionUUID->"d180b9ec-9004-4c9a-97a9-\
+c90520c9081e"]
+},
+WindowSize->{1159, 805},
+WindowMargins->{{Automatic, -176}, {0, Automatic}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 3155, 68, 442, "Input",ExpressionUUID->"ab6e5ce5-0b64-4a60-af37-0ee6851be195"],
+Cell[3716, 90, 1632, 24, 792, "Input",ExpressionUUID->"d180b9ec-9004-4c9a-97a9-c90520c9081e"]
+}
+]
+*)
+

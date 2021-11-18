@@ -1,0 +1,328 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     13219,        320]
+NotebookOptionsPosition[     12681,        304]
+NotebookOutlinePosition[     13073,        320]
+CellTagsIndexPosition[     13030,        317]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"PatchColoring", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "patches_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "Adj", ",", "A", ",", "G", ",", "col", ",", "colcount", ",", "pts", 
+        ",", "triangles", ",", "coloredpatches", ",", "colorpatches", ",", 
+        "Q", ",", "plist", ",", "tris", ",", "result"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Adj", "=", 
+        RowBox[{"SparseArray", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Join", "@@", 
+            RowBox[{"MapIndexed", "[", 
+             RowBox[{
+              RowBox[{"Tuples", "@*", "List"}], ",", "patches"}], "]"}]}], 
+           "\[Rule]", "1"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"TriangleCount", "[", "M", "]"}], ",", 
+            RowBox[{"Length", "[", "patches", "]"}]}], "}"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"A", "=", 
+        RowBox[{"SparseArray", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"#", "-", 
+            RowBox[{"DiagonalMatrix", "[", 
+             RowBox[{"Diagonal", "[", "#", "]"}], "]"}]}], "&"}], "[", 
+          RowBox[{"Unitize", "[", 
+           RowBox[{
+            RowBox[{"Adj", "\[Transpose]"}], ".", 
+            RowBox[{"AdjacencyMatrix", "[", 
+             RowBox[{"M", ",", "Triangles", ",", "Triangles"}], "]"}], ".", 
+            "Adj"}], "]"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"G", "=", 
+        RowBox[{"AdjacencyGraph", "[", "A", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"col", "=", 
+        RowBox[{"IGMinimumVertexColoring", "[", "G", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"colcount", "=", 
+        RowBox[{"Max", "[", "col", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"colorlist", "=", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Darker", "@*", 
+              RowBox[{"ColorData", "[", "97", "]"}]}], "/@", 
+             RowBox[{"Range", "[", 
+              RowBox[{"Max", "[", "col", "]"}], "]"}]}], ")"}], 
+           "\[LeftDoubleBracket]", "col", "\[RightDoubleBracket]"}]}], ";"}], 
+        "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"G", "=", 
+          RowBox[{"SetProperty", "[", 
+           RowBox[{"G", ",", 
+            RowBox[{"VertexCoordinates", "\[Rule]", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"VertexList", "[", "G", "]"}], "\[Rule]", 
+               RowBox[{
+                RowBox[{"ClusterCenters", "[", "T", "]"}], 
+                "\[LeftDoubleBracket]", "farfieldclusters", 
+                "\[RightDoubleBracket]"}]}], "]"}]}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"G", "=", 
+          RowBox[{"SetProperty", "[", 
+           RowBox[{"G", ",", 
+            RowBox[{"VertexStyle", "\[Rule]", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"VertexList", "[", "G", "]"}], "\[Rule]", 
+               "colorlist"}], "]"}]}]}], "]"}]}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"triangles", "=", 
+        RowBox[{"Triangles", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"coloredpatches", "=", 
+        RowBox[{
+         RowBox[{"SparseArray", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Transpose", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"Join", "@@", 
+                RowBox[{"getRepeatedInteger", "[", 
+                 RowBox[{"col", ",", 
+                  RowBox[{"Length", "/@", "patches"}]}], "]"}]}], ",", 
+               RowBox[{"Join", "@@", "patches"}]}], "}"}], "]"}], "\[Rule]", 
+            "_"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"colcount", ",", 
+             RowBox[{"Length", "[", "triangles", "]"}]}], "}"}]}], "]"}], 
+         "[", "\"\<AdjacencyLists\>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"result", "=", 
+        RowBox[{"Association", "@", 
+         RowBox[{"Table", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"tris", "=", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"triangles", "\[LeftDoubleBracket]", 
+               RowBox[{
+               "coloredpatches", "\[LeftDoubleBracket]", "k", 
+                "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], "]"}]}],
+             ";", "\[IndentingNewLine]", 
+            RowBox[{"plist", "=", 
+             RowBox[{"Sort", "[", 
+              RowBox[{"DeleteDuplicates", "[", "tris", "]"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Q", "=", 
+             RowBox[{"Init", "[", 
+              RowBox[{"mesh", ",", 
+               RowBox[{
+               "pts", "\[LeftDoubleBracket]", "plist", 
+                "\[RightDoubleBracket]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"Partition", "[", 
+                RowBox[{
+                 RowBox[{"Lookup", "[", 
+                  RowBox[{
+                   RowBox[{"AssociationThread", "[", 
+                    RowBox[{"plist", "\[Rule]", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{"Length", "[", "plist", "]"}], "]"}]}], "]"}], 
+                   ",", 
+                   RowBox[{"Flatten", "[", "tris", "]"}]}], "]"}], ",", "3"}],
+                 "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"SetCache", "[", 
+             RowBox[{"Q", ",", "\"\<Normals\>\"", ",", 
+              RowBox[{
+               RowBox[{"Normals", "[", "M", "]"}], "\[LeftDoubleBracket]", 
+               "plist", "\[RightDoubleBracket]"}]}], "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"k", "\[Rule]", "Q"}]}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"k", ",", "1", ",", "colcount"}], "}"}]}], "]"}]}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"tris", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"triangles", "\[LeftDoubleBracket]", 
+          RowBox[{"Complement", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"TriangleCount", "[", "M", "]"}], "]"}], ",", 
+            RowBox[{"Join", "@@", "patches"}]}], "]"}], 
+          "\[RightDoubleBracket]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "tris", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"plist", "=", 
+           RowBox[{"Sort", "[", 
+            RowBox[{"DeleteDuplicates", "[", "tris", "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Q", "=", 
+           RowBox[{"Init", "[", 
+            RowBox[{"mesh", ",", 
+             RowBox[{
+             "pts", "\[LeftDoubleBracket]", "plist", 
+              "\[RightDoubleBracket]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Partition", "[", 
+              RowBox[{
+               RowBox[{"Lookup", "[", 
+                RowBox[{
+                 RowBox[{"AssociationThread", "[", 
+                  RowBox[{"plist", "\[Rule]", 
+                   RowBox[{"Range", "[", 
+                    RowBox[{"Length", "[", "plist", "]"}], "]"}]}], "]"}], 
+                 ",", 
+                 RowBox[{"Flatten", "[", "tris", "]"}]}], "]"}], ",", "3"}], 
+              "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"SetCache", "[", 
+           RowBox[{"Q", ",", "\"\<Normals\>\"", ",", 
+            RowBox[{
+             RowBox[{"Normals", "[", "M", "]"}], "\[LeftDoubleBracket]", 
+             "plist", "\[RightDoubleBracket]"}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"result", "[", "\"\<Remainder\>\"", "]"}], "=", "Q"}], 
+          ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "result"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.808290119507813*^9, 3.8082902005445538`*^9}, {
+  3.808290335925226*^9, 3.808290341211803*^9}, {3.8082903894022512`*^9, 
+  3.80829039521023*^9}, {3.808290462414826*^9, 3.8082905089340677`*^9}, {
+  3.80829298903792*^9, 3.8082930058361197`*^9}},
+ CellLabel->
+  "In[360]:=",ExpressionUUID->"fc36cd0c-5615-4a03-9191-cbe5fd85f7ff"],
+
+Cell[BoxData[
+ RowBox[{"PatchColoringPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"Mlist_Association", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "palette", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"palette", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Palette\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Show", "@", 
+        RowBox[{"KeyValueMap", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"key", ",", "value"}], "}"}], "\[Function]", 
+           RowBox[{"MeshPlot", "[", "\[IndentingNewLine]", 
+            RowBox[{"value", ",", "\[IndentingNewLine]", 
+             RowBox[{"\"\<Strata\>\"", "\[Rule]", "False"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"PlotStyle", "\[Rule]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"IntegerQ", "[", "key", "]"}], ",", 
+                RowBox[{"palette", "\[LeftDoubleBracket]", 
+                 RowBox[{"Mod", "[", 
+                  RowBox[{"key", ",", 
+                   RowBox[{"Length", "[", "palette", "]"}], ",", "1"}], "]"}],
+                  "\[RightDoubleBracket]"}], ",", 
+                RowBox[{"OptionValue", "[", "\"\<RemainderColor\>\"", "]"}]}],
+                "]"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Sequence", "@@", 
+              RowBox[{
+              "OptionValue", "[", "\"\<MeshPlotOptions\>\"", "]"}]}]}], 
+            "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", ",", 
+          "\[IndentingNewLine]", "Mlist"}], "\[IndentingNewLine]", 
+         "]"}]}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Palette\>\"", "\[Rule]", 
+        RowBox[{
+         RowBox[{"Darker", "@*", 
+          RowBox[{"ColorData", "[", "97", "]"}]}], "/@", 
+         RowBox[{"Range", "[", "12", "]"}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<RemainderColor\>\"", "\[Rule]", "White"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MeshPlotOptions\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "False"}], "}"}]}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.808291188915722*^9, 3.808291244065219*^9}},
+ CellLabel->
+  "In[2123]:=",ExpressionUUID->"ff8a5a4d-eab2-4530-8fd4-fec7927483a6"],
+
+Cell[BoxData[
+ RowBox[{"PatchColoringPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "patches_", ",", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"PatchColoringPlot", "[", 
+     RowBox[{
+      RowBox[{"PatchColoring", "[", 
+       RowBox[{"M", ",", "patches"}], "]"}], ",", "opts"}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.808291256465008*^9, 3.8082912966472387`*^9}},
+ CellLabel->
+  "In[2002]:=",ExpressionUUID->"5a37c525-ed38-4ea6-881a-89c9acc840b3"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"c6280df6-9b85-4480-8468-07bda92e8b07"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 8898, 206, 1042, "Input",ExpressionUUID->"fc36cd0c-5615-4a03-9191-cbe5fd85f7ff"],
+Cell[9459, 228, 2580, 56, 517, "Input",ExpressionUUID->"ff8a5a4d-eab2-4530-8fd4-fec7927483a6"],
+Cell[12042, 286, 635, 16, 92, "Input",ExpressionUUID->"5a37c525-ed38-4ea6-881a-89c9acc840b3"]
+}
+]
+*)
+

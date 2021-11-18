@@ -1,0 +1,814 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     41006,        806]
+NotebookOptionsPosition[     40517,        791]
+NotebookOutlinePosition[     40853,        806]
+CellTagsIndexPosition[     40810,        803]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"CreateJetVerbatimString", "[", 
+     RowBox[{"name_", ",", "der_"}], "]"}], ":=", 
+    RowBox[{"StringJoin", "@", 
+     RowBox[{"Join", "[", 
+      RowBox[{
+       RowBox[{"{", "\"\<VerbatimRegion[\\n\>\"", "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"\"\<\\t\>\"", ",", 
+           RowBox[{"StringJoin", "[", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}], ",", "name", ",", 
+           "\"\<;\\n\>\""}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "0", ",", "der"}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Flatten", "[", "\[IndentingNewLine]", 
+        RowBox[{"Table", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+           RowBox[{"\"\<\\t\>\"", ",", "\"\<Derivative[\>\"", ",", 
+            RowBox[{"ToString", "[", 
+             RowBox[{"k", "-", "j"}], "]"}], ",", "\"\<][\>\"", ",", 
+            RowBox[{"StringJoin", "[", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"\"\<D\>\"", ",", "j"}], "]"}], "]"}], ",", "name", 
+            ",", "\"\<]=\>\"", ",", 
+            RowBox[{"StringJoin", "[", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}], ",", "name", 
+            ",", "\"\<;\\n\>\""}], "\[IndentingNewLine]", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"k", ",", "0", ",", "der"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"j", ",", "0", ",", 
+            RowBox[{"k", "-", "1"}]}], "}"}]}], "]"}], "\[IndentingNewLine]", 
+        "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", "\"\<];\\n\>\"", "}"}]}], "\[IndentingNewLine]", 
+      "]"}]}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateJetBasicString", "[", 
+     RowBox[{
+     "name_", ",", "type_", ",", "k_", ",", "globalQ_", ",", "vdimstring_", 
+      ",", "caching_", ",", "cliquefun_", ",", "getfunname_"}], "]"}], ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Pstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<'\>\"", ",", "k"}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Dstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"StringJoin", "[", 
+       RowBox[{
+       "name", ",", "Pstring", ",", "\"\< = PackageFunction[M_\>\"", ",", 
+        RowBox[{"ToString", "[", "type", "]"}], ",", "\"\<,\>\"", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{
+         "\"\<\n\tModule[{a},\n\t\ta=AssemblyCombinatorics[M,\>\"", ",", 
+          RowBox[{"ToString", "[", "cliquefun", "]"}], ",", "\"\<,\>\"", ",", 
+          
+          RowBox[{"ToString", "[", "k", "]"}], ",", "\"\<,\>\"", ",", 
+          RowBox[{"If", "[", 
+           RowBox[{
+           "globalQ", ",", "\"\<\\\"Global\\\"\>\"", ",", 
+            "\"\<\\\"Local\\\"\>\""}], "]"}], ",", "\"\<,\>\"", ",", 
+          "vdimstring", ",", "\"\<];\n\t\ta[get\>\"", ",", "Dstring", ",", 
+          "getfunname", ",", "\"\<[M]]\n\t]\>\""}], "]"}], ",", 
+        "\"\<,\n\tCaching\[Rule]\>\"", ",", 
+        RowBox[{"ToString", "[", 
+         RowBox[{"caching", ",", "InputForm"}], "]"}], ",", 
+        "\"\<\n];\\n\>\""}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateJetNaiveTensorString", "[", 
+     RowBox[{
+     "name_", ",", "type_", ",", "k_", ",", "globalQ_", ",", "vdimstring_", 
+      ",", "caching_", ",", "cliquefun_", ",", "getfunname_", ",", 
+      RowBox[{"suffix_:", "\"\<\>\""}]}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Dstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Pstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<'\>\"", ",", "k"}], "]"}], "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"StringJoin", "[", 
+       RowBox[{
+       "Dstring", ",", "name", ",", "suffix", ",", 
+        "\"\< = PackageFunction[{M_\>\"", ",", 
+        RowBox[{"ToString", "[", "type", "]"}], ",", 
+        "\"\<,Ulist0_,slotlist0_},\n\tTensorVectorContract[\n\t\t\>\"", ",", 
+        "name", ",", "Pstring", ",", 
+        "\"\<[M],\n\t\tTable[\n\t\t\tIf[slotlist0\[LeftDoubleBracket]i\
+\[RightDoubleBracket]>1,\n\t\t\t\tFlatten[GetBuffer[M,Ulist0\
+\[LeftDoubleBracket]i\[RightDoubleBracket]]],\n                \
+GetBuffer[M,Ulist0\[LeftDoubleBracket]i\[RightDoubleBracket]]\>\"", ",", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"globalQ", "&&", 
+           RowBox[{"vdimstring", "\[Equal]", "\"\<1\>\""}]}], ",", 
+          "\"\<\[LeftDoubleBracket]1\[RightDoubleBracket]\>\"", ",", 
+          "\"\<\>\""}], "]"}], ",", 
+        "\"\<\n\t\t\t],\n\t\t\t{i,1,Length[Ulist0]}],\n\t\tslotlist0\n\t\t]\
+\[IndentingNewLine]];\\n\>\""}], "\[IndentingNewLine]", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateJetCacheString", "[", 
+     RowBox[{"name_", ",", "type_", ",", "k_"}], "]"}], ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"Dstring", "=", 
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"StringJoin", "[", 
+       RowBox[{
+       "Dstring", ",", "name", ",", "\"\<Cache =PackageFunction[M_\>\"", ",", 
+        
+        RowBox[{"ToString", "[", "type", "]"}], ",", 
+        "\"\<,\[IndentingNewLine]Association[],\[IndentingNewLine]Caching\
+\[Rule]True\[IndentingNewLine]];\\n\>\""}], "\[IndentingNewLine]", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateJetUnbufferedTensorString", "[", 
+     RowBox[{
+     "name_", ",", "type_", ",", "k_", ",", "globalQ_", ",", "vdimstring_", 
+      ",", "caching_", ",", "cliquefun_", ",", "getfunname_", ",", 
+      RowBox[{"suffix_:", "\"\<\>\""}]}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Dstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Pstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<'\>\"", ",", "k"}], "]"}], "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"suffix", "\[Equal]", "\"\<\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"name", "<>", "Pstring"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Dstring", "<>", "name", "<>", "suffix"}]}], 
+         "\[IndentingNewLine]", "]"}], ",", "\"\< = PackageFunction[{M_\>\"", 
+        ",", 
+        RowBox[{"ToString", "[", "type", "]"}], ",", 
+        "\"\<,Ulist0_,slotlist0_},\n\t\
+Module[{data,a,firstcontraction,othercontractions,vdim,\>\"", ",", "\n", 
+        "\t  \t", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"!", "globalQ"}], ",", "\"\<localglobal,\>\"", ",", 
+          "\"\<\>\""}], "]"}], ",", 
+        "\"\<rank,Ulist,slotlist,numt,i0,U1},\n\t    vdim=\>\"", ",", 
+        "vdimstring", ",", 
+        "\"\<;\n\t    Ulist=Table[GetBuffer[M,u],{u,Ulist0}];\n\t    \
+firstcontraction=Count[slotlist0,1];\n\t    \
+othercontractions=Length[slotlist0]-firstcontraction;\n\t    \
+If[firstcontraction>=1,\>\"", ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"!", "globalQ"}], ",", 
+          "\"\<\n  \t\tlocalglobal=\\\"Global\\\";\>\"", ",", "\"\<\>\""}], 
+         "]"}], ",", 
+        "\"\<\n  \t\ti0=Position[slotlist0,1]\[LeftDoubleBracket]1,1\
+\[RightDoubleBracket];\n  \t\tvdim=If[VectorQ[Ulist\[LeftDoubleBracket]i0\
+\[RightDoubleBracket]],1,Dimensions[Ulist\[LeftDoubleBracket]i0\
+\[RightDoubleBracket]]\[LeftDoubleBracket]2\[RightDoubleBracket]];\n  \t\t\
+slotlist=Join[Range[2,i0],{1},Range[i0+1,Length[slotlist0]]];\n  \t\t\>\"", 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{"globalQ", ",", 
+          RowBox[{"StringJoin", "[", "\[IndentingNewLine]", "  ", 
+           RowBox[{"\"\<numt=Length[\>\"", ",", 
+            RowBox[{"ToString", "[", "cliquefun", "]"}], ",", 
+            "\"\<[M]];\n\t\t  U1=Ulist\[LeftDoubleBracket]i0\
+\[RightDoubleBracket];\n\t\t  \
+Ulist\[LeftDoubleBracket]i0\[RightDoubleBracket]=ConstantArray[U1,numt];\n\t\t\
+  \>\""}], "]"}], ",", "\"\<\>\""}], "]"}], ",", 
+        "\"\<,\n\t\t  slotlist=Range[2,1+Length[slotlist0]];\>\"", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"!", "globalQ"}], ",", 
+          "\"\<\n\t\t  localglobal=\\\"Local\\\";\>\"", ",", "\"\<\>\""}], 
+         "]"}], ",", "\"\<\n\t    ];\n\t    rank=\>\"", ",", 
+        RowBox[{"ToString", "[", "k", "]"}], ",", 
+        "\"\<-othercontractions;\n\t    a=AssemblyCombinatorics[M,\>\"", ",", 
+        
+        RowBox[{"ToString", "[", "cliquefun", "]"}], ",", "\"\<,\>\"", ",", 
+        "\"\<rank,\>\"", ",", 
+        RowBox[{"If", "[", 
+         RowBox[{
+         "globalQ", ",", "\"\<\\\"Global\\\"\>\"", ",", 
+          "\"\<localglobal\>\""}], "]"}], ",", "\"\<,vdim];\n\t    a[get\>\"",
+         ",", "Dstring", ",", "getfunname", ",", 
+        "\"\<[M,Ulist,slotlist]]\n      ]\[IndentingNewLine]];\\n\>\""}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateJetTensorString", "[", 
+     RowBox[{
+     "name_", ",", "type_", ",", "k_", ",", "globalQ_", ",", "vdimstring_", 
+      ",", "caching_", ",", "cliquefun_", ",", "getfunname_"}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Dstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Pstring", "=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<'\>\"", ",", "k"}], "]"}], "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"CreateJetCacheString", "[", 
+         RowBox[{"name", ",", "type", ",", "k"}], "]"}], ",", "\"\<\\n\>\"", 
+        ",", "\[IndentingNewLine]", "name", ",", "Pstring", ",", 
+        "\"\< = PackageFunction[{M_\>\"", ",", 
+        RowBox[{"ToString", "[", "type", "]"}], ",", 
+        "\"\<,Ulist0_,slotlist0_},\n  Module[{bufferpos},\n    \
+bufferpos=Flatten[Position[Head/@Ulist0,Buffered]];\n\t\
+If[Length[bufferpos]>0,\n      \
+Module[{B,slotlist,bufferlist,bufferslots,cache,order},\n\t\tcache=\>\"", ",",
+         "Dstring", ",", "name", ",", 
+        "\"\<Cache[M];\n\t\t\
+bufferslots=slotlist0\[LeftDoubleBracket]bufferpos\[RightDoubleBracket];\n\t\t\
+order=Ordering[bufferslots];\n\t\t\
+bufferpos=bufferpos\[LeftDoubleBracket]order\[RightDoubleBracket];\n\t\t\
+bufferlist=Ulist0\[LeftDoubleBracket]bufferpos\[RightDoubleBracket];\n\t\t\
+bufferslots=slotlist0\[LeftDoubleBracket]bufferpos\[RightDoubleBracket];\n\t\t\
+B=cache[{bufferlist,bufferslots}];\n\t\tIf[Head[B]===Missing,\n\t\t  B=\>\"", 
+        ",", "Dstring", ",", "name", ",", 
+        "\"\<Unbuffered[M,bufferlist,bufferslots];\n\t\t  \
+AppendTo[cache,{bufferlist,bufferslots}\[Rule]B];\n\t\t  SetCache[M,\\\"\>\"",
+         ",", "Dstring", ",", "name", ",", 
+        "\"\<Cache\\\",cache];\n\t\t];\n\n\t\t\
+If[Length[bufferpos]<Length[slotlist0],\n\t\t  TensorVectorContract[B,\n\t\t\t\
+Map[x\[Function]If[Dimensions[x]=={1},x\[LeftDoubleBracket]1\
+\[RightDoubleBracket],x],Delete[Ulist0,List/@bufferpos]],\n\t\t\t\
+getReducedSlotList[slotlist0,bufferpos]\n\t\t  ],\n\t\t  B\n\t\t]\n\t  ],\n\t \
+ \>\"", ",", "Dstring", ",", "name", ",", 
+        "\"\<Unbuffered[M,Ulist0,slotlist0]\n    ]\n  ]\n];\\n\>\""}], 
+       "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.700756039016774*^9, 3.700756048430932*^9}, {
+   3.700756081983485*^9, 3.7007560877367*^9}, {3.700756370771659*^9, 
+   3.7007563751858797`*^9}, 3.7007564062689543`*^9, {3.700757069883197*^9, 
+   3.700757102226019*^9}, {3.700758298622444*^9, 3.7007583903173523`*^9}, {
+   3.700758494668007*^9, 3.700758509619026*^9}, {3.700758653812039*^9, 
+   3.700758672807982*^9}, {3.7011476439562674`*^9, 3.701147713636478*^9}, {
+   3.7012448435866413`*^9, 3.7012448713743353`*^9}, {3.701420604740224*^9, 
+   3.7014206874638357`*^9}, {3.701420823073985*^9, 3.7014208242244663`*^9}, {
+   3.713260975850238*^9, 3.7132609810076723`*^9}, 3.71403860877981*^9, {
+   3.7140397274131823`*^9, 3.71403976152979*^9}, {3.714481617875243*^9, 
+   3.71448165303237*^9}, {3.714482082003196*^9, 3.714482091642221*^9}, {
+   3.758366772537447*^9, 3.758366799336137*^9}, {3.75836684774795*^9, 
+   3.758366858666271*^9}, 3.7583669776720324`*^9, {3.758367046924614*^9, 
+   3.758367074719902*^9}, {3.7583672184019814`*^9, 3.758367256749228*^9}, {
+   3.75836729751654*^9, 3.758367304513226*^9}, {3.758367374369138*^9, 
+   3.7583673769593267`*^9}, {3.7583674436369123`*^9, 3.75836748424371*^9}, {
+   3.758367574978499*^9, 3.758367588431984*^9}, {3.758367672582595*^9, 
+   3.758367851111328*^9}, {3.7583678837641373`*^9, 3.758367897245367*^9}, {
+   3.758367953985128*^9, 3.758367954579514*^9}, 3.7583694241779003`*^9, {
+   3.7583695446247263`*^9, 3.758369554573825*^9}, {3.81563047179125*^9, 
+   3.8156304998661413`*^9}, {3.815631657111515*^9, 3.815631660013645*^9}, 
+   3.81563354764748*^9},ExpressionUUID->"c9ab8a06-4633-4355-bb02-\
+a100c8fda6b3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetBuffer", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"ClearAll", "[", "CreateJet", "]"}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CreateJet", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Options", "[", "CreateJet", "]"}], "=", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Process\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintDriver\>\"", "\[Rule]", "Column"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "1"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Global\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<Description\>\"", "\[Rule]", 
+        "\"\<Automatically generated by CreateJet.\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<getFunction\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Caching\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"True", ",", "True", ",", "True", ",", "False"}], "}"}]}]}], 
+      "\[IndentingNewLine]", "}"}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"SetAttributes", "[", 
+     RowBox[{"CreateJet", ",", "HoldAllComplete"}], "]"}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CreateJet", "[", "\[IndentingNewLine]", 
+      RowBox[{
+      "name_", ",", "\[IndentingNewLine]", "type_", ",", 
+       "\[IndentingNewLine]", "clique_", ",", "\[IndentingNewLine]", 
+       RowBox[{"OptionsPattern", "[", "]"}]}], "\[IndentingNewLine]", "]"}], ":=",
+      "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "commandstrings", ",", "vdim", ",", "der", ",", "vdimstring", ",", 
+         "vectorQ", ",", "globalQ", ",", "getfunname", ",", "caching"}], 
+        "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"der", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Derivatives\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"caching", "=", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"{", 
+           RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}], "}"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"der", "+", "1"}], ">", 
+           RowBox[{"Length", "[", "caching", "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"caching", "=", 
+           RowBox[{"Join", "[", 
+            RowBox[{"caching", ",", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"False", ",", 
+               RowBox[{"{", 
+                RowBox[{"der", "+", "1", "-", 
+                 RowBox[{"Length", "[", "caching", "]"}]}], "}"}]}], "]"}]}], 
+            "]"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"vdim", "=", 
+         RowBox[{"OptionValue", "[", "\"\<VectorDimension\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Head", "[", "vdim", "]"}], "===", "Integer"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"vectorQ", "=", 
+            RowBox[{"vdim", ">", "1"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"vdimstring", "=", 
+            RowBox[{"ToString", "[", "vdim", "]"}]}], ";"}], 
+          "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"vectorQ", "=", "True"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"vdimstring", "=", 
+            RowBox[{
+             RowBox[{"ToString", "[", "vdim", "]"}], "<>", "\"\<[M]\>\""}]}], 
+           ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"globalQ", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Global\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<getFunction\>\"", "]"}], "===", 
+           "Automatic"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"getfunname", "=", "name"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"getfunname", "=", 
+           RowBox[{"ToString", "[", 
+            RowBox[{"OptionValue", "[", "\"\<getFunction\>\"", "]"}], 
+            "]"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"commandstrings", "=", 
+         RowBox[{"Flatten", "[", "\[IndentingNewLine]", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"CreateJetVerbatimString", "[", 
+              RowBox[{"name", ",", "der"}], "]"}], ","}], "*)"}], 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"der", "\[GreaterEqual]", "0"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"CreateJetBasicString", "[", 
+               RowBox[{
+               "name", ",", "type", ",", "0", ",", "globalQ", ",", 
+                "vdimstring", ",", 
+                RowBox[{
+                "caching", "\[LeftDoubleBracket]", "1", 
+                 "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                "getfunname"}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"der", "\[GreaterEqual]", "1"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"CreateJetBasicString", "[", 
+                 RowBox[{
+                 "name", ",", "type", ",", "1", ",", "globalQ", ",", 
+                  "vdimstring", ",", 
+                  RowBox[{
+                  "caching", "\[LeftDoubleBracket]", "2", 
+                   "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                  "getfunname"}], "]"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{
+                  "caching", "\[LeftDoubleBracket]", "2", 
+                   "\[RightDoubleBracket]"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"CreateJetNaiveTensorString", "[", 
+                    RowBox[{
+                    "name", ",", "type", ",", "1", ",", "globalQ", ",", 
+                    "vdimstring", ",", 
+                    RowBox[{
+                    "caching", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                    "getfunname", ",", "\"\<Unbuffered\>\""}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"CreateJetTensorString", "[", 
+                    RowBox[{
+                    "name", ",", "type", ",", "1", ",", "globalQ", ",", 
+                    "vdimstring", ",", 
+                    RowBox[{
+                    "caching", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                    "getfunname"}], "]"}]}], "\[IndentingNewLine]", "}"}], 
+                  ",", "\[IndentingNewLine]", 
+                  RowBox[{"CreateJetNaiveTensorString", "[", 
+                   RowBox[{
+                   "name", ",", "type", ",", "1", ",", "globalQ", ",", 
+                    "vdimstring", ",", 
+                    RowBox[{
+                    "caching", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                    "getfunname", ",", "\"\<\>\""}], "]"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+               "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"der", "\[GreaterEqual]", "2"}], 
+               RowBox[{"(*", 
+                RowBox[{"&&", 
+                 RowBox[{"vdim", "\[Equal]", "1"}]}], "*)"}], "&&", 
+               "globalQ"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"CreateJetBasicString", "[", 
+               RowBox[{
+               "name", ",", "type", ",", "2", ",", "globalQ", ",", 
+                "vdimstring", ",", 
+                RowBox[{
+                "caching", "\[LeftDoubleBracket]", "3", 
+                 "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                "getfunname"}], "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"CreateJetBasicString", "[", 
+               RowBox[{
+               "name", ",", "type", ",", "2", ",", "globalQ", ",", 
+                "vdimstring", ",", 
+                RowBox[{
+                "caching", "\[LeftDoubleBracket]", "3", 
+                 "\[RightDoubleBracket]"}], ",", "clique", ",", 
+                "getfunname"}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Table", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"caching", "\[LeftDoubleBracket]", 
+                 RowBox[{"k", "+", "1"}], "\[RightDoubleBracket]"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"{", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"CreateJetUnbufferedTensorString", "[", 
+                   RowBox[{
+                   "name", ",", "type", ",", "k", ",", "globalQ", ",", 
+                    "vdimstring", ",", 
+                    RowBox[{"caching", "\[LeftDoubleBracket]", 
+                    RowBox[{"k", "+", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    "clique", ",", "getfunname", ",", "\"\<Unbuffered\>\""}], 
+                   "]"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"CreateJetTensorString", "[", 
+                   RowBox[{
+                   "name", ",", "type", ",", "k", ",", "globalQ", ",", 
+                    "vdimstring", ",", 
+                    RowBox[{"caching", "\[LeftDoubleBracket]", 
+                    RowBox[{"k", "+", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    "clique", ",", "getfunname"}], "]"}]}], 
+                 "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{"CreateJetUnbufferedTensorString", "[", 
+                 RowBox[{
+                 "name", ",", "type", ",", "k", ",", "globalQ", ",", 
+                  "vdimstring", ",", 
+                  RowBox[{"caching", "\[LeftDoubleBracket]", 
+                   RowBox[{"k", "+", "1"}], "\[RightDoubleBracket]"}], ",", 
+                  "clique", ",", "getfunname", ",", "\"\<\>\""}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"{", 
+               RowBox[{"k", ",", "2", ",", "der"}], "}"}]}], "]"}]}], 
+           "\[IndentingNewLine]", "}"}], "\[IndentingNewLine]", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Process\>\"", "]"}], ",", 
+          RowBox[{"ToExpression", "/@", "commandstrings"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<PrintCode\>\"", "]"}], ",", 
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<PrintDriver\>\"", "]"}], "@", 
+           "commandstrings"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.664345536979301*^9, 3.664345615529613*^9}, {
+   3.6643457503196497`*^9, 3.66434576166387*^9}, {3.664345793867096*^9, 
+   3.664345994935563*^9}, {3.6643460438569736`*^9, 3.6643460820454206`*^9}, {
+   3.664346113563744*^9, 3.6643462641525993`*^9}, {3.664346337232476*^9, 
+   3.664346353212449*^9}, {3.664346395142282*^9, 3.6643465551633987`*^9}, {
+   3.6643466219533443`*^9, 3.664346682179528*^9}, {3.664346823355804*^9, 
+   3.6643468239726553`*^9}, {3.664346874079994*^9, 3.664347212858046*^9}, {
+   3.6643472469486217`*^9, 3.664347305750019*^9}, {3.6643474200188437`*^9, 
+   3.664347423859687*^9}, {3.664348773191029*^9, 3.664348817764394*^9}, {
+   3.664348874329678*^9, 3.664349055297192*^9}, {3.6643491409323053`*^9, 
+   3.664349141942232*^9}, {3.664349190519709*^9, 3.664349212551218*^9}, {
+   3.664349255058213*^9, 3.6643492812411222`*^9}, {3.664349316322619*^9, 
+   3.664349360099853*^9}, {3.664349428248588*^9, 3.6643494304151783`*^9}, {
+   3.664349470818377*^9, 3.6643495043296623`*^9}, 3.66434953709586*^9, {
+   3.664349570004361*^9, 3.664349591461219*^9}, {3.664349742124489*^9, 
+   3.664349767627742*^9}, {3.66434985203372*^9, 3.664349897714683*^9}, {
+   3.664349947962392*^9, 3.6643500591463213`*^9}, {3.664350125049992*^9, 
+   3.664350166217572*^9}, 3.6643502625529327`*^9, {3.664350314345232*^9, 
+   3.664350353611088*^9}, {3.664350384390671*^9, 3.664350486112269*^9}, {
+   3.664350517393096*^9, 3.66435063676294*^9}, {3.664350701137417*^9, 
+   3.664350767149296*^9}, {3.664350807950576*^9, 3.6643508472230997`*^9}, {
+   3.664350881896854*^9, 3.66435092677214*^9}, {3.664351173243197*^9, 
+   3.664351193092702*^9}, {3.6643512265742598`*^9, 3.664351408757905*^9}, {
+   3.6643514694242973`*^9, 3.6643514701351967`*^9}, {3.6643515324585133`*^9, 
+   3.6643515392345953`*^9}, {3.66435159456781*^9, 3.664351597667906*^9}, {
+   3.664351642834839*^9, 3.66435165962351*^9}, {3.664352410957506*^9, 
+   3.6643525013921347`*^9}, {3.6643526019658213`*^9, 3.664352619106243*^9}, 
+   3.664352859405801*^9, {3.664353248762281*^9, 3.6643532514374857`*^9}, {
+   3.664354133506625*^9, 3.664354277262745*^9}, 3.664354416624988*^9, 
+   3.664354453049306*^9, {3.66435448331959*^9, 3.6643547544977217`*^9}, {
+   3.66435480590147*^9, 3.6643548489656677`*^9}, {3.664354899675798*^9, 
+   3.66435491536019*^9}, {3.664355541077248*^9, 3.6643555868824577`*^9}, 
+   3.6643561479328012`*^9, 3.6643562319127893`*^9, {3.664356302695036*^9, 
+   3.664356392338505*^9}, {3.664357334879571*^9, 3.664357343859736*^9}, {
+   3.664357414931876*^9, 3.664357418713972*^9}, {3.664357474244389*^9, 
+   3.6643575645261993`*^9}, {3.66435760716158*^9, 3.6643576258564367`*^9}, {
+   3.664357681735985*^9, 3.6643577381494637`*^9}, {3.6643577746464787`*^9, 
+   3.664357882052712*^9}, {3.664357916156872*^9, 3.664357950063177*^9}, {
+   3.664357997360117*^9, 3.664358065570669*^9}, {3.6643581133931*^9, 
+   3.6643582191524267`*^9}, {3.66435825184348*^9, 3.664358289637107*^9}, {
+   3.66435835807073*^9, 3.664358399487833*^9}, {3.6643585004915648`*^9, 
+   3.664358577925033*^9}, 3.664358641913307*^9, {3.6643587624432497`*^9, 
+   3.66435876474897*^9}, {3.664358837918229*^9, 3.664358841282783*^9}, {
+   3.6643588987632427`*^9, 3.6643589450297613`*^9}, {3.664358983167839*^9, 
+   3.664359120523882*^9}, {3.664359189103745*^9, 3.6643591910234222`*^9}, {
+   3.664359223825673*^9, 3.664359229368559*^9}, {3.664359398561722*^9, 
+   3.664359422283403*^9}, {3.664359461754147*^9, 3.664359482723979*^9}, {
+   3.664359588174611*^9, 3.6643596188041553`*^9}, {3.664359651385313*^9, 
+   3.6643597176041403`*^9}, {3.664359775469596*^9, 3.66435979311847*^9}, 
+   3.664359827475709*^9, {3.664359885258418*^9, 3.664359968822719*^9}, {
+   3.664360273610488*^9, 3.664360273994109*^9}, {3.664360380368432*^9, 
+   3.6643603808229733`*^9}, {3.66436041688107*^9, 3.664360506010426*^9}, {
+   3.664360654851763*^9, 3.664360724887656*^9}, {3.664360824863686*^9, 
+   3.664360866785245*^9}, {3.664360897113674*^9, 3.664360919846016*^9}, {
+   3.6643610782693377`*^9, 3.664361080580518*^9}, {3.664361636210938*^9, 
+   3.664361787485766*^9}, {3.66436196871165*^9, 3.6643619733150883`*^9}, {
+   3.6643623075723743`*^9, 3.664362313145104*^9}, {3.6643625347065973`*^9, 
+   3.6643625349133472`*^9}, {3.6643650322051353`*^9, 
+   3.6643650345894547`*^9}, {3.664386664852477*^9, 3.664386671504743*^9}, {
+   3.664387071225819*^9, 3.664387230837028*^9}, {3.664389471550302*^9, 
+   3.66438954843587*^9}, {3.6643895847279673`*^9, 3.664389669625444*^9}, {
+   3.6643897155482483`*^9, 3.664389716691256*^9}, {3.664390099982485*^9, 
+   3.664390114113688*^9}, {3.664390470454336*^9, 3.664390497681823*^9}, {
+   3.664535624394487*^9, 3.664535718681204*^9}, {3.665250336862405*^9, 
+   3.66525036679103*^9}, {3.665250524838488*^9, 3.6652506373364363`*^9}, {
+   3.66525197404342*^9, 3.6652519853052*^9}, {3.689055108149001*^9, 
+   3.6890551083538837`*^9}, {3.6890552939333*^9, 3.689055354743154*^9}, {
+   3.689056237055846*^9, 3.689056248044796*^9}, {3.6890563042754908`*^9, 
+   3.689056328164383*^9}, {3.689056408124465*^9, 3.689056411860258*^9}, {
+   3.68905684971842*^9, 3.689056849941915*^9}, {3.689058197086171*^9, 
+   3.689058227815927*^9}, {3.689058276269197*^9, 3.689058314045373*^9}, {
+   3.697113267989949*^9, 3.6971132750182133`*^9}, {3.697187617073414*^9, 
+   3.697187619234342*^9}, {3.697187669964305*^9, 3.6971877122025967`*^9}, {
+   3.697187948290821*^9, 3.697187975682604*^9}, {3.699974052028356*^9, 
+   3.699974117576844*^9}, 3.699974188547551*^9, {3.6999742528034477`*^9, 
+   3.69997427229873*^9}, {3.69997440644648*^9, 3.699974577695694*^9}, {
+   3.6999746129822283`*^9, 3.699974614830409*^9}, {3.6999746469330587`*^9, 
+   3.699974674052931*^9}, {3.699974777030045*^9, 3.6999747789522257`*^9}, {
+   3.69997482465552*^9, 3.699974826879849*^9}, {3.6999748845312767`*^9, 
+   3.699974884739441*^9}, {3.699976623405423*^9, 3.699976689197193*^9}, {
+   3.699976721580453*^9, 3.699976835008473*^9}, 3.699976881094062*^9, {
+   3.699976946404653*^9, 3.699976992544235*^9}, {3.6999771329256144`*^9, 
+   3.699977133996585*^9}, {3.6999785648836823`*^9, 3.6999785880828342`*^9}, {
+   3.699978803441477*^9, 3.699978843823447*^9}, {3.699978933188428*^9, 
+   3.6999789333557796`*^9}, {3.699979002833686*^9, 3.699979004346859*^9}, {
+   3.699979085312334*^9, 3.699979085680133*^9}, {3.699979126454275*^9, 
+   3.699979201244416*^9}, {3.699979413148856*^9, 3.6999794146027193`*^9}, {
+   3.6999795256224957`*^9, 3.6999795451737127`*^9}, {3.6999795885655727`*^9, 
+   3.699979614627038*^9}, {3.699979665387957*^9, 3.699979718374949*^9}, 
+   3.699979750826853*^9, {3.69997978233854*^9, 3.699979822850751*^9}, {
+   3.699979968502235*^9, 3.699979973244773*^9}, {3.6999800353469477`*^9, 
+   3.699980075056487*^9}, {3.699980132943321*^9, 3.6999801405338917`*^9}, {
+   3.6999813921009207`*^9, 3.699981414281973*^9}, {3.699981464201621*^9, 
+   3.6999814705764217`*^9}, {3.699981545365765*^9, 3.699981546685602*^9}, {
+   3.700017961698807*^9, 3.700017963019507*^9}, {3.700020190869437*^9, 
+   3.700020192933401*^9}, {3.700053957941518*^9, 3.7000539764939413`*^9}, {
+   3.7000540136967907`*^9, 3.700054038403081*^9}, {3.700111369123886*^9, 
+   3.7001113708093233`*^9}, {3.700111702019815*^9, 3.700111706136383*^9}, {
+   3.7006590224805202`*^9, 3.700659057895853*^9}, {3.700659097188326*^9, 
+   3.700659098204152*^9}, {3.7006593949160137`*^9, 3.700659504609311*^9}, {
+   3.700659549683123*^9, 3.700659607559497*^9}, {3.700659654629634*^9, 
+   3.700659710722694*^9}, {3.7006597515120564`*^9, 3.700659809642582*^9}, {
+   3.700659867367244*^9, 3.700659985442354*^9}, {3.7006600261514673`*^9, 
+   3.700660598561284*^9}, {3.700660629569262*^9, 3.700660631088274*^9}, {
+   3.700660664718588*^9, 3.700660710029231*^9}, {3.7006607597530212`*^9, 
+   3.700660784513598*^9}, {3.7006608156574574`*^9, 3.700660856028823*^9}, 
+   3.700660904240591*^9, {3.700663586033203*^9, 3.70066369312158*^9}, {
+   3.700664499091383*^9, 3.700664507621562*^9}, {3.700665724363915*^9, 
+   3.7006657383321037`*^9}, {3.70066585096568*^9, 3.7006658629204197`*^9}, {
+   3.7006690218071957`*^9, 3.700669073404663*^9}, {3.7006691302461042`*^9, 
+   3.700669160638001*^9}, {3.700669231128586*^9, 3.7006692388784943`*^9}, {
+   3.700669419036799*^9, 3.700669425740828*^9}, {3.7006694750846786`*^9, 
+   3.700669479380021*^9}, {3.7006695650725813`*^9, 3.700669570214534*^9}, {
+   3.7006696396727858`*^9, 3.700669644446662*^9}, {3.7006697445465117`*^9, 
+   3.700669757613517*^9}, {3.7006699402131*^9, 3.700669947044984*^9}, {
+   3.700670406640383*^9, 3.700670479109241*^9}, {3.70067055027801*^9, 
+   3.7006705520376377`*^9}, {3.7006728181264477`*^9, 3.700672834079142*^9}, {
+   3.700722317108747*^9, 3.7007223488441687`*^9}, {3.700722398216633*^9, 
+   3.700722541683908*^9}, {3.700722591373911*^9, 3.700722616378385*^9}, {
+   3.700722676879156*^9, 3.700722680971146*^9}, {3.700722831110161*^9, 
+   3.700722835044413*^9}, {3.700722889470215*^9, 3.700722892180254*^9}, 
+   3.700723028898444*^9, {3.700723631032206*^9, 3.7007236420198317`*^9}, {
+   3.700723687304255*^9, 3.700723687846868*^9}, {3.7007240859203873`*^9, 
+   3.700724100606707*^9}, {3.700725838606942*^9, 3.700725884474249*^9}, {
+   3.7007259905567217`*^9, 3.70072603822337*^9}, {3.700726085632413*^9, 
+   3.700726102926097*^9}, {3.700727711406088*^9, 3.700727763467058*^9}, {
+   3.7007278838026447`*^9, 3.700727999251038*^9}, {3.7007281549803457`*^9, 
+   3.700728218442872*^9}, {3.700741724693811*^9, 3.7007417423027*^9}, 
+   3.700741826183283*^9, {3.700742148586763*^9, 3.700742149241246*^9}, {
+   3.7007422277670918`*^9, 3.700742228217311*^9}, {3.7007561705392923`*^9, 
+   3.700756187735783*^9}, {3.700756247088546*^9, 3.700756324226056*^9}, {
+   3.7007564128134117`*^9, 3.7007564310775003`*^9}, {3.7007565682737637`*^9, 
+   3.700756572920888*^9}, {3.700757060636063*^9, 3.700757067074937*^9}, {
+   3.700757338889965*^9, 3.700757399232493*^9}, {3.700758586713863*^9, 
+   3.7007585999283133`*^9}, {3.7007586883123817`*^9, 3.700758829307404*^9}, {
+   3.7007588659663153`*^9, 3.700758873269058*^9}, {3.700758935466449*^9, 
+   3.7007590673943253`*^9}, {3.700759512151574*^9, 3.7007595142523108`*^9}, {
+   3.700759573215645*^9, 3.700759582142295*^9}, {3.7008010679731827`*^9, 
+   3.700801077603636*^9}, {3.700801180220232*^9, 3.700801211321987*^9}, {
+   3.701147740230188*^9, 3.70114774681285*^9}, {3.713269479441087*^9, 
+   3.713269482490181*^9}, 3.713276626976028*^9, {3.714490899718446*^9, 
+   3.714490900432117*^9}, 3.7144909931683702`*^9, {3.7144910260198936`*^9, 
+   3.714491040649193*^9}, {3.7144910796838827`*^9, 3.7144910808597918`*^9}, 
+   3.758368010243876*^9},
+ CellLabel->"In[82]:=",ExpressionUUID->"d195080a-e207-4d65-8711-eaffdcd38cd7"],
+
+Cell[BoxData[
+ RowBox[{"getReducedSlotList", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"slotlist0_", ",", "bufferpos_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"c", "=", "0"}], ",", "r"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{"{", 
+          RowBox[{"slotlist0", ",", "bufferpos"}], "}"}], "]"}], ";"}], 
+       "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"c", "=", 
+        RowBox[{"1", "-", 
+         RowBox[{"Boole", "[", 
+          RowBox[{"MemberQ", "[", 
+           RowBox[{
+            RowBox[{
+            "slotlist0", "\[LeftDoubleBracket]", "bufferpos", 
+             "\[RightDoubleBracket]"}], ",", "1"}], "]"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"r", "=", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{"x", "\[Function]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"x", "\[Equal]", "1"}], ",", "1", ",", 
+             RowBox[{
+              RowBox[{"c", "++"}], ";", "c"}]}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Delete", "[", 
+           RowBox[{"slotlist0", ",", 
+            RowBox[{"List", "/@", "bufferpos"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"Print", "[", "r", "]"}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", "r"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.700756143680416*^9, 
+  3.7007561461634083`*^9}},ExpressionUUID->"f5bbb549-4ca9-49b3-99f3-\
+66f358dae1b8"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 15073, 308, 3542, "Input",ExpressionUUID->"c9ab8a06-4633-4355-bb02-a100c8fda6b3"],
+Cell[15634, 330, 23066, 407, 2367, "Input",ExpressionUUID->"d195080a-e207-4d65-8711-eaffdcd38cd7"],
+Cell[38703, 739, 1810, 50, 292, "Input",ExpressionUUID->"f5bbb549-4ca9-49b3-99f3-66f358dae1b8"]
+}
+]
+*)
+

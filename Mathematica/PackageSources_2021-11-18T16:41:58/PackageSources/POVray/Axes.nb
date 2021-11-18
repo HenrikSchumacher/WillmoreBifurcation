@@ -1,0 +1,475 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     21712,        467]
+NotebookOptionsPosition[     21360,        453]
+NotebookOutlinePosition[     21756,        469]
+CellTagsIndexPosition[     21713,        466]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"AxesPOVray", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"file_String", ":", "$POVrayGeometryFile"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "unitaxes", ",", "axesscaling", ",", "arrows", ",", "plotrange", ",", 
+        "tickthickness", ",", "tickradius", ",", "tickslabels", ",", 
+        "ticklabelshifts", ",", "tickspositions", ",", "labelRot", ",", 
+        "labelpos", ",", "ticktex", ",", "exportstring", ",", "axesQ", ",", 
+        "scale", ",", "preamble", ",", "labelsize"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"axesQ", "=", 
+        RowBox[{"TrueQ", "/@", 
+         RowBox[{"OptionValue", "[", "\"\<Axes\>\"", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"plotrange", "=", 
+        RowBox[{"OptionValue", "[", "\"\<PlotRange\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"axesscaling", "=", 
+        RowBox[{"OptionValue", "[", "\"\<AxesScaling\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"scale", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Scaling\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"labelsize", "=", 
+        RowBox[{"OptionValue", "[", "\"\<LabelSize\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"preamble", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Preamble\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"unitaxes", "=", 
+        RowBox[{"N", "[", 
+         RowBox[{"IdentityMatrix", "[", "3", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"arrows", "=", 
+        RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"x", ",", "y"}], "}"}], "\[Function]", 
+           RowBox[{"Outer", "[", 
+            RowBox[{"Times", ",", "x", ",", "y"}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"plotrange", " ", "1.1"}], "+", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"0.", ",", 
+                 RowBox[{"2.", " ", 
+                  RowBox[{
+                  "OptionValue", "[", "\"\<AxesHeadLength\>\"", "]"}]}]}], 
+                "}"}], ",", "3"}], "]"}]}], ",", "unitaxes"}], "}"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"tickthickness", "=", 
+        RowBox[{"scale", " ", 
+         RowBox[{"OptionValue", "[", "\"\<TickThickness\>\"", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tickradius", "=", 
+        RowBox[{"scale", " ", 
+         RowBox[{"OptionValue", "[", "\"\<TickRadius\>\"", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tickslabels", "=", 
+        RowBox[{"N", "@", 
+         RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"x", ",", "k"}], "}"}], "\[Function]", 
+            RowBox[{"Module", "[", 
+             RowBox[{
+              RowBox[{"{", "y", "}"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"y", "=", 
+                RowBox[{"FindDivisions", "[", 
+                 RowBox[{"x", ",", "k"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"DeleteCases", "[", 
+                RowBox[{
+                 RowBox[{"Pick", "[", 
+                  RowBox[{"y", ",", 
+                   RowBox[{"Thread", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "x", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "\[LessEqual]", "y", 
+                    "\[LessEqual]", 
+                    RowBox[{
+                    "x", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], "]"}]}], "]"}], ",", "0", 
+                 ",", "1"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"plotrange", "/", "axesscaling"}], ")"}], ",", 
+             RowBox[{"OptionValue", "[", "\"\<TickSubdivisions\>\"", "]"}]}], 
+            "}"}]}], "\[IndentingNewLine]", "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tickspositions", "=", 
+        RowBox[{"tickslabels", " ", "axesscaling"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ticklabelshifts", "=", 
+        RowBox[{"OptionValue", "[", "\"\<TickLabelShifts\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ticktex", "=", 
+        RowBox[{"OptionValue", "[", "\"\<TickStyle\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"labelRot", "=", 
+        RowBox[{"OptionValue", "[", "\"\<LabelRotation\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"labelpos", "=", 
+        RowBox[{
+         RowBox[{"arrows", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}], "+", 
+         RowBox[{"OptionValue", "[", "\"\<AxesLabelShifts\>\"", "]"}]}]}], 
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"exportstring", "=", 
+        RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArrowString", "[", 
+             RowBox[{"#", ",", "\[IndentingNewLine]", 
+              RowBox[{"scale", " ", 
+               RowBox[{"OptionValue", "[", "\"\<AxesThickness\>\"", "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"scale", " ", 
+               RowBox[{"OptionValue", "[", "\"\<AxesHeadRadius\>\"", "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"scale", " ", 
+               RowBox[{"OptionValue", "[", "\"\<AxesHeadLength\>\"", "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"OptionValue", "[", "\"\<AxesStyle\>\"", "]"}]}], 
+             "\[IndentingNewLine]", "]"}], "&"}], "/@", 
+           RowBox[{"Pick", "[", 
+            RowBox[{"arrows", ",", "axesQ"}], "]"}]}], "\[IndentingNewLine]", 
+          ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"x", ",", "y"}], "}"}], "\[Function]", 
+             RowBox[{"TeXPOVrayString", "[", 
+              RowBox[{"x", ",", "y", ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Thickness\>\"", "\[Rule]", 
+                RowBox[{"0.01", "scale", " ", "labelsize"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<Scale\>\"", "\[Rule]", 
+                RowBox[{
+                 RowBox[{"1", "/", "256"}], " ", "2", " ", "scale", " ", 
+                 "labelsize"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<Rotation\>\"", "\[Rule]", "labelRot"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<Preamble\>\"", "\[Rule]", "preamble"}]}], "]"}]}],
+             ",", "\[IndentingNewLine]", 
+            RowBox[{"Map", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Pick", "[", 
+                RowBox[{"#", ",", "axesQ"}], "]"}], "&"}], ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "\"\<AxesLabels\>\"", "]"}], ",", 
+                "labelpos"}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+           "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<Ticks\>\"", "]"}], "=!=", 
+           "None"}], "&&", 
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<Ticks\>\"", "]"}], "=!=", 
+           "False"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"exportstring", "=", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{
+           "exportstring", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            
+            RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"x", ",", "y"}], "}"}], "\[Function]", 
+               RowBox[{"TeXPOVrayString", "[", 
+                RowBox[{"x", ",", "y", ",", "\[IndentingNewLine]", 
+                 RowBox[{"\"\<Thickness\>\"", "\[Rule]", 
+                  RowBox[{"0.01", " ", "scale", " ", "labelsize"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"\"\<Scale\>\"", "\[Rule]", 
+                  RowBox[{
+                   RowBox[{"1", "/", "256"}], " ", "2", " ", "scale", " ", 
+                   "labelsize"}]}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"\"\<Rotation\>\"", "\[Rule]", "labelRot"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"\"\<Alignment\>\"", "\[Rule]", "Right"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"\"\<Preamble\>\"", "\[Rule]", "preamble"}]}], 
+                "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Join", "@@", 
+                 RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", "y"}], "}"}], "\[Function]", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{"z", "\[Function]", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"NumberForm", "[", 
+                    RowBox[{"z", ",", "y"}], "]"}], "]"}]}], ",", "x"}], 
+                    "]"}]}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Pick", "[", 
+                    RowBox[{"#", ",", "axesQ"}], "]"}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"tickslabels", ",", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<TickNumberForm\>\"", "]"}]}], 
+                    "}"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Join", "@@", 
+                 RowBox[{"MapThread", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"x", ",", "y", ",", "z"}], "}"}], "\[Function]", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"w", " ", "y"}], "+", "z"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"w", ",", "x"}], "}"}]}], "]"}]}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Pick", "[", 
+                    RowBox[{"#", ",", "axesQ"}], "]"}], "&"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "tickspositions", ",", "unitaxes", ",", 
+                    "ticklabelshifts"}], "}"}]}], "]"}]}], 
+                  "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+               "}"}]}], "\[IndentingNewLine]", "]"}], ",", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+             RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"x", ",", "y"}], "}"}], "\[Function]", 
+                RowBox[{"Table", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+                   RowBox[{"\"\<\\ncylinder{\>\"", ",", "\[IndentingNewLine]", 
+                    RowBox[{"POVrayVectorString", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"w", "-", "tickthickness"}], ")"}], "y"}], "]"}], 
+                    ",", "\"\<, \>\"", ",", "\[IndentingNewLine]", 
+                    RowBox[{"POVrayVectorString", "[", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"w", "+", "tickthickness"}], ")"}], "y"}], "]"}], 
+                    ",", "\"\<, \>\"", ",", "\[IndentingNewLine]", 
+                    RowBox[{"POVrayNumberString", "[", "tickradius", "]"}], 
+                    ",", "\"\< \>\"", ",", "ticktex", ",", "\"\<}\\n\>\""}], 
+                   "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"{", 
+                   RowBox[{"w", ",", "x"}], "}"}]}], "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Map", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Pick", "[", 
+                   RowBox[{"#", ",", "axesQ"}], "]"}], "&"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"tickspositions", ",", "unitaxes"}], "}"}]}], 
+                "]"}]}], "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+             "]"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]",
+         "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"POVrayWriteString", "[", 
+        RowBox[{"file", ",", "exportstring", ",", 
+         RowBox[{"OverwriteTarget", "\[Rule]", 
+          RowBox[{"OptionValue", "[", "OverwriteTarget", "]"}]}]}], "]"}]}]}],
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<PlotRange\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1."}], ",", "1."}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1."}], ",", "1."}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1."}], ",", "1."}], "}"}]}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Axes\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"True", ",", "True", ",", "True"}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Ticks\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<TickThickness\>\"", "\[Rule]", "0.004"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<TickRadius\>\"", "\[Rule]", "0.02"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<TickLabelShifts\>\"", "\[Rule]", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0.", ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "3"}], "}"}]}], "]"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<TickStyle\>\"", "\[RuleDelayed]", "DullLightGray"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<TickNumberForm\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"3", ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "1"}], "}"}]}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<TickSubdivisions\>\"", "\[Rule]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"1", ",", "1", ",", "1"}], "}"}], "5"}]}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesOrigin\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0.", ",", "0.", ",", "0."}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesScaling\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"1.", ",", "1.", ",", "1."}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesStyle\>\"", "\[RuleDelayed]", "DullLightGray"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesThickness\>\"", "\[Rule]", "0.0125"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesHeadRadius\>\"", "\[Rule]", "0.025"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesHeadLength\>\"", "\[Rule]", "0.1"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesLabels\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<x\>\"", ",", "\"\<y\>\"", ",", "\"\<z\>\""}], "}"}]}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<AxesLabelShifts\>\"", "\[Rule]", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0.", ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "3"}], "}"}]}], "]"}]}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Scaling\>\"", "\[Rule]", "1."}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Preamble\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<LabelRotation\>\"", "\[Rule]", 
+        RowBox[{"IdentityMatrix", "[", "3", "]"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<LabelSize\>\"", "\[Rule]", "1"}], ",", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7281367257857533`*^9, 3.728136750514583*^9}, {
+   3.728136785064395*^9, 3.728136798974318*^9}, {3.728136834775321*^9, 
+   3.728136860390539*^9}, {3.728137313160077*^9, 3.728137419019383*^9}, {
+   3.728137464973332*^9, 3.728137471860079*^9}, {3.728137628350284*^9, 
+   3.728137646246418*^9}, {3.728137947205804*^9, 3.728137969171672*^9}, {
+   3.728138018612694*^9, 3.728138148071252*^9}, {3.728138221754016*^9, 
+   3.728138307124979*^9}, {3.7281383466729593`*^9, 3.728138351057208*^9}, {
+   3.728138509150134*^9, 3.728138513452671*^9}, {3.728138777431045*^9, 
+   3.728138888986793*^9}, {3.728139142839355*^9, 3.728139273026733*^9}, {
+   3.728139310680588*^9, 3.7281393587636347`*^9}, {3.728139401058036*^9, 
+   3.728139453239884*^9}, {3.72813949242225*^9, 3.728139516742332*^9}, {
+   3.728139588239347*^9, 3.728139651031849*^9}, {3.728139688449649*^9, 
+   3.7281397414872417`*^9}, {3.728139806902021*^9, 3.728139843739245*^9}, {
+   3.72814037053793*^9, 3.728140390984601*^9}, {3.728141300833481*^9, 
+   3.7281413022725353`*^9}, {3.728141437351943*^9, 3.728141533432494*^9}, {
+   3.728141772650037*^9, 3.728141800397575*^9}, {3.728141865634184*^9, 
+   3.728142012838625*^9}, 3.7281420592996264`*^9, {3.728142119237118*^9, 
+   3.728142137421315*^9}, {3.744294263462638*^9, 3.744294263808694*^9}, {
+   3.744296734368791*^9, 3.744296753093397*^9}, {3.74429682134515*^9, 
+   3.744296837187448*^9}, {3.74429689863544*^9, 3.744297008414262*^9}, {
+   3.744297040606455*^9, 3.744297101570402*^9}, {3.744297138519473*^9, 
+   3.744297173724223*^9}, {3.744297232459628*^9, 3.744297393147675*^9}, {
+   3.74429742682943*^9, 3.744297429915464*^9}, {3.7442990325586557`*^9, 
+   3.744299034484424*^9}, {3.744341183770227*^9, 3.744341233309298*^9}, {
+   3.744341265463715*^9, 3.7443412965563717`*^9}, {3.744341328641168*^9, 
+   3.744341331957274*^9}, {3.744341438470724*^9, 3.744341445686736*^9}, {
+   3.744341708193193*^9, 3.744341713008717*^9}, {3.744341860048558*^9, 
+   3.7443418813260193`*^9}, {3.7443424554603643`*^9, 3.744342503491322*^9}, {
+   3.744343377880673*^9, 3.744343379421184*^9}, {3.747738944110847*^9, 
+   3.747738944415477*^9}, {3.74773900545905*^9, 3.747739022029545*^9}, {
+   3.7477391555517263`*^9, 3.747739155934737*^9}, {3.747739283836624*^9, 
+   3.747739293634286*^9}, {3.747742238179295*^9, 3.747742295752879*^9}, {
+   3.747742326302473*^9, 3.747742327108979*^9}, {3.747742357504876*^9, 
+   3.7477423699835043`*^9}, {3.7477431765588417`*^9, 3.747743203390492*^9}, {
+   3.747743336247447*^9, 3.747743338458652*^9}, {3.747743488457876*^9, 
+   3.747743489856757*^9}, {3.7477439168565397`*^9, 3.747743979766625*^9}, {
+   3.771510139807057*^9, 3.7715101422052927`*^9}, {3.771510200684065*^9, 
+   3.771510211347581*^9}, {3.771590797146*^9, 3.77159081295892*^9}, {
+   3.771590947647312*^9, 3.771590966822937*^9}, {3.771591300187418*^9, 
+   3.7715913003545303`*^9}, {3.788366960078083*^9, 3.78836700208803*^9}, {
+   3.788369674293803*^9, 3.7883697463323193`*^9}, {3.788370367891383*^9, 
+   3.788370386161386*^9}, {3.7883799389281178`*^9, 3.7883799399102907`*^9}, {
+   3.828521366347145*^9, 3.828521419166441*^9}},
+ CellLabel->
+  "In[538]:=",ExpressionUUID->"356e6ed2-7ad0-4656-bb25-391e96d01864"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.2 for Mac OS X x86 (64-bit) (December 12, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b5489d2f-c1c9-4417-8cfa-c795a4e64ad6"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 20798, 431, 2917, "Input",ExpressionUUID->"356e6ed2-7ad0-4656-bb25-391e96d01864"]
+}
+]
+*)
+

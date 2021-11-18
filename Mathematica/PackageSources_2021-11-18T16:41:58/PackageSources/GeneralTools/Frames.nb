@@ -1,0 +1,230 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8595,        222]
+NotebookOptionsPosition[      8113,        207]
+NotebookOutlinePosition[      8449,        222]
+CellTagsIndexPosition[      8406,        219]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"uu", ",", "u", ",", "ww", ",", "w"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"uu", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Compile`GetElement", "[", 
+         RowBox[{"u", ",", "i"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ww", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Compile`GetElement", "[", 
+         RowBox[{"w", ",", "i"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"getFrames3D", "=", 
+      RowBox[{"With", "[", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"vcode", "=", 
+           RowBox[{"Cross", "[", 
+            RowBox[{"ww", ",", "uu"}], "]"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"id", "=", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"1.", ",", "0.", ",", "0."}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0.", ",", "1.", ",", "0."}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0.", ",", "0.", ",", "1."}], "}"}]}], "}"}]}]}], 
+         "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"CPackageFunction", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"w", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Block", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"u", ",", "u0", ",", "u1"}], "}"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"u0", "=", 
+              RowBox[{"id", "[", 
+               RowBox[{"[", 
+                RowBox[{
+                 RowBox[{"Ordering", "[", 
+                  RowBox[{
+                   RowBox[{"Abs", "[", "w", "]"}], ",", "1"}], "]"}], "[", 
+                 RowBox[{"[", "1", "]"}], "]"}], "]"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"u1", "=", 
+              RowBox[{"u0", "-", 
+               RowBox[{"w", " ", 
+                RowBox[{"(", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"w", ",", "1"}], "]"}], 
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"u0", ",", "1"}], "]"}]}], "+", 
+                  RowBox[{
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"w", ",", "2"}], "]"}], 
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"u0", ",", "2"}], "]"}]}], "+", 
+                  RowBox[{
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"w", ",", "3"}], "]"}], 
+                   RowBox[{"Compile`GetElement", "[", 
+                    RowBox[{"u0", ",", "3"}], "]"}]}]}], 
+                 "\[IndentingNewLine]", ")"}]}]}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"u", "=", 
+              RowBox[{"u1", "/", 
+               RowBox[{"Sqrt", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"u1", ",", "1"}], "]"}], "^", "2"}], "+", 
+                 RowBox[{
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"u1", ",", "2"}], "]"}], "^", "2"}], "+", 
+                 RowBox[{
+                  RowBox[{"Compile`GetElement", "[", 
+                   RowBox[{"u1", ",", "3"}], "]"}], "^", "2"}]}], "]"}]}]}], 
+             ";", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"u", ",", "vcode"}], "}"}]}]}], "\[IndentingNewLine]", 
+           "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"RuntimeAttributes", "\[Rule]", 
+           RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+         "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}]}], 
+   "\[IndentingNewLine]", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.653218703270751*^9, 3.653218709199749*^9}, {
+   3.788785835595744*^9, 3.7887858420109167`*^9}, 3.7887863308755083`*^9, {
+   3.7887864089637327`*^9, 3.788786526798304*^9}, {3.78878695160638*^9, 
+   3.78878707212879*^9}, {3.7887896852476177`*^9, 3.788789686632859*^9}},
+ CellLabel->
+  "In[556]:=",ExpressionUUID->"78af96a2-ce2f-4c1e-83bf-3e1eaac7a69b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"getFrames2D", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"w_", "?", "VectorQ"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"cNormalize3", "[", "w", "]"}], ".", 
+      RowBox[{"ToPack", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0.", ",", "1."}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "1."}], ",", "0."}], "}"}]}], "}"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"getFrames2D", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"w_", "?", "MatrixQ"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Partition", "[", 
+      RowBox[{
+       RowBox[{"cNormalize3", "[", "w", "]"}], ",", "1"}], "]"}], ".", 
+     RowBox[{"ToPack", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0.", ",", "1."}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "1."}], ",", "0."}], "}"}]}], "}"}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7322688159992533`*^9, 3.7322688358562603`*^9}, {
+  3.732268911565494*^9, 3.7322689128040123`*^9}, {3.73226894779624*^9, 
+  3.732268993506496*^9}, {3.7887863327132683`*^9, 3.788786334817137*^9}},
+ CellLabel->"In[59]:=",ExpressionUUID->"f2df5624-7191-4583-b078-9deda3d15dbd"],
+
+Cell[BoxData[
+ RowBox[{"getFrame", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"v_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Orthogonalize", "[", 
+     RowBox[{
+      RowBox[{"Join", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", "v", "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"N", "@", 
+           RowBox[{"IdentityMatrix", "[", 
+            RowBox[{"Length", "[", "v", "]"}], "]"}]}], ")"}], 
+         "\[LeftDoubleBracket]", 
+         RowBox[{"Drop", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"Length", "[", "v", "]"}], "]"}], ",", 
+           RowBox[{"Ordering", "[", 
+            RowBox[{
+             RowBox[{"Abs", "[", "v", "]"}], ",", 
+             RowBox[{"-", "1"}]}], "]"}]}], "]"}], 
+         "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+      RowBox[{"Method", "\[Rule]", "\"\<ModifiedGramSchmidt\>\""}]}], "]"}]}],
+    "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.6527621929739017`*^9, 3.652762361231853*^9, {3.652762397227069*^9, 
+   3.6527623985649357`*^9}, 3.652762463184923*^9, 3.788786336953086*^9},
+ CellLabel->"In[61]:=",ExpressionUUID->"059be964-acac-484c-939b-45d1f17499af"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 4844, 114, 617, "Input",ExpressionUUID->"78af96a2-ce2f-4c1e-83bf-3e1eaac7a69b"],
+Cell[5405, 136, 1444, 38, 192, "Input",ExpressionUUID->"f2df5624-7191-4583-b078-9deda3d15dbd"],
+Cell[6852, 176, 1257, 29, 167, "Input",ExpressionUUID->"059be964-acac-484c-939b-45d1f17499af"]
+}
+]
+*)
+

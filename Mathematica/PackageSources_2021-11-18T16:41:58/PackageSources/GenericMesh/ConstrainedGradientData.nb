@@ -1,0 +1,431 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20862,        423]
+NotebookOptionsPosition[     20472,        409]
+NotebookOutlinePosition[     20808,        424]
+CellTagsIndexPosition[     20765,        421]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ConstrainedGradientData", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "dir", ",", "solver", ",", "data", ",", "result", ",", "u", ",", "v", 
+        ",", "S", ",", "\[Psi]", ",", "order", ",", "b", ",", "\[Lambda]", 
+        ",", "\[Mu]", ",", "residual"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"dir", "=", 
+        RowBox[{"OptimizationDirection", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"b", "=", 
+        RowBox[{"dir", " ", 
+         RowBox[{
+          RowBox[{"F", "'"}], "[", "M", "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"S", "=", 
+        RowBox[{"MetricSaddlePointSystem", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"u", ",", "\[Lambda]", ",", "\[Mu]"}], "}"}], "=", 
+        RowBox[{"SystemSolve", "[", 
+         RowBox[{
+         "S", ",", "\[IndentingNewLine]", "b", ",", "\[IndentingNewLine]", 
+          RowBox[{"NullMultiplier", "[", "S", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"NullStabilizationMultiplier", "[", "S", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"residual", "=", 
+        RowBox[{
+         RowBox[{"b", "\[LeftDoubleBracket]", 
+          RowBox[{"DofList", "[", "S", "]"}], "\[RightDoubleBracket]"}], "+", 
+         
+         RowBox[{"\[Lambda]", ".", 
+          RowBox[{"ConstraintMatrix", "[", "S", "]"}]}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"SetPersistentCache", "[", 
+          RowBox[{
+          "M", ",", "\"\<MetricSaddlePointSystemContainer\>\"", ",", "S"}], 
+          "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"v", ",", "\[Psi]", ",", "order"}], "}"}], "=", 
+        RowBox[{"Switch", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "Method", "]"}], ",", 
+          "\[IndentingNewLine]", "\"\<SecondOrder\>\"", ",", 
+          RowBox[{"ConstrainedGradientSecondOrderCorrection", "[", 
+           RowBox[{"M", ",", "F", ",", "u", ",", "\[Lambda]", ",", "\[Mu]"}], 
+           "]"}], ",", "\[IndentingNewLine]", "\"\<FirstOrder\>\"", ",", 
+          RowBox[{"ConstrainedFirstOrderCorrection", "[", 
+           RowBox[{"M", ",", "F", ",", "u", ",", "\[Lambda]", ",", "\[Mu]"}], 
+           "]"}], ",", "\[IndentingNewLine]", "\"\<GeodesicFirstOrder\>\"", 
+          ",", 
+          RowBox[{"ConstrainedGeodesicCorrection", "[", 
+           RowBox[{"M", ",", "F", ",", "u", ",", "\[Lambda]", ",", "\[Mu]"}], 
+           "]"}], ",", "\[IndentingNewLine]", "\"\<GeodesicSecondOrder\>\"", 
+          ",", 
+          RowBox[{"ConstrainedGeodesicCorrection2", "[", 
+           RowBox[{"M", ",", "F", ",", "u", ",", "\[Lambda]", ",", "\[Mu]"}], 
+           "]"}], ",", "\[IndentingNewLine]", "_", ",", 
+          RowBox[{"(", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"ConstrainedGradientData", "::", "unknownmethod"}], ",", 
+              RowBox[{"ToString", "[", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "Method", "]"}], ",", 
+                "InputForm"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"ConstrainedFirstOrderCorrection", "[", 
+             RowBox[{
+             "M", ",", "F", ",", "u", ",", "\[Lambda]", ",", "\[Mu]"}], 
+             "]"}]}], "\[IndentingNewLine]", ")"}]}], "\[IndentingNewLine]", 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"SetPersistentCache", "[", 
+          RowBox[{
+          "M", ",", "\"\<MetricSaddlePointSystemContainer\>\"", ",", "S"}], 
+          "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"CreateSearchLine", "[", 
+        RowBox[{"u", ",", "v", ",", 
+         RowBox[{"Metric", "[", 
+          RowBox[{"M", ",", "u"}], "]"}], ",", 
+         RowBox[{"Metric", "[", 
+          RowBox[{"M", ",", "v"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<EnergyEstimator\>\"", "\[Rule]", "\[Psi]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<EnergyEstimatorOrder\>\"", "\[Rule]", "order"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<LagrangeMultiplier\>\"", "\[Rule]", "\[Lambda]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<LagrangeResidual\>\"", "\[Rule]", "residual"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Sequence", "@@", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"List", "[", 
+            RowBox[{"OptionValue", "[", "\"\<SearchLineOptions\>\"", "]"}], 
+            "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Options\>\"", "\[Rule]", "\[IndentingNewLine]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Method", "\[Rule]", "\"\<FirstOrder\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SearchLineOptions\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"\"\<MaxAngle\>\"", "\[Rule]", 
+           RowBox[{"Pi", " ", "1."}]}], " ", ",", 
+          RowBox[{"\"\<StepSizeEstimator\>\"", "\[Rule]", 
+           RowBox[{"(", 
+            RowBox[{"\[Infinity]", "&"}], ")"}]}]}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SaddlePointOptions\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "}"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<unknownmethod\>\"", "\[Rule]", 
+       "\"\<Method `1` is unknown. Using method \\\"First Order\\\".\>\""}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6666780364761677`*^9, 3.666678146295662*^9}, {
+   3.6666783306906147`*^9, 3.666678342826778*^9}, {3.666713001171026*^9, 
+   3.666713056097124*^9}, {3.666713088740201*^9, 3.66671310063074*^9}, {
+   3.6667131334998426`*^9, 3.66671341186091*^9}, {3.666713446474402*^9, 
+   3.6667134784684687`*^9}, {3.666713544342107*^9, 3.666713553034214*^9}, {
+   3.666713613374814*^9, 3.666713670324765*^9}, {3.6667137022922497`*^9, 
+   3.666713787072501*^9}, {3.666716822224091*^9, 3.666716906166717*^9}, {
+   3.6667169528344812`*^9, 3.666717048389138*^9}, 3.666717082527834*^9, {
+   3.666717142727045*^9, 3.666717183714344*^9}, {3.666717235484301*^9, 
+   3.666717508728771*^9}, {3.6667175661897297`*^9, 3.6667175824356527`*^9}, {
+   3.66671810874078*^9, 3.6667181405416813`*^9}, {3.6667181838281384`*^9, 
+   3.6667182370854063`*^9}, {3.666719604056939*^9, 3.6667196207979193`*^9}, {
+   3.66671965866466*^9, 3.66671966104103*^9}, {3.666719851323646*^9, 
+   3.666719851825223*^9}, {3.667056290640518*^9, 3.667056321124548*^9}, {
+   3.6670564131207857`*^9, 3.667056414982658*^9}, {3.6670572438593693`*^9, 
+   3.667057249112578*^9}, 3.667058467009199*^9, 3.667110144725142*^9, {
+   3.672559720369256*^9, 3.6725597370726767`*^9}, {3.6730979427558937`*^9, 
+   3.673097987662134*^9}, {3.673098175329317*^9, 3.673098209940868*^9}, 
+   3.673100978889923*^9, {3.673101034462563*^9, 3.673101036986828*^9}, 
+   3.673101101376711*^9, 3.673101249324588*^9, {3.673101487393531*^9, 
+   3.6731014936169853`*^9}, {3.6731016140373583`*^9, 3.673101618651121*^9}, 
+   3.673101738532555*^9, {3.673102370965748*^9, 3.6731024339211683`*^9}, {
+   3.673103421417383*^9, 3.6731034403118067`*^9}, {3.673103938076189*^9, 
+   3.673103941407732*^9}, {3.6731675285747013`*^9, 3.6731675287714863`*^9}, {
+   3.673167759036272*^9, 3.6731677600508633`*^9}, 3.673168411559211*^9, 
+   3.6731703659415283`*^9, {3.673764004700281*^9, 3.673764016816177*^9}, {
+   3.673764070272305*^9, 3.673764115856833*^9}, {3.673764282193819*^9, 
+   3.673764283590541*^9}, {3.6737654820130043`*^9, 3.673765509339717*^9}, {
+   3.673765577528039*^9, 3.673765592835643*^9}, 3.6737656719240017`*^9, {
+   3.673767574025147*^9, 3.6737675960543337`*^9}, {3.673767641843555*^9, 
+   3.673767646567218*^9}, {3.673768681070938*^9, 3.6737686935574636`*^9}, 
+   3.674014389201481*^9, 3.674015331869196*^9, {3.674023351894239*^9, 
+   3.674023352753214*^9}, 3.6740473092763443`*^9, {3.67819014681005*^9, 
+   3.678190146818708*^9}, {3.678530711846143*^9, 3.6785307118538713`*^9}, {
+   3.679582878782003*^9, 3.679582895984058*^9}, {3.6811895106452703`*^9, 
+   3.681189561337408*^9}, {3.681189765438703*^9, 3.6811897717718353`*^9}, {
+   3.681189816742178*^9, 3.68119013647159*^9}, {3.6811901761465054`*^9, 
+   3.681190213044908*^9}, {3.681190250145206*^9, 3.681190256159181*^9}, {
+   3.6811903032419033`*^9, 3.6811903816209507`*^9}, {3.681190474939416*^9, 
+   3.6811904752232723`*^9}, {3.6811905809943047`*^9, 3.681190586992674*^9}, {
+   3.681194457453545*^9, 3.681194489448544*^9}, {3.681194522970422*^9, 
+   3.681194525288546*^9}, {3.6811945915951223`*^9, 3.6811946177567253`*^9}, {
+   3.681194680546021*^9, 3.681194690473125*^9}, {3.681200821229957*^9, 
+   3.681200825303783*^9}, {3.681201092489876*^9, 3.681201110977242*^9}, 
+   3.681201145128751*^9, {3.681276333512321*^9, 3.681276338639545*^9}, {
+   3.68127638516359*^9, 3.681276410377536*^9}, {3.6812764486532183`*^9, 
+   3.6812764491316442`*^9}, {3.681276510087656*^9, 3.681276510326006*^9}, {
+   3.6812768726313667`*^9, 3.6812768867633743`*^9}, {3.681276930517523*^9, 
+   3.6812769359896603`*^9}, {3.681283243144453*^9, 3.681283404424954*^9}, {
+   3.681283507446344*^9, 3.681283507733952*^9}, {3.681283668373291*^9, 
+   3.681283702048205*^9}, {3.681296539051217*^9, 3.6812965509870653`*^9}, {
+   3.6812966028412867`*^9, 3.6812966173294487`*^9}, {3.6812966934764423`*^9, 
+   3.681296714189939*^9}, {3.681296824467314*^9, 3.681296851426238*^9}, {
+   3.681299965206501*^9, 3.681299995975391*^9}, {3.681300364963217*^9, 
+   3.6813003717939253`*^9}, {3.681306236273756*^9, 3.6813062488805323`*^9}, {
+   3.681306380192913*^9, 3.681306383946669*^9}, {3.681306528939014*^9, 
+   3.6813065294086227`*^9}, {3.681308916387351*^9, 3.681308922381612*^9}, {
+   3.683635131429945*^9, 3.683635163238855*^9}, {3.684144915636963*^9, 
+   3.6841449772381144`*^9}, {3.684145065804685*^9, 3.684145081284382*^9}, {
+   3.68439446707113*^9, 3.684394467262051*^9}, {3.689407163367832*^9, 
+   3.689407165138215*^9}, {3.693070329579021*^9, 3.6930703474606733`*^9}, {
+   3.693070470912445*^9, 3.693070574473839*^9}, {3.6935861113901663`*^9, 
+   3.693586113627419*^9}, 3.69358718123141*^9, {3.693650271660112*^9, 
+   3.693650384111812*^9}, {3.693656633439645*^9, 3.693656668899289*^9}, {
+   3.693808937838619*^9, 3.693808964774103*^9}, {3.693945289381876*^9, 
+   3.693945293398019*^9}, {3.696413809525651*^9, 3.696413831701551*^9}, 
+   3.696413876274687*^9, {3.6964145113939877`*^9, 3.696414530440556*^9}, {
+   3.6964146336145906`*^9, 3.696414645387267*^9}, {3.696491530189908*^9, 
+   3.69649153317022*^9}, {3.697432422986665*^9, 3.697432429752849*^9}, {
+   3.697432485704371*^9, 3.69743249798158*^9}, {3.697536628060299*^9, 
+   3.6975366403630047`*^9}, {3.6975367424810133`*^9, 3.697536743232174*^9}, {
+   3.697536864030572*^9, 3.6975369261467752`*^9}, {3.6975394067645683`*^9, 
+   3.697539407697254*^9}, {3.697539743855412*^9, 3.6975397549742117`*^9}, {
+   3.69753981221266*^9, 3.69753981495382*^9}, {3.700126728313607*^9, 
+   3.700126730241561*^9}, {3.700126763358859*^9, 3.700126775582615*^9}, 
+   3.700658423777987*^9, {3.700658560752749*^9, 3.700658561248979*^9}, {
+   3.700658615625866*^9, 3.7006586419744253`*^9}, {3.700728874142362*^9, 
+   3.700728875263122*^9}, {3.7007327834740963`*^9, 3.700732787147358*^9}, {
+   3.7007340474200993`*^9, 3.700734048019231*^9}, {3.70073407962607*^9, 
+   3.700734081215795*^9}, {3.7113682238652697`*^9, 3.711368241791939*^9}, 
+   3.712737704181794*^9, 3.712737946281137*^9, 3.714464952214348*^9, 
+   3.714465179842038*^9, {3.7191195740535097`*^9, 3.7191195820896673`*^9}, {
+   3.720177425581276*^9, 3.720177426167919*^9}, {3.738256415670219*^9, 
+   3.738256416372589*^9}, {3.738654615007805*^9, 3.738654622279182*^9}, {
+   3.738654975017145*^9, 3.7386549920065613`*^9}, 3.738656189763814*^9, {
+   3.7386564233414917`*^9, 3.738656424139599*^9}, {3.7497971858619013`*^9, 
+   3.749797211547901*^9}, {3.749797886190362*^9, 3.749797891873651*^9}, {
+   3.7572180917688513`*^9, 3.7572180948002987`*^9}, {3.75721942291858*^9, 
+   3.757219426365251*^9}, 3.757225954066848*^9, {3.757229016101082*^9, 
+   3.757229041960435*^9}, {3.7572291626783733`*^9, 3.757229224010806*^9}, {
+   3.757229660818417*^9, 3.757229667320265*^9}, {3.757246456169628*^9, 
+   3.7572464729286613`*^9}, {3.75725207841615*^9, 3.757252138335952*^9}, 
+   3.7572523287130003`*^9, {3.757253357941766*^9, 3.7572533782197037`*^9}, {
+   3.757254108745597*^9, 3.757254122805684*^9}, {3.798341234140593*^9, 
+   3.798341234652278*^9}, {3.798341266756777*^9, 
+   3.798341272883286*^9}},ExpressionUUID->"1991905c-3b2c-4a82-89a1-\
+a91a954e6c62"],
+
+Cell[BoxData[
+ RowBox[{"ConstrainedGradientSecondOrderCorrection", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "M_genericmesh", ",", "F_", ",", "u_", ",", "\[Lambda]_", ",", 
+      "\[Mu]_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "DD\[CapitalPhi]u", ",", "\[Lambda]DD\[CapitalPhi]u", ",", 
+        "DD\[CapitalPhi]uu", ",", "DDFu", ",", "DXX", ",", "DF", ",", "DIuu", 
+        ",", "FM", ",", "b", ",", "S", ",", "v", ",", "\[Lambda]1", ",", 
+        "\[Mu]1", ",", "\[Psi]", ",", "f", ",", "c", ",", "U", ",", "order"}],
+        "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{
+        "Print", "[", "\"\<ConstrainedGradientSecondOrderCorrection\>\"", 
+         "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"U", "=", 
+        RowBox[{"AppendToBuffer", "[", 
+         RowBox[{"M", ",", "u"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"S", "=", 
+        RowBox[{"MetricSaddlePointSystem", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"f", "=", "Metric"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"FM", "=", 
+        RowBox[{"F", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"DF", "=", 
+        RowBox[{
+         RowBox[{"F", "'"}], "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"DDFu", "=", 
+        RowBox[{
+         RowBox[{"F", "''"}], "[", 
+         RowBox[{"M", ",", 
+          RowBox[{"{", "U", "}"}], ",", 
+          RowBox[{"{", "3", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"DIuu", "=", 
+        RowBox[{
+         RowBox[{"f", "'"}], "[", 
+         RowBox[{"M", ",", 
+          RowBox[{"{", 
+           RowBox[{"u", ",", "u"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"2", ",", "3"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"Constraint", "[", "M", "]"}], "]"}], "\[Equal]", "0"}], 
+         ",", 
+         RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\[Lambda]DD\[CapitalPhi]u", "=", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"0.", ",", 
+             RowBox[{"DofCount", "[", "M", "]"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"DD\[CapitalPhi]uu", "=", 
+           RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"DD\[CapitalPhi]u", "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"Constraint", "''"}], "[", 
+             RowBox[{"M", ",", 
+              RowBox[{"{", "U", "}"}], ",", 
+              RowBox[{"{", "3", "}"}]}], "]"}], ")"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\[Lambda]DD\[CapitalPhi]u", "=", 
+           RowBox[{"\[Lambda]", ".", "DD\[CapitalPhi]u"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"DD\[CapitalPhi]uu", "=", 
+           RowBox[{"DD\[CapitalPhi]u", ".", "u"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"StabilizationMatrix", "[", "M", "]"}], "]"}], "\[Equal]", 
+          "0"}], ",", 
+         RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"b", "=", 
+           RowBox[{"DDFu", "+", "DIuu", "+", "\[Lambda]DD\[CapitalPhi]u"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"c", "=", 
+           RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"b", "=", 
+           RowBox[{"DDFu", "+", "DIuu", "+", "\[Lambda]DD\[CapitalPhi]u", "+", 
+            RowBox[{
+             RowBox[{"StabilizationMatrix", "'"}], "[", 
+             RowBox[{"M", ",", 
+              RowBox[{"{", 
+               RowBox[{"\[Mu]", ",", "u"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "3"}], "}"}]}], "]"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"c", "=", 
+           RowBox[{
+            RowBox[{"StabilizationMatrix", "'"}], "[", 
+            RowBox[{"M", ",", 
+             RowBox[{"{", 
+              RowBox[{"u", ",", "u"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"2", ",", "3"}], "}"}]}], "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"DXX", ",", "\[Lambda]1", ",", "\[Mu]1"}], "}"}], "=", 
+        RowBox[{"SystemSolve", "[", 
+         RowBox[{"S", ",", 
+          RowBox[{"-", "b"}], ",", 
+          RowBox[{"-", "DD\[CapitalPhi]uu"}], ",", 
+          RowBox[{"-", "c"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"order", "=", "2"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Psi]", "=", 
+        RowBox[{"\[FormalT]", "\[Function]", 
+         RowBox[{"Evaluate", "[", 
+          RowBox[{"FM", "+", 
+           RowBox[{"\[FormalT]", " ", 
+            RowBox[{"DF", ".", "u"}]}], "+", 
+           RowBox[{"0.5", " ", 
+            RowBox[{"\[FormalT]", "^", "2"}], 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"DDFu", ".", "u"}], "+", 
+              RowBox[{"DF", ".", "DXX"}]}], ")"}]}]}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"DXX", ",", "\[Psi]", ",", "order"}], "}"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Computes a second order correction of the gradient flow in \
+direction u and a second order estimate for Energy along the trajectory. \
+Implicit assumption is that u equals the projected (downward) gradient. \
+Requires directional second derivatives of both Energy and \
+Constraint.\>\""}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.70073409373263*^9, {3.7144649592540693`*^9, 3.714464959444983*^9}, 
+   3.714465150800889*^9, {3.720094325817466*^9, 3.72009432860678*^9}, {
+   3.728908648381843*^9, 3.728908664722947*^9}, {3.738260369325548*^9, 
+   3.738260390451599*^9}, {3.7572180994080877`*^9, 3.757218102735813*^9}, {
+   3.757228959582412*^9, 3.757228992042811*^9}, {3.757230116781117*^9, 
+   3.757230275473299*^9}, {3.757245037514491*^9, 3.757245042392611*^9}, 
+   3.7959719536673803`*^9},ExpressionUUID->"5f57af89-9495-4a87-a09f-\
+f6a17f5fa9e6"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 13211, 230, 1042, "Input",ExpressionUUID->"1991905c-3b2c-4a82-89a1-a91a954e6c62"],
+Cell[13772, 252, 6696, 155, 950, "Input",ExpressionUUID->"5f57af89-9495-4a87-a09f-f6a17f5fa9e6"]
+}
+]
+*)
+

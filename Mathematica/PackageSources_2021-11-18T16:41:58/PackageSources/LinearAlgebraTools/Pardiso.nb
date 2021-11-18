@@ -1,0 +1,1006 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     44037,        998]
+NotebookOptionsPosition[     43745,        985]
+NotebookOutlinePosition[     44081,       1000]
+CellTagsIndexPosition[     44038,        997]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Off", "[", 
+     RowBox[{"LTemplate", "::", "nofun"}], "]"}], ";"}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Pardiso", "::", "nnzupdate"}], " ", "=", " ", 
+    "\"\<Argument of Pardiso[\\\"Update\\\"[]] has `1` nonzero values. `2` \
+nonzero values required.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "::", "nupdate"}], " ", "=", " ", 
+    "\"\<Argument of Pardiso[\\\"Update\\\"[]] has dimension `1`. Dimension \
+`2` required.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "::", "vecdim"}], " ", "=", " ", 
+    "\"\<Argument of Pardiso[\\\"LinearSolve\\\"[]] is vector with `1` \
+entries; `2` entries expected.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "::", "matdim"}], " ", "=", " ", 
+    "\"\<Argument of Pardiso[\\\"LinearSolve\\\"[]] is matrix with `1` rows; \
+`2` rows expected.\>\""}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   
+   RowBox[{
+    RowBox[{"Pardiso", "::", "mtype"}], " ", "=", " ", 
+    "\"\<`1` is not a valid matrix type. The only accepted types are 1, 2, \
+-2, 3, 4, -4, 6, 11, and 13.\>\""}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "::", "unreal"}], " ", "=", " ", 
+    "\"\<Error: Currently, only real matrices are support.\>\""}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "::", "unsorted"}], " ", "=", " ", 
+    "\"\<Warning: Input matrix is not ordered according to the CRS standard. \
+Sorting now. For maximal performance, please consider to assemble the matrix \
+conforming to the standard.\>\""}], ";", "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$PardisoMatrixTypes", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$PardisoMatrixTypes", " ", "=", " ", 
+    RowBox[{"Association", "[", 
+     RowBox[{
+      RowBox[{"1", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", " ", "\"\<Structurally symmetric\>\""}], "}"}]}],
+       ",", " ", 
+      RowBox[{"2", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+        "Real", ",", " ", "\"\<Symmetric\>\"", ",", " ", 
+         "\"\<Positive definite\>\""}], "}"}]}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "2"}], "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+        "Real", ",", " ", "\"\<Symmetric\>\"", ",", " ", 
+         "\"\<Indefinite\>\""}], "}"}]}], ",", " ", 
+      RowBox[{"11", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", " ", "\"\<Nonsymmetric\>\""}], "}"}]}], ",", " ", 
+      RowBox[{"3", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Complex", ",", " ", "\"\<Structurally symmetric\>\""}], 
+        "}"}]}], ",", " ", 
+      RowBox[{"4", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+        "Complex", ",", " ", "\"\<Hermitian\>\"", ",", " ", 
+         "\"\<Positive definite\>\""}], "}"}]}], ",", " ", 
+      RowBox[{"6", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Complex", ",", " ", "\"\<Symmetric\>\""}], "}"}]}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "4"}], "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+        "Complex", ",", " ", "\"\<Hermitian\>\"", ",", " ", 
+         "\"\<Indefinite\>\""}], "}"}]}], ",", " ", 
+      RowBox[{"13", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"Complex", ",", " ", "\"\<Nonsymmetric\>\""}], "}"}]}]}], 
+     "]"}]}], ";", "\n", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$PardisoErrors", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$PardisoErrors", " ", "=", " ", 
+    RowBox[{"Association", "[", 
+     RowBox[{
+      RowBox[{"0", "\[Rule]", "\"\<No error.\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "1"}], "\[Rule]", "\"\<Input is inconsistent.\>\""}], ",",
+       " ", 
+      RowBox[{
+       RowBox[{"-", "2"}], "\[Rule]", "\"\<Not enough memory.\>\""}], ",", 
+      " ", 
+      RowBox[{
+       RowBox[{"-", "3"}], "\[Rule]", "\"\<Reordering problem.\>\""}], ",", 
+      " ", 
+      RowBox[{
+       RowBox[{"-", "4"}], "\[Rule]", 
+       "\"\<Zero pivot, numerical factorization or iterative refinement \
+problem.\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "5"}], "\[Rule]", 
+       "\"\<Unclassified (internal) error.\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "6"}], "\[Rule]", 
+       "\"\<Reordering failed (matrix types 11 and 13 only).\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "7"}], "\[Rule]", 
+       "\"\<Diagonal matrix is singular.\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "8"}], "\[Rule]", 
+       "\"\<32-bit integer overflow problem.\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "9"}], "\[Rule]", "\"\<Not enough memory for OOC.\>\""}], 
+      ",", " ", 
+      RowBox[{
+       RowBox[{"-", "10"}], "\[Rule]", "\"\<Error opening OOC files.\>\""}], 
+      ",", " ", 
+      RowBox[{
+       RowBox[{"-", "11"}], "\[Rule]", 
+       "\"\<Read/write error with OOC files.\>\""}], ",", " ", 
+      RowBox[{
+       RowBox[{"-", "12"}], "\[Rule]", 
+       "\"\<pardiso_64 called from 32-bit library.\>\""}]}], "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "[", 
+     RowBox[{"A0_SparseArray", ",", " ", 
+      RowBox[{"OptionsPattern", "[", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<MatrixType\>\"", "\[Rule]", "11"}], ",", " ", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<IntegerParameters\>\"", "\[Rule]", "Automatic"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Permutation\>\"", "\[Rule]", "Automatic"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<CheckMatrix\>\"", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<IterativeRefinements\>\"", "\[Rule]", "2"}]}], 
+        "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", "]"}], 
+    " ", ":=", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", " ", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "n", ",", " ", "P", ",", " ", "iparm", ",", " ", "mtype", ",", " ", 
+          "A", ",", " ", "perm", ",", " ", "a"}], "}"}], ",", "\n", "\t", 
+        RowBox[{
+         RowBox[{"mtype", " ", "=", " ", 
+          RowBox[{"OptionValue", "[", "\"\<MatrixType\>\"", "]"}]}], ";", " ",
+          "\n", "\t", 
+         RowBox[{"n", " ", "=", " ", 
+          RowBox[{"Length", "[", "A0", "]"}]}], ";", " ", "\n", "\t", 
+         RowBox[{"P", " ", "=", " ", 
+          RowBox[{"Make", "[", "\"\<Pardiso\>\"", "]"}]}], ";", " ", "\n", 
+         "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"MemberQ", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"11", ",", "1", ",", "2", ",", 
+                RowBox[{"-", "2"}]}], "}"}], ",", " ", "mtype"}], "]"}]}], 
+           ",", 
+           RowBox[{
+            RowBox[{"mtype", "=", "11"}], ";"}]}], "]"}], ";", "\n", "\t", 
+         RowBox[{"A", "=", 
+          RowBox[{"Switch", "[", 
+           RowBox[{"mtype", ",", "\n", "\t\t", 
+            RowBox[{"(*", 
+             RowBox[{"Generic", " ", "unsymmetric", " ", 
+              RowBox[{"matrix", "."}]}], "*)"}], "\n", "\t\t", "11", ",", " ",
+             "A0", ",", "\n", "\t\t", 
+            RowBox[{"(*", 
+             RowBox[{"structurally", " ", "symmetric", " ", 
+              RowBox[{"matrix", ".", " ", "Diagonal"}], " ", "elements", " ", 
+              "must", " ", "be", " ", "nonzero", " ", "for", " ", "pivoting", 
+              " ", 
+              RowBox[{"reasons", "."}]}], "*)"}], "\n", "\t\t", "1", ",", " ",
+             "A0", ",", "\n", "\t\t", 
+            RowBox[{"(*", 
+             RowBox[{"symmetric", ",", " ", 
+              RowBox[{"positive", "-", 
+               RowBox[{"definite", " ", 
+                RowBox[{"matrix", ".", " ", "Diagonal"}], " ", "elements", 
+                " ", "must", " ", "be", " ", "nonzero", " ", "for", " ", 
+                "pivoting", " ", 
+                RowBox[{"reasons", "."}]}]}]}], "*)"}], "\n", "\t\t", "2", 
+            ",", " ", 
+            RowBox[{"UpperTriangularize", "[", 
+             RowBox[{"A0", " ", "+", " ", 
+              RowBox[{"$MachineEpsilon", " ", 
+               RowBox[{"IdentityMatrix", "[", 
+                RowBox[{"n", ",", "SparseArray", ",", 
+                 RowBox[{
+                 "WorkingPrecision", "\[Rule]", "MachinePrecision"}]}], 
+                "]"}]}]}], "]"}], ",", "\n", "\t\t", 
+            RowBox[{"(*", 
+             RowBox[{"symmetric", ",", " ", 
+              RowBox[{"indefinite", " ", 
+               RowBox[{"matrix", ".", " ", "Diagonal"}], " ", "elements", " ",
+                "must", " ", "be", " ", "nonzero", " ", "for", " ", 
+               "pivoting", " ", 
+               RowBox[{"reasons", "."}]}]}], "*)"}], "\n", "\t\t", 
+            RowBox[{"-", "2"}], ",", " ", 
+            RowBox[{"UpperTriangularize", "[", 
+             RowBox[{"A0", " ", "+", " ", 
+              RowBox[{"$MachineEpsilon", " ", 
+               RowBox[{"IdentityMatrix", "[", 
+                RowBox[{"n", ",", "SparseArray", ",", 
+                 RowBox[{
+                 "WorkingPrecision", "\[Rule]", "MachinePrecision"}]}], 
+                "]"}]}]}], "]"}]}], "\n", "\t", "]"}]}], ";", "\n", "\t", 
+         RowBox[{"P", "[", 
+          RowBox[{"\"\<SetCheckMatrixQ\>\"", "[", 
+           RowBox[{"Boole", "[", 
+            RowBox[{"!", 
+             RowBox[{"TrueQ", "[", 
+              RowBox[{"!", 
+               RowBox[{"OptionValue", "[", "\"\<CheckMatrix\>\"", "]"}]}], 
+              "]"}]}], "]"}], "]"}], "]"}], ";", "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"P", "[", 
+               RowBox[{"\"\<CheckMatrixQ\>\"", "[", "]"}], "]"}], "=!=", 
+              "0"}], ")"}], "&&", 
+            RowBox[{"(", 
+             RowBox[{"!", 
+              RowBox[{"SparseArray`SparseArraySortedQ", "[", "A", "]"}]}], 
+             ")"}]}], ",", "\n", "\t\t", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"Pardiso", "::", "unsorted"}], "]"}], ";", "\n", "\t\t", 
+            
+            RowBox[{"A", "=", " ", 
+             RowBox[{"SparseArray`SparseArraySort", "[", "A", "]"}]}], 
+            ";"}]}], "\n", "\t", "]"}], ";", "\n", "\t", 
+         RowBox[{"a", " ", "=", " ", 
+          RowBox[{"Developer`ToPackedArray", "[", 
+           RowBox[{"N", "[", 
+            RowBox[{"A", "[", "\"\<NonzeroValues\>\"", "]"}], "]"}], "]"}]}], 
+         ";", "\n", "\t", 
+         RowBox[{"If", "[", " ", 
+          RowBox[{
+           RowBox[{"Developer`PackedArrayQ", "[", 
+            RowBox[{"a", ",", "Real"}], "]"}], ",", "\n", "\t\t", 
+           RowBox[{
+            RowBox[{"P", "[", 
+             RowBox[{"\"\<Init\>\"", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"A", "[", "\"\<RowPointers\>\"", "]"}], " ", "+", " ",
+                 "1"}], ",", " ", 
+               RowBox[{"Flatten", "[", 
+                RowBox[{"A", "[", "\"\<ColumnIndices\>\"", "]"}], "]"}], ",", 
+               "a", ",", "mtype"}], "]"}], "]"}], ";"}], "\n", "\t\t", ",", 
+           "\n", "\t\t", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"Pardiso", "::", "unreal"}], "]"}], ";"}]}], "\n", "\t", 
+          "]"}], ";", " ", "\n", "\t", 
+         RowBox[{"iparm", " ", "=", " ", 
+          RowBox[{"OptionValue", "[", "\"\<IntegerParameters\>\"", "]"}]}], 
+         ";", " ", "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"VectorQ", "[", "iparm", "]"}], "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"iparm", "=", 
+             RowBox[{"P", "[", 
+              RowBox[{"\"\<IntegerParameters\>\"", "[", "]"}], "]"}]}], 
+            ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\n", "\t", 
+         RowBox[{"perm", " ", "=", " ", 
+          RowBox[{"OptionValue", "[", "\"\<Permutation\>\"", "]"}]}], ";", 
+         " ", "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"VectorQ", "[", "perm", "]"}], ")"}], "&&", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"Length", "[", "perm", "]"}], "==", "n"}], ")"}], "&&", 
+            
+            RowBox[{"1", "<=", 
+             RowBox[{"Min", "[", "perm", "]"}]}], "&&", 
+            RowBox[{
+             RowBox[{"Max", "[", "perm", "]"}], "\[LessEqual]", "n"}]}], ",", 
+           "\n", "\t\t", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"iparm", " ", "=", " ", 
+              RowBox[{"P", "[", 
+               RowBox[{"\"\<IntegerParameters\>\"", "[", "]"}], "]"}]}], 
+             ";"}], "*)"}], "\n", "\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"iparm", "[", 
+              RowBox[{"[", "5", "]"}], "]"}], "=", "1"}], ";", "\n", "\t\t", 
+            RowBox[{"P", "[", 
+             RowBox[{"\"\<SetPermutation\>\"", "[", "perm", "]"}], "]"}], 
+            ";"}]}], " ", "\n", "\t", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "iparm", "\[LeftDoubleBracket]", "8", "\[RightDoubleBracket]"}], 
+          "=", 
+          RowBox[{"OptionValue", "[", "\"\<IterativeRefinements\>\"", "]"}]}],
+          ";", "\[IndentingNewLine]", 
+         RowBox[{"P", "[", 
+          RowBox[{"\"\<SetIntegerParameters\>\"", "[", "iparm", "]"}], "]"}], 
+         ";", "\[IndentingNewLine]", "\n", "\t", 
+         RowBox[{"P", "[", 
+          RowBox[{"\"\<FactorizeSymbolically\>\"", "[", "]"}], "]"}], ";", 
+         " ", "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"P", "[", 
+             RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}], " ", "=!=", " ", 
+            "0"}], ",", " ", 
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<Pardiso error in FactorizeSymbolically. Error code = \>\"", 
+             ",", " ", 
+             RowBox[{"P", "[", 
+              RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}]}], "]"}]}], "]"}], 
+         ";", " ", "\n", "\t", 
+         RowBox[{"P", "[", 
+          RowBox[{"\"\<FactorizeNumerically\>\"", "[", "]"}], "]"}], ";", " ",
+          "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"P", "[", 
+             RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}], " ", "=!=", " ", 
+            "0"}], ",", " ", 
+           RowBox[{"Print", "[", 
+            RowBox[{
+            "\"\<Pardiso error in FactorizeNumerically. Error code = \>\"", 
+             ",", " ", 
+             RowBox[{"P", "[", 
+              RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}]}], "]"}]}], "]"}], 
+         ";", " ", "\n", "\t", 
+         RowBox[{"P", "[", 
+          RowBox[{"\"\<SetTimeStamp\>\"", "[", 
+           RowBox[{"AbsoluteTime", "[", "]"}], "]"}], "]"}], ";", " ", "\n", 
+         "\t", "P"}]}], "\[IndentingNewLine]", "]"}], ",", 
+      "\[IndentingNewLine]", "\"\<Pardiso\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\"\<A0_SparseArray\>\"", "}"}], ",", 
+      "\[IndentingNewLine]", "None"}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Pardiso", "[", 
+     RowBox[{
+      RowBox[{"(", "A0_", ")"}], "?", "MatrixQ"}], "]"}], " ", ":=", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", " ", 
+     RowBox[{
+      RowBox[{"Pardiso", "[", 
+       RowBox[{"Sparsify", "[", "A0", "]"}], "]"}], ",", 
+      "\[IndentingNewLine]", "\"\<Pardiso\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\"\<A0_?MatrixQ\>\"", "}"}], ",", "\[IndentingNewLine]", 
+      "None"}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{
+     RowBox[{"(", "P_Pardiso", ")"}], "[", 
+     RowBox[{
+      RowBox[{"b0_", "?", "VectorQ"}], ",", " ", 
+      RowBox[{"modestr_String:", "\"\<N\>\""}]}], "]"}], " ", ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"mode", ",", "postproc", ",", "b", ",", "x"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"b", "=", 
+          RowBox[{"Developer`ToPackedArray", "[", 
+           RowBox[{"N", "[", "b0", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"Developer`PackedArrayQ", "[", 
+             RowBox[{"b", ",", "Real"}], "]"}]}], ",", "\[IndentingNewLine]", 
+           
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"Pardiso", "::", "unreal"}], "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"x", " ", "=", " ", "$Failed"}], ";"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Length", "[", "b", "]"}], " ", "!=", " ", 
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Message", "[", 
+                RowBox[{
+                 RowBox[{"Pardiso", "::", "vecdim"}], ",", " ", 
+                 RowBox[{"Length", "[", "b", "]"}], ",", " ", 
+                 RowBox[{"P", "[", 
+                  RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"x", " ", "=", " ", "$Failed"}], ";"}], 
+              "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"mode", "=", 
+                RowBox[{"modestr", "/.", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"\"\<N\>\"", "\[Rule]", "0"}], ",", 
+                   RowBox[{"\"\<T\>\"", "\[Rule]", "2"}], ",", 
+                   RowBox[{"\"\<C\>\"", "\[Rule]", "1"}], ",", 
+                   RowBox[{"\"\<J\>\"", "\[Rule]", "0"}]}], "}"}]}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"postproc", "=", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"modestr", "===", "\"\<J\>\""}], ",", "Conjugate", 
+                  ",", "Identity"}], "]"}]}], ";", "\[IndentingNewLine]", 
+               RowBox[{"x", " ", "=", " ", 
+                RowBox[{"postproc", "[", 
+                 RowBox[{"P", "[", 
+                  RowBox[{"\"\<LinearSolve\>\"", "[", 
+                   RowBox[{"b", ",", " ", "mode"}], "]"}], "]"}], "]"}]}], 
+               ";", "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"P", "[", 
+                   RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}], " ", "=!=", 
+                  " ", "0"}], ",", "\[IndentingNewLine]", 
+                 RowBox[{"Print", "[", 
+                  RowBox[{
+                  "\"\<Pardiso error in P_Pardiso[b_?VectorQ,\>\"", ",", 
+                   "modestr", ",", "\"\<]. Error code = \>\"", ",", " ", 
+                   RowBox[{"P", "[", 
+                    RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}]}], "]"}]}], 
+                "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", "x"}]}], "\[IndentingNewLine]", "]"}], ",", 
+      "\[IndentingNewLine]", "\"\<LinearSolve\>\"", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<b0_?VectorQ\>\"", ",", 
+        RowBox[{"\"\<modestr\>\"", "_"}]}], "}"}], ",", "\[IndentingNewLine]",
+       "Pardiso"}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{
+     RowBox[{"(", "P_Pardiso", ")"}], "[", 
+     RowBox[{
+      RowBox[{"B0_", "?", "MatrixQ"}], ",", " ", 
+      RowBox[{"modestr_String:", "\"\<N\>\""}], ",", 
+      RowBox[{"side", ":", 
+       RowBox[{"(", 
+        RowBox[{"Left", "|", "Right"}], ")"}], ":", "Left"}]}], "]"}], " ", ":=", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "mode", ",", "postproc", ",", "B", ",", "X", ",", "nrhs", ",", "n"}],
+          "}"}], ",", "\n", "\t", 
+        RowBox[{
+         RowBox[{"B", "=", 
+          RowBox[{"Developer`ToPackedArray", "[", 
+           RowBox[{"Normal", "[", "B0", "]"}], "]"}]}], ";", "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"!", 
+            RowBox[{"Developer`PackedArrayQ", "[", 
+             RowBox[{"B", ",", "Real"}], "]"}]}], ",", "\[IndentingNewLine]", 
+           
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{"Pardiso", "::", "unreal"}], "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"X", " ", "=", " ", "$Failed"}]}], "\[IndentingNewLine]", 
+           ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"X", " ", "=", " ", 
+             RowBox[{"Switch", "[", 
+              RowBox[{
+              "side", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               "Right", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               RowBox[{"(", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"nrhs", ",", "n"}], "}"}], "=", 
+                  RowBox[{"Dimensions", "[", "B", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"n", " ", "!=", " ", 
+                    RowBox[{"P", "[", 
+                    RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"Message", "[", 
+                    RowBox[{
+                    RowBox[{"Pardiso", "::", "matdim"}], ",", " ", "n", ",", 
+                    " ", 
+                    RowBox[{"P", "[", 
+                    RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], "]"}], ";",
+                     "\[IndentingNewLine]", "$Failed"}], 
+                   "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"mode", "=", 
+                    RowBox[{"modestr", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<N\>\"", "\[Rule]", "2"}], ",", 
+                    RowBox[{"\"\<T\>\"", "\[Rule]", "0"}], ",", 
+                    RowBox[{"\"\<C\>\"", "\[Rule]", "0"}], ",", 
+                    RowBox[{"\"\<J\>\"", "\[Rule]", "1"}]}], "}"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"postproc", "=", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"modestr", "===", "\"\<C\>\""}], ",", "Conjugate",
+                     ",", "Identity"}], "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"postproc", "[", 
+                    RowBox[{"P", "[", 
+                    RowBox[{"\"\<LinearSolveMatrix\>\"", "[", 
+                    RowBox[{"B", ",", " ", "mode"}], "]"}], "]"}], "]"}]}]}], 
+                  "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+                ")"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               "Left", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               RowBox[{"(", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"n", ",", "nrhs"}], "}"}], "=", 
+                  RowBox[{"Dimensions", "[", "B", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"n", " ", "!=", " ", 
+                    RowBox[{"P", "[", 
+                    RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"Message", "[", 
+                    RowBox[{
+                    RowBox[{"Pardiso", "::", "matdim"}], ",", " ", "n", ",", 
+                    " ", 
+                    RowBox[{"P", "[", 
+                    RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], "]"}], ";",
+                     "\[IndentingNewLine]", "$Failed"}], 
+                   "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"mode", "=", 
+                    RowBox[{"modestr", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"\"\<N\>\"", "\[Rule]", "0"}], ",", 
+                    RowBox[{"\"\<T\>\"", "\[Rule]", "2"}], ",", 
+                    RowBox[{"\"\<C\>\"", "\[Rule]", "1"}], ",", 
+                    RowBox[{"\"\<J\>\"", "\[Rule]", "0"}]}], "}"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"postproc", "=", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"modestr", "===", "\"\<J\>\""}], ",", 
+                    "ConjugateTranspose", ",", "Transpose"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"postproc", "[", 
+                    RowBox[{"P", "[", 
+                    RowBox[{"\"\<LinearSolveMatrix\>\"", "[", 
+                    RowBox[{
+                    RowBox[{"Transpose", "[", "B", "]"}], ",", " ", "mode"}], 
+                    "]"}], "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+                "\[IndentingNewLine]", ")"}]}], "\[IndentingNewLine]", 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}], " ", "=!=", " ", 
+               "0"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Print", "[", 
+                RowBox[{
+                "\"\<Pardiso error in P_Pardiso[B_?MatrixQ,\>\"", ",", 
+                 "modestr", ",", "\"\<,\>\"", ",", "side", ",", 
+                 "\"\<]. Error code = \>\"", ",", " ", 
+                 RowBox[{"P", "[", 
+                  RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}]}], "]"}], 
+               ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], "\n", "\t", 
+          "]"}], ";", "\n", "\t", "X"}]}], "\[IndentingNewLine]", "]"}], ",", 
+      "\[IndentingNewLine]", "\"\<LinearSolve\>\"", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<B0_?MatrixQ\>\"", ",", 
+        RowBox[{"\"\<modestr\>\"", "_"}], ",", "\"\<side_\>\""}], "}"}], ",", 
+      "\[IndentingNewLine]", "Pardiso"}], "\[IndentingNewLine]", "]"}]}], ";",
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"P_Pardiso", "[", 
+     RowBox[{"\"\<Update\>\"", "[", "A0_SparseArray", "]"}], "]"}], " ", ":=",
+     " ", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"n", ",", " ", "A"}], "}"}], ",", " ", "\n", "\t", 
+        RowBox[{
+         RowBox[{"n", " ", "=", " ", 
+          RowBox[{"P", "[", 
+           RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "A0", "]"}], " ", "=!=", " ", "n"}], ",", 
+           " ", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"Pardiso", "::", "nupdate"}], ",", " ", 
+              RowBox[{"Length", "[", "A0", "]"}], ",", " ", "n"}], "]"}], 
+            ";"}], " ", "\[IndentingNewLine]", ",", " ", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"A", "=", 
+             RowBox[{"Switch", "[", 
+              RowBox[{
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<MatrixType\>\"", "[", "]"}], "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{"Generic", " ", "unsymmetric", " ", 
+                 RowBox[{"matrix", "."}]}], "*)"}], "\[IndentingNewLine]", 
+               "11", ",", " ", "A0", ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{"structurally", " ", "symmetric", " ", 
+                 RowBox[{"matrix", ".", " ", "Diagonal"}], " ", "elements", 
+                 " ", "must", " ", "be", " ", "nonzero", " ", "for", " ", 
+                 "pivoting", " ", 
+                 RowBox[{"reasons", "."}]}], "*)"}], "\[IndentingNewLine]", 
+               "1", ",", " ", "A0", ",", "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{"symmetric", ",", " ", 
+                 RowBox[{"positive", "-", 
+                  RowBox[{"definite", " ", 
+                   RowBox[{"matrix", ".", " ", "Diagonal"}], " ", "elements", 
+                   " ", "must", " ", "be", " ", "nonzero", " ", "for", " ", 
+                   "pivoting", " ", 
+                   RowBox[{"reasons", "."}]}]}]}], "*)"}], 
+               "\[IndentingNewLine]", "2", ",", " ", 
+               RowBox[{"UpperTriangularize", "[", "\[IndentingNewLine]", 
+                RowBox[{"A0", " ", "+", " ", 
+                 RowBox[{"$MachineEpsilon", " ", 
+                  RowBox[{"IdentityMatrix", "[", 
+                   RowBox[{"n", ",", "SparseArray", ",", 
+                    RowBox[{
+                    "WorkingPrecision", "\[Rule]", "MachinePrecision"}]}], 
+                   "]"}]}]}], "]"}], ",", "\n", "\t\t\t", 
+               RowBox[{"(*", 
+                RowBox[{"symmetric", ",", " ", 
+                 RowBox[{"indefinite", " ", 
+                  RowBox[{"matrix", ".", " ", "Diagonal"}], " ", "elements", 
+                  " ", "must", " ", "be", " ", "nonzero", " ", "for", " ", 
+                  "pivoting", " ", 
+                  RowBox[{"reasons", "."}]}]}], "*)"}], "\n", 
+               "\[IndentingNewLine]", 
+               RowBox[{"-", "2"}], ",", " ", 
+               RowBox[{"UpperTriangularize", "[", "\[IndentingNewLine]", 
+                RowBox[{"A0", " ", "+", " ", 
+                 RowBox[{"$MachineEpsilon", " ", 
+                  RowBox[{"IdentityMatrix", "[", 
+                   RowBox[{"n", ",", "SparseArray", ",", 
+                    RowBox[{
+                    "WorkingPrecision", "\[Rule]", "MachinePrecision"}]}], 
+                   "]"}]}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"P", "[", 
+                 RowBox[{"\"\<CheckMatrixQ\>\"", "[", "]"}], "]"}], "=!=", 
+                "0"}], "&&", 
+               RowBox[{"(", 
+                RowBox[{"!", 
+                 RowBox[{"SparseArray`SparseArraySortedQ", "[", "A", "]"}]}], 
+                ")"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Message", "[", 
+                RowBox[{"Pardiso", "::", "unsorted"}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"A", "=", " ", 
+                RowBox[{"SparseArray`SparseArraySort", "[", "A", "]"}]}], 
+               ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"P", "[", 
+             RowBox[{"\"\<Update\>\"", "[", 
+              RowBox[{"A", "[", "\"\<NonzeroValues\>\"", "]"}], "]"}], "]"}], 
+            ";"}]}], "\n", "\t", "]"}], ";"}]}], " ", "\[IndentingNewLine]", 
+       "]"}], ",", "\[IndentingNewLine]", "\"\<Update\>\"", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", "\"\<A0_SparseArray\>\"", "}"}], ",", 
+      "\[IndentingNewLine]", "Pardiso"}], "\[IndentingNewLine]", "]"}]}], ";",
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"P_Pardiso", "[", 
+     RowBox[{"\"\<Update\>\"", "[", 
+      RowBox[{"a0_", "?", "VectorQ"}], "]"}], "]"}], " ", ":=", " ", 
+    RowBox[{"TimingSow", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"nnz", ",", "a"}], "}"}], ",", " ", "\n", "\t", 
+        RowBox[{
+         RowBox[{"nnz", " ", "=", " ", 
+          RowBox[{"P", "[", 
+           RowBox[{"\"\<NumberOfNonzeros\>\"", "[", "]"}], "]"}]}], ";", " ", 
+         "\n", "\t", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "a0", "]"}], " ", "=!=", " ", "nnz"}], ",",
+            " ", "\n", "\t\t", 
+           RowBox[{
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"Pardiso", "::", "nnzupdate"}], ",", " ", 
+              RowBox[{"Length", "[", "a0", "]"}], ",", " ", "nnz"}], "]"}], 
+            ";"}], "\n", "\t", ",", " ", "\n", "\t\t", 
+           RowBox[{
+            RowBox[{"a", "=", " ", 
+             RowBox[{"Developer`ToPackedArray", "[", 
+              RowBox[{"N", "[", "a0", "]"}], "]"}]}], ";", "\n", "\t\t", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"!", 
+               RowBox[{"Developer`PackedArrayQ", "[", 
+                RowBox[{"a", ",", "Real"}], "]"}]}], ",", "\n", "\t\t\t", 
+              RowBox[{
+               RowBox[{"Message", "[", 
+                RowBox[{"Pardiso", "::", "unreal"}], "]"}], ";"}], "\n", 
+              "\t\t", ",", "\n", "\t\t\t", 
+              RowBox[{
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<SetNonzeroValues\>\"", "[", "a", "]"}], "]"}], 
+               ";", " ", "\n", "\t\t\t", 
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<FactorizeNumerically\>\"", "[", "]"}], "]"}], 
+               ";", " ", "\n", "\t\t\t", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"P", "[", 
+                   RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}], " ", "=!=", 
+                  " ", "0"}], ",", " ", 
+                 RowBox[{"Print", "[", 
+                  RowBox[{
+                  "\"\<Pardiso error in FactorizeSymbolically. Error code =\>\
+\"", ",", " ", 
+                   RowBox[{"P", "[", 
+                    RowBox[{"\"\<Error\>\"", "[", "]"}], "]"}]}], "]"}]}], 
+                "]"}], ";", "\n", "\t\t\t", 
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<SetTimeStamp\>\"", "[", 
+                 RowBox[{"AbsoluteTime", "[", "]"}], "]"}], "]"}]}]}], "\n", 
+             "\t\t", "]"}], ";"}]}], " ", "\n", "\t", "]"}], ";"}]}], " ", 
+       "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      "\"\<Update\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\"\<a0_VectorQ\>\"", "}"}], ",", "\[IndentingNewLine]", 
+      "Pardiso"}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]",
+    "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"P_Pardiso", "[", 
+     RowBox[{"\"\<Update\>\"", "[", 
+      RowBox[{
+       RowBox[{"(", "A0_", ")"}], "?", "MatrixQ"}], "]"}], "]"}], " ", ":=", 
+    " ", 
+    RowBox[{"P", "[", 
+     RowBox[{"\"\<Update\>\"", "[", 
+      RowBox[{"Sparsify", "[", "A0", "]"}], "]"}], "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"P_Pardiso", "[", 
+     RowBox[{"\"\<Dimensions\>\"", "[", "]"}], "]"}], " ", ":=", " ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", "1"}], "}"}], " ", 
+     RowBox[{"P", "[", 
+      RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"Dimensions", "[", "P_Pardiso", "]"}], " ", ":=", " ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", "1"}], "}"}], " ", 
+     RowBox[{"P", "[", 
+      RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "To", " ", "make", " ", "it", " ", "conforming", " ", "with", " ", "the", 
+     " ", "LinearSolve", " ", 
+     RowBox[{"syntax", "."}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"Pardiso", "[", 
+     RowBox[{
+      RowBox[{"L_", "?", "MatrixQ"}], ",", "x_", ",", "opts___"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"Pardiso", "[", "L", "]"}], "[", "x", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"Pardiso", " ", "/:", " ", 
+    RowBox[{"MakeBoxes", "[", 
+     RowBox[{"P_Pardiso", ",", " ", "StandardForm"}], "]"}], " ", ":=", " ", 
+    RowBox[{
+     RowBox[{"BoxForm`ArrangeSummaryBox", "[", "\n", "\t", 
+      RowBox[{"Pardiso", ",", " ", "\"\<\>\"", ",", " ", 
+       RowBox[{"StringJoin", "[", 
+        RowBox[{"\"\<ID:  \>\"", ",", " ", 
+         RowBox[{"ToString", "[", 
+          RowBox[{"P", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "]"}], ",", " ", "\n", 
+       "\t", 
+       RowBox[{"{", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"{", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"BoxForm`MakeSummaryItem", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"\"\<Specified Elements: \>\"", ",", " ", 
+               RowBox[{"P", "[", 
+                RowBox[{"\"\<NumberOfNonzeros\>\"", "[", "]"}], "]"}]}], 
+              "}"}], ",", " ", "StandardForm"}], "]"}], ",", " ", "\n", 
+           "\t\t\t", 
+           RowBox[{"BoxForm`MakeSummaryItem", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"\"\<Matrix Type: \>\"", ",", " ", 
+               RowBox[{
+                RowBox[{"$PardisoMatrixTypes", "[", 
+                 RowBox[{"P", "[", 
+                  RowBox[{"\"\<MatrixType\>\"", "[", "]"}], "]"}], "]"}], "[", 
+                RowBox[{"[", 
+                 RowBox[{"2", ";;"}], "]"}], "]"}]}], "}"}], ",", " ", 
+             "StandardForm"}], "]"}]}], "\n", "\t\t", "}"}], ",", " ", "\n", 
+         "\t\t", 
+         RowBox[{"{", "\n", "\t\t\t", 
+          RowBox[{
+           RowBox[{"BoxForm`MakeSummaryItem", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"\"\<Matrix Dimensions: \>\"", ",", " ", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "1"}], "}"}], " ", 
+                RowBox[{"P", "[", 
+                 RowBox[{"\"\<Length\>\"", "[", "]"}], "]"}]}]}], "}"}], ",", 
+             " ", "StandardForm"}], "]"}], ",", " ", "\n", "\t\t\t", 
+           RowBox[{"BoxForm`MakeSummaryItem", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"\"\<Type: \>\"", ",", " ", 
+               RowBox[{
+                RowBox[{"$PardisoMatrixTypes", "[", 
+                 RowBox[{"P", "[", 
+                  RowBox[{"\"\<MatrixType\>\"", "[", "]"}], "]"}], "]"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", " ", 
+             "StandardForm"}], "]"}]}], "\n", "\t\t", "}"}]}], "\n", "\t", 
+        "}"}], ",", " ", "\n", "\t", 
+       RowBox[{"{", "\n", "\t", "}"}], ",", " ", "\n", "\t", "StandardForm", 
+       ",", " ", 
+       RowBox[{"\"\<Interpretable\>\"", "\[Rule]", "False"}]}], 
+      "\[IndentingNewLine]", "]"}], " ", "/;", " ", 
+     RowBox[{
+      RowBox[{"Function", "[", 
+       RowBox[{"Q", ",", " ", 
+        RowBox[{
+         RowBox[{"Head", "[", 
+          RowBox[{"Q", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "]"}], " ", "===", " ", 
+         "Integer"}]}], "]"}], "[", "P", "]"}]}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"Fix", " ", "a", " ", "message", " ", "problem"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Quiet", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"Pardiso", "[", "id$_Integer", "]"}], "[", 
+       RowBox[{"f$_String", "[", "___", "]"}], "]"}], "/;", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          StyleBox[
+           RowBox[{"LTemplate", "::", "nofun"}], "MessageName"], ",", 
+          RowBox[{
+           RowBox[{"StringTemplate", "[", "\"\<``::``\>\"", "]"}], "[", 
+           RowBox[{"Pardiso", ",", "f$"}], "]"}]}], "]"}], ";", "False"}], 
+       ")"}]}], "=."}], "\[IndentingNewLine]", "]"}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"Pardiso", "[", "id$_Integer", "]"}], "[", 
+      RowBox[{"f$_String", "[", "___", "]"}], "]"}], "/;", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"Message", "[", 
+        RowBox[{
+         StyleBox[
+          RowBox[{"LTemplate", "::", "nofun"}], "MessageName"], ",", 
+         RowBox[{
+          RowBox[{"StringTemplate", "[", "\"\<``::``\>\"", "]"}], "[", 
+          RowBox[{"Pardiso", ",", "f$"}], "]"}]}], "]"}], ";", "False"}], 
+      ")"}]}], ":=", "$Failed"}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.797740277393454*^9, 3.797740383837234*^9}, {
+   3.797740438758821*^9, 3.7977404558153543`*^9}, {3.797740495925508*^9, 
+   3.797740657008052*^9}, {3.797740694910132*^9, 3.797740756961932*^9}, {
+   3.797740900826112*^9, 3.797740929761376*^9}, 3.7977419869415293`*^9, {
+   3.797744651100842*^9, 3.797744678603187*^9}, {3.7977449285755987`*^9, 
+   3.797744947815014*^9}, {3.797745637136037*^9, 3.7977457122239923`*^9}, {
+   3.797745761376295*^9, 3.7977459678347483`*^9}, {3.801115321539188*^9, 
+   3.80111536190979*^9}, {3.801115459321425*^9, 3.801115473950707*^9}, {
+   3.8018322728243523`*^9, 3.801832296345174*^9}, {3.80183253510146*^9, 
+   3.8018325382866573`*^9}, 3.8187786526663523`*^9, {3.8235876018904867`*^9, 
+   3.823587607339554*^9}, {3.82359005434833*^9, 3.823590198883685*^9}, {
+   3.823590271946879*^9, 3.823590288833783*^9}, {3.823590361804055*^9, 
+   3.8235904900825872`*^9}, {3.8235905610319853`*^9, 3.823590566783544*^9}, {
+   3.823590846607834*^9, 3.823590847133191*^9}, 3.823591022345254*^9, {
+   3.8235928244212914`*^9, 3.823592825371303*^9}, {3.823593169478572*^9, 
+   3.823593262642538*^9}},ExpressionUUID->"ffddb801-d2a4-4550-b81b-\
+5a1110737a26"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 43183, 963, 6968, "Input",ExpressionUUID->"ffddb801-d2a4-4550-b81b-5a1110737a26"]
+}
+]
+*)
+

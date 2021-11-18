@@ -1,0 +1,481 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     21678,        473]
+NotebookOptionsPosition[     21386,        460]
+NotebookOutlinePosition[     21722,        475]
+CellTagsIndexPosition[     21679,        472]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"KKTFindRoot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M0_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "En", ",", "M", ",", "n", ",", "d", ",", "\[Lambda]", ",", "x", ",", 
+        "X", ",", "X0", ",", "res", ",", "meshlistQ", ",", "maxwallclocktime",
+         ",", "maxiter", ",", "TOL", ",", "tic", ",", "toc", ",", 
+        "\[IndentingNewLine]", "F", ",", "DF", ",", "method", ",", 
+        "topositions", ",", "tomesh", ",", "infokeys"}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"M", "\[LeftArrow]", "M0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ClearCache", "[", "M", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{"DofCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"d", "=", 
+        RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"x", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"VertexCoordinates", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<LagrangeMultiplier\>\"", "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"Not", "[", 
+          RowBox[{"VectorQ", "[", "\[Lambda]", "]"}], "]"}], ",", 
+         RowBox[{"\[Lambda]", "=", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0.", ",", 
+            RowBox[{"Length", "[", 
+             RowBox[{"Constraint", "[", "M", "]"}], "]"}]}], "]"}]}]}], "]"}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"meshlistQ", "=", 
+        RowBox[{"TrueQ", "[", 
+         RowBox[{"OptionValue", "[", "\"\<CreateMeshList\>\"", "]"}], "]"}]}],
+        ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{"meshlistQ", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"$MeshList", "=", 
+           RowBox[{"Init", "[", 
+            RowBox[{"meshlist", ",", "M"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"$LagrangeMultiplierList", "=", 
+           RowBox[{"Association", "[", 
+            RowBox[{"0", "\[Rule]", "\[Lambda]"}], "]"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"$MeshList", "=", "None"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"$LagrangeMultiplierList", "=", "None"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"maxwallclocktime", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MaxWallClockTime\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"NumberQ", "[", "maxwallclocktime", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"maxiter", "=", "\[Infinity]"}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"maxwallclocktime", "=", "\[Infinity]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"maxiter", "=", 
+           RowBox[{"OptionValue", "[", "\"\<MaxIterations\>\"", "]"}]}], 
+          ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"TOL", "=", " ", 
+        RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"infokeys", "=", 
+          RowBox[{"{", 
+           RowBox[{
+           "\"\<Iteration\>\"", ",", "\"\<MaxIteration\>\"", ",", 
+            "\"\<WallClockTime\>\"", ",", "\"\<MaxWallClockTime\>\"", ",", 
+            "\"\<Objective\>\"", ",", "\"\<Residual\>\"", ",", 
+            "\"\<Time\>\""}], "}"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"infokeys", "=", "All"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"method", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Method\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"tomesh", "[", "X_", "]"}], ":=", 
+        RowBox[{"Module", "[", 
+         RowBox[{
+          RowBox[{"{", "pts", "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"pts", "=", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"X", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "n"}], "\[RightDoubleBracket]"}], ",", 
+              "d"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"VertexCoordinates", "[", "M", "]"}], "!=", "pts"}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"SetVertexCoordinates", "[", 
+               RowBox[{"M", ",", "pts"}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"topositions", "[", "M_mesh", "]"}], ":=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"VertexCoordinates", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"F", "[", 
+         RowBox[{"X_", "?", "VectorQ"}], "]"}], ":=", 
+        RowBox[{"(", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"tomesh", "[", "X", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"Energy", "'"}], "[", "M", "]"}], "+", 
+             RowBox[{
+              RowBox[{"X", "\[LeftDoubleBracket]", 
+               RowBox[{
+                RowBox[{"n", "+", "1"}], ";;"}], "\[RightDoubleBracket]"}], 
+              ".", 
+              RowBox[{
+               RowBox[{"Constraint", "'"}], "[", "M", "]"}]}]}], ",", 
+            RowBox[{"ConstraintViolation", "[", "M", "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", ")"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"DF", "[", 
+         RowBox[{"X_", "?", "VectorQ"}], "]"}], ":=", 
+        RowBox[{"(", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"tomesh", "[", "X", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"ArrayFlatten", "[", 
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Energy", "''"}], "[", "M", "]"}], "+", 
+                RowBox[{
+                 RowBox[{"Constraint", "''"}], "[", 
+                 RowBox[{"M", ",", 
+                  RowBox[{"{", 
+                   RowBox[{"X", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    RowBox[{"n", "+", "1"}], ";;"}], 
+                    "\[RightDoubleBracket]"}], "}"}], ",", 
+                  RowBox[{"{", "1", "}"}]}], "]"}]}], ",", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Constraint", "'"}], "[", "M", "]"}], 
+                "\[Transpose]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Constraint", "'"}], "[", "M", "]"}], ",", "0."}], 
+              "}"}]}], "\[IndentingNewLine]", "}"}], "]"}]}], 
+         "\[IndentingNewLine]", ")"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tic", "=", 
+        RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"X0", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"Flatten", "[", "x", "]"}], ",", "\[Lambda]"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"En", "=", 
+        RowBox[{"Energy", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"res", "=", 
+        RowBox[{"Max", "[", 
+         RowBox[{"Abs", "[", 
+          RowBox[{"F", "[", "X0", "]"}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"toc", "=", 
+        RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"$S", "=", 
+        RowBox[{"Association", "@@", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<Iteration\>\"", "\[Rule]", "0"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<MaxIteration\>\"", "\[Rule]", "maxiter"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<WallClockTime\>\"", "\[Rule]", 
+            RowBox[{"toc", "-", "tic"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+           "\"\<MaxWallClockTime\>\"", "\[Rule]", "maxwallclocktime"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Objective\>\"", "\[Rule]", "En"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Residual\>\"", "\[Rule]", "res"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Time\>\"", "\[Rule]", 
+            RowBox[{"toc", "-", "tic"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<Evaluations\>\"", "\[Rule]", "0"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Jacobian Evaluations\>\"", "\[Rule]", "0"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<EnergyFunction\>\"", "\[Rule]", 
+            RowBox[{"EnergyList", "[", "M", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Constraints\>\"", "\[Rule]", 
+            RowBox[{"ConstraintList", "[", "M", "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Method\>\"", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"\"\<KKTFindRoot\>\"", ",", "\[IndentingNewLine]", 
+              RowBox[{"Association", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"\"\<ResidualFunction\>\"", "\[Rule]", "Automatic"}], 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "TOL"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"\"\<Method\>\"", "\[Rule]", "method"}]}], 
+               "\[IndentingNewLine]", "]"}]}], "}"}]}]}], 
+          "\[IndentingNewLine]", "}"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"$InfoList", "=", 
+        RowBox[{"Association", "[", 
+         RowBox[{"0", "\[Rule]", 
+          RowBox[{
+          "$S", "\[LeftDoubleBracket]", "infokeys", 
+           "\[RightDoubleBracket]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tic", "=", 
+        RowBox[{"AbsoluteTime", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"TimeConstrained", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"FindRoot", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"F", "[", "X", "]"}], "\[Equal]", 
+            RowBox[{"0.", " ", "X0"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"X", ",", "X0"}], "}"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"MaxIterations", "\[Rule]", "maxiter"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"AccuracyGoal", "\[Rule]", 
+            RowBox[{"Log10", "[", 
+             RowBox[{"1", "/", "TOL"}], "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Method", "\[Rule]", "method"}], ",", " ", 
+           "\[IndentingNewLine]", 
+           RowBox[{"StepMonitor", "\[RuleDelayed]", 
+            RowBox[{"(", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"toc", "=", 
+               RowBox[{"AbsoluteTime", "[", "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"$S", "[", "\"\<Time\>\"", "]"}], "=", 
+               RowBox[{"toc", "-", "tic"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{"tomesh", "[", "X", "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"$S", "[", "\"\<WallClockTime\>\"", "]"}], "=", 
+               RowBox[{
+                RowBox[{"$S", "[", "\"\<WallClockTime\>\"", "]"}], "+", "toc",
+                 "-", "tic"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"$S", "[", "\"\<Objective\>\"", "]"}], "=", 
+               RowBox[{"Energy", "[", "M", "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], "=", 
+               RowBox[{
+                RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], "+", "1"}]}], 
+              ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}], "=", 
+               RowBox[{"Max", "[", 
+                RowBox[{"Abs", "[", 
+                 RowBox[{"F", "[", "X", "]"}], "]"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"x", "=", 
+               RowBox[{"X", "\[LeftDoubleBracket]", 
+                RowBox[{";;", "n"}], "\[RightDoubleBracket]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\[Lambda]", "=", 
+               RowBox[{"X", "\[LeftDoubleBracket]", 
+                RowBox[{
+                 RowBox[{"n", "+", "1"}], ";;"}], "\[RightDoubleBracket]"}]}],
+               ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{"meshlistQ", ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"AppendToMeshList", "[", 
+                  RowBox[{"$MeshList", ",", 
+                   RowBox[{"Partition", "[", 
+                    RowBox[{"x", ",", "d"}], "]"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"AppendTo", "[", 
+                  RowBox[{"$LagrangeMultiplierList", ",", 
+                   RowBox[{
+                    RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], "\[Rule]", 
+                    "\[Lambda]"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+               "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"AppendTo", "[", 
+               RowBox[{"$InfoList", ",", 
+                RowBox[{
+                 RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], "\[Rule]", 
+                 "$S"}]}], "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"tic", "=", 
+               RowBox[{"AbsoluteTime", "[", "]"}]}], ";"}], 
+             "\[IndentingNewLine]", ")"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"EvaluationMonitor", "\[RuleDelayed]", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"$S", "[", "\"\<Evaluations\>\"", "]"}], "=", 
+              RowBox[{
+               RowBox[{"$S", "[", "\"\<Evaluations\>\"", "]"}], "+", "1"}]}], 
+             ")"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Jacobian", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"DF", "[", "X", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"EvaluationMonitor", "\[RuleDelayed]", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"$S", "[", "\"\<Jacobian Evaluations\>\"", "]"}], 
+                 "=", 
+                 RowBox[{
+                  RowBox[{"$S", "[", "\"\<Jacobian Evaluations\>\"", "]"}], 
+                  "+", "1"}]}], ")"}]}]}], "}"}]}]}], "\[IndentingNewLine]", 
+          "]"}], ",", "\[IndentingNewLine]", "maxwallclocktime"}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}], ">", "TOL"}], ")"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{
+            RowBox[{"ModelAlgorithm", "::", "notconverged"}], ",", 
+            RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], ",", "TOL", ",", 
+            RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}]}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"tomesh", "[", 
+        RowBox[{"Join", "[", 
+         RowBox[{"x", ",", "\[Lambda]"}], "]"}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Association", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<Solution\>\"", "\[Rule]", "M"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<LagrangeMultiplier\>\"", "\[Rule]", "\[Lambda]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MeshList\>\"", "\[Rule]", 
+          RowBox[{"If", "[", 
+           RowBox[{"meshlistQ", ",", "$MeshList", ",", 
+            RowBox[{"Missing", "[", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<LagrangeMultiplierList\>\"", "\[Rule]", 
+          RowBox[{"If", "[", 
+           RowBox[{"meshlistQ", ",", "$LagrangeMultiplierList", ",", 
+            RowBox[{"Missing", "[", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<IterationData\>\"", "\[Rule]", "$InfoList"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MethodData\>\"", "\[Rule]", 
+          RowBox[{"$S", "\[LeftDoubleBracket]", 
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+            "\"\<MaxIteration\>\"", ",", "\[IndentingNewLine]", 
+             "\"\<MaxWallClockTime\>\"", ",", "\[IndentingNewLine]", 
+             "\"\<EnergyFunction\>\"", ",", "\[IndentingNewLine]", 
+             "\"\<Constraints\>\"", ",", "\[IndentingNewLine]", 
+             "\"\<Method\>\""}], "\[IndentingNewLine]", "}"}], 
+           "\[RightDoubleBracket]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Tolerance\>\"", "\[Rule]", 
+        RowBox[{"1.", " ", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "5"}], ")"}]}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "100"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MaxWallClockTime\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<CreateMeshList\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<LagrangeMultiplier\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Method", "\[Rule]", "\"\<Newton\>\""}]}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{"Method", "\[Rule]", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+         "\"\<AffineCovariantNewton\>\"", ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<BroydenUpdates\>\"", "\[Rule]", "False"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<MinimalDampingFactor\>\"", "\[Rule]", 
+           RowBox[{"10", "^", 
+            RowBox[{"-", "16"}]}]}]}], "\[IndentingNewLine]", "}"}]}], "*)"}],
+       "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Warnings\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<notconverged\>\"", "\[Rule]", 
+       "\"\<Warning: Maximum number `1` of iterations reached without \
+fulfilling the accuracy goal of `2`. Reached accuracy is `3`.\>\""}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7965524150902576`*^9, 3.7965524697405777`*^9}, {
+   3.7965525188360443`*^9, 3.796552604878924*^9}, {3.7965527507957897`*^9, 
+   3.7965527997043333`*^9}, {3.796554357211919*^9, 3.796554364858677*^9}, {
+   3.796558536821219*^9, 3.7965585909952803`*^9}, {3.79655862597173*^9, 
+   3.796558887132779*^9}, {3.796558918236746*^9, 3.796559175555873*^9}, {
+   3.796559211589394*^9, 3.796559229899191*^9}, {3.796559360390748*^9, 
+   3.79655947109865*^9}, {3.7965595423984337`*^9, 3.7965597866543617`*^9}, {
+   3.796559822763854*^9, 3.79655991517819*^9}, {3.796559947441989*^9, 
+   3.7965600555321712`*^9}, {3.7965600973415537`*^9, 
+   3.7965601200581903`*^9}, {3.796562695449472*^9, 3.796562701399783*^9}, 
+   3.796562732113633*^9, {3.7965627723680067`*^9, 3.796562862318184*^9}, {
+   3.796562927786268*^9, 3.796562968942005*^9}, {3.796563135987871*^9, 
+   3.796563161872553*^9}, 3.796563381644123*^9, {3.796563413566991*^9, 
+   3.796563431696116*^9}, {3.796563462334423*^9, 3.796563503915018*^9}, 
+   3.79656363216848*^9, 3.796563683630711*^9, 3.796563742579319*^9, {
+   3.7966504828053417`*^9, 3.7966505063968143`*^9}, {3.7966655924260607`*^9, 
+   3.796665599904052*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"575b551e-a53a-47fe-a15f-f9618afa1988"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 20824, 438, 3767, "Input",ExpressionUUID->"575b551e-a53a-47fe-a15f-f9618afa1988"]
+}
+]
+*)
+

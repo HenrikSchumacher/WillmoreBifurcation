@@ -1,0 +1,229 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9945,        221]
+NotebookOptionsPosition[      9654,        208]
+NotebookOutlinePosition[      9990,        223]
+CellTagsIndexPosition[      9947,        220]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"GraphicsComplexPOVray", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"GC_GraphicsComplex", ",", 
+      RowBox[{"file_String:", "$POVrayGeometryFile"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "path", ",", "basefilename", ",", "pts", ",", "triangles", ",", 
+        "normals", ",", "colors", ",", "texcoords", ",", "globaltex", ",", 
+        "prec", ",", "S"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"globaltex", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Style\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"prec", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Precision\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{
+        "GC", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"triangles", "=", 
+        RowBox[{
+         RowBox[{"Join", "@@", 
+          RowBox[{
+           RowBox[{"Cases", "[", 
+            RowBox[{"GC", ",", "_Polygon"}], "]"}], "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], "-", 
+         "1"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"normals", ",", "colors", ",", "texcoords"}], "}"}], "=", 
+        RowBox[{"ToPack", "/@", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "VertexNormals", ",", "VertexColors", ",", 
+             "VertexTextureCoordinates"}], "}"}], "/.", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"GC", ",", "_Rule"}], "]"}]}], ")"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"S", "=", 
+        RowBox[{"Make", "[", "\"\<StringToolChain\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TrueQ", "[", 
+           RowBox[{"OptionValue", "[", "OverwriteTarget", "]"}], "]"}], "&&", 
+          
+          RowBox[{"FileExistsQ", "[", "file", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<File \>\"", ",", "file", ",", "\"\< erased.\>\""}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"DeleteFile", "[", "file", "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"pts", "=", 
+          RowBox[{
+          "GC", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";",
+          "\[IndentingNewLine]", 
+         RowBox[{"writeRealVectors", "[", 
+          RowBox[{"S", ",", "file", ",", "pts", ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<mesh2{\\n\\tvertex_vectors{ \>\"", "<>", 
+            RowBox[{"IntegerString", "[", 
+             RowBox[{"Length", "[", "pts", "]"}], "]"}], "<>", 
+            "\"\<,\\n\>\""}], ",", "\"\<\\t\\t<\>\"", ",", "\"\<,\>\"", ",", 
+           "\"\<>\>\"", ",", "\"\<\\n\>\"", ",", "\"\<\\n\\t}\\n\>\"", ",", 
+           "\[IndentingNewLine]", "prec"}], "\[IndentingNewLine]", "]"}], ";",
+          "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<Texture\>\"", "]"}], "&&", 
+            RowBox[{"(", 
+             RowBox[{"texcoords", "=!=", "VertexTextureCoordinates"}], 
+             ")"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"writeRealVectors", "[", 
+             RowBox[{
+             "S", ",", "file", ",", "texcoords", ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<\\tuv_vectors{ \>\"", "<>", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{"Length", "[", "texcoords", "]"}], "]"}], "<>", 
+               "\"\<,\\n\>\""}], ",", "\"\<\\t\\t<\>\"", ",", "\"\<,\>\"", 
+              ",", "\"\<>\>\"", ",", "\"\<\\n\>\"", ",", "\"\<\\n\\t}\\n\>\"",
+               ",", "\[IndentingNewLine]", "prec"}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<SmoothNormals\>\"", "]"}], "&&", 
+            
+            RowBox[{"(", 
+             RowBox[{"normals", "=!=", "VertexNormals"}], ")"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"writeRealVectors", "[", 
+             RowBox[{
+             "S", ",", "file", ",", "normals", ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<\\tnormal_vectors{ \>\"", "<>", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{"Length", "[", "normals", "]"}], "]"}], "<>", 
+               "\"\<,\\n\>\""}], ",", "\"\<\\t\\t<\>\"", ",", "\"\<,\>\"", 
+              ",", "\"\<>\>\"", ",", "\"\<\\n\>\"", ",", "\"\<\\n\\t}\\n\>\"",
+               ",", "\[IndentingNewLine]", "prec"}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<Colors\>\"", "]"}], "&&", 
+            RowBox[{"(", 
+             RowBox[{"colors", "=!=", "VertexColors"}], ")"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"writeRealVectors", "[", 
+             RowBox[{
+             "S", ",", "file", ",", "colors", ",", "\[IndentingNewLine]", 
+              RowBox[{"\"\<\\ttexture_list{ \>\"", "<>", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{"Length", "[", "colors", "]"}], "]"}], "<>", 
+               "\"\<,\\n\>\""}], ",", "\"\<\\t\\t<\>\"", ",", "\"\<,\>\"", 
+              ",", "\"\<>\>\"", ",", "\"\<\\n\>\"", ",", "\"\<\\n\\t}\\n\>\"",
+               ",", "\[IndentingNewLine]", "prec"}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"writeIntegerVectors", "[", 
+          RowBox[{
+          "S", ",", "file", ",", "triangles", ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<\\tface_indices{ \>\"", "<>", 
+            RowBox[{"IntegerString", "[", 
+             RowBox[{"Length", "[", "triangles", "]"}], "]"}], "<>", 
+            "\"\<,\\n\>\""}], ",", "\"\<\\t\\t<\>\"", ",", "\"\<,\>\"", ",", 
+           "\"\<>\>\"", ",", "\"\<\\n\>\"", ",", 
+           RowBox[{
+           "\"\<\\n\\t}\n\\tuv_mapping\n\\t\>\"", "<>", "globaltex", "<>", 
+            "\"\<\\n\\n\n}\\n\\n\>\""}]}], "\[IndentingNewLine]", "]"}], 
+         ";"}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "file"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Style\>\"", "\[Rule]", "DullBlue"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Colors\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Texture\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Precision\>\"", "\[Rule]", "8"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"OverwriteTarget", "\[Rule]", "False"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.692039394209467*^9, 3.6920394473009243`*^9}, {
+   3.69203947946243*^9, 3.692039502025475*^9}, {3.692041284900527*^9, 
+   3.692041291652844*^9}, {3.710405258965795*^9, 3.710405259159335*^9}, {
+   3.744289196623579*^9, 3.7442892174527473`*^9}, {3.744289875292223*^9, 
+   3.7442899724568768`*^9}, {3.744290046288473*^9, 3.744290205383676*^9}, {
+   3.744290280149095*^9, 3.744290422127438*^9}, {3.744290466175539*^9, 
+   3.744290466404737*^9}, {3.744291150610695*^9, 3.744291173681251*^9}, {
+   3.744291224767948*^9, 3.744291268539914*^9}, {3.744291308306491*^9, 
+   3.744291318625299*^9}, {3.744291597929102*^9, 3.744291598645595*^9}, {
+   3.744291630791501*^9, 3.7442916519398518`*^9}, {3.744293778730892*^9, 
+   3.7442937829603558`*^9}, {3.7442938448503*^9, 3.744293847457272*^9}, {
+   3.7442939882497673`*^9, 3.7442939884559183`*^9}, {3.7466098332889757`*^9, 
+   3.746609839327297*^9}, {3.746609880597336*^9, 3.746609937335897*^9}, {
+   3.746609995208555*^9, 3.746610008021109*^9}, {3.75422079194368*^9, 
+   3.7542207921981153`*^9}, {3.7883648761346292`*^9, 3.788364879027295*^9}, {
+   3.788371417925531*^9, 3.7883714433803453`*^9}, {3.7883714895758343`*^9, 
+   3.788371507823718*^9}, {3.788371541013825*^9, 3.78837155178225*^9}, {
+   3.788373368531103*^9, 3.78837342506441*^9}, 3.788379718815445*^9, {
+   3.793893754026369*^9, 3.793893793391715*^9}},
+ CellLabel->
+  "In[840]:=",ExpressionUUID->"e019dae9-4186-443a-a147-bf7e925294d6"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 9092, 186, 1392, "Input",ExpressionUUID->"e019dae9-4186-443a-a147-bf7e925294d6"]
+}
+]
+*)
+

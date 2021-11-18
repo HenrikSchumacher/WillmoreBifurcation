@@ -1,0 +1,343 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     13478,        335]
+NotebookOptionsPosition[     12717,        317]
+NotebookOutlinePosition[     13053,        332]
+CellTagsIndexPosition[     13010,        329]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SubpolygonData", "=", 
+   RowBox[{"SettingFunction", "[", 
+    RowBox[{"M_genericmesh", ",", 
+     RowBox[{"Association", "[", "]"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.790761962005172*^9, 
+  3.790761962636619*^9}},ExpressionUUID->"60ed4a09-ea1e-41c8-bd06-\
+fd4ad3cd7ce4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Subpolygons", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"subpolygons", ",", "p", ",", "q", ",", "idx", ",", "P"}], 
+        "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"subpolygons", "=", 
+         RowBox[{"SubpolygonData", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"p", "=", 
+         RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"idx", "=", 
+         RowBox[{"VertexList", "[", "P", "]"}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"Do", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"P", "\[LeftArrow]", 
+            RowBox[{"subpolygons", "[", "key", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"q", "=", 
+            RowBox[{"VertexCoordinates", "[", "P", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+            "q", "\[LeftDoubleBracket]", "idx", "\[RightDoubleBracket]"}], 
+            "=", 
+            RowBox[{
+            "p", "\[LeftDoubleBracket]", "idx", "\[RightDoubleBracket]"}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"SetVertexCoordinates", "[", 
+            RowBox[{"P", ",", "q"}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"subpolygons", "[", "key", "]"}], "=", "P"}], ";"}], 
+          "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"key", ",", 
+            RowBox[{"Keys", "[", "subpolygons", "]"}]}], "}"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetSubpolygonData", "[", 
+         RowBox[{"M", ",", "subpolygons"}], "]"}], ";", "\[IndentingNewLine]",
+         "subpolygons"}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   ";"}]], "Input",
+ CellChangeTimes->{{3.7907615993644*^9, 3.790761600060535*^9}, {
+   3.7907616455872087`*^9, 3.7907616751620007`*^9}, 3.790761980343297*^9},
+ CellLabel->"In[61]:=",ExpressionUUID->"958582af-5b95-49e6-bb35-444fd91fc41f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SubpolygonCount", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_genericmesh", ",", 
+     RowBox[{"Length", "[", 
+      RowBox[{"SubpolygonData", "[", "M", "]"}], "]"}]}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.7907572845654993`*^9, 3.790757288565605*^9}, {
+   3.7907581271905937`*^9, 3.7907581284788303`*^9}, 3.790762016804874*^9, {
+   3.790763936074155*^9, 
+   3.7907639365927677`*^9}},ExpressionUUID->"aba1eb12-229d-41ab-86af-\
+c6407b8269de"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CreateSubpolygon", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_genericmesh", ",", 
+       RowBox[{"elist_", "?", "VectorQ"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "plist", ",", "inifun", ",", "p", ",", "q", ",", "data", ",", "d", 
+         ",", "P", ",", "edges"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"inifun", "=", 
+         RowBox[{
+         "OptionValue", "[", "\"\<InitializationFunction\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"d", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"edges", "=", 
+         RowBox[{
+          RowBox[{"Edges", "[", "M", "]"}], "\[LeftDoubleBracket]", "elist", 
+          "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"plist", "=", 
+         RowBox[{"ToPack", "[", 
+          RowBox[{"Union", "@@", "edges"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"pts", "=", 
+           RowBox[{"SparseArray", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Tuples", "[", 
+               RowBox[{"{", 
+                RowBox[{"plist", ",", 
+                 RowBox[{"Range", "[", "d", "]"}]}], "}"}], "]"}], "\[Rule]", 
+              
+              RowBox[{"Flatten", "[", 
+               RowBox[{"VertexCoordinates", "[", 
+                RowBox[{"M", ",", "plist"}], "]"}], "]"}]}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"VertexCount", "[", "M", "]"}], ",", "d"}], "}"}], ",",
+              "0."}], "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"p", "=", 
+         RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"q", "=", 
+         RowBox[{"SparseArray", "[", 
+          RowBox[{
+           RowBox[{"{", "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"VertexCount", "[", "M", "]"}], ",", "d"}], "}"}], ",", 
+           "0."}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"q", "\[LeftDoubleBracket]", 
+          RowBox[{"plist", ",", "All"}], "\[RightDoubleBracket]"}], "=", 
+         RowBox[{"p", "\[LeftDoubleBracket]", 
+          RowBox[{"plist", ",", "All"}], "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"P", "=", 
+         RowBox[{"inifun", "[", 
+          RowBox[{"Init0", "[", 
+           RowBox[{"polygon", ",", "q", ",", "edges"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetVertexList", "[", 
+         RowBox[{"P", ",", "plist"}], "]"}], ";", "\[IndentingNewLine]", 
+        "P"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"\"\<InitializationFunction\>\"", "\[Rule]", "Identity"}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.790758142078761*^9, 3.7907581614862823`*^9}, {
+   3.790761565896204*^9, 3.7907615664418793`*^9}, {3.7907620009086933`*^9, 
+   3.790762041659034*^9}, 3.790764347826523*^9, {3.7907646015605803`*^9, 
+   3.7907646473665533`*^9}, {3.7907651645885773`*^9, 3.79076518574543*^9}, {
+   3.8082898064014063`*^9, 3.8082898126819773`*^9}},
+ CellLabel->
+  "In[1891]:=",ExpressionUUID->"083316c8-129c-4ce0-8217-27f24809a63d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"AppendToSubpolygons", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M_genericmesh", ",", "elist_"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"inifun", ",", "P", ",", "tag"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"inifun", "=", 
+          RowBox[{
+          "OptionValue", "[", "\"\<InitializationFunction\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"tag", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Tag\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"tag", "===", "Automatic"}], ",", 
+           RowBox[{"tag", "=", 
+            RowBox[{
+             RowBox[{"SubpolygonCount", "[", "M", "]"}], "+", "1"}]}]}], 
+          "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"SetSubpolygonData", "[", 
+          RowBox[{"M", ",", "\[IndentingNewLine]", 
+           RowBox[{"Append", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"SubpolygonData", "[", "M", "]"}], ",", 
+             RowBox[{"tag", "\[Rule]", " ", 
+              RowBox[{"CreateSubpolygon", "[", 
+               RowBox[{"M", ",", "elist", ",", 
+                RowBox[{"\"\<InitializationFunction\>\"", "\[Rule]", 
+                 RowBox[{
+                 "OptionValue", "[", "\"\<InitializationFunction\>\"", 
+                  "]"}]}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+       ",", "\[IndentingNewLine]", 
+      RowBox[{"Options", "\[Rule]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<InitializationFunction\>\"", "\[Rule]", "Identity"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"\"\<Tag\>\"", "\[Rule]", "Automatic"}]}], 
+        "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AppendToSubpolygons", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_genericmesh", ",", 
+       RowBox[{"Rule", "[", 
+        RowBox[{"key_", ",", "elist_"}], "]"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"AppendToSubpolygons", "[", 
+      RowBox[{"M", ",", "elist", ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<InitializationFunction\>\"", "\[Rule]", 
+        RowBox[{"OptionValue", "[", "\"\<InitializationFunction\>\"", "]"}]}],
+        ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Tag\>\"", "\[Rule]", "key"}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<InitializationFunction\>\"", "\[Rule]", "Identity"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Tag\>\"", "\[Rule]", "Automatic"}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.790761132087654*^9, 3.790761133271256*^9}, {
+   3.790761211356511*^9, 3.790761215075096*^9}, 3.790761619680174*^9, {
+   3.7907620568999157`*^9, 3.790762058763204*^9}, {3.790763943065197*^9, 
+   3.790763943625903*^9}, {3.7907640530217743`*^9, 
+   3.790764053229582*^9}},ExpressionUUID->"ad3ec528-41d9-46ea-b6a0-\
+ecab9fbb6c44"],
+
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Unprotect", "[", "SubpolygonFunction", "]"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"ClearAll", "[", "SubpolygonFunction", "]"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SubpolygonFunction", "::", "Usage"}], "=", 
+    "\"\<A head to encode function depending on Subpolygons. Use it in the \
+form SubpolygonFunction[key->fun] where fun is a function of the class \
+polygon.\>\""}], ";", "\[IndentingNewLine]", 
+   RowBox[{"Protect", "[", "SubpolygonFunction", "]"}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"genericmesh", "/:", 
+    RowBox[{
+     RowBox[{"SubpolygonFunction", "[", 
+      RowBox[{"key_", "\[Rule]", "fun_"}], "]"}], "[", "M_genericmesh", "]"}],
+     ":=", 
+    RowBox[{"fun", "[", 
+     RowBox[{
+      RowBox[{"Subpolygons", "[", "M", "]"}], "[", "key", "]"}], "]"}]}], ";",
+    "\[IndentingNewLine]", 
+   RowBox[{"genericmesh", "/:", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"SubpolygonFunction", "[", 
+       RowBox[{"key_", "\[Rule]", "fun_"}], "]"}], "'"}], "[", 
+     RowBox[{"M_genericmesh", ",", "args___"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"fun", "'"}], "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Subpolygons", "[", "M", "]"}], "[", "key", "]"}], ",", 
+      "args"}], "]"}]}], ";", "\[IndentingNewLine]", 
+   RowBox[{"genericmesh", "/:", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"SubpolygonFunction", "[", 
+       RowBox[{"key_", "\[Rule]", "fun_"}], "]"}], "''"}], "[", 
+     RowBox[{"M_genericmesh", ",", "args___"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"fun", "''"}], "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Subpolygons", "[", "M", "]"}], "[", "key", "]"}], ",", 
+      "args"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUU\
+ID->"2587c5ad-8312-492c-b434-2cbdc96cd672"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 322, 8, 42, "Input",ExpressionUUID->"60ed4a09-ea1e-41c8-bd06-fd4ad3cd7ce4"],
+Cell[883, 30, 2303, 53, 442, "Input",ExpressionUUID->"958582af-5b95-49e6-bb35-444fd91fc41f"],
+Cell[3189, 85, 502, 12, 42, "Input",ExpressionUUID->"aba1eb12-229d-41ab-86af-c6407b8269de"],
+Cell[3694, 99, 3628, 85, 467, "Input",ExpressionUUID->"083316c8-129c-4ce0-8217-27f24809a63d"],
+Cell[7325, 186, 3516, 80, 717, "Input",ExpressionUUID->"ad3ec528-41d9-46ea-b6a0-ecab9fbb6c44"],
+Cell[10844, 268, 1869, 47, 292, "Input",ExpressionUUID->"2587c5ad-8312-492c-b434-2cbdc96cd672"]
+}
+]
+*)
+

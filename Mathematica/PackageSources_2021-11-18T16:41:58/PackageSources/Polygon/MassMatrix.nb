@@ -1,0 +1,439 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     16508,        431]
+NotebookOptionsPosition[     14743,        402]
+NotebookOutlinePosition[     15135,        418]
+CellTagsIndexPosition[     15092,        415]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Mass", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"a", ",", "a3", ",", "a6"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "=", 
+         RowBox[{"WeakLaplaceCombinatorics", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"a3", "=", 
+         RowBox[{
+          RowBox[{"EdgeLengths", "[", "M", "]"}], "/", "3."}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"a6", "=", 
+         RowBox[{
+          RowBox[{"EdgeLengths", "[", "M", "]"}], "/", "6."}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"a", "[", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"a3", ",", "a6", ",", "a6", ",", "a3"}], "}"}], "]"}], 
+          "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<Computes and stores the L^2 inner product.\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.6493211456414557`*^9, 3.649321203846698*^9}, {
+  3.649321234732006*^9, 3.649321236890731*^9}, {3.6493224277198133`*^9, 
+  3.649322447597052*^9}, {3.697305513329069*^9, 3.697305637714304*^9}, {
+  3.69737582749514*^9, 3.69737582887656*^9}, {3.720103973695818*^9, 
+  3.720103973885482*^9}, {3.7201040046544533`*^9, 3.72010400506038*^9}, {
+  3.721628170847578*^9, 3.721628176124856*^9}, {3.795758944818338*^9, 
+  3.795758946569847*^9}},ExpressionUUID->"3570dcb0-f6c0-467d-bfcf-\
+3752adfad720"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BoundaryMass", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"IdentityMatrix", "[", 
+      RowBox[{
+       RowBox[{"BoundaryVertexCount", "[", "M", "]"}], ",", "SparseArray"}], 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   ";"}]], "Input",
+ CellChangeTimes->{{3.7218255608208847`*^9, 3.721825564872572*^9}, 
+   3.721825604666403*^9, {3.795758941153748*^9, 
+   3.795758942368704*^9}},ExpressionUUID->"74839cc4-5f10-4e46-b362-\
+4dc14fd26e46"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"MassSolver", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"LinearSolve", "[", 
+      RowBox[{"Mass", "[", "M", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<Computes and stores the L^2 inner product.\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.721628182294043*^9, 3.7216281897403603`*^9}, {
+  3.7957589381776323`*^9, 
+  3.795758939296742*^9}},ExpressionUUID->"562ce2bd-eb1d-4d28-a7fe-\
+24f12ff07d7e"],
+
+Cell[BoxData[
+ RowBox[{"LumpedMass", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", "=", 
+        RowBox[{"N", "[", 
+         RowBox[{"DualEdgeLengths", "[", "M", "]"}], "]"}]}], "}"}], ",", 
+      RowBox[{"SparseArray", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"i_", ",", "i_"}], "}"}], "\[RuleDelayed]", 
+         RowBox[{"a", "[", 
+          RowBox[{"[", "i", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"VertexCount", "[", "M", "]"}], ",", 
+          RowBox[{"VertexCount", "[", "M", "]"}]}], "}"}], ",", "0."}], 
+       "]"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Computes and stores lumped mass matrix as VertexCount[M] \[Cross] \
+VertexCount[M] matrix.\>\""}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.637240967984393*^9, 3.637240968591846*^9}, {
+   3.679733835216226*^9, 3.6797338408599453`*^9}, 3.680963830524323*^9, {
+   3.720115580855136*^9, 3.720115583031837*^9}, {3.721665517579775*^9, 
+   3.721665532264097*^9}, {3.795758934122651*^9, 3.7957589359771442`*^9}, 
+   3.839474706786839*^9},ExpressionUUID->"b3e3de51-4c00-4493-9dfb-\
+8830e4566628"],
+
+Cell[BoxData[
+ RowBox[{"LumpedMassInverse", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", "=", 
+        RowBox[{"1.", "/", 
+         RowBox[{"DualEdgeLengths", "[", "M", "]"}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"SparseArray", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"i_", ",", "i_"}], "}"}], "\[RuleDelayed]", 
+          RowBox[{
+          "a", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}]}], 
+         "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"VertexCount", "[", "M", "]"}], ",", 
+          RowBox[{"VertexCount", "[", "M", "]"}]}], "}"}], ",", "0."}], 
+       "]"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Computes and stores inverse of lumped mass matrix.\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.679733880047962*^9, 3.679733880813634*^9}, {
+   3.6797382374085484`*^9, 3.6797382399622993`*^9}, 3.680963830527607*^9, {
+   3.72011558386233*^9, 3.720115584156576*^9}, {3.7221472937204123`*^9, 
+   3.722147301288837*^9}, {3.795758919988666*^9, 3.7957589304493504`*^9}, 
+   3.839474706789283*^9},ExpressionUUID->"2aa10d7f-8098-4c1d-a9d7-\
+f564abed8703"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.795758949663965*^9},ExpressionUUID->"f5f14672-529e-4342-b5b6-\
+641ed45a3cc1"],
+
+Cell[BoxData[
+ RowBox[{"EdgeMass", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"DiagonalMatrix", "[", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{"EdgeLengths", "[", "M", "]"}], "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.79575515022237*^9, 3.7957552059270687`*^9}},
+ CellLabel->
+  "In[218]:=",ExpressionUUID->"aa1feac8-03f2-4189-b69d-6cf352d77800"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"EdgeMass", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"{", "u_", "}"}], ",", 
+       RowBox[{"{", "3", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"DiagonalMatrix", "[", 
+      RowBox[{"SparseArray", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"EdgeLengths", "'"}], "[", "M", "]"}], ".", "u"}], "]"}], 
+      "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"EdgeMass", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"{", 
+        RowBox[{"u_", ",", "v_"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"u", " ", "v"}], ")"}], ".", 
+      RowBox[{
+       RowBox[{"EdgeLengths", "'"}], "[", "M", "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"EdgeMass", "'"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"{", 
+       RowBox[{"u_", ",", "v_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"2", ",", "1"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"u", " ", "v"}], ")"}], ".", 
+     RowBox[{
+      RowBox[{"EdgeLengths", "'"}], "[", "M", "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7957552314991693`*^9, 3.795755286097703*^9}, {
+   3.795755330544771*^9, 3.795755333807004*^9}, {3.795759057248188*^9, 
+   3.795759060732716*^9}, {3.795766447175054*^9, 3.795766449951585*^9}, 
+   3.795767275105291*^9},ExpressionUUID->"f4d53947-f052-48d8-a47a-\
+7b6fc3b21023"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.795767276989314*^9},ExpressionUUID->"05af4b08-a2a8-469e-8d76-\
+4d0d76ed1bc9"],
+
+Cell[BoxData[
+ RowBox[{"ReferenceEdgeMass", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"DiagonalMatrix", "[", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{"ReferenceEdgeLengths", "[", "M", "]"}], "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.79575515022237*^9, 3.7957552059270687`*^9}, {
+  3.7957672435539007`*^9, 3.7957672518173227`*^9}, {3.7957672959206123`*^9, 
+  3.795767298590152*^9}},
+ CellLabel->
+  "In[141]:=",ExpressionUUID->"d63f018b-5f82-43b1-901c-3e9e56d6c9cf"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.796221972119741*^9, 3.7962219865155497`*^9}},
+ CellLabel->
+  "In[133]:=",ExpressionUUID->"1f4cd8cb-c049-460f-afdb-be8ea9b3e7e2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ReferenceEdgeMass", "'"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"{", "u_", "}"}], ",", 
+      RowBox[{"{", "1", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"SparseArray", "[", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"EdgeCount", "[", "M", "]"}], ",", 
+        RowBox[{"DofCount", "[", "M", "]"}]}], "}"}], ",", "0."}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.796221944856238*^9, 3.796221961305973*^9}},
+ CellLabel->
+  "In[130]:=",ExpressionUUID->"b6a32548-11b8-4b68-8273-9f8ebb803fa6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ReferenceEdgeMass", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"{", "u_", "}"}], ",", 
+       RowBox[{"{", "3", "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"EdgeCount", "[", "M", "]"}], ",", 
+         RowBox[{"EdgeCount", "[", "M", "]"}]}], "}"}], ",", "0."}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ReferenceEdgeMass", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"{", 
+        RowBox[{"u_", ",", "v_"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"SparseArray", "[", 
+      RowBox[{
+       RowBox[{"{", "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"DofCount", "[", "M", "]"}], "}"}], ",", "0."}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ReferenceEdgeMass", "'"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"{", 
+       RowBox[{"u_", ",", "v_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"2", ",", "1"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"SparseArray", "[", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"DofCount", "[", "M", "]"}], "}"}], ",", "0."}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7957552314991693`*^9, 3.795755286097703*^9}, {
+  3.795755330544771*^9, 3.795755333807004*^9}, {3.795759057248188*^9, 
+  3.795759060732716*^9}, {3.795766447175054*^9, 3.795766449951585*^9}, {
+  3.795767254203063*^9, 3.795767271007043*^9}, {3.7957673692296143`*^9, 
+  3.795767394555797*^9}},
+ CellLabel->
+  "In[178]:=",ExpressionUUID->"fe2225f7-6993-4d09-92e2-952b9f8f4072"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.796222964481181*^9},ExpressionUUID->"5a2cf8b3-5c8f-443d-ad94-\
+f61006bbaca9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ReferenceEdgeMass", "''"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"{", 
+       RowBox[{"u_", ",", "v_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"SparseArray", "[", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"DofCount", "[", "M", "]"}], ",", 
+        RowBox[{"DofCount", "[", "M", "]"}]}], "}"}], ",", "0."}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.796222966378315*^9, 3.796222966962564*^9}},
+ CellLabel->
+  "In[249]:=",ExpressionUUID->"8e320023-dad6-4ff0-88ef-84b0391aa928"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ReferenceEdgeMass", "''"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"{", 
+       RowBox[{"u_", ",", "v_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"2", ",", "1"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"SparseArray", "[", 
+     RowBox[{
+      RowBox[{"{", "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"DofCount", "[", "M", "]"}], ",", 
+        RowBox[{"DofCount", "[", "M", "]"}]}], "}"}], ",", "0."}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7962229431958513`*^9, 3.796222959052804*^9}},
+ CellLabel->
+  "In[250]:=",ExpressionUUID->"e0040b1e-b99f-49e9-aea2-fdad1d9dca1e"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"1186e60e-56ba-4874-9d70-37255d7ccdcd"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1776, 41, 267, "Input",ExpressionUUID->"3570dcb0-f6c0-467d-bfcf-3752adfad720"],
+Cell[2337, 63, 617, 14, 117, "Input",ExpressionUUID->"74839cc4-5f10-4e46-b362-4dc14fd26e46"],
+Cell[2957, 79, 669, 15, 142, "Input",ExpressionUUID->"562ce2bd-eb1d-4d28-a7fe-24f12ff07d7e"],
+Cell[3629, 96, 1435, 32, 167, "Input",ExpressionUUID->"b3e3de51-4c00-4493-9dfb-8830e4566628"],
+Cell[5067, 130, 1497, 35, 192, "Input",ExpressionUUID->"2aa10d7f-8098-4c1d-a9d7-f564abed8703"],
+Cell[6567, 167, 147, 3, 67, "Input",ExpressionUUID->"f5f14672-529e-4342-b5b6-641ed45a3cc1"],
+Cell[6717, 172, 534, 12, 117, "Input",ExpressionUUID->"aa1feac8-03f2-4189-b69d-6cf352d77800"],
+Cell[7254, 186, 1925, 55, 292, "Input",ExpressionUUID->"f4d53947-f052-48d8-a47a-7b6fc3b21023"],
+Cell[9182, 243, 147, 3, 67, "Input",ExpressionUUID->"05af4b08-a2a8-469e-8d76-4d0d76ed1bc9"],
+Cell[9332, 248, 662, 14, 117, "Input",ExpressionUUID->"d63f018b-5f82-43b1-901c-3e9e56d6c9cf"],
+Cell[9997, 264, 177, 3, 41, "Input",ExpressionUUID->"1f4cd8cb-c049-460f-afdb-be8ea9b3e7e2"],
+Cell[10177, 269, 709, 19, 92, "Input",ExpressionUUID->"b6a32548-11b8-4b68-8273-9f8ebb803fa6"],
+Cell[10889, 290, 2160, 59, 292, "Input",ExpressionUUID->"fe2225f7-6993-4d09-92e2-952b9f8f4072"],
+Cell[13052, 351, 147, 3, 67, "Input",ExpressionUUID->"5a2cf8b3-5c8f-443d-ad94-f61006bbaca9"],
+Cell[13202, 356, 766, 21, 92, "Input",ExpressionUUID->"8e320023-dad6-4ff0-88ef-84b0391aa928"],
+Cell[13971, 379, 768, 21, 92, "Input",ExpressionUUID->"e0040b1e-b99f-49e9-aea2-fdad1d9dca1e"]
+}
+]
+*)
+

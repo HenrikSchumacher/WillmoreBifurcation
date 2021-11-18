@@ -1,0 +1,259 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11711,        251]
+NotebookOptionsPosition[     11420,        238]
+NotebookOutlinePosition[     11755,        253]
+CellTagsIndexPosition[     11712,        250]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"GaussNewton", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"x0_", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "P", ",", "returnPardisoQ", ",", "iter", ",", "biter", ",", "x", ",", 
+        "y", ",", "z", ",", "\[Tau]", ",", "x\[Tau]", ",", "n", ",", "TOL", 
+        ",", "\[IndentingNewLine]", "\[Tau]0", ",", "residual", ",", 
+        "maxiter", ",", "maxbiter", ",", "\[Sigma]", ",", "\[Gamma]", ",", 
+        "\[IndentingNewLine]", "\[CapitalTheta]0", ",", "D\[CapitalTheta]0", 
+        ",", "\[CapitalTheta]\[Tau]", ",", "D\[CapitalTheta]\[Tau]", ",", 
+        "\[Phi]0", ",", "D\[Phi]0", ",", "\[Phi]\[Tau]", ",", "u", ",", 
+        "timing", ",", "iterationtiming", ",", "maxstepsize", ",", 
+        "setresidual"}], "\[IndentingNewLine]", "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"x", "=", "x0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{"Length", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"iter", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"maxstepsize", "=", "0."}], ";", "\[IndentingNewLine]", 
+       RowBox[{"TOL", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"maxiter", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MaxIterations\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"maxbiter", "=", 
+        RowBox[{
+        "OptionValue", "[", "\"\<MaxBacktrackingIterations\>\"", "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"\[Sigma]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<ArmijoSlope\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Gamma]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<BacktrackingFactor\>\"", "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]0", "=", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<InitialStepSize\>\"", "]"}], "/", 
+         "\[Gamma]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"timing", "=", 
+        RowBox[{
+         RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\[CapitalTheta]0", "=", 
+            RowBox[{"F", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"D\[CapitalTheta]0", "=", 
+            RowBox[{
+             RowBox[{"F", "'"}], "[", "x", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"D\[Phi]0", "=", 
+            RowBox[{"\[CapitalTheta]0", ".", "D\[CapitalTheta]0"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"residual", "=", 
+            RowBox[{"Max", "[", 
+             RowBox[{"Abs", "[", "D\[Phi]0", "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"While", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"residual", "\[GreaterEqual]", " ", "TOL"}], "&&", 
+              RowBox[{"iter", "\[LessEqual]", "maxiter"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"iter", "++"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"$GaussNewtonState", "=", 
+               RowBox[{"Grid", "[", 
+                RowBox[{
+                 RowBox[{"{", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"\"\<step = \>\"", ",", " ", "iter"}], "}"}], ",",
+                    "\[IndentingNewLine]", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<backtracking = \>\"", ",", " ", "biter"}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<stepsize = \>\"", ",", " ", "\[Tau]"}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"{", 
+                    RowBox[{"\"\<residual = \>\"", ",", " ", "residual"}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<iterationtime = \>\"", ",", " ", "iterationtiming"}],
+                     "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
+                 RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"iterationtiming", "=", 
+               RowBox[{
+                RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"\[Phi]0", "=", 
+                   RowBox[{
+                    RowBox[{"\[CapitalTheta]0", ".", "\[CapitalTheta]0"}], 
+                    "/", "2"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"u", "=", 
+                   RowBox[{"-", 
+                    RowBox[{"LeastSquares", "[", 
+                    RowBox[{"D\[CapitalTheta]0", ",", "\[CapitalTheta]0"}], 
+                    "]"}]}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"biter", "=", "0"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"\[Tau]", "=", "\[Tau]0"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Repeat", "[", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"biter", "++"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"\[Tau]", "=", 
+                    RowBox[{"\[Gamma]", " ", "\[Tau]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"x\[Tau]", "=", 
+                    RowBox[{"x", "+", 
+                    RowBox[{"\[Tau]", " ", "u"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"\[CapitalTheta]\[Tau]", "=", 
+                    RowBox[{"F", "[", "x\[Tau]", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"\[Phi]\[Tau]", "=", 
+                    RowBox[{
+                    RowBox[{
+                    "\[CapitalTheta]\[Tau]", ".", "\[CapitalTheta]\[Tau]"}], 
+                    "/", "2"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{"(*", "Until", "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"\[Phi]\[Tau]", "<", 
+                    RowBox[{"\[Phi]0", "-", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"\[Sigma]", " ", "\[Tau]"}], ")"}], " ", 
+                    RowBox[{"D\[Phi]0", ".", "u"}]}]}]}], " ", "||", 
+                    RowBox[{"biter", "\[GreaterEqual]", "maxbiter"}]}]}], 
+                   "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"biter", "===", "maxbiter"}], ",", 
+                    RowBox[{
+                    "Print", "[", "\"\<Oops. Backtracking.\>\"", "]"}]}], 
+                   "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"maxstepsize", "=", 
+                   RowBox[{"Max", "[", 
+                    RowBox[{"maxstepsize", ",", "\[Tau]"}], "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"x", "=", "x\[Tau]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"\[CapitalTheta]0", "=", 
+                   RowBox[{"F", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"D\[CapitalTheta]0", "=", 
+                   RowBox[{
+                    RowBox[{"F", "'"}], "[", "x", "]"}]}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"D\[Phi]0", "=", 
+                   RowBox[{"\[CapitalTheta]0", ".", "D\[CapitalTheta]0"}]}], 
+                  ";", "\[IndentingNewLine]", 
+                  RowBox[{"residual", "=", 
+                   RowBox[{"Max", "[", 
+                    RowBox[{"Abs", "[", "D\[Phi]0", "]"}], "]"}]}], ";"}], 
+                 "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}]}], ";"}]}], "\[IndentingNewLine]", 
+            "]"}], ";"}], "\[IndentingNewLine]", "]"}], 
+         "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"iter", "===", "maxiter"}], ",", 
+         RowBox[{"Print", "[", "\"\<Oops.\>\"", "]"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Association", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"\"\<Solution\>\"", "\[Rule]", "x"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Iterations\>\"", "\[Rule]", "iter"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Timing\>\"", "\[Rule]", "timing"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Residual\>\"", "\[Rule]", "residual"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<MaxStepSize\>\"", "\[Rule]", "maxstepsize"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", "1000"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Tolerance\>\"", "\[Rule]", 
+        RowBox[{"10", "^", 
+         RowBox[{"-", "8"}]}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArmijoSlope\>\"", "\[Rule]", "0.001"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<BacktrackingFactor\>\"", "\[Rule]", "0.25"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<InitialStepSize\>\"", "\[Rule]", "1."}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MaxBacktrackingIterations\>\"", "\[Rule]", "20"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintReport\>\"", "\[Rule]", "True"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.8176400285003366`*^9, 3.8176400606637383`*^9}, {
+  3.817640304253356*^9, 3.817640359304161*^9}, {3.817640396471573*^9, 
+  3.8176403984221897`*^9}, {3.817640537026311*^9, 3.817640563385406*^9}, {
+  3.817640627192556*^9, 3.817640627362228*^9}, {3.817640719307796*^9, 
+  3.817640793128975*^9}, {3.8176408937820807`*^9, 3.8176409606745777`*^9}, {
+  3.81764099278423*^9, 3.8176409950386333`*^9}, {3.817641038838311*^9, 
+  3.8176410629809313`*^9}, {3.817641123627626*^9, 3.817641128123994*^9}, {
+  3.817641160891095*^9, 3.817641191377482*^9}, {3.81764190096111*^9, 
+  3.817641902463789*^9}, {3.817641992651392*^9, 3.817642013058227*^9}, {
+  3.8176420456676826`*^9, 3.817642045842177*^9}},
+ CellLabel->
+  "In[603]:=",ExpressionUUID->"f0ab3410-a0cb-4207-aed1-552fc86431f5"]
+},
+WindowSize->{808, 755},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 10858, 216, 1992, "Input",ExpressionUUID->"f0ab3410-a0cb-4207-aed1-552fc86431f5"]
+}
+]
+*)
+

@@ -1,0 +1,266 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12307,        258]
+NotebookOptionsPosition[     11921,        244]
+NotebookOutlinePosition[     12257,        259]
+CellTagsIndexPosition[     12214,        256]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{
+   RowBox[{
+    RowBox[{"$S", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$S", "=", 
+    RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$MeshList", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$MeshList", "=", 
+    RowBox[{"Missing", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$LagrangeMultiplierList", "::", "usage"}], "=", "\"\<\>\""}], 
+   ";", "\[IndentingNewLine]", 
+   RowBox[{"$LagrangeMultiplierList", "=", 
+    RowBox[{"Missing", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$InfoList", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$InfoList", "=", 
+    RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"$InfoKeys", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$InfoKeys", "=", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<Iteration\>\"", ",", "\"\<WallClockTime\>\"", ",", 
+      "\"\<Objective\>\"", ",", "\"\<Residual\>\"", ",", 
+      "\[IndentingNewLine]", "\"\<Time\>\"", ",", "\[IndentingNewLine]", 
+      "\"\<LineSearchTime\>\"", ",", "\"\<TotalLineSearchTime\>\"", ",", 
+      "\[IndentingNewLine]", "\"\<LineSearchContractions\>\"", ",", 
+      "\"\<LineSearchExpansions\>\"", ",", "\[IndentingNewLine]", 
+      "\"\<InitialStepSize\>\"", ",", "\"\<StepSize\>\"", ",", 
+      "\"\<MaxStepSize\>\"", ",", "\"\<StepSizeSucceeded\>\"", ",", 
+      "\[IndentingNewLine]", "\"\<CPUTime\>\"", ",", "\"\<TotalCPUTime\>\"", 
+      ",", "\"\<Profile\>\"", ",", "\[IndentingNewLine]", "\"\<Continue\>\"", 
+      ",", "\"\<StuckQ\>\"", ",", "\"\<StoppedByStopFunction\>\""}], 
+     "\[IndentingNewLine]", "}"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.7970463510346317`*^9, 3.797046353762928*^9}, {
+  3.797046714006794*^9, 3.797046718859124*^9}, {3.797338123629095*^9, 
+  3.797338131170457*^9}, {3.799081617240488*^9, 3.799081619375341*^9}, {
+  3.799137279036263*^9, 3.799137296665669*^9}, {3.799137332832499*^9, 
+  3.79913733615197*^9}, {3.7991451753330193`*^9, 3.799145224609503*^9}},
+ CellLabel->"In[19]:=",ExpressionUUID->"6a6f5744-e176-495d-a7bc-19aa71aff3e4"],
+
+Cell[BoxData[
+ RowBox[{"OptimizationReturnHandler", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"me_", ",", "M_", ",", 
+      RowBox[{"returns_:", "Nothing"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Which", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"$S", "[", "\"\<StoppedByStopFunction\>\"", "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Message", "[", 
+        RowBox[{
+         RowBox[{"MessageName", "[", 
+          RowBox[{"me", ",", "\"\<stopped\>\""}], "]"}], ",", 
+         RowBox[{"$S", "\[LeftDoubleBracket]", 
+          RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<StopFunction\>\""}], 
+          "\[RightDoubleBracket]"}]}], "]"}], "\[IndentingNewLine]", ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"!", 
+        RowBox[{"$S", "[", "\"\<Continue\>\"", "]"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Message", "[", 
+        RowBox[{
+         RowBox[{"MessageName", "[", 
+          RowBox[{"me", ",", "\"\<interrupt\>\""}], "]"}], ",", 
+         RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}]}], "]"}], 
+       "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+       RowBox[{"$S", "[", "\"\<StuckQ\>\"", "]"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Message", "[", 
+        RowBox[{
+         RowBox[{"MessageName", "[", 
+          RowBox[{"me", ",", "\"\<tiny\>\""}], "]"}], ",", 
+         RowBox[{"$S", "[", "\"\<StepSize\>\"", "]"}], ",", 
+         RowBox[{"$S", "\[LeftDoubleBracket]", 
+          RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<MinStepSize\>\""}], 
+          "\[RightDoubleBracket]"}]}], "]"}], "\[IndentingNewLine]", ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}], ">", 
+        RowBox[{"$S", "\[LeftDoubleBracket]", 
+         RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<Tolerance\>\""}], 
+         "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Which", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], "\[GreaterEqual]", 
+          RowBox[{"$S", "[", "\"\<MaxIteration\>\"", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"MessageName", "[", 
+            RowBox[{"me", ",", "\"\<maxiter\>\""}], "]"}], ",", 
+           RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], ",", 
+           RowBox[{"$S", "\[LeftDoubleBracket]", 
+            RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<Tolerance\>\""}], 
+            "\[RightDoubleBracket]"}], ",", 
+           RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}]}], "]"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"$S", "[", "\"\<WallClockTime\>\"", "]"}], ">", 
+          RowBox[{"$S", "[", "\"\<MaxWallClockTime\>\"", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"MessageName", "[", 
+            RowBox[{"me", ",", "\"\<timeout\>\""}], "]"}], ",", 
+           RowBox[{"N", "@", 
+            RowBox[{"$S", "[", "\"\<WallClockTime\>\"", "]"}]}], ",", 
+           RowBox[{"$S", "\[LeftDoubleBracket]", 
+            RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<Tolerance\>\""}], 
+            "\[RightDoubleBracket]"}], ",", 
+           RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}]}], "]"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "_", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"MessageName", "[", 
+            RowBox[{"me", ",", "\"\<aborted\>\""}], "]"}], ",", 
+           RowBox[{"$S", "[", "\"\<Iteration\>\"", "]"}], ",", 
+           RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}], ",", 
+           RowBox[{"$S", "\[LeftDoubleBracket]", 
+            RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<Tolerance\>\""}], 
+            "\[RightDoubleBracket]"}]}], "]"}]}], "\[IndentingNewLine]", 
+        "]"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Association", "@@", 
+      RowBox[{"(", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\"\<Solution\>\"", "\[Rule]", "M"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Succeeded\>\"", "\[Rule]", 
+           RowBox[{
+            RowBox[{"$S", "[", "\"\<Residual\>\"", "]"}], "<", 
+            RowBox[{"$S", "\[LeftDoubleBracket]", 
+             RowBox[{"\"\<Method\>\"", ",", "2", ",", "\"\<Tolerance\>\""}], 
+             "\[RightDoubleBracket]"}]}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<MeshList\>\"", "\[Rule]", "$MeshList"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Normal", "[", "returns", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<IterationData\>\"", "\[Rule]", "$InfoList"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<MethodData\>\"", "\[Rule]", 
+           RowBox[{"$S", "\[LeftDoubleBracket]", 
+            RowBox[{"{", "\[IndentingNewLine]", 
+             RowBox[{
+             "\"\<MaxIteration\>\"", ",", "\[IndentingNewLine]", 
+              "\"\<MaxWallClockTime\>\"", ",", "\[IndentingNewLine]", 
+              "\"\<ObjectiveFunction\>\"", ",", "\[IndentingNewLine]", 
+              "\"\<Constraints\>\"", ",", "\[IndentingNewLine]", 
+              "\"\<Method\>\""}], "\[IndentingNewLine]", "}"}], 
+            "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<DofCount\>\"", "\[Rule]", 
+           RowBox[{"DofCount", "[", "M", "]"}]}], ",", "\[IndentingNewLine]", 
+          
+          RowBox[{"\"\<KernelID\>\"", "\[Rule]", "$KernelID"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Date\>\"", "\[Rule]", 
+           RowBox[{"Date", "[", "]"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Machine\>\"", "\[Rule]", 
+           RowBox[{"Switch", "[", 
+            RowBox[{
+            "$SystemID", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+             "\"\<MacOSX-x86-64\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"Import", "[", 
+              RowBox[{
+              "\"\<!sysctl -n machdep.cpu.brand_string\>\"", ",", 
+               "\"\<Text\>\""}], "]"}], "\[IndentingNewLine]", ",", 
+             "\[IndentingNewLine]", "\"\<Linux-x86-64\>\"", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"StringTrim", "[", 
+              RowBox[{
+               RowBox[{"StringSplit", "[", 
+                RowBox[{
+                 RowBox[{"Import", "[", 
+                  RowBox[{
+                  "\"\<!cat /proc/cpuinfo | grep 'model name' | uniq\>\"", 
+                   ",", "\"\<Text\>\""}], "]"}], ",", "\"\<:\>\""}], "]"}], 
+               "[", 
+               RowBox[{"[", "2", "]"}], "]"}], "]"}], "\[IndentingNewLine]", 
+             ",", "\[IndentingNewLine]", "_", ",", "\[IndentingNewLine]", 
+             "\"\<Unknown\>\""}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ParallelOptions\>\"", "\[Rule]", 
+           RowBox[{"SystemOptions", "[", "\"\<ParallelOptions\>\"", "]"}]}]}],
+          "\[IndentingNewLine]", "}"}], "]"}], ")"}]}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.797003305389551*^9, 3.797003352795792*^9}, {
+   3.7970049883841476`*^9, 3.797004990766059*^9}, {3.7970053423963957`*^9, 
+   3.797005358359631*^9}, {3.797005440165797*^9, 3.7970054425972*^9}, {
+   3.797009544512673*^9, 3.7970095612571898`*^9}, 3.797009671694971*^9, {
+   3.797011899507647*^9, 3.7970119386744633`*^9}, 3.797011985447187*^9, {
+   3.7970120227004957`*^9, 3.797012035446927*^9}, {3.797014935977455*^9, 
+   3.797014946936084*^9}, {3.797015015061387*^9, 3.7970150227168627`*^9}, {
+   3.797069657704767*^9, 3.797069678156781*^9}, {3.7970702013161*^9, 
+   3.797070204315587*^9}, {3.797073204243979*^9, 3.797073216092692*^9}, {
+   3.797134912438715*^9, 3.7971349141717854`*^9}, {3.797768255099009*^9, 
+   3.7977682623625937`*^9}, {3.797832687207686*^9, 3.7978326876940117`*^9}, 
+   3.7978327188859797`*^9, 3.797832758831163*^9, {3.798262198513115*^9, 
+   3.798262213495688*^9}, {3.7982624095312*^9, 3.798262422794375*^9}, {
+   3.798262459163611*^9, 3.798262459376576*^9}, {3.7982628603500023`*^9, 
+   3.7982628804814863`*^9}, {3.798264483719672*^9, 3.7982644839016523`*^9}, {
+   3.798454425103203*^9, 3.798454432006691*^9}, 3.798454477302693*^9, {
+   3.799126616709738*^9, 3.799126616779146*^9}, {3.799126877252907*^9, 
+   3.799126892277936*^9}, {3.799129735203356*^9, 3.799129766809063*^9}, {
+   3.799144754511807*^9, 3.799144789301414*^9}},
+ CellLabel->"In[20]:=",ExpressionUUID->"7e4c2708-af76-464a-805a-a81ddbccc66e"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2522, 52, 642, "Input",ExpressionUUID->"6a6f5744-e176-495d-a7bc-19aa71aff3e4"],
+Cell[3083, 74, 8834, 168, 1367, "Input",ExpressionUUID->"7e4c2708-af76-464a-805a-a81ddbccc66e"]
+}
+]
+*)
+

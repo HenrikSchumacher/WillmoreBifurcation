@@ -1,0 +1,1013 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     51587,       1005]
+NotebookOptionsPosition[     51204,        991]
+NotebookOutlinePosition[     51540,       1006]
+CellTagsIndexPosition[     51497,       1003]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"OptimizationDirection", "=", 
+  RowBox[{"SettingFunction", "[", 
+   RowBox[{"M_genericmesh", ",", 
+    RowBox[{"-", "1."}]}], "]"}]}]], "Input",ExpressionUUID->"603345e7-aa89-\
+4bbf-984c-f9e7e5edfd7c"],
+
+Cell[BoxData[
+ RowBox[{"ConstrainedArmijo", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"a_", ",", "F_", ",", "osc_searchline"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+       "u", ",", "v", ",", "w", ",", "x", ",", "y", ",", "\[CapitalGamma]", 
+        ",", "\[Psi]", ",", "\[Tau]", ",", "\[Tau]\[Tau]", ",", "\[Sigma]", 
+        ",", "\[Gamma]Armijo", ",", "\[Gamma]Projection", ",", "\[Tau]0", ",",
+         "s", ",", "R", ",", "S", ",", "Fa", ",", "DFa", ",", "DFau", ",", 
+        "Fx", ",", "k", ",", "\[IndentingNewLine]", "project", ",", "dir", 
+        ",", "directionconsistentQ", ",", "update", ",", "constrainedQ", ",", 
+        "promethdata", ",", "profun", ",", "proopts", ",", 
+        "\[IndentingNewLine]", "profirstQ", ",", "proeachQ", ",", "prolastQ", 
+        ",", "data", ",", "projectionsucceededQ", ",", "projectedQ", ",", 
+        "armijosucceededQ", ",", "min\[Tau]", ",", "max\[Tau]", ",", 
+        "\[IndentingNewLine]", "ProjectionBacktrackingSteps", ",", 
+        "ArmijoBacktrackingSteps", ",", "enforcequad"}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"We", " ", "assume", " ", "here", " ", "that", " ", 
+         RowBox[{"\[Eta]", "[", "0", "]"}]}], "=", "0."}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"PackageFunctionQ", "[", 
+             RowBox[{"F", ",", 
+              RowBox[{"Head", "[", "a", "]"}]}], "]"}], "&&", 
+            RowBox[{"PackageFunctionQ", "[", 
+             RowBox[{
+              RowBox[{"F", "'"}], ",", 
+              RowBox[{"Head", "[", "a", "]"}]}], "]"}]}], ")"}]}], ",", 
+         RowBox[{
+          RowBox[{"Abort", "[", "]"}], ";"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"constrainedQ", "=", 
+        RowBox[{"osc", "[", "\"\<Constrained\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"promethdata", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"List", "[", 
+          RowBox[{"OptionValue", "[", "\"\<ProjectionMethod\>\"", "]"}], 
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"profun", "=", 
+        RowBox[{
+        "promethdata", "\[LeftDoubleBracket]", "1", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"proopts", "=", 
+        RowBox[{"Rest", "[", "promethdata", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"project", "=", 
+        RowBox[{"x", "\[Function]", 
+         RowBox[{"profun", "[", 
+          RowBox[{"x", ",", 
+           RowBox[{"Sequence", "@@", "proopts"}]}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"profirstQ", "=", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<ProjectFirstIteration\>\"", "]"}], "&&",
+          "constrainedQ"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"proeachQ", "=", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<ProjectEachIteration\>\"", "]"}], "&&",
+          "constrainedQ"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"prolastQ", "=", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<ProjectLastIteration\>\"", "]"}], "&&",
+          "constrainedQ"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Sigma]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<ArmijoParameter\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Gamma]Armijo", "=", 
+        RowBox[{
+        "OptionValue", "[", "\"\<ArmijoContractionFactor\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Gamma]Projection", "=", 
+        RowBox[{
+        "OptionValue", "[", "\"\<ArmijoContractionFactor\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"u", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"osc", "[", "\"\<Direction\>\"", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"enforcequad", "=", 
+        RowBox[{"TrueQ", "[", 
+         RowBox[{"OptionValue", "[", "\"\<EnforceQuadraticFit\>\"", "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"max\[Tau]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<MaxStepSize\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"NumericQ", "[", "max\[Tau]", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"max\[Tau]", "=", "\[Infinity]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]0", "=", 
+        RowBox[{"If", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<InitialStepSize\>\"", "]"}], "===",
+            "Automatic"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          
+          RowBox[{"If", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Echo", "@", 
+             RowBox[{"NumericQ", "[", 
+              RowBox[{"StepSize", "[", "osc", "]"}], "]"}]}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"StepSize", "[", "osc", "]"}], "\[IndentingNewLine]", ",",
+             "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{"ConstrainedArmijo", "::", "nonnumosc"}], "]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"NumericQ", "[", "max\[Tau]", "]"}], 
+               "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "max\[Tau]",
+                "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Message", "[", 
+                 RowBox[{"ConstrainedArmijo", "::", "nonnummaxstep"}], "]"}], 
+                ";", "\[IndentingNewLine]", "1."}]}], "\[IndentingNewLine]", 
+              RowBox[{"(*", 
+               RowBox[{
+                RowBox[{"Abort", "[", "]"}], ";", "\[IndentingNewLine]", 
+                "$Failed"}], "*)"}], "\[IndentingNewLine]", "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"NumericQ", "[", 
+             RowBox[{"OptionValue", "[", "\"\<InitialStepSize\>\"", "]"}], 
+             "]"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"OptionValue", "[", "\"\<InitialStepSize\>\"", "]"}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{"ConstrainedArmijo", "::", "nonnuminit"}], "]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"NumericQ", "[", "max\[Tau]", "]"}], 
+               "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "max\[Tau]",
+                "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Message", "[", 
+                 RowBox[{"ConstrainedArmijo", "::", "nonnum"}], "]"}], ";", 
+                "\[IndentingNewLine]", "1."}]}], "\[IndentingNewLine]", 
+              "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]0", "=", 
+        RowBox[{"Min", "[", 
+         RowBox[{"max\[Tau]", ",", "\[Tau]0"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"min\[Tau]", "=", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\"\<MinStepSizeFactor\>\"", "]"}], " ", 
+         "\[Tau]0"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"DFa", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"F", "'"}], "[", "a", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "DFa", "]"}], "\[NotEqual]", " ", 
+          RowBox[{"Length", "[", "u", "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Message", "[", 
+           RowBox[{
+            RowBox[{"ConstrainedArmijo", "::", "dim"}], ",", 
+            RowBox[{"F", "'"}], ",", "\"\<input vector\>\""}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Abort", "[", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"Fa", "=", 
+        RowBox[{"F", "[", "a", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"DFau", "=", 
+        RowBox[{"DFa", ".", "u"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[CapitalGamma]", "=", 
+        RowBox[{"\[FormalT]", "\[Function]", 
+         RowBox[{"EvaluateParameterization", "[", 
+          RowBox[{"osc", ",", "\[FormalT]"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"Mystical", " ", "sign", " ", 
+         RowBox[{"switching", ".", " ", "Do"}], " ", "not", " ", 
+         RowBox[{"touch", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"dir", "=", 
+        RowBox[{"N", "[", 
+         RowBox[{"OptionValue", "[", "\"\<Direction\>\"", "]"}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"dir", "===", "Automatic"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"dir", "=", 
+           RowBox[{"OptimizationDirection", "[", "a", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"!", 
+             RowBox[{"NumericQ", "[", "dir", "]"}]}], ",", 
+            RowBox[{"dir", "=", 
+             RowBox[{"-", "1."}]}]}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"directionconsistentQ", "=", "True"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"dir", " ", "DFau"}], "<", "0."}], "\[IndentingNewLine]", 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"dir", "<", "0"}], "\[IndentingNewLine]", ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"ConstrainedArmijo", "::", "nodescend"}], ",", "F"}], 
+             "]"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"Message", "[", 
+             RowBox[{
+              RowBox[{"ConstrainedArmijo", "::", "noascend"}], ",", "F"}], 
+             "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\[CapitalGamma]", "=", 
+           RowBox[{"\[FormalT]", "\[Function]", 
+            RowBox[{"EvaluateParameterization", "[", 
+             RowBox[{"osc", ",", 
+              RowBox[{"-", "\[FormalT]"}]}], "]"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"u", "=", 
+           RowBox[{"-", "u"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"DFau", "=", 
+           RowBox[{"-", "DFau"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"directionconsistentQ", "=", "False"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"k", "=", "2"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"Phew", ",", " ", 
+         RowBox[{
+          RowBox[{"that", "'"}], "s", " ", 
+          RowBox[{"over", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{"We", " ", "start", " ", "by", " ", "guaranteeing"}], ",", 
+         " ", 
+         RowBox[{
+         "that", " ", "we", " ", "can", " ", "project", " ", "onto", " ", 
+          "the", " ", "constraint", " ", 
+          RowBox[{"manifold", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"w", "=", 
+        RowBox[{"0.", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Dofs", "[", "x", "]"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\[Tau]", "=", "\[Tau]0"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"\[Tau]", "=", 
+          RowBox[{"Max", "[", 
+           RowBox[{"min\[Tau]", ",", 
+            RowBox[{"Min", "[", 
+             RowBox[{"dir", " ", "\[Sigma]", " ", 
+              RowBox[{"\[Tau]", "^", "2"}], 
+              RowBox[{"DFau", "/", 
+               RowBox[{"(", 
+                RowBox[{"Fx", "-", "Fa", "-", 
+                 RowBox[{"\[Tau]", " ", "DFau"}]}], ")"}]}]}], "]"}]}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"NumericQ", "[", 
+            RowBox[{"OptionValue", "[", "\"\<MaxStepSize\>\"", "]"}], "]"}], 
+           ",", 
+           RowBox[{"\[Tau]", "=", 
+            RowBox[{"Min", "[", 
+             RowBox[{"\[Tau]", ",", 
+              RowBox[{"OptionValue", "[", "\"\<MaxStepSize\>\"", "]"}]}], 
+             "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", "\[Tau]", "]"}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"ProjectionBacktrackingSteps", "=", "0"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"x", "=", 
+        RowBox[{"Displace", "[", 
+         RowBox[{"a", ",", 
+          RowBox[{"\[CapitalGamma]", "[", "\[Tau]", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"y", "=", 
+        RowBox[{"Dofs", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+        "profirstQ", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"x", "=", 
+           RowBox[{"project", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"projectedQ", "=", "True"}], ";", 
+          RowBox[{"projectionsucceededQ", "=", 
+           RowBox[{
+            RowBox[{"ConstraintProjectionData", "[", "x", "]"}], "[", 
+            "\"\<Succeeded\>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"!", "projectionsucceededQ"}], "&&", 
+             RowBox[{"\[Tau]", ">", "min\[Tau]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"ProjectionBacktrackingSteps", "++"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"\[Tau]", "=", " ", 
+              RowBox[{"\[Gamma]Projection", " ", "\[Tau]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"x", "=", 
+              RowBox[{"Displace", "[", 
+               RowBox[{"a", ",", 
+                RowBox[{"\[CapitalGamma]", "[", "\[Tau]", "]"}]}], "]"}]}], 
+             ";", "\[IndentingNewLine]", 
+             RowBox[{"y", "=", 
+              RowBox[{"Dofs", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"x", "=", 
+              RowBox[{"project", "[", "x", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"projectedQ", "=", "True"}], ";", 
+             RowBox[{"projectionsucceededQ", "=", 
+              RowBox[{
+               RowBox[{"ConstraintProjectionData", "[", "x", "]"}], "[", 
+               "\"\<Succeeded\>\"", "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+           "]"}], ";"}], "\[IndentingNewLine]", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+           RowBox[{"We", " ", "have", " ", 
+            RowBox[{"P", "[", "x", "]"}]}], "\[Equal]", 
+           RowBox[{"x", " ", "or", " ", "tiny", " ", "step", " ", 
+            RowBox[{"size", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"projectedQ", "=", "False"}], ";", 
+          RowBox[{"projectionsucceededQ", "=", "True"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"update", "=", 
+        RowBox[{"Subtract", "[", 
+         RowBox[{
+          RowBox[{"Dofs", "[", "x", "]"}], ",", "y"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"We", " ", "have", " ", 
+           RowBox[{"P", "[", "x", "]"}]}], "\[Equal]", 
+          RowBox[{"x", " ", "or", " ", "tiny", " ", "step", " ", "size"}]}], 
+         ",", " ", 
+         RowBox[{
+          RowBox[{"unless", " ", "profirstQ"}], " ", "===", " ", 
+          RowBox[{"False", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Fx", "=", 
+        RowBox[{"F", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ArmijoBacktrackingSteps", "=", "0"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"enforcequad", "&&", 
+            RowBox[{"ArmijoBacktrackingSteps", "\[Equal]", "0"}]}], ")"}], 
+          "||"}], "*)"}], 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"dir", 
+             RowBox[{"(", 
+              RowBox[{"Fx", "-", "Fa", "-", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"\[Sigma]", " ", "\[Tau]"}], ")"}], " ", "DFau"}]}], 
+              ")"}]}], "<", "0."}], "&&", 
+           RowBox[{"\[Tau]", ">", "min\[Tau]"}]}], ")"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ArmijoBacktrackingSteps", "++"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{"If", " ", "x", " ", "is", " ", "feasible"}], ",", " ", 
+            RowBox[{
+            "safe", " ", "vertical", " ", "step", " ", "size", " ", "for", 
+             " ", "higher", " ", "order", " ", 
+             RowBox[{"interpolation", "."}]}]}], " ", "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"projectedQ", "&&", "projectionsucceededQ"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"\[Tau]\[Tau]", "=", "\[Tau]"}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"w", "=", 
+              RowBox[{
+               RowBox[{"Flatten", "[", "update", "]"}], "/", 
+               RowBox[{"\[Tau]\[Tau]", "^", "k"}]}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "Armijo", " ", "backtracking", " ", "with", " ", "quadratic", " ", 
+            "fit"}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"\[Tau]", "=", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"\[Gamma]Armijo", " ", "\[Tau]"}], ",", " ", 
+               RowBox[{"Min", "[", 
+                RowBox[{"max\[Tau]", ",", 
+                 RowBox[{"dir", " ", "\[Sigma]", " ", 
+                  RowBox[{"\[Tau]", "^", "2"}], 
+                  RowBox[{"DFau", "/", 
+                   RowBox[{"(", 
+                    RowBox[{"Fx", "-", "Fa", "-", 
+                    RowBox[{"\[Tau]", " ", "DFau"}]}], ")"}]}]}]}], "]"}]}], 
+              "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"\[Tau]", "=", 
+           RowBox[{"Max", "[", 
+            RowBox[{
+             RowBox[{"\[Gamma]Armijo", " ", "\[Tau]"}], ",", " ", 
+             RowBox[{"dir", " ", "\[Sigma]", " ", 
+              RowBox[{"\[Tau]", "^", "2"}], 
+              RowBox[{"DFau", "/", 
+               RowBox[{"(", 
+                RowBox[{"Fx", "-", "Fa", "-", 
+                 RowBox[{"\[Tau]", " ", "DFau"}]}], ")"}]}]}]}], "]"}]}], ";",
+           "\[IndentingNewLine]", 
+          RowBox[{"x", "=", 
+           RowBox[{"Displace", "[", 
+            RowBox[{"a", ",", 
+             RowBox[{
+              RowBox[{"\[CapitalGamma]", "[", "\[Tau]", "]"}], "+", 
+              RowBox[{
+               RowBox[{"\[Tau]", "^", "k"}], " ", "w"}]}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"y", "=", 
+           RowBox[{"Dofs", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+           "proeachQ", "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"x", "=", 
+              RowBox[{"project", "[", "x", "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"projectedQ", "=", "True"}], ";", 
+             RowBox[{"projectionsucceededQ", "=", 
+              RowBox[{
+               RowBox[{"ConstraintProjectionData", "[", "x", "]"}], 
+               "\[LeftDoubleBracket]", "\"\<Succeeded\>\"", 
+               "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"While", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"!", "projectionsucceededQ"}], "&&", 
+                RowBox[{"\[Tau]", ">", "min\[Tau]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", " ", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                  "Search", " ", "on", " ", "the", " ", "curve", " ", "with", 
+                   " ", "order"}], "-", 
+                  RowBox[{
+                  "k", " ", "update", " ", "given", " ", "by", " ", "w", " ", 
+                   "until", " ", "we", " ", "can", " ", "project", " ", 
+                   "onto", " ", "the", " ", "constraint", " ", 
+                   RowBox[{"manifold", " ", "--"}], " ", "unless", " ", 
+                   "Pinitial", " ", "was", " ", "chosen", " ", "trivial"}]}], 
+                 ",", " ", 
+                 RowBox[{
+                 "then", " ", "\[CapitalGamma]", " ", "is", " ", "used", " ", 
+                  "as", " ", "search", " ", 
+                  RowBox[{"curve", "."}]}]}], " ", "*)"}], 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"ProjectionBacktrackingSteps", "++"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"\[Tau]", "=", 
+                 RowBox[{"\[Gamma]Projection", " ", "\[Tau]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"x", "=", 
+                 RowBox[{"Displace", "[", 
+                  RowBox[{"a", ",", 
+                   RowBox[{
+                    RowBox[{"\[CapitalGamma]", "[", "\[Tau]", "]"}], "+", 
+                    RowBox[{
+                    RowBox[{"\[Tau]", "^", "k"}], " ", "w"}]}]}], "]"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"y", "=", 
+                 RowBox[{"Dofs", "[", "x", "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"x", "=", 
+                 RowBox[{"project", "[", "x", "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"projectedQ", "=", "True"}], ";", 
+                RowBox[{"projectionsucceededQ", "=", 
+                 RowBox[{
+                  RowBox[{"ConstraintProjectionData", "[", "x", "]"}], 
+                  "\[LeftDoubleBracket]", "\"\<Succeeded\>\"", 
+                  "\[RightDoubleBracket]"}]}], ";"}]}], "\[IndentingNewLine]",
+               "]"}], ";"}], "\[IndentingNewLine]", 
+            RowBox[{"(*", " ", 
+             RowBox[{
+              RowBox[{"We", " ", "have", " ", 
+               RowBox[{"P", "[", "x", "]"}]}], "\[Equal]", 
+              RowBox[{"x", " ", "or", " ", "tiny", " ", "step", " ", 
+               RowBox[{"size", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"projectedQ", "=", "False"}], ";", 
+             RowBox[{"projectionsucceededQ", "=", "True"}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"update", "=", 
+           RowBox[{"Subtract", "[", 
+            RowBox[{
+             RowBox[{"Dofs", "[", "x", "]"}], ",", "y"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"We", " ", "have", " ", 
+              RowBox[{"P", "[", "x", "]"}]}], "\[Equal]", 
+             RowBox[{
+             "x", " ", "or", " ", "tiny", " ", "step", " ", "size"}]}], ",", 
+            " ", 
+            RowBox[{
+             RowBox[{"unless", " ", "profirstQ"}], " ", "===", " ", 
+             RowBox[{"False", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"Fx", "=", 
+           RowBox[{"F", "[", "x", "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"prolastQ", "&&", 
+          RowBox[{"!", "projectedQ"}]}], ",", 
+         RowBox[{
+          RowBox[{"x", "=", 
+           RowBox[{"project", "[", "x", "]"}]}], ";"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"projectionsucceededQ", "=", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"!", "constrainedQ"}], "||", 
+          RowBox[{
+           RowBox[{"ConstraintProjectionData", "[", "x", "]"}], 
+           "\[LeftDoubleBracket]", "\"\<Succeeded\>\"", 
+           "\[RightDoubleBracket]"}]}], ")"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", "projectionsucceededQ"}], ",", 
+         RowBox[{
+         "Print", "[", 
+          "\"\<ConstrainedArmijo: Warning! Final projection did not \
+succeed.\>\"", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Fx", "=", 
+        RowBox[{"F", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"armijosucceededQ", "=", 
+        RowBox[{
+         RowBox[{"dir", 
+          RowBox[{"(", 
+           RowBox[{"Fx", "-", "Fa", "-", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"\[Sigma]", " ", "\[Tau]"}], ")"}], " ", "DFau"}]}], 
+           ")"}]}], " ", "\[GreaterEqual]", "0."}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"data", "=", 
+        RowBox[{"Association", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\"\<Method\>\"", "\[Rule]", "ConstrainedArmijo"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<StepSize\>\"", "\[Rule]", "\[Tau]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<OldObjective\>\"", "\[Rule]", "Fa"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Objective\>\"", "\[Rule]", "Fx"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<ConstraintViolation\>\"", "\[Rule]", 
+           RowBox[{"Max", "[", 
+            RowBox[{"Abs", "[", 
+             RowBox[{"ConstraintViolation", "[", "a", "]"}], "]"}], "]"}]}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<InitialStepSize\>\"", "\[Rule]", "\[Tau]0"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<MaxStepSize\>\"", "\[Rule]", 
+           RowBox[{"OptionValue", "[", "\"\<MaxStepSize\>\"", "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Contractions\>\"", "\[Rule]", 
+           RowBox[{
+           "ArmijoBacktrackingSteps", "+", "ProjectionBacktrackingSteps"}]}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ArmijoParameter\>\"", "\[Rule]", "\[Sigma]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<ArmijoContractionFactor\>\"", "\[Rule]", "\[Gamma]Armijo"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<ArmijoBacktrackingSteps\>\"", "\[Rule]", 
+           "ArmijoBacktrackingSteps"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ArmijoSucceeded\>\"", "\[Rule]", "armijosucceededQ"}], 
+          ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<ProjectionContractionFactor\>\"", "\[Rule]", 
+           "\[Gamma]Projection"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<ProjectionBacktrackingSteps\>\"", "\[Rule]", 
+           "ProjectionBacktrackingSteps"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<ProjectionSucceeded\>\"", "\[Rule]", "projectionsucceededQ"}], 
+          ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Succeeded\>\"", "\[Rule]", 
+           RowBox[{"projectionsucceededQ", "&&", "armijosucceededQ"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Direction\>\"", "\[Rule]", 
+           RowBox[{"OptionValue", "[", "\"\<Direction\>\"", "]"}]}], ",", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<DirectionConsistent\>\"", "\[Rule]", "directionconsistentQ"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ProjectionMethod\>\"", "\[Rule]", "promethdata"}], ",",
+           "\[IndentingNewLine]", 
+          RowBox[{"\"\<Constrained\>\"", "\[Rule]", "constrainedQ"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<ProjectFirstIteration\>\"", "\[Rule]", "profirstQ"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ProjectEachIteration\>\"", "\[Rule]", "proeachQ"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ProjectLastIteration\>\"", "\[Rule]", "prolastQ"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{"x", ",", "\"\<LineSearchData\>\"", ",", "data"}], "]"}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"SetCache", "[", 
+        RowBox[{
+        "x", ",", "\"\<MetricSaddlePointSystemOutdatedQ\>\"", ",", "True"}], 
+        "]"}], ";", "\[IndentingNewLine]", "x"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<InitialStepSize\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<EnforceQuadraticFit\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MaxStepSize\>\"", "\[Rule]", "\[Infinity]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArmijoParameter\>\"", "\[Rule]", "0.4"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ArmijoContractionFactor\>\"", "\[Rule]", "0.5"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ProjectionContractionFactor\>\"", "\[Rule]", "0.1"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<Direction\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ProjectionMethod\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"ConstraintProjection", ",", 
+          RowBox[{"Method", "\[Rule]", "\"\<FrozenNewton\>\""}]}], "}"}]}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<ProjectFirstIteration\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ProjectEachIteration\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ProjectLastIteration\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MinStepSizeFactor\>\"", "\[Rule]", 
+        RowBox[{"1.", " ", 
+         RowBox[{"10", "^", 
+          RowBox[{"-", "8"}]}]}]}]}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<dim\>\"", "\[Rule]", 
+       "\"\<Error: Dimensions of `1` and `2` do not fit together.\>\""}], 
+      "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Warnings\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+       "\"\<nodescend\>\"", "\[Rule]", 
+        "\"\<Warning: Input vector is not a descending direction for `1`. \
+Opposite direction used instead.\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<noascend\>\"", "\[Rule]", 
+        "\"\<Warning: Input vector is not an ascending direction for `1`. \
+Opposite direction used instead.\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<nonnumosc\>\"", "\[Rule]", 
+        "\"\<Warning: Value of \\\"InitialStepSize\\\" is set to Automatic, \
+but \\\"StepSize\\\"-value of supplied searchline object is nonnumerical. \
+Using \\\"MaxStepSize\\\".\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<nonnuminit\>\"", "\[Rule]", 
+        "\"\<Warning: \\\"InitialStepSize\\\" is neither numerical nor \
+Automatic. Using \\\"MaxStepSize\\\".\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<nonnum\>\"", "\[Rule]", 
+        "\"\<Warning: The values of \\\"InitialStepSize\\\", \
+\\\"MaxStepSize\\\", and \\\"StepSize\\\"-value of supplied searchline object \
+are all nonnumerical. Using \\\"InitialStepSize\\\" = 1.\>\""}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6667107128159246`*^9, 3.666710775018593*^9}, {
+   3.6667109017694807`*^9, 3.6667109574095497`*^9}, {3.666711396429727*^9, 
+   3.6667115839479237`*^9}, {3.6667116294471693`*^9, 
+   3.6667116802806664`*^9}, {3.6667117170760736`*^9, 
+   3.6667118203551407`*^9}, {3.666712314650588*^9, 3.6667123196606207`*^9}, {
+   3.6667123635251293`*^9, 3.666712372354362*^9}, {3.666712472543935*^9, 
+   3.666712503886725*^9}, {3.666712716503183*^9, 3.666712759745041*^9}, {
+   3.666714293712225*^9, 3.666714435377788*^9}, {3.6667146412002907`*^9, 
+   3.666714676626525*^9}, {3.6667148082918053`*^9, 3.66671481025651*^9}, {
+   3.666717755012404*^9, 3.6667177726759043`*^9}, {3.6667205882552357`*^9, 
+   3.6667207291206408`*^9}, {3.666720787690837*^9, 3.666720790802045*^9}, {
+   3.666720830050761*^9, 3.666720832531021*^9}, {3.666721083665966*^9, 
+   3.666721095866744*^9}, {3.6667769800794983`*^9, 3.666777037384974*^9}, {
+   3.666777085495892*^9, 3.666777119304305*^9}, {3.6667771871615047`*^9, 
+   3.666777326359355*^9}, {3.6667777306898527`*^9, 3.666777734271996*^9}, {
+   3.666937172640826*^9, 3.666937196720434*^9}, {3.666937650685609*^9, 
+   3.6669376791076193`*^9}, {3.666937938383013*^9, 3.66693794831636*^9}, {
+   3.670822055229129*^9, 3.670822055751133*^9}, {3.679716563229166*^9, 
+   3.679716569255496*^9}, {3.679716628365177*^9, 3.679716630886746*^9}, {
+   3.67973103092948*^9, 3.679731067232174*^9}, 3.6797457063265533`*^9, {
+   3.679746263385026*^9, 3.6797463152414*^9}, {3.679746355055419*^9, 
+   3.679746461312105*^9}, {3.679746553794783*^9, 3.679746610489196*^9}, {
+   3.679747045517592*^9, 3.679747072710865*^9}, {3.679747110407605*^9, 
+   3.6797471839477997`*^9}, {3.679747224207817*^9, 3.6797472298432627`*^9}, {
+   3.6797472649034653`*^9, 3.679747267032908*^9}, 3.679841873300084*^9, {
+   3.679841965969336*^9, 3.6798419767638283`*^9}, {3.67984200689977*^9, 
+   3.67984217269418*^9}, {3.679842259390758*^9, 3.679842360896865*^9}, {
+   3.679842400218048*^9, 3.679842435525359*^9}, {3.679842475213608*^9, 
+   3.679842557959002*^9}, {3.679842592018132*^9, 3.6798428535340767`*^9}, {
+   3.6798428976739473`*^9, 3.679843001908263*^9}, {3.679843036092125*^9, 
+   3.679843230548267*^9}, {3.679843272068266*^9, 3.679843355841153*^9}, {
+   3.679843417749627*^9, 3.679843476133381*^9}, {3.679843508037409*^9, 
+   3.679843575213808*^9}, {3.6798436175009193`*^9, 3.679843673877688*^9}, {
+   3.679843738290217*^9, 3.6798438645338793`*^9}, {3.679843922464239*^9, 
+   3.679844185259529*^9}, {3.679844216971518*^9, 3.679844288755672*^9}, {
+   3.679844341940658*^9, 3.679844715407694*^9}, {3.679844806775076*^9, 
+   3.679844952450281*^9}, {3.679845023087771*^9, 3.679845225930464*^9}, 
+   3.6798452776661777`*^9, {3.6798453190432243`*^9, 3.679845648562221*^9}, {
+   3.6798457236207113`*^9, 3.6798457585166683`*^9}, {3.679845791328041*^9, 
+   3.679845844852787*^9}, {3.679845905052226*^9, 3.6798459865638857`*^9}, {
+   3.6798460296316338`*^9, 3.67984603235835*^9}, {3.6798460824211473`*^9, 
+   3.6798460871090508`*^9}, {3.679846126809574*^9, 3.679846210157555*^9}, {
+   3.6798462814780617`*^9, 3.679846344864897*^9}, {3.679846376839439*^9, 
+   3.679846458079701*^9}, {3.679846505506526*^9, 3.679846577226831*^9}, {
+   3.6798466220678587`*^9, 3.679846650329278*^9}, {3.6798467326091833`*^9, 
+   3.679847008835643*^9}, {3.679847054318969*^9, 3.679847057372263*^9}, {
+   3.679847088263412*^9, 3.67984713379253*^9}, {3.679847165966222*^9, 
+   3.6798472191258297`*^9}, 3.679847255921665*^9, {3.6798473020378733`*^9, 
+   3.6798473254208927`*^9}, {3.679847379240637*^9, 3.679847381023809*^9}, {
+   3.67984741847087*^9, 3.679847455510283*^9}, {3.6798474869583063`*^9, 
+   3.679847636541814*^9}, {3.679847699088828*^9, 3.679847787904537*^9}, {
+   3.679847836104437*^9, 3.67984788572855*^9}, {3.679848404518694*^9, 
+   3.6798484330771627`*^9}, {3.679848613480082*^9, 3.679848614457265*^9}, 
+   3.679848645824181*^9, {3.6798487362155533`*^9, 3.6798488307010183`*^9}, {
+   3.679848934098937*^9, 3.6798489345855207`*^9}, {3.679849083246831*^9, 
+   3.679849085214972*^9}, {3.679849296336673*^9, 3.679849405538625*^9}, {
+   3.679849489196752*^9, 3.67984952073306*^9}, {3.679849562964172*^9, 
+   3.679849566278153*^9}, {3.679849613575713*^9, 3.6798496144614973`*^9}, {
+   3.679849660235815*^9, 3.679849663029757*^9}, {3.6798497912630444`*^9, 
+   3.679849794583653*^9}, {3.6798498369136753`*^9, 3.679849840820945*^9}, {
+   3.679849906144903*^9, 3.6798499259629383`*^9}, {3.6798501143685904`*^9, 
+   3.679850142307107*^9}, {3.679850403312121*^9, 3.6798504158107767`*^9}, {
+   3.679850503253583*^9, 3.6798505473803167`*^9}, 3.679850636575706*^9, {
+   3.6798507409639587`*^9, 3.679850741448826*^9}, {3.6798510257536173`*^9, 
+   3.679851127879669*^9}, {3.679851389681858*^9, 3.679851436212398*^9}, {
+   3.6798516662538967`*^9, 3.67985166969552*^9}, {3.679851800494733*^9, 
+   3.679851822937627*^9}, {3.679851897330883*^9, 3.679851935583637*^9}, {
+   3.679853911368148*^9, 3.679853969984434*^9}, {3.679854231115633*^9, 
+   3.6798542939108553`*^9}, {3.679924056574346*^9, 3.679924156590584*^9}, {
+   3.680025952928199*^9, 3.6800259531844883`*^9}, {3.68002605096579*^9, 
+   3.680026063462255*^9}, {3.6800653687707357`*^9, 3.680065371217711*^9}, {
+   3.6800655147100163`*^9, 3.680065584642413*^9}, {3.680941826619101*^9, 
+   3.680941848162829*^9}, {3.68104782619051*^9, 3.681047862352119*^9}, {
+   3.681047892409008*^9, 3.681047923793242*^9}, {3.681047958087471*^9, 
+   3.6810480001689863`*^9}, {3.681048043501277*^9, 3.6810480868390512`*^9}, {
+   3.681048154417802*^9, 3.681048238285707*^9}, {3.681048273471204*^9, 
+   3.68104833262324*^9}, {3.681049447166657*^9, 3.681049447396367*^9}, {
+   3.6810496031773243`*^9, 3.6810496314933023`*^9}, {3.68105072222758*^9, 
+   3.681050760176729*^9}, {3.681051323063053*^9, 3.681051326157198*^9}, {
+   3.681051541613949*^9, 3.681051543028089*^9}, {3.6810558099574833`*^9, 
+   3.681055982478306*^9}, {3.681056832931739*^9, 3.681056838612732*^9}, {
+   3.681056913812574*^9, 3.68105694325884*^9}, {3.6810570860357943`*^9, 
+   3.681057137119926*^9}, {3.681057208513104*^9, 3.6810572734538593`*^9}, 
+   3.6810573441803627`*^9, {3.6810576990889053`*^9, 3.681057699534419*^9}, {
+   3.681057892366391*^9, 3.681057900090955*^9}, {3.681058307217123*^9, 
+   3.6810583147285852`*^9}, {3.6811168647484713`*^9, 3.681116871045867*^9}, {
+   3.6811169601590157`*^9, 3.68111696166121*^9}, {3.68111703339765*^9, 
+   3.681117033779471*^9}, 3.68111721057668*^9, {3.6811172583842983`*^9, 
+   3.6811173061145983`*^9}, {3.6811173670971603`*^9, 
+   3.6811174054541492`*^9}, {3.68111743658152*^9, 3.681117446486025*^9}, {
+   3.681117539418687*^9, 3.681117551096064*^9}, {3.6811179352053947`*^9, 
+   3.681117970176186*^9}, 3.681118085294738*^9, {3.68111813086025*^9, 
+   3.681118214247107*^9}, {3.681118532623808*^9, 3.6811186885045013`*^9}, {
+   3.6811204503607607`*^9, 3.681120506804307*^9}, {3.681120546992057*^9, 
+   3.681120609681362*^9}, {3.681120775119335*^9, 3.681120848273466*^9}, {
+   3.681121050875288*^9, 3.6811210738795223`*^9}, {3.6811211194031487`*^9, 
+   3.681121163405836*^9}, {3.681188929879568*^9, 3.681188978447402*^9}, {
+   3.681189012628477*^9, 3.6811890825911007`*^9}, {3.681189143792335*^9, 
+   3.681189151672057*^9}, {3.6811892104705763`*^9, 3.6811892154332848`*^9}, {
+   3.681189254861383*^9, 3.681189269447242*^9}, {3.6811940551336317`*^9, 
+   3.6811940640372334`*^9}, {3.6811941952345123`*^9, 3.68119419749269*^9}, {
+   3.681194241622857*^9, 3.681194248240137*^9}, {3.681194282332437*^9, 
+   3.681194297144328*^9}, {3.68119482063055*^9, 3.6811948263824387`*^9}, {
+   3.681194874019947*^9, 3.681194968246372*^9}, {3.6811950404532967`*^9, 
+   3.681195064004377*^9}, {3.6811951191914787`*^9, 3.681195152058235*^9}, {
+   3.681195187979475*^9, 3.68119527689088*^9}, {3.6811954182478533`*^9, 
+   3.6811954246495533`*^9}, {3.681195864025798*^9, 3.681195868661911*^9}, {
+   3.681201405438263*^9, 3.681201461031289*^9}, {3.681213206776044*^9, 
+   3.6812132105512543`*^9}, 3.681221847071164*^9, {3.681298825474019*^9, 
+   3.681298836603771*^9}, {3.681298877394128*^9, 3.6812989414176683`*^9}, {
+   3.681299025817008*^9, 3.681299055642681*^9}, {3.681299086621258*^9, 
+   3.681299087809526*^9}, {3.681299288750218*^9, 3.681299325850017*^9}, {
+   3.6812994014650373`*^9, 3.681299439884987*^9}, {3.681299472057081*^9, 
+   3.6812994820698347`*^9}, {3.68129952567879*^9, 3.681299550981432*^9}, {
+   3.681299691109483*^9, 3.681299713519189*^9}, {3.681314224804577*^9, 
+   3.681314231704398*^9}, {3.681314284357843*^9, 3.681314286395679*^9}, {
+   3.681463022099581*^9, 3.681463029361041*^9}, {3.681463129415962*^9, 
+   3.6814631315623827`*^9}, 3.683831254947204*^9, {3.696413990139544*^9, 
+   3.696413992598325*^9}, {3.696512566381158*^9, 3.696512636672358*^9}, {
+   3.696512733549765*^9, 3.696512737581711*^9}, {3.696512781683938*^9, 
+   3.6965127939150143`*^9}, {3.696512829711356*^9, 3.696512835051855*^9}, {
+   3.696512866916213*^9, 3.6965130369123583`*^9}, {3.696513094410931*^9, 
+   3.696513100353692*^9}, {3.696513160333544*^9, 3.696513362113204*^9}, {
+   3.696533374911056*^9, 3.696533375660581*^9}, 3.696534428468327*^9, {
+   3.697782995639851*^9, 3.6977829985264597`*^9}, {3.697783028917934*^9, 
+   3.6977830799439697`*^9}, 3.697783279045134*^9, {3.6977833207422657`*^9, 
+   3.697783360045597*^9}, {3.697783517109991*^9, 3.6977835752320337`*^9}, {
+   3.697783608865921*^9, 3.697783611617099*^9}, {3.697783644894113*^9, 
+   3.697783646515791*^9}, {3.6977837226393414`*^9, 3.697783732021967*^9}, {
+   3.697783936956594*^9, 3.697783937171796*^9}, {3.7079275419953623`*^9, 
+   3.7079276031217213`*^9}, {3.714886830075427*^9, 3.7148868590449753`*^9}, {
+   3.7190747926267548`*^9, 3.719074817487607*^9}, {3.719074961284481*^9, 
+   3.71907496873831*^9}, 3.719075056071147*^9, {3.7200935492927427`*^9, 
+   3.720093555421064*^9}, {3.720093603041772*^9, 3.720093612635188*^9}, {
+   3.720181063919175*^9, 3.7201810675070057`*^9}, {3.720181118712237*^9, 
+   3.7201811442527323`*^9}, {3.720181175752604*^9, 3.72018117620951*^9}, {
+   3.720181261713367*^9, 3.720181306485959*^9}, {3.720181777745077*^9, 
+   3.72018178072714*^9}, {3.720181831620638*^9, 3.720181846526021*^9}, {
+   3.720181964002754*^9, 3.720181964496518*^9}, {3.720183496578665*^9, 
+   3.720183506140534*^9}, {3.72018366584404*^9, 3.720183687818819*^9}, 
+   3.72018374857092*^9, {3.720183829995398*^9, 3.720183944570262*^9}, {
+   3.7201839817509317`*^9, 3.7201840248058147`*^9}, {3.720184062234644*^9, 
+   3.7201841075724277`*^9}, 3.7201841466955137`*^9, {3.720184432367573*^9, 
+   3.720184560732057*^9}, {3.7201853375913963`*^9, 3.720185362165626*^9}, {
+   3.749797937677258*^9, 3.7497980036812963`*^9}, {3.757246280173552*^9, 
+   3.757246355843492*^9}, {3.757246414605801*^9, 3.757246416348579*^9}, {
+   3.75724690387739*^9, 3.757246933893992*^9}, {3.7572521629895163`*^9, 
+   3.7572521646452723`*^9}, {3.75733615938876*^9, 3.757336205871166*^9}, {
+   3.757336276373268*^9, 3.757336315656414*^9}, {3.75733639255569*^9, 
+   3.7573363944886208`*^9}, {3.757336836344836*^9, 3.75733692801363*^9}, {
+   3.757337031460512*^9, 3.757337076265381*^9}, {3.757337341824265*^9, 
+   3.7573374054547777`*^9}, {3.757492206098508*^9, 3.757492302092043*^9}, {
+   3.7574924401718817`*^9, 3.75749244146446*^9}, {3.75835862982133*^9, 
+   3.758358645786584*^9}, {3.758358760303624*^9, 3.758358769101944*^9}, {
+   3.758358857938179*^9, 3.758358861896987*^9}, {3.758359198116288*^9, 
+   3.758359217024349*^9}, {3.782663194342751*^9, 3.782663222951652*^9}, {
+   3.783930848398581*^9, 3.78393085011357*^9}, {3.784118834796154*^9, 
+   3.784118844112857*^9}, {3.7841188902172832`*^9, 3.784118890647554*^9}, {
+   3.784118926655609*^9, 3.784118942005228*^9}, {3.784119049452033*^9, 
+   3.784119049643054*^9}, {3.7849779957781773`*^9, 3.7849779962455873`*^9}, 
+   3.785082637580017*^9, {3.7955925613692503`*^9, 3.795592628853619*^9}, {
+   3.795592704040989*^9, 3.7955927149915237`*^9}, {3.795592872253457*^9, 
+   3.795592873556898*^9}, {3.795592925013473*^9, 3.795592925213076*^9}, {
+   3.7955929809331417`*^9, 3.7955930155235357`*^9}, {3.795593049582057*^9, 
+   3.7955930518536167`*^9}, {3.795594681349772*^9, 3.795594692117177*^9}, {
+   3.795595546221917*^9, 3.795595556317604*^9}, {3.7966321777846317`*^9, 
+   3.796632184759513*^9}, {3.796697789633995*^9, 3.796697876379575*^9}, {
+   3.796697912931149*^9, 3.796697930297534*^9}, {3.79669796666475*^9, 
+   3.79669796766495*^9}, 3.796806735998042*^9, {3.796807079146639*^9, 
+   3.796807086960553*^9}, {3.797012483498176*^9, 3.79701249498654*^9}, {
+   3.797012527007523*^9, 3.797012528687078*^9}, {3.797012617387888*^9, 
+   3.7970126680595837`*^9}, {3.797012777096346*^9, 3.797012816893003*^9}, {
+   3.7970128895539827`*^9, 3.797013090283882*^9}, {3.797013152610449*^9, 
+   3.797013164104384*^9}, {3.797013197808229*^9, 3.797013214742976*^9}, {
+   3.7970132450292187`*^9, 3.797013340729309*^9}, {3.797013388198679*^9, 
+   3.79701349195644*^9}, {3.797013525957829*^9, 3.79701352638*^9}, {
+   3.7970142610410013`*^9, 3.797014451835478*^9}, {3.797014642080331*^9, 
+   3.797014652544491*^9}, {3.79701469038522*^9, 3.79701471310303*^9}, {
+   3.7970147514229727`*^9, 3.797014751661973*^9}, {3.797750057417541*^9, 
+   3.797750064838667*^9}, {3.797750231032778*^9, 3.797750241319219*^9}, {
+   3.797750271977659*^9, 3.797750272258668*^9}, {3.79775052940856*^9, 
+   3.79775053079205*^9}, {3.7978325951037607`*^9, 3.7978325968303347`*^9}, {
+   3.798260081550521*^9, 3.798260081773809*^9}, {3.7982652920365953`*^9, 
+   3.798265300891954*^9}, {3.798265550244676*^9, 3.79826560392941*^9}, {
+   3.798265692298978*^9, 3.798265707924242*^9}, {3.79826583241756*^9, 
+   3.798266042386685*^9}, {3.7982662212353077`*^9, 3.798266285538919*^9}, {
+   3.798266456649857*^9, 3.798266515431838*^9}, {3.7982665482474213`*^9, 
+   3.798266563278874*^9}, {3.798266650131053*^9, 3.7982666545135202`*^9}, {
+   3.798266684827796*^9, 3.798266726783185*^9}, {3.798266765614645*^9, 
+   3.798266827555163*^9}, {3.798266858875245*^9, 3.7982669358305883`*^9}, {
+   3.798267092848179*^9, 3.798267182079508*^9}, {3.798267230253296*^9, 
+   3.798267356728149*^9}, {3.7982673999901047`*^9, 3.79826742894844*^9}, {
+   3.798267471579916*^9, 3.798267553000475*^9}, {3.798268755886797*^9, 
+   3.7982688874392347`*^9}, {3.798269043845255*^9, 3.798269044002078*^9}, {
+   3.798269534412116*^9, 3.798269535305737*^9}, {3.798269703124057*^9, 
+   3.798269809774438*^9}, {3.7982717589127617`*^9, 3.798271761592269*^9}, {
+   3.7982718323110933`*^9, 3.798271849332821*^9}, {3.798271924170329*^9, 
+   3.7982719400006237`*^9}, {3.7982720882203827`*^9, 3.798272089443389*^9}, {
+   3.798272754972918*^9, 3.798272756979607*^9}, {3.798275540274414*^9, 
+   3.798275567241716*^9}, {3.798275631184614*^9, 3.798275664494071*^9}, {
+   3.798275697621583*^9, 3.798275697892755*^9}, {3.7982757389465427`*^9, 
+   3.798275739315465*^9}, 3.7982757925374327`*^9, {3.798278766552766*^9, 
+   3.798278770944346*^9}, {3.798284032520501*^9, 3.798284050709962*^9}, {
+   3.7982840846309347`*^9, 3.79828408641428*^9}, {3.798284197731138*^9, 
+   3.7982842453366613`*^9}, 3.7982844047728853`*^9, {3.798284523687476*^9, 
+   3.798284527285631*^9}, {3.798284571069903*^9, 3.7982845920839033`*^9}, {
+   3.798284817363944*^9, 3.7982848252267227`*^9}, {3.7982848598106956`*^9, 
+   3.798284860015873*^9}, {3.798284914499721*^9, 3.7982850771935596`*^9}, {
+   3.798285121073182*^9, 3.798285169107271*^9}, 3.798285220852194*^9, {
+   3.7982852536880703`*^9, 3.798285254219784*^9}, {3.7982853684945383`*^9, 
+   3.798285398071211*^9}, {3.798286617043489*^9, 3.798286626281282*^9}, {
+   3.798286768743669*^9, 3.798286927693788*^9}, {3.798286971619553*^9, 
+   3.798287029007288*^9}, {3.826017080746133*^9, 3.826017209823992*^9}, {
+   3.826017446399925*^9, 3.826017448739962*^9}, 3.826017481759241*^9, {
+   3.826017545674861*^9, 3.826017591488743*^9}, {3.8260176611251907`*^9, 
+   3.826017669255382*^9}, {3.826017794258857*^9, 3.826017907325556*^9}, {
+   3.826017968443288*^9, 3.8260180593207827`*^9}, {3.826018111804429*^9, 
+   3.82601813735007*^9}, {3.826018169061343*^9, 3.826018173321863*^9}, {
+   3.82601828744445*^9, 3.8260182880219173`*^9}, {3.826018340727028*^9, 
+   3.826018345412904*^9}, {3.8260184848413563`*^9, 3.826018487532312*^9}, {
+   3.829296737830986*^9, 3.829296808541507*^9}, {3.8326549259166803`*^9, 
+   3.832654931908903*^9}, {3.844314321536138*^9, 3.844314372133143*^9}, {
+   3.84431441345455*^9, 3.844314416579208*^9}, {3.844314564215803*^9, 
+   3.8443146088052177`*^9}, {3.844314690342729*^9, 3.844314739536151*^9}, {
+   3.84431476968093*^9, 3.8443147701266727`*^9}, {3.84431951152262*^9, 
+   3.844319527778932*^9}, {3.84431955956774*^9, 3.844319622226654*^9}, {
+   3.844319902095612*^9, 3.844319912631137*^9}, {3.8443215497085047`*^9, 
+   3.844321559075037*^9}, {3.84432166697787*^9, 3.8443216671353493`*^9}},
+ CellLabel->
+  "In[247]:=",ExpressionUUID->"8a4bd7a3-8251-46f6-a568-bae95860e6d9"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 225, 5, 42, "Input",ExpressionUUID->"603345e7-aa89-4bbf-984c-f9e7e5edfd7c"],
+Cell[786, 27, 50414, 962, 6171, "Input",ExpressionUUID->"8a4bd7a3-8251-46f6-a568-bae95860e6d9"]
+}
+]
+*)
+

@@ -1,0 +1,1194 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     56039,       1186]
+NotebookOptionsPosition[     55746,       1173]
+NotebookOutlinePosition[     56082,       1188]
+CellTagsIndexPosition[     56039,       1185]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Remesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", "ell_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "pts", ",", "edges", ",", "edgelengths", ",", "VNE", ",", "maxvalence",
+         ",", "vertexcount", ",", "edgecount", ",", "nmax", ",", "\[Lambda]", 
+        ",", "\[CapitalLambda]", ",", "collapsemask", ",", "splitmask", ",", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        "regularinteriorvertexQ", ",", "splititer", ",", "collapseiter", ",", 
+        "collapsecount", ",", "longedges", ",", "shortedges", ",", 
+        "\[IndentingNewLine]", "e", ",", "i1", ",", "i2", ",", "j1", ",", 
+        "j2", ",", "e1", ",", "e2", ",", "queue", ",", "touchedQ", ",", 
+        "regularQ", ",", "e1pos", ",", "e2pos", ",", "j1pos", ",", "j2pos", 
+        ",", "p", ",", "epos", ",", "vpos", ",", "f", ",", "buffer"}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"\[Lambda]", ",", "\[CapitalLambda]"}], "}"}], "=", 
+        RowBox[{"OptionValue", "[", "\"\<Bounds\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"collapsemask", "=", 
+        RowBox[{"OptionValue", "[", "\"\<CollapseMask\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"splitmask", "=", 
+        RowBox[{"OptionValue", "[", "\"\<SplitMask\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"nmax", "=", 
+        RowBox[{"Max", "[", 
+         RowBox[{
+          RowBox[{"EdgeCount", "[", "M", "]"}], ",", 
+          RowBox[{"2", 
+           RowBox[{"Ceiling", "[", 
+            RowBox[{
+             RowBox[{"CurveLength", "[", "M", "]"}], "/", 
+             RowBox[{"(", 
+              RowBox[{"\[Lambda]", " ", "ell"}], ")"}]}], "]"}]}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0.", ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Ramp", "[", 
+               RowBox[{"nmax", "-", 
+                RowBox[{"VertexCount", "[", "M", "]"}]}], "]"}], ",", 
+              RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "}"}]}], 
+           "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"edges", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"Edges", "[", "M", "]"}], ",", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0", ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Ramp", "[", 
+               RowBox[{"nmax", "-", 
+                RowBox[{"EdgeCount", "[", "M", "]"}]}], "]"}], ",", "2"}], 
+             "}"}]}], "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"edgelengths", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"EdgeLengths", "[", "M", "]"}], ",", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0.", ",", 
+            RowBox[{"{", 
+             RowBox[{"Ramp", "[", 
+              RowBox[{"nmax", "-", 
+               RowBox[{"EdgeCount", "[", "M", "]"}]}], "]"}], "}"}]}], 
+           "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"VNE", "=", 
+        RowBox[{"AdjacencyLists", "[", 
+         RowBox[{"M", ",", "Vertices", ",", "Edges"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"maxvalence", "=", 
+        RowBox[{
+         RowBox[{"Dimensions", "[", "VNE", "]"}], "\[LeftDoubleBracket]", "2",
+          "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"VNE", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{"VNE", ",", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"0", ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Ramp", "[", 
+               RowBox[{"nmax", "-", 
+                RowBox[{"VertexCount", "[", "M", "]"}]}], "]"}], ",", 
+              "maxvalence"}], "}"}]}], "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"vertexcount", "=", 
+        RowBox[{"VertexCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"edgecount", "=", 
+        RowBox[{"EdgeCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"splititer", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"collapseiter", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"collapsecount", "=", "0"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"longedges", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"Position", "[", 
+          RowBox[{
+           RowBox[{"UnitStep", "[", 
+            RowBox[{
+             RowBox[{"edgelengths", "\[LeftDoubleBracket]", 
+              RowBox[{"1", ";;", "edgecount"}], "\[RightDoubleBracket]"}], 
+             "-", 
+             RowBox[{"\[CapitalLambda]", " ", "ell"}]}], "]"}], ",", "1"}], 
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "longedges", "]"}], ">", "0"}], "&&", 
+          RowBox[{"vertexcount", "<", "nmax"}], "&&", 
+          RowBox[{"edgecount", "<", "nmax"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"Print", "[", "longedges", "]"}], ";"}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"splititer", "++"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"queue", "=", 
+           RowBox[{"longedges", "\[LeftDoubleBracket]", 
+            RowBox[{"Reverse", "[", 
+             RowBox[{"Ordering", "[", 
+              RowBox[{
+              "edgelengths", "\[LeftDoubleBracket]", "longedges", 
+               "\[RightDoubleBracket]"}], "]"}], "]"}], 
+            "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<queue\>\"", "\[Rule]", "queue"}], "]"}], ";"}], 
+           "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"\"\<edgelengths\>\"", "\[Rule]", 
+              RowBox[{
+              "edgelengths", "\[LeftDoubleBracket]", "longedges", 
+               "\[RightDoubleBracket]"}]}], "]"}], ";"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"Min", "[", 
+              RowBox[{"edgelengths", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "edgecount"}], "\[RightDoubleBracket]"}], 
+              "]"}], "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"Do", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"e", "=", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"queue", ",", "k"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"vertexcount", "++"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"i1", "=", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"edges", ",", "e", ",", "1"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"i2", "=", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"edges", ",", "e", ",", "2"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+              "pts", "\[LeftDoubleBracket]", "vertexcount", 
+               "\[RightDoubleBracket]"}], "=", 
+              RowBox[{"0.5", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"Compile`GetElement", "[", 
+                  RowBox[{"pts", ",", "i1"}], "]"}], "+", 
+                 RowBox[{"Compile`GetElement", "[", 
+                  RowBox[{"pts", ",", "i2"}], "]"}]}], ")"}]}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"edges", "\[LeftDoubleBracket]", 
+               RowBox[{"e", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+              "vertexcount"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"edgecount", "++"}], ";", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"edges", "\[LeftDoubleBracket]", 
+               RowBox[{"edgecount", ",", "1"}], "\[RightDoubleBracket]"}], 
+              "=", "vertexcount"}], ";", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"edges", "\[LeftDoubleBracket]", 
+               RowBox[{"edgecount", ",", "2"}], "\[RightDoubleBracket]"}], 
+              "=", "i2"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Compile`GetElement", "[", 
+                 RowBox[{"VNE", ",", "i2", ",", "1"}], "]"}], "\[Equal]", 
+                "e"}], ",", 
+               RowBox[{
+                RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                 RowBox[{"i2", ",", "1"}], "\[RightDoubleBracket]"}], "=", 
+                "edgecount"}], ",", 
+               RowBox[{
+                RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                 RowBox[{"i2", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+                "edgecount"}]}], "]"}], ";", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"VNE", "\[LeftDoubleBracket]", 
+               RowBox[{"vertexcount", ",", "1"}], "\[RightDoubleBracket]"}], 
+              "=", "e"}], ";", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"VNE", "\[LeftDoubleBracket]", 
+               RowBox[{"vertexcount", ",", "2"}], "\[RightDoubleBracket]"}], 
+              "=", "edgecount"}], ";", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+              "edgelengths", "\[LeftDoubleBracket]", "edgecount", 
+               "\[RightDoubleBracket]"}], "=", 
+              RowBox[{
+               RowBox[{
+               "edgelengths", "\[LeftDoubleBracket]", "e", 
+                "\[RightDoubleBracket]"}], "*=", "0.5"}]}], ";"}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"k", ",", "1", ",", 
+              RowBox[{"Length", "[", "queue", "]"}]}], "}"}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"longedges", "=", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"Position", "[", 
+             RowBox[{
+              RowBox[{"UnitStep", "[", 
+               RowBox[{
+                RowBox[{"edgelengths", "\[LeftDoubleBracket]", 
+                 RowBox[{"1", ";;", "edgecount"}], "\[RightDoubleBracket]"}], 
+                "-", 
+                RowBox[{"\[CapitalLambda]", " ", "ell"}]}], "]"}], ",", "1", 
+              ",", "1"}], "]"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"longedges", "=."}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"regularinteriorvertexQ", "=", 
+        RowBox[{"1", "-", 
+         RowBox[{"Unitize", "[", 
+          RowBox[{
+           RowBox[{"Total", "[", 
+            RowBox[{
+             RowBox[{"Unitize", "[", 
+              RowBox[{"VNE", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "vertexcount"}], "\[RightDoubleBracket]"}], 
+              "]"}], ",", 
+             RowBox[{"{", "2", "}"}]}], "]"}], "-", "2"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"shortedges", "=", 
+        RowBox[{"Intersection", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"IntegerPositions", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Unitize", "[", 
+             RowBox[{
+              RowBox[{"Total", "[", 
+               RowBox[{
+                RowBox[{"Partition", "[", 
+                 RowBox[{
+                  RowBox[{"regularinteriorvertexQ", "\[LeftDoubleBracket]", 
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{";;", "edgecount"}], "\[RightDoubleBracket]"}], 
+                    "]"}], "\[RightDoubleBracket]"}], ",", "2"}], "]"}], ",", 
+                
+                RowBox[{"{", "2", "}"}]}], "]"}], "-", "2"}], "]"}], ",", 
+            "\[IndentingNewLine]", "0"}], "\[IndentingNewLine]", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Position", "[", 
+            RowBox[{
+             RowBox[{"UnitStep", "[", 
+              RowBox[{"Subtract", "[", 
+               RowBox[{
+                RowBox[{"\[Lambda]", " ", "ell"}], ",", 
+                RowBox[{"edgelengths", "\[LeftDoubleBracket]", 
+                 RowBox[{"1", ";;", "edgecount"}], 
+                 "\[RightDoubleBracket]"}]}], "]"}], "]"}], ",", "1"}], "]"}],
+            "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "shortedges", "]"}], ">", "0"}], 
+         RowBox[{"(*", 
+          RowBox[{"&&", " ", 
+           RowBox[{"collapseiter", "<", "2"}]}], "*)"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"collapseiter", "++"}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"queue", "=", 
+           RowBox[{"shortedges", "\[LeftDoubleBracket]", 
+            RowBox[{"Ordering", "[", 
+             RowBox[{
+             "edgelengths", "\[LeftDoubleBracket]", "shortedges", 
+              "\[RightDoubleBracket]"}], "]"}], "\[RightDoubleBracket]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"touchedQ", "=", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"0", ",", 
+             RowBox[{"Length", "[", "edges", "]"}]}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", "\"\<A\>\"", "]"}], ";"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"Do", "[", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"Print", "[", "\"\<B0\>\"", "]"}], ";"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"e", "=", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"queue", ",", "k"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"i1", "=", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"edges", ",", "e", ",", "1"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"i2", "=", 
+              RowBox[{"Compile`GetElement", "[", 
+               RowBox[{"edges", ",", "e", ",", "2"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                "touchedQ", "\[LeftDoubleBracket]", "e", 
+                 "\[RightDoubleBracket]"}], "\[GreaterEqual]", "1"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"regularQ", "=", "False"}], "\[IndentingNewLine]", ",",
+                "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"maxvalence", "\[LessEqual]", "2"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"regularQ", "=", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i1", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[NotEqual]", "0"}], ")"}], "&&", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i2", ",", "2"}], "\[RightDoubleBracket]"}], 
+                    "\[NotEqual]", "0"}], ")"}]}]}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"regularQ", "=", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i1", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[NotEqual]", "0"}], ")"}], "&&", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i2", ",", "2"}], "\[RightDoubleBracket]"}], 
+                    "\[NotEqual]", "0"}], ")"}], "&&", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i1", ",", "3"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "0"}], "&&", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i2", ",", "3"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "0"}]}], ")"}]}]}]}], "\[IndentingNewLine]", 
+                 "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{"regularQ", ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"collapsecount", "++"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{"e", "\[Rule]", 
+                    RowBox[{
+                    "edges", "\[LeftDoubleBracket]", "e", 
+                    "\[RightDoubleBracket]"}]}], "]"}], ";", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Print", "[", 
+                   RowBox[{"e", "\[Rule]", 
+                    RowBox[{"{", 
+                    RowBox[{"vertexcount", ",", "edgecount"}], "}"}]}], "]"}],
+                   ";"}], "*)"}], "\[IndentingNewLine]", 
+                "\[IndentingNewLine]", 
+                RowBox[{"e1pos", "=", 
+                 RowBox[{
+                  RowBox[{"Boole", "[", 
+                   RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i1", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "e"}], "]"}], "+", "1"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"e1", "=", 
+                 RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                  RowBox[{"i1", ",", "e1pos"}], "\[RightDoubleBracket]"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"e2pos", "=", 
+                 RowBox[{
+                  RowBox[{"Boole", "[", 
+                   RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i2", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "e"}], "]"}], "+", "1"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"e2", "=", 
+                 RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                  RowBox[{"i2", ",", "e2pos"}], "\[RightDoubleBracket]"}]}], 
+                ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                RowBox[{"j1pos", "=", 
+                 RowBox[{
+                  RowBox[{"Boole", "[", 
+                   RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e1", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "i1"}], "]"}], "+", "1"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"j1", "=", 
+                 RowBox[{"edges", "\[LeftDoubleBracket]", 
+                  RowBox[{"e1", ",", "j1pos"}], "\[RightDoubleBracket]"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"j2pos", "=", 
+                 RowBox[{
+                  RowBox[{"Boole", "[", 
+                   RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e2", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "i2"}], "]"}], "+", "1"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"j2", "=", 
+                 RowBox[{"edges", "\[LeftDoubleBracket]", 
+                  RowBox[{"e2", ",", "j2pos"}], "\[RightDoubleBracket]"}]}], 
+                ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{"Print", "[", "\"\<B\>\"", "]"}], ";"}], "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                  "If", " ", "not", " ", "a", " ", "boundary", " ", "edge"}], 
+                  "*)"}], "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"j1", "\[NotEqual]", "0"}], "&&", 
+                   RowBox[{"j2", "\[NotEqual]", "0"}]}], 
+                  "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                  RowBox[{"(", "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"epostrue", "=", 
+                    RowBox[{"Sort", "/@", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"edges", ",", "i2"}], "]"}], 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{"edges", ",", "vertexcount"}], "]"}], 
+                    "\[LeftDoubleBracket]", 
+                    RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+                    "}"}]}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"epos", "=", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "VNE", "\[LeftDoubleBracket]", "i2", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "VNE", "\[LeftDoubleBracket]", "vertexcount", 
+                    "\[RightDoubleBracket]"}]}], "}"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<epos\>\"", "\[Rule]", "epos"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Sort", "/@", "epos"}], "\[NotEqual]", 
+                    RowBox[{"Sort", "/@", "epostrue"}]}], ",", 
+                    RowBox[{"Print", "[", "\"\<!!!\>\"", "]"}]}], "]"}], 
+                    ";"}], "*)"}], "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    "swap", " ", "vertex", " ", "i2", " ", "with", " ", 
+                    "last", " ", "vertex"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"p", "=", 
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "i2", 
+                    "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "i2", 
+                    "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "vertexcount", 
+                    "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "vertexcount", 
+                    "\[RightDoubleBracket]"}], "=", "p"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"buffer", "=", 
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i2", ",", "i"}], "\[RightDoubleBracket]"}]}], 
+                    ";", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i2", ",", "i"}], "\[RightDoubleBracket]"}], "=", 
+                    
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"vertexcount", ",", "i"}], 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"vertexcount", ",", "i"}], 
+                    "\[RightDoubleBracket]"}], "=", "buffer"}], ";"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    
+                    RowBox[{"(*", "seldomly", "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"i1", "\[Equal]", "i2"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<1a\>\"", "]"}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"i1", "=", "vertexcount"}], ";"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"i1", "\[Equal]", "vertexcount"}], ",", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<1b\>\"", "]"}], ";"}], "*)"}], 
+                    
+                    RowBox[{"i1", "=", "i2"}]}], "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                    
+                    RowBox[{"(*", 
+                    RowBox[{"unlikely", "?"}], "*)"}], "\[IndentingNewLine]", 
+                    
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"j1", "\[Equal]", "i2"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<2a\>\"", "]"}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"j1", "=", "vertexcount"}], "\[IndentingNewLine]",
+                     ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"j1", "\[Equal]", "vertexcount"}], ",", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<2b\>\"", "]"}], ";"}], "*)"}], 
+                    
+                    RowBox[{"j1", "=", "i2"}]}], "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                    
+                    RowBox[{"(*", "seldomly", "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"j2", "\[Equal]", "i2"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<3a\>\"", "]"}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"j2", "=", "vertexcount"}], "\[IndentingNewLine]",
+                     ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"j2", "\[Equal]", "vertexcount"}], ",", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<3b\>\"", "]"}], ";"}], "*)"}], 
+                    
+                    RowBox[{"j2", "=", "i2"}]}], "]"}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"eposguess2", "=", 
+                    RowBox[{"Sort", "/@", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "VNE", "\[LeftDoubleBracket]", "vertexcount", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "VNE", "\[LeftDoubleBracket]", "i2", 
+                    "\[RightDoubleBracket]"}]}], "}"}]}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"epostrue", "\[NotEqual]", "eposguess2"}], ",", 
+                    RowBox[{"Print", "[", "\"\<!!!\>\"", "]"}]}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<eposguess2\>\"", "\[Rule]", "eposguess2"}], 
+                    "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"edges", "=", 
+                    RowBox[{"edges", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"i2", "\[Rule]", "vertexcount"}], ",", 
+                    RowBox[{"vertexcount", "\[Rule]", "i2"}]}], "}"}]}]}], 
+                    ";"}], "*)"}], "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"f", "=", 
+                    RowBox[{"epos", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "i"}], "\[RightDoubleBracket]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"0", "<", "f", "\[LessEqual]", "edgecount"}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<?\>\"", "\[Rule]", "f"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<!\>\"", "\[Rule]", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<!\>\"", "\[Rule]", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "i2"}], ",", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}], "=", 
+                    "vertexcount"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "i2"}], ",", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+                    "vertexcount"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+                    "]"}], ";"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    
+                    RowBox[{"Do", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"f", "=", 
+                    RowBox[{"epos", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "i"}], "\[RightDoubleBracket]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"0", "<", "f", "\[LessEqual]", "edgecount"}], ",",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<?\>\"", "\[Rule]", "f"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<!\>\"", "\[Rule]", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<!\>\"", "\[Rule]", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "vertexcount"}], ",", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}], "=", 
+                    "i2"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "vertexcount"}], ",", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+                    "i2"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+                    ";"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<P\>\"", "]"}], ";"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    "swap", " ", "edge", " ", "e", " ", "with", " ", "last", 
+                    " ", "edge"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "touchedQ", "\[LeftDoubleBracket]", "e", 
+                    "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{
+                    "touchedQ", "\[LeftDoubleBracket]", "edgecount", 
+                    "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "last", " ", "edge", " ", "gets", " ", "deleted"}], ",", 
+                    " ", 
+                    RowBox[{
+                    "so", " ", "cannot", " ", "be", " ", "collapsed", " ", 
+                    "anymore"}]}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "touchedQ", "\[LeftDoubleBracket]", "edgecount", 
+                    "\[RightDoubleBracket]"}], "=", "1"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"vpos", "=", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    "edges", "\[LeftDoubleBracket]", "e", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "edges", "\[LeftDoubleBracket]", "edgecount", 
+                    "\[RightDoubleBracket]"}]}], "}"}]}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"buffer", "=", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e", ",", "1"}], "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"edgecount", ",", "1"}], 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"edgecount", ",", "1"}], 
+                    "\[RightDoubleBracket]"}], "=", "buffer"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"buffer", "=", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e", ",", "2"}], "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"edgecount", ",", "2"}], 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"edgecount", ",", "2"}], 
+                    "\[RightDoubleBracket]"}], "=", "buffer"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"VNE", "=", 
+                    RowBox[{"VNE", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"e", "\[Rule]", "edgecount"}], ",", 
+                    RowBox[{"edgecount", "\[Rule]", "e"}]}], "}"}]}]}], ";"}],
+                     "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"vpos", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "e"}], ",", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], "=", 
+                    "edgecount"}]}], "]"}], ";"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"vpos", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "e"}], ",", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], "=", 
+                    "edgecount"}]}], "]"}], ";"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    
+                    RowBox[{"f", "=", 
+                    RowBox[{"vpos", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "edgecount"}], ",", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], "=", 
+                    "e"}]}], "]"}], ";"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"vpos", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}]}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], 
+                    "\[Equal]", "edgecount"}], ",", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"f", ",", "i"}], "\[RightDoubleBracket]"}], "=", 
+                    "e"}]}], "]"}], ";"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    
+                    RowBox[{"(*", 
+                    RowBox[{"seldomly", ",", " ", 
+                    RowBox[{"but", " ", "possible", " ", 
+                    RowBox[{"(", 
+                    RowBox[{"and", " ", 
+                    RowBox[{"crucial", "!"}]}], ")"}]}]}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"e2", "\[Equal]", "e"}], ",", 
+                    RowBox[{"e2", "=", "edgecount"}], ",", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"e2", "\[Equal]", "edgecount"}], ",", 
+                    RowBox[{"e2", "=", "e"}]}], "]"}]}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{"very", " ", "unlikely"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"e1", "\[Equal]", "e"}], ",", 
+                    RowBox[{"e1", "=", "edgecount"}], ",", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"e1", "\[Equal]", "edgecount"}], ",", 
+                    RowBox[{"e1", "=", "e"}]}], "]"}]}], "]"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{"the", " ", "actual", " ", "surgery"}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e1", ",", 
+                    RowBox[{"3", "-", "j1pos"}]}], "\[RightDoubleBracket]"}], 
+                    "=", "i1"}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"e2", ",", 
+                    RowBox[{"3", "-", "j2pos"}]}], "\[RightDoubleBracket]"}], 
+                    "=", "i1"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"i1", ",", 
+                    RowBox[{"3", "-", "e1pos"}]}], "\[RightDoubleBracket]"}], 
+                    "=", "e2"}], ";", "\[IndentingNewLine]", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "i1", 
+                    "\[RightDoubleBracket]"}], "=", 
+                    RowBox[{"Plus", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    "collapsemask", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], 
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "j1", 
+                    "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "collapsemask", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], 
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "i1", 
+                    "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "collapsemask", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}], "p"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "collapsemask", "\[LeftDoubleBracket]", "4", 
+                    "\[RightDoubleBracket]"}], 
+                    RowBox[{
+                    "pts", "\[LeftDoubleBracket]", "j2", 
+                    "\[RightDoubleBracket]"}]}]}], "\[IndentingNewLine]", 
+                    "]"}]}], ";", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "touchedQ", "\[LeftDoubleBracket]", "e1", 
+                    "\[RightDoubleBracket]"}], "=", "1"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{
+                    "touchedQ", "\[LeftDoubleBracket]", "e2", 
+                    "\[RightDoubleBracket]"}], "=", "1"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"(*", "cleanup", "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"Do", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                    RowBox[{"vertexcount", ",", "i"}], 
+                    "\[RightDoubleBracket]"}], "=", "0"}], ";"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "1", ",", "maxvalence"}], "}"}]}], 
+                    "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"edgecount", ",", "1"}], 
+                    "\[RightDoubleBracket]"}], "=", "0"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{"edgecount", ",", "2"}], 
+                    "\[RightDoubleBracket]"}], "=", "0"}], ";", 
+                    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"vertexcount", "--"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"edgecount", "--"}], ";"}], "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", "\"\<Z\>\"", "]"}], ";"}], "*)"}], 
+                   "\[IndentingNewLine]", ")"}], "\[IndentingNewLine]", ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"(", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    "touchedQ", "\[LeftDoubleBracket]", "e", 
+                    "\[RightDoubleBracket]"}], "=", "1"}], ";"}], 
+                   "\[IndentingNewLine]", ")"}]}], "\[IndentingNewLine]", 
+                 "]"}]}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"k", ",", "1", ",", 
+              RowBox[{"Length", "[", "queue", "]"}]}], "}"}]}], "]"}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"edgelengths", "\[LeftDoubleBracket]", 
+            RowBox[{";;", "edgecount"}], "\[RightDoubleBracket]"}], "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"Total", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Subtract", "[", 
+                RowBox[{
+                 RowBox[{"pts", "\[LeftDoubleBracket]", 
+                  RowBox[{"edges", "\[LeftDoubleBracket]", 
+                   RowBox[{
+                    RowBox[{";;", "edgecount"}], ",", "2"}], 
+                   "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], ",", 
+                 
+                 RowBox[{"pts", "\[LeftDoubleBracket]", 
+                  RowBox[{"edges", "\[LeftDoubleBracket]", 
+                   RowBox[{
+                    RowBox[{";;", "edgecount"}], ",", "1"}], 
+                   "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}]}], 
+                "]"}], "^", "2"}], ",", 
+              RowBox[{"{", "2", "}"}]}], "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"regularinteriorvertexQ", "=", 
+           RowBox[{"1", "-", 
+            RowBox[{"Unitize", "[", 
+             RowBox[{
+              RowBox[{"Total", "[", 
+               RowBox[{
+                RowBox[{"Unitize", "[", 
+                 RowBox[{"VNE", "\[LeftDoubleBracket]", 
+                  RowBox[{"1", ";;", "vertexcount"}], 
+                  "\[RightDoubleBracket]"}], "]"}], ",", 
+                RowBox[{"{", "2", "}"}]}], "]"}], "-", "2"}], "]"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"shortedges", "=", 
+           RowBox[{"Intersection", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"IntegerPositions", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Unitize", "[", 
+                RowBox[{
+                 RowBox[{"Total", "[", 
+                  RowBox[{
+                   RowBox[{"Partition", "[", 
+                    RowBox[{
+                    RowBox[{
+                    "regularinteriorvertexQ", "\[LeftDoubleBracket]", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"edges", "\[LeftDoubleBracket]", 
+                    RowBox[{";;", "edgecount"}], "\[RightDoubleBracket]"}], 
+                    "]"}], "\[RightDoubleBracket]"}], ",", "2"}], "]"}], ",", 
+                   
+                   RowBox[{"{", "2", "}"}]}], "]"}], "-", "2"}], "]"}], ",", 
+               "\[IndentingNewLine]", "0"}], "\[IndentingNewLine]", "]"}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Position", "[", 
+               RowBox[{
+                RowBox[{"UnitStep", "[", 
+                 RowBox[{"Subtract", "[", 
+                  RowBox[{
+                   RowBox[{"\[Lambda]", " ", "ell"}], ",", 
+                   RowBox[{"edgelengths", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ";;", "edgecount"}], 
+                    "\[RightDoubleBracket]"}]}], "]"}], "]"}], ",", "1"}], 
+               "]"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"shortedges", "=."}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Init", "[", 
+        RowBox[{"polygon", ",", 
+         RowBox[{"pts", "\[LeftDoubleBracket]", 
+          RowBox[{";;", "vertexcount"}], "\[RightDoubleBracket]"}], ",", 
+         RowBox[{"edges", "\[LeftDoubleBracket]", 
+          RowBox[{";;", "edgecount"}], "\[RightDoubleBracket]"}]}], "]"}]}]}],
+      "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Bounds\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0.5", ",", "1.5"}], "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<CollapseMask\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0.125`", ",", "0.375`", ",", "0.375`", ",", "0.125`"}], 
+         "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<SplitMask\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0.125`", ",", "0.375`", ",", "0.375`", ",", "0.125`"}], 
+         "}"}]}]}], "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",ExpressionUUID->"81d6246f-2e73-41df-b76b-865489230040"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 55184, 1151, 6467, "Input",ExpressionUUID->"81d6246f-2e73-41df-b76b-865489230040"]
+}
+]
+*)
+

@@ -1,0 +1,542 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     27037,        534]
+NotebookOptionsPosition[     26495,        518]
+NotebookOutlinePosition[     26887,        534]
+CellTagsIndexPosition[     26844,        531]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearAll", "[", "CreateCombinatorics", "]"}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CreateCombinatorics", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"LengthOf", "::", "usage"}], "=", 
+     "\"\<LengthOf[meshtype, elementtype] returns the length of the element \
+type elementtype of the mesh type meshtype.\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Options", "[", "CreateCombinatorics", "]"}], "=", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Process\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Caching\>\"", "\[Rule]", "Persistent"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Plural\>\"", "\[Rule]", "Automatic"}]}], 
+      "\[IndentingNewLine]", "}"}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"SetAttributes", "[", 
+     RowBox[{"CreateCombinatorics", ",", "HoldAllComplete"}], "]"}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CreateCombinatorics", "[", "\[IndentingNewLine]", 
+      RowBox[{
+      "cliquename_", ",", "\[IndentingNewLine]", "vartype_", ",", 
+       "\[IndentingNewLine]", "cliquelength_", ",", "\[IndentingNewLine]", 
+       "var_", ",", "\[IndentingNewLine]", "cliquecode_", ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"OptionsPattern", "[", "]"}]}], "\[IndentingNewLine]", "]"}], ":=",
+      "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "varname", ",", "DS", ",", "\[IndentingNewLine]", "cliquefunname", 
+         ",", "\[IndentingNewLine]", "cliquedatafunname", ",", 
+         "\[IndentingNewLine]", "cliquelengthstring", ",", 
+         "\[IndentingNewLine]", "typestring", ",", "\[IndentingNewLine]", 
+         "commandstrings"}], "\[IndentingNewLine]", "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"varname", "=", 
+         RowBox[{"ToString", "[", 
+          RowBox[{
+           RowBox[{"Unevaluated", "[", "var", "]"}], ",", "InputForm"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"typestring", "=", 
+         RowBox[{"ToString", "[", 
+          RowBox[{
+           RowBox[{"Unevaluated", "[", "vartype", "]"}], ",", "InputForm"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"cliquefunname", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Plural\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"cliquefunname", "===", "Automatic"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{"cliquefunname", "=", 
+            RowBox[{"cliquename", "<>", "\"\<s\>\""}]}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"cliquefunname", "=", 
+            RowBox[{"Quiet", "[", 
+             RowBox[{"Pluralize", "[", "cliquename", "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"cliquefunname", "==", "cliquename"}], ",", 
+             RowBox[{"cliquefunname", "=", 
+              RowBox[{"cliquename", "<>", "\"\<s\>\""}]}]}], "]"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"cliquedatafunname", "=", 
+         RowBox[{"cliquename", "<>", "\"\<Data\>\""}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"cliquelengthstring", "=", 
+         RowBox[{"IntegerString", "[", "cliquelength", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"DS", "[", "k_", "]"}], ":=", 
+         RowBox[{"StringJoin", "[", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"commandstrings", "=", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+           "PackageFunction", " ", "Cliques", " ", "are", " ", "generated"}], 
+           " ", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+            "cliquefunname", ",", "\"\< = PackageFunction[\>\"", ",", 
+             "varname", ",", "\"\<_\>\"", ",", "typestring", ",", 
+             "\"\<,\\n\>\"", ",", "\[IndentingNewLine]", "\"\<  \>\"", ",", 
+             RowBox[{"ToString", "[", 
+              RowBox[{
+               RowBox[{"Unevaluated", "[", "cliquecode", "]"}], ",", 
+               "InputForm"}], "]"}], ",", 
+             "\"\<,\[IndentingNewLine]Caching\[Rule]\>\"", ",", 
+             RowBox[{"ToString", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}], ",", 
+               "InputForm"}], "]"}], ",", "\"\<\[IndentingNewLine]]\>\""}], 
+            "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+            "cliquefunname", ",", "\"\< = PackageFunction[{\>\"", ",", 
+             "varname", ",", "\"\<_\>\"", ",", "typestring", ",", 
+             "\"\<,args__},\\n\>\"", ",", "\[IndentingNewLine]", "\"\<  \>\"",
+              ",", "cliquefunname", ",", "\"\<[\>\"", ",", "varname", ",", 
+             "\"\<]\[LeftDoubleBracket]args\[RightDoubleBracket]\>\"", ",", 
+             "\"\<,\[IndentingNewLine]Caching\[Rule]False\[IndentingNewLine]]\
+\>\""}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+            "\"\<CountOf = PackageFunction[{\>\"", ",", "varname", ",", 
+             "\"\<_\>\"", ",", "typestring", ",", "\"\<,\>\"", ",", 
+             "cliquefunname", ",", "\"\<},\\n\>\"", ",", 
+             "\[IndentingNewLine]", "\"\<  \>\"", ",", "\"\<Length[\>\"", ",",
+              "cliquefunname", ",", "\"\<[\>\"", ",", "varname", ",", 
+             "\"\<]],\[IndentingNewLine]Caching\[Rule]False\[IndentingNewLine]\
+]\>\""}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+            "cliquename", ",", "\"\<Count = PackageFunction[\>\"", ",", 
+             "varname", ",", "\"\<_\>\"", ",", "typestring", ",", 
+             "\"\<,\\n\>\"", ",", "\[IndentingNewLine]", "\"\<  \>\"", ",", 
+             "\"\<Length[\>\"", ",", "cliquefunname", ",", "\"\<[\>\"", ",", 
+             "varname", ",", 
+             "\"\<]],\[IndentingNewLine]Caching\[Rule]False\[IndentingNewLine]\
+]\>\""}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", " ", 
+            RowBox[{"CliqueLength", " ", "is", " ", "stored"}], " ", "*)"}], 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{"\"\<VerbatimRegion[\n  \>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"StringJoin", "[", 
+              RowBox[{
+              "typestring", ",", "\"\< /: LengthOf[\>\"", ",", "typestring", 
+               ",", "\"\<, \>\"", ",", "cliquename", ",", "\"\<s] = \>\"", 
+               ",", "cliquelengthstring", ",", "\"\<;\>\""}], "]"}], 
+             "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+              ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               "\"\<Lengthof\>\"", ",", 
+               RowBox[{"cliquename", "<>", "\"\<::usage = \\\"\>\""}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<Lengthof\>\"", ",", "cliquename", ",", 
+                 "\[IndentingNewLine]", 
+                 "\"\<[object] returns the number of elements of a \>\"", ",",
+                  "\[IndentingNewLine]", "cliquename", ",", 
+                 "\[IndentingNewLine]", 
+                 "\"\< of objects of type object.\\\";\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<  Lengthof\>\"", ",", 
+                 "cliquename", ",", "\"\<[\>\"", ",", "typestring", ",", 
+                 "\"\<]=\>\"", ",", "cliquelengthstring", ",", 
+                 "\"\<;\n]]\>\""}]}]}], "*)"}], ",", "\[IndentingNewLine]", 
+             "\"\<]\\n\>\""}], "\[IndentingNewLine]", "]"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{"\"\<VerbatimRegion[\n  \>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"StringJoin", "[", 
+              RowBox[{
+              "typestring", ",", "\"\< /: LengthOf[\>\"", ",", "varname", 
+               ",", "\"\<_\>\"", ",", "typestring", ",", "\"\<, \>\"", ",", 
+               "cliquename", ",", "\"\<s] = \>\"", ",", "cliquelengthstring", 
+               ",", "\"\<;\>\""}], "]"}], "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+              ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+               "\"\<Lengthof\>\"", ",", 
+               RowBox[{"cliquename", "<>", "\"\<::usage = \\\"\>\""}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<Lengthof\>\"", ",", "cliquename", ",", 
+                 "\[IndentingNewLine]", 
+                 "\"\<[object] returns the number of elements of a \>\"", ",",
+                  "\[IndentingNewLine]", "cliquename", ",", 
+                 "\[IndentingNewLine]", 
+                 "\"\< of objects of type object.\\\";\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<  Lengthof\>\"", ",", 
+                 "cliquename", ",", "\"\<[\>\"", ",", "typestring", ",", 
+                 "\"\<] = \>\"", ",", "cliquelengthstring", ",", 
+                 "\"\<;\n]]\>\""}]}]}], "*)"}], ",", "\[IndentingNewLine]", 
+             "\"\<]\\n\>\""}], "\[IndentingNewLine]", "]"}], 
+           "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{"(*", " ", 
+            RowBox[{
+            "PackageFunction", " ", "CliqueData", " ", "is", " ", 
+             "generated"}], " ", "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+            "cliquedatafunname", ",", "\"\< = PackageFunction[\>\"", ",", 
+             "varname", ",", "\"\<_\>\"", ",", "typestring", ",", 
+             "\"\<,\\n\>\"", ",", "\[IndentingNewLine]", 
+             RowBox[{"(*", 
+              RowBox[{
+              "\"\<ToPack[Partition[Normal[Dofs[\>\"", ",", "varname", ",", 
+               "\"\<,Flatten[\>\"", ",", "cliquefunname", ",", "\"\<[\>\"", 
+               ",", "varname", ",", "\"\<]]]],\>\"", ",", 
+               "\[IndentingNewLine]", ",", "cliquelengthstring", ",", 
+               "\"\<]]\>\"", ","}], "*)"}], "\[IndentingNewLine]", 
+             "\"\<  TupleData[Dofs[\>\"", ",", "varname", ",", "\"\<],\>\"", 
+             ",", "cliquefunname", ",", "\"\<[\>\"", ",", "varname", ",", 
+             "\"\<]]\>\"", ",", 
+             "\"\<,\[IndentingNewLine]Caching\[Rule]True\[IndentingNewLine]]\>\
+\""}], "\[IndentingNewLine]", "]"}], ","}], "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+             RowBox[{
+             "cliquename", ",", "\"\<Combinatorics = PackageFunction[\>\"", 
+              ",", "varname", ",", "\"\<_\>\"", ",", "typestring", ",", 
+              "\"\<,\[IndentingNewLine]Association[],\[IndentingNewLine]\
+Caching\[Rule]\>\"", ",", 
+              RowBox[{"ToString", "[", 
+               RowBox[{
+                RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}], ",", 
+                "InputForm"}], "]"}], ",", "\"\<\[IndentingNewLine]]\>\""}], 
+             "]"}], ","}], "*)"}], "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"TrueQ", "[", 
+               RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}], "]"}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"\"\<AppendTo\>\"", "<>", "cliquename"}], ",", 
+                "\"\<Combinatorics = PackageFunction[{\>\"", ",", "varname", 
+                ",", "\"\<_\>\"", ",", "typestring", ",", 
+                "\"\<,key_,value_},\n           SetCache[\>\"", ",", 
+                "varname", ",", "\"\<,\\\"\>\"", ",", "cliquename", ",", 
+                "\"\<Combinatorics\\\",\n             Append[\>\"", ",", 
+                "cliquename", ",", "\"\<Combinatorics[\>\"", ",", "varname", 
+                ",", "\"\<], key->value]\n             ]\n           ]\>\""}],
+                "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}], "===",
+                   "Persistent"}], "||", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "[", "\"\<Caching\>\"", "]"}], 
+                  "===", "\"\<Persistent\>\""}]}], ",", "\[IndentingNewLine]", 
+                RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"\"\<AppendTo\>\"", "<>", "cliquename"}], ",", 
+                  "\"\<Combinatorics = PackageFunction[{\>\"", ",", "varname",
+                   ",", "\"\<_\>\"", ",", "typestring", ",", 
+                  "\"\<,key_,value_},\n           SetPersistentCache[\>\"", 
+                  ",", "varname", ",", "\"\<,\\\"\>\"", ",", "cliquename", 
+                  ",", "\"\<Combinatorics\\\",\n             Append[\>\"", 
+                  ",", "cliquename", ",", "\"\<Combinatorics[\>\"", ",", 
+                  "varname", ",", 
+                  "\"\<], key->value]\n             ]\n           ]\>\""}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}],
+               ",", "\[IndentingNewLine]", "\"\<\>\""}], 
+             "\[IndentingNewLine]", "]"}], ","}], "*)"}], 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+            RowBox[{
+            "\"\<get\>\"", ",", "cliquename", ",", 
+             "\"\<Combinatorics = PackageFunction[{\>\"", ",", "varname", 
+             ",", "\"\<_\>\"", ",", "typestring", ",", 
+             
+             "\"\<,der_,localglobal_,vdim_},\n  Module[{data,result},\n    \
+data = \>\"", ",", "cliquename", ",", "\"\<Combinatorics[\>\"", ",", 
+             "varname", ",", 
+             "\"\<];\n    result = data[{der,localglobal,vdim}];\n    \
+If[Head[result]===Missing,\n      result = AssemblyCombinatorics[\n        \>\
+\"", ",", "cliquefunname", ",", "\"\<[\>\"", ",", "varname", ",", 
+             "\"\<],\n        EmbeddingDimension[\>\"", ",", "varname", ",", 
+             "\"\<],\n        \
+localglobal,der,\\\"VectorDimension\\\"\[Rule]vdim\n      ];\n      data = \
+Append[data,{der,localglobal,vdim}\[Rule]result];\n      \
+SetPersistentCache[\>\"", ",", "varname", ",", "\"\<,\\\"\>\"", ",", 
+             "cliquename", " ", ",", 
+             "\"\<Combinatorics\\\",data];\n    ];\n    result\n  ],\n  \
+Caching\[Rule]False,\n  \\\"Options\\\"\[Rule]{\n    \\\"Derivatives\\\"\
+\[Rule]1,\n    \\\"VectorDimension\\\"\[Rule]1,\n    \
+\\\"Global\\\"\[Rule]False\n  }\n]\>\""}], "\[IndentingNewLine]", "]"}], 
+           "*)"}], "\[IndentingNewLine]", "}"}]}], ";", "\[IndentingNewLine]",
+         "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Process\>\"", "]"}], ",", 
+          RowBox[{"ToExpression", "/@", "commandstrings"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<PrintCode\>\"", "]"}], ",", 
+          RowBox[{"Column", "@", "commandstrings"}]}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.664345536979301*^9, 3.664345615529613*^9}, {
+   3.6643457503196497`*^9, 3.66434576166387*^9}, {3.664345793867096*^9, 
+   3.664345994935563*^9}, {3.6643460438569736`*^9, 3.6643460820454206`*^9}, {
+   3.664346113563744*^9, 3.6643462641525993`*^9}, {3.664346337232476*^9, 
+   3.664346353212449*^9}, {3.664346395142282*^9, 3.6643465551633987`*^9}, {
+   3.6643466219533443`*^9, 3.664346682179528*^9}, {3.664346823355804*^9, 
+   3.6643468239726553`*^9}, {3.664346874079994*^9, 3.664347212858046*^9}, {
+   3.6643472469486217`*^9, 3.664347305750019*^9}, {3.6643474200188437`*^9, 
+   3.664347423859687*^9}, {3.664348773191029*^9, 3.664348817764394*^9}, {
+   3.664348874329678*^9, 3.664349055297192*^9}, {3.6643491409323053`*^9, 
+   3.664349141942232*^9}, {3.664349190519709*^9, 3.664349212551218*^9}, {
+   3.664349255058213*^9, 3.6643492812411222`*^9}, {3.664349316322619*^9, 
+   3.664349360099853*^9}, {3.664349428248588*^9, 3.6643494304151783`*^9}, {
+   3.664349470818377*^9, 3.6643495043296623`*^9}, 3.66434953709586*^9, {
+   3.664349570004361*^9, 3.664349591461219*^9}, {3.664349742124489*^9, 
+   3.664349767627742*^9}, {3.66434985203372*^9, 3.664349897714683*^9}, {
+   3.664349947962392*^9, 3.6643500591463213`*^9}, {3.664350125049992*^9, 
+   3.664350166217572*^9}, 3.6643502625529327`*^9, {3.664350314345232*^9, 
+   3.664350353611088*^9}, {3.664350384390671*^9, 3.664350486112269*^9}, {
+   3.664350517393096*^9, 3.66435063676294*^9}, {3.664350701137417*^9, 
+   3.664350767149296*^9}, {3.664350807950576*^9, 3.6643508472230997`*^9}, {
+   3.664350881896854*^9, 3.66435092677214*^9}, {3.664351173243197*^9, 
+   3.664351193092702*^9}, {3.6643512265742598`*^9, 3.664351408757905*^9}, {
+   3.6643514694242973`*^9, 3.6643514701351967`*^9}, {3.6643515324585133`*^9, 
+   3.6643515392345953`*^9}, {3.66435159456781*^9, 3.664351597667906*^9}, {
+   3.664351642834839*^9, 3.66435165962351*^9}, {3.664352410957506*^9, 
+   3.6643525013921347`*^9}, {3.6643526019658213`*^9, 3.664352619106243*^9}, 
+   3.664352859405801*^9, {3.664353248762281*^9, 3.6643532514374857`*^9}, {
+   3.664354133506625*^9, 3.664354277262745*^9}, 3.664354416624988*^9, 
+   3.664354453049306*^9, {3.66435448331959*^9, 3.6643547544977217`*^9}, {
+   3.66435480590147*^9, 3.6643548489656677`*^9}, {3.664354899675798*^9, 
+   3.66435491536019*^9}, {3.664355541077248*^9, 3.6643555868824577`*^9}, 
+   3.6643561479328012`*^9, 3.6643562319127893`*^9, {3.664356302695036*^9, 
+   3.664356392338505*^9}, {3.664361095027499*^9, 3.6643610971308317`*^9}, {
+   3.664361406896956*^9, 3.664361419598452*^9}, {3.664387571685836*^9, 
+   3.66438757238839*^9}, {3.666767934551465*^9, 3.666767935612322*^9}, {
+   3.666767975920532*^9, 3.6667679789270353`*^9}, {3.667899203883243*^9, 
+   3.667899257111772*^9}, {3.671551419859405*^9, 3.6715514341504097`*^9}, {
+   3.6715523444146643`*^9, 3.671552349847295*^9}, {3.674558325669408*^9, 
+   3.674558327495899*^9}, {3.678597899665146*^9, 3.6785979043044987`*^9}, {
+   3.678598049397183*^9, 3.678598068995377*^9}, {3.7194040827527533`*^9, 
+   3.719404142382506*^9}, {3.719404179746751*^9, 3.719404188418384*^9}, {
+   3.71940434929989*^9, 3.7194043504905987`*^9}, {3.719466242268527*^9, 
+   3.7194663175494328`*^9}, {3.7194665338930264`*^9, 3.719466621374194*^9}, 
+   3.7194667951260033`*^9, {3.719467112684993*^9, 3.719467147075954*^9}, {
+   3.7194675607673063`*^9, 3.7194675780914993`*^9}, {3.71946819794051*^9, 
+   3.719468241581915*^9}, {3.719468441437441*^9, 3.719468449610784*^9}, {
+   3.720095241341631*^9, 3.7200952443949413`*^9}, {3.729081725683669*^9, 
+   3.729081789434424*^9}, 3.7344290515839443`*^9, {3.785915913161847*^9, 
+   3.78591600442962*^9}, 3.785916130554022*^9, {3.78592775267175*^9, 
+   3.785927756639023*^9}, {3.785929216409289*^9, 3.785929237559116*^9}, {
+   3.7859292929350357`*^9, 3.78592973885411*^9}, {3.791001644718319*^9, 
+   3.791001682981271*^9}, {3.7910017250824127`*^9, 3.791001741696821*^9}, 
+   3.791001966686831*^9, {3.791001999109762*^9, 3.791002097508081*^9}, {
+   3.791002680684491*^9, 3.7910026960611353`*^9}, {3.79100274178754*^9, 
+   3.791002746653563*^9}, 3.791003053401352*^9, {3.7910044823793497`*^9, 
+   3.791004517625334*^9}, {3.791004651197072*^9, 3.7910046554681387`*^9}, {
+   3.7910050649990997`*^9, 3.7910050663264437`*^9}, {3.791005290933025*^9, 
+   3.791005336220883*^9}, {3.791016855939217*^9, 3.79101691019486*^9}, 
+   3.791017031141508*^9, 3.791019216570393*^9, {3.835591262536538*^9, 
+   3.835591299887047*^9}, {3.835592234962957*^9, 3.835592254132826*^9}, {
+   3.835604835969549*^9, 3.8356049123905773`*^9}, {3.8356065427229567`*^9, 
+   3.835606556071973*^9}, {3.835606592897191*^9, 
+   3.8356066464883537`*^9}},ExpressionUUID->"c945adfd-dbe4-4689-969c-\
+56d1b94fc524"],
+
+Cell[BoxData[
+ RowBox[{"getTupleData", "=", 
+  RowBox[{"CPackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"dofs", ",", "_Real", ",", "2"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"tuple", ",", "_Integer", ",", "1"}], "}"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Table", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Compile`GetElement", "[", 
+       RowBox[{"dofs", ",", 
+        RowBox[{"Compile`GetElement", "[", 
+         RowBox[{"tuple", ",", "i"}], "]"}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"i", ",", "1", ",", 
+        RowBox[{"Length", "[", "tuple", "]"}]}], "}"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"RuntimeAttributes", "\[Rule]", 
+     RowBox[{"{", "Listable", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.719404463521874*^9, 
+  3.7194044669204683`*^9}},ExpressionUUID->"4f79fefc-f2e9-4c6a-9508-\
+bb71ca6c96a6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"TupleData", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"pts_SparseArray", ",", "tuples_"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"len", "=", 
+         RowBox[{"Length", "/@", "tuples"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Internal`PartitionRagged", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Normal", "[", 
+          RowBox[{"pts", "\[LeftDoubleBracket]", 
+           RowBox[{"Developer`ToPackedArray", "[", 
+            RowBox[{"Flatten", "[", "tuples", "]"}], "]"}], 
+           "\[RightDoubleBracket]"}], "]"}], ",", "\[IndentingNewLine]", 
+         "len"}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+      "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TupleData", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"pts_SparseArray", ",", 
+       RowBox[{"tuples_", "?", "MatrixQ"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Partition", "[", 
+      RowBox[{
+       RowBox[{"Normal", "[", 
+        RowBox[{"pts", "\[LeftDoubleBracket]", 
+         RowBox[{"Flatten", "[", "tuples", "]"}], "\[RightDoubleBracket]"}], 
+        "]"}], ",", 
+       RowBox[{
+        RowBox[{"Dimensions", "[", "tuples", "]"}], "\[LeftDoubleBracket]", 
+        "2", "\[RightDoubleBracket]"}]}], "]"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"TupleData", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"pts_", "?", "MatrixQ"}], ",", "tuples_"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"getTupleData", "[", 
+      RowBox[{"pts", ",", "tuples"}], "]"}]}], "\[IndentingNewLine]", "]"}]}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"TupleData", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"pts_", "?", "MatrixQ"}], ",", 
+      RowBox[{"tuples_", "?", "MatrixQ"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Partition", "[", 
+     RowBox[{
+      RowBox[{"pts", "\[LeftDoubleBracket]", 
+       RowBox[{"Flatten", "[", "tuples", "]"}], "\[RightDoubleBracket]"}], 
+      ",", 
+      RowBox[{
+       RowBox[{"Dimensions", "[", "tuples", "]"}], "\[LeftDoubleBracket]", 
+       "2", "\[RightDoubleBracket]"}]}], "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7344286697000923`*^9, 3.734428704354908*^9}, 
+   3.7344287784191713`*^9, {3.7344289407232523`*^9, 3.734428963379257*^9}, {
+   3.734429072505085*^9, 3.7344291281576147`*^9}, {3.73442936535837*^9, 
+   3.7344293658444643`*^9}, {3.734429398039104*^9, 3.734429419651826*^9}, {
+   3.776020701685219*^9, 3.776020713563258*^9}, {3.776020751852878*^9, 
+   3.776020762649736*^9}, {3.776020818474472*^9, 
+   3.776020825497808*^9}},ExpressionUUID->"025fd7d0-9204-41d2-bfeb-\
+f5992a08e6ff"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"cf108196-1fde-4026-92e5-b1fc2eb2a96f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 21598, 384, 4592, "Input",ExpressionUUID->"c945adfd-dbe4-4689-969c-56d1b94fc524"],
+Cell[22159, 406, 1216, 31, 242, "Input",ExpressionUUID->"4f79fefc-f2e9-4c6a-9508-bb71ca6c96a6"],
+Cell[23378, 439, 3113, 77, 517, "Input",ExpressionUUID->"025fd7d0-9204-41d2-bfeb-f5992a08e6ff"]
+}
+]
+*)
+

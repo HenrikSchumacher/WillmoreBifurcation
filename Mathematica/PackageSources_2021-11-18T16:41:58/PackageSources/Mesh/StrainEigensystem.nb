@@ -1,0 +1,162 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5852,        154]
+NotebookOptionsPosition[      5279,        138]
+NotebookOutlinePosition[      5615,        153]
+CellTagsIndexPosition[      5572,        150]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"StrainEigensystem", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"GeneralizedEigensystems", "[", 
+     RowBox[{
+      RowBox[{"Metrics", "[", "M", "]"}], ",", 
+      RowBox[{"ReferenceMetrics", "[", "M", "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.80112550782368*^9, 3.8011255285595427`*^9}},
+ CellLabel->"In[15]:=",ExpressionUUID->"99985fb0-3260-4cc4-ae21-e6c434c661e5"],
+
+Cell[BoxData[
+ RowBox[{"StrainEigenvectors", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"T", "=", 
+          RowBox[{"Make", "[", "\"\<EigenTools\>\"", "]"}]}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"generializedEigenvectors", "[", 
+         RowBox[{"T", ",", 
+          RowBox[{"Metrics", "[", "M", "]"}], ",", 
+          RowBox[{"ReferenceMetrics", "[", "M", "]"}]}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Caching", "\[Rule]", "True"}]}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"StrainEigensystem", "[", "M", "]"}], "\[LeftDoubleBracket]", 
+     "2", "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.8011255404286547`*^9, 3.801125542030719*^9}},
+ CellLabel->"In[23]:=",ExpressionUUID->"7569babb-e853-4890-a066-8e404d431d5a"],
+
+Cell[BoxData[
+ RowBox[{"Block", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"g", ",", "gg", ",", "U", ",", "UU"}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"gg", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"g", ",", "i", ",", "j"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"j", ",", "1", ",", "2"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"UU", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Compile`GetElement", "[", 
+        RowBox[{"U", ",", "i", ",", "j"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"j", ",", "1", ",", "2"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"code", "=", 
+        RowBox[{"Inverse", "[", 
+         RowBox[{"gg", ".", 
+          RowBox[{"Transpose", "[", "UU", "]"}]}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"cDualStrainEigenvectors2D", "=", 
+       RowBox[{"CPackageFunction", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"g", ",", "_Real", ",", "2"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"U", ",", "_Real", ",", "2"}], "}"}]}], "}"}], ",", 
+         "\[IndentingNewLine]", "code", ",", "\[IndentingNewLine]", 
+         RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"RuntimeAttributes", "\[Rule]", 
+          RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",\
+
+ CellChangeTimes->{{3.8010467870001307`*^9, 3.801046824479126*^9}, {
+  3.8010468841433277`*^9, 3.801046885253974*^9}, {3.801046993562985*^9, 
+  3.8010470066342583`*^9}, {3.8010533904085407`*^9, 3.801053390538746*^9}, {
+  3.801065895690744*^9, 
+  3.8010658986083612`*^9}},ExpressionUUID->"316e44d6-312c-4154-bf55-\
+afdac6a740ee"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DualStrainEigenvectors", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"cDualStrainEigenvectors2D", "[", 
+      RowBox[{
+       RowBox[{"ReferenceMetrics", "[", "M", "]"}], ",", 
+       RowBox[{"StrainEigenvectors", "[", "M", "]"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", "]"}]}],
+   ";"}]], "Input",
+ CellChangeTimes->{{3.80104699074678*^9, 3.801047018711211*^9}, {
+  3.801053383920288*^9, 3.80105338888616*^9}},
+ CellLabel->
+  "In[176]:=",ExpressionUUID->"03d170fb-598c-4158-81f5-60c71772cb7f"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 573, 12, 117, "Input",ExpressionUUID->"99985fb0-3260-4cc4-ae21-e6c434c661e5"],
+Cell[1134, 34, 1035, 23, 192, "Input",ExpressionUUID->"7569babb-e853-4890-a066-8e404d431d5a"],
+Cell[2172, 59, 2434, 60, 392, "Input",ExpressionUUID->"316e44d6-312c-4154-bf55-afdac6a740ee"],
+Cell[4609, 121, 666, 15, 117, "Input",ExpressionUUID->"03d170fb-598c-4158-81f5-60c71772cb7f"]
+}
+]
+*)
+

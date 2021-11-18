@@ -1,0 +1,658 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     26995,        650]
+NotebookOptionsPosition[     25500,        624]
+NotebookOutlinePosition[     25892,        640]
+CellTagsIndexPosition[     25849,        637]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"AssemblyCombinatorics", "::", "usage"}], "=", "\"\<\>\""}], ";",
+     "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"AssemblyCombinatorics", "[", 
+      RowBox[{
+      "M_", ",", "tuples_", ",", "0", ",", "\"\<Local\>\"", ",", "vdim_"}], 
+      "]"}], ":=", "Flatten"}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"AssemblyCombinatorics", "[", 
+      RowBox[{
+      "M_", ",", "tuples_", ",", "0", ",", "\"\<Global\>\"", ",", "vdim_"}], 
+      "]"}], ":=", "Total"}], ";"}], "\[IndentingNewLine]", "]"}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.718283260206148*^9, 3.7182832610128593`*^9}, {
+   3.718289850144717*^9, 3.718289852743391*^9}, 
+   3.8356072064276133`*^9},ExpressionUUID->"81eb8b48-361d-40eb-bf4b-\
+20339cc47ed2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"AssemblyCombinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "M_genericmesh", ",", "tuples_", ",", "0", ",", "\"\<Local\>\"", ",", 
+       "vdim_"}], "}"}], ",", "\[IndentingNewLine]", "Flatten"}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AssemblyCombinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "M_genericmesh", ",", "tuples_", ",", "0", ",", "\"\<Global\>\"", ",", 
+       "1"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"x", "\[Function]", 
+      RowBox[{"Total", "[", 
+       RowBox[{"Flatten", "[", "x", "]"}], "]"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"AssemblyCombinatorics", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "M_genericmesh", ",", "tuples_", ",", "0", ",", "\"\<Global\>\"", ",", 
+      "vdim_"}], "}"}], ",", "\[IndentingNewLine]", "Total"}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",ExpressionUUID->"d7a10d60-361a-\
+43e5-ac47-20fc8da6fc9f"],
+
+Cell[BoxData[
+ RowBox[{"AssemblyCombinatorics", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Association", "[", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.835606048025454*^9, 3.8356060848085814`*^9}, {
+  3.835606144144471*^9, 3.835606145625186*^9}},
+ CellLabel->
+  "In[617]:=",ExpressionUUID->"6153b227-cc23-4fff-96d6-16d6129a3895"],
+
+Cell[BoxData[
+ RowBox[{"AssemblyCombinatorics", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "M_genericmesh", ",", "tuplefun_", ",", "der_", ",", "localglobal_", ",",
+       "vdim_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "data", ",", "globalQ", ",", "tuples", ",", "pat", ",", "dims", ",", 
+        "numdofsM"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"numdofsM", "=", 
+        RowBox[{"DofCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"globalQ", "=", 
+        RowBox[{"localglobal", "=!=", "\"\<Local\>\""}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tuples", "=", 
+        RowBox[{"tuplefun", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pat", "=", 
+        RowBox[{"AssemblyCombinatorics", "[", "\[IndentingNewLine]", 
+         RowBox[{"tuples", ",", "\[IndentingNewLine]", 
+          RowBox[{"EmbeddingDimension", "[", "M", "]"}], ",", 
+          "\[IndentingNewLine]", "localglobal", ",", "der", ",", 
+          RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "vdim"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"dims", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"vdim", ">", "1"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{"globalQ", ",", 
+              RowBox[{"{", "vdim", "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"vdim", " ", 
+                RowBox[{"Length", "[", "tuples", "]"}]}], "}"}]}], "]"}], ",", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"numdofsM", ",", "der"}], "]"}]}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{"globalQ", ",", 
+              RowBox[{"{", "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"Length", "[", "tuples", "]"}], "}"}]}], "]"}], ",", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{"numdofsM", ",", "der"}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Init", "[", 
+        RowBox[{"fastassembly", ",", "pat", ",", "dims"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.8356063422425833`*^9, 3.835606376070616*^9}, {
+  3.835607102842259*^9, 3.835607117419574*^9}},
+ CellLabel->"In[28]:=",ExpressionUUID->"9da1ccde-3a1c-4ec4-99a7-8f61464ed7b5"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"AssemblyCombinatorics", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "M_genericmesh", ",", "tuplefun_", ",", "der_", ",", "localglobal_", 
+       ",", "vdim_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "data", ",", "result", ",", "globalQ", ",", "tuples", ",", "pat", ",",
+          "dims", ",", "numdofsM", ",", "f", ",", "s"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"numdofsM", "=", 
+         RowBox[{"DofCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"s", "=", 
+         RowBox[{
+          RowBox[{"StringTake", "[", 
+           RowBox[{
+            RowBox[{"ToString", "[", "tuplefun", "]"}], ",", 
+            RowBox[{"1", ";;", 
+             RowBox[{"-", "2"}]}]}], "]"}], "<>", "\"\<Combinatorics\>\""}]}],
+         ";", "\[IndentingNewLine]", 
+        RowBox[{"f", "=", 
+         RowBox[{"Symbol", "[", "s", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"data", "=", 
+         RowBox[{"f", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"result", "=", 
+         RowBox[{"data", "[", 
+          RowBox[{"{", 
+           RowBox[{"der", ",", "localglobal", ",", "vdim"}], "}"}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Head", "[", "result", "]"}], "===", "Missing"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"globalQ", "=", 
+            RowBox[{"localglobal", "=!=", "\"\<Local\>\""}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"tuples", "=", 
+            RowBox[{"tuplefun", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"pat", "=", 
+            RowBox[{"AssemblyCombinatorics", "[", "\[IndentingNewLine]", 
+             RowBox[{"tuples", ",", "\[IndentingNewLine]", 
+              RowBox[{"EmbeddingDimension", "[", "M", "]"}], ",", 
+              "\[IndentingNewLine]", "localglobal", ",", "der", ",", 
+              RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "vdim"}]}], 
+             "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"dims", "=", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"vdim", ">", "1"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"Join", "[", " ", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{"globalQ", ",", 
+                  RowBox[{"{", "vdim", "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"vdim", " ", 
+                    RowBox[{"Length", "[", "tuples", "]"}]}], "}"}]}], "]"}], 
+                ",", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"numdofsM", ",", "der"}], "]"}]}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Join", "[", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{"globalQ", ",", 
+                  RowBox[{"{", "}"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"Length", "[", "tuples", "]"}], "}"}]}], "]"}], 
+                ",", 
+                RowBox[{"ConstantArray", "[", 
+                 RowBox[{"numdofsM", ",", "der"}], "]"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"result", "=", 
+            RowBox[{"Init", "[", 
+             RowBox[{"fastassembly", ",", "pat", ",", "dims"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"f", "=", 
+            RowBox[{"Symbol", "[", 
+             RowBox[{"\"\<AppendTo\>\"", "<>", "s"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"f", "[", 
+            RowBox[{"M", ",", 
+             RowBox[{"{", 
+              RowBox[{"der", ",", "localglobal", ",", "vdim"}], "}"}], ",", 
+             "result"}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+        "\[IndentingNewLine]", "result"}]}], "\[IndentingNewLine]", "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.7859289605203123`*^9, 3.78592897339998*^9}, {
+   3.785929024286165*^9, 3.785929101233326*^9}, {3.785929180312533*^9, 
+   3.785929189639881*^9}, {3.785929275894445*^9, 3.785929287532056*^9}, 
+   3.835606321252729*^9},ExpressionUUID->"9921ec49-db78-4b7c-a249-\
+d973b4d2ee8b"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.835605989825713*^9, 
+  3.83560599002707*^9}},ExpressionUUID->"c17d7628-6ce4-42ee-aad6-\
+240e153c2c4d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"computeLocalAssemblyRowPointers", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"tuple", ",", "_Integer", ",", "1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"d", ",", "_Integer"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"v", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "k", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"k", "=", 
+         RowBox[{"Length", "[", "tuple", "]"}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"Flatten", "@", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"d", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Compile`GetElement", "[", 
+                RowBox[{"tuple", ",", "i"}], "]"}], "-", "1"}], ")"}]}], "+", 
+            "j"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"bla", ",", "1", ",", "v"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "k"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"j", ",", "1", ",", "d"}], "}"}]}], "]"}]}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"RuntimeAttributes", "\[Rule]", 
+      RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{
+  3.8355987189688883`*^9, {3.83559948107803*^9, 3.835599482742105*^9}},
+ CellLabel->
+  "In[599]:=",ExpressionUUID->"105ef6dc-377c-488f-9b4b-920e4db0c227"],
+
+Cell[BoxData[
+ RowBox[{"AssemblyCombinatorics", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "M_genericmesh", ",", "TupleFun_", ",", "1", ",", "\"\<Local\>\"", ",", 
+      "vdim_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"d", ",", "tuples", ",", "n", ",", "k", ",", "nnz"}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"d", "=", 
+        RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tuples", "=", 
+        RowBox[{"(*", 
+         RowBox[{"Sort", "/@"}], "*)"}], 
+        RowBox[{"TupleFun", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"n", ",", "k"}], "}"}], "=", 
+        RowBox[{"Dimensions", "[", "tuples", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"nnz", "=", 
+        RowBox[{"n", " ", "vdim", " ", "k", " ", "d"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"With", "[", 
+        RowBox[{
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"rp", "=", 
+            RowBox[{"Range", "[", 
+             RowBox[{"0", ",", "nnz", ",", 
+              RowBox[{"k", " ", "d"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+           
+           RowBox[{"ci", "=", 
+            RowBox[{"ArrayReshape", "[", 
+             RowBox[{
+              RowBox[{"computeLocalAssemblyRowPointers", "[", 
+               RowBox[{"tuples", ",", "d", ",", "vdim"}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"nnz", ",", "1"}], "}"}]}], "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"dims", "=", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"n", " ", "vdim"}], ",", 
+              RowBox[{
+               RowBox[{"VertexCount", "[", "M", "]"}], "d"}]}], "}"}]}]}], 
+          "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"QuickSparseArray", "[", 
+           RowBox[{"rp", ",", "ci", ",", 
+            RowBox[{"Flatten", "[", "#", "]"}], ",", "dims", ",", "0."}], 
+           "]"}], "&"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.835607960163247*^9, 3.8356079611468687`*^9}},
+ CellLabel->"In[71]:=",ExpressionUUID->"86e95b3f-3e30-422a-bc5e-692fa5a17f3f"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.835606018056682*^9, 
+  3.835606018425932*^9}},ExpressionUUID->"bf362645-a41f-4826-be55-\
+173d7ebcc409"],
+
+Cell[BoxData[
+ RowBox[{"DisassemblyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "TupleFun_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"n", ",", "k", ",", "nnz", ",", "tuples"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"tuples", "=", 
+        RowBox[{"(*", 
+         RowBox[{"Sort", "/@"}], "*)"}], 
+        RowBox[{"TupleFun", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"n", ",", "k"}], "}"}], "=", 
+        RowBox[{"Dimensions", "[", "tuples", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"nnz", "=", 
+        RowBox[{"n", " ", "k"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"n", ">", "0"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"QuickSparseArray", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"0", ",", "nnz"}], "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Partition", "[", 
+            RowBox[{
+             RowBox[{"Flatten", "[", "tuples", "]"}], ",", "1"}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"1.", ",", "nnz"}], "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"nnz", ",", 
+             RowBox[{"CountOf", "[", 
+              RowBox[{"M", ",", "Vertices"}], "]"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", "0."}], "\[IndentingNewLine]", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.83559448208174*^9, 3.835594482709941*^9}, {
+  3.835599155841729*^9, 3.835599157788555*^9}, {3.8356079672739973`*^9, 
+  3.83560796809697*^9}},ExpressionUUID->"9422539e-cd9b-4470-a9f9-\
+cadc31baf61a"],
+
+Cell[BoxData[
+ RowBox[{"AssemblyMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "TupleFun_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"A", "=", 
+        RowBox[{"DisassemblyMatrix", "[", 
+         RowBox[{"M", ",", "TupleFun"}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "A", "]"}], ">", "0"}], ",", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"DisassemblyMatrix", "[", 
+          RowBox[{"M", ",", "TupleFun"}], "]"}], "]"}], ",", 
+        RowBox[{"{", "}"}]}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellLabel->
+  "In[194]:=",ExpressionUUID->"422ebb12-8416-4097-9c4a-0f7569d35661"],
+
+Cell[BoxData[
+ RowBox[{"AssemblyCombinatorics", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "M_genericmesh", ",", "TupleFun_", ",", "1", ",", "\"\<Global\>\"", ",", 
+      "vdim_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"n", "=", 
+         RowBox[{"CountOf", "[", 
+          RowBox[{"M", ",", "TupleFun"}], "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"k", "=", 
+         RowBox[{"LengthOf", "[", 
+          RowBox[{"M", ",", "TupleFun"}], "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"d", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"A", "=", 
+         RowBox[{"AssemblyMatrix", "[", 
+          RowBox[{"M", ",", "TupleFun"}], "]"}]}]}], "\[IndentingNewLine]", 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Flatten", "[", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"A", ".", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"Transpose", "[", 
+             RowBox[{
+              RowBox[{"ArrayReshape", "[", 
+               RowBox[{"#", ",", 
+                RowBox[{"{", 
+                 RowBox[{"n", ",", "vdim", ",", "k", ",", "d"}], "}"}]}], 
+               "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "3", ",", "2", ",", "4"}], "}"}]}], "]"}], 
+            ",", "1"}], "]"}]}], "]"}], "]"}], "&"}]}], "\[IndentingNewLine]",
+      "]"}]}], 
+   RowBox[{"(*", 
+    RowBox[{",", "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "*)"}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.8356058949544687`*^9, 3.835605923207086*^9}, {
+   3.8356072459171124`*^9, 3.835607246630949*^9}, 
+   3.835607457169561*^9},ExpressionUUID->"e42e3599-94f2-44d5-8850-\
+bd7cc6f06cef"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"AssemblyCombinatoricsStorage", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"Association", "[", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"AssemblyCombinatorics", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "M_genericmesh", ",", "tuplefun_", ",", "der_", ",", "localglobal_", 
+        ",", "vdim_"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "tuplestring", ",", "data", ",", "result", ",", "globalQ", ",", 
+          "tuples", ",", "pat", ",", "dims", ",", "numdofsM"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"numdofsM", "=", 
+          RowBox[{"DofCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"tuplestring", "=", 
+          RowBox[{"ToString", "[", "tuplefun", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"data", "=", 
+          RowBox[{"AssemblyCombinatoricsStorage", "[", "M", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"result", "=", 
+          RowBox[{"data", "[", 
+           RowBox[{"{", 
+            RowBox[{
+            "tuplestring", ",", "der", ",", "localglobal", ",", "vdim"}], 
+            "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Head", "[", "result", "]"}], "===", "Missing"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"globalQ", "=", 
+             RowBox[{"localglobal", "=!=", "\"\<Local\>\""}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"tuples", "=", 
+             RowBox[{"tuplefun", "[", "M", "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"pat", "=", 
+             RowBox[{"AssemblyCombinatorics", "[", "\[IndentingNewLine]", 
+              RowBox[{"tuples", ",", "\[IndentingNewLine]", 
+               RowBox[{"EmbeddingDimension", "[", "M", "]"}], ",", 
+               "\[IndentingNewLine]", "localglobal", ",", "der", ",", 
+               RowBox[{"\"\<VectorDimension\>\"", "\[Rule]", "vdim"}]}], 
+              "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"dims", "=", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"vdim", ">", "1"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"Join", "[", " ", 
+                RowBox[{
+                 RowBox[{"If", "[", 
+                  RowBox[{"globalQ", ",", 
+                   RowBox[{"{", "vdim", "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"vdim", " ", 
+                    RowBox[{"Length", "[", "tuples", "]"}]}], "}"}]}], "]"}], 
+                 ",", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"numdofsM", ",", "der"}], "]"}]}], "]"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Join", "[", 
+                RowBox[{
+                 RowBox[{"If", "[", 
+                  RowBox[{"globalQ", ",", 
+                   RowBox[{"{", "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"Length", "[", "tuples", "]"}], "}"}]}], "]"}], 
+                 ",", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{"numdofsM", ",", "der"}], "]"}]}], "]"}]}], 
+              "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"result", "=", 
+             RowBox[{"Init", "[", 
+              RowBox[{"fastassembly", ",", "pat", ",", "dims"}], "]"}]}], ";",
+             "\[IndentingNewLine]", 
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"data", ",", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                "tuplestring", ",", "der", ",", "localglobal", ",", "vdim"}], 
+                "}"}], "\[Rule]", "result"}]}], "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"SetPersistentCache", "[", 
+             RowBox[{
+             "M", ",", "\"\<AssemblyCombinatoricsStorage\>\"", ",", "data"}], 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+         "\[IndentingNewLine]", "result"}]}], "\[IndentingNewLine]", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "*)"}]}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQAWIQLSrd53mp+7VjSdYSML2JW80PRC/YuQNMs+Y8CwfR
+60IjYkC0V92TBBD9ZPXVFBAtMJ+/AER7e5dUg2iDPoceEG32qmk2iK75q7AK
+RMtlnlgDouuuG2xXmfjaMXG5DZiecu9KujqQdtlolgmiI1KeLQfRTR4Cq0F0
+1HbrWv8Frx2N/gWD6aQFhXf5t7x29EhIfAqiGdL//wfR38M9GASA9LTKr0Yg
++pHsHBMQzXT7m6kwkJ53b4kZiLbICLI32fbaUUqzFExPO7vkUN92oLsSHA6D
+6EVbp3fyvXvtmLKkpQdE25nOFxIzfePoeIJLGERz5xqJXZ/8xjG72BFMAwC+
+DKNl
+  "],ExpressionUUID->"74c305b7-b12c-41c8-a077-ea95e5edb194"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"dccf82a5-f738-4449-8c80-988d62b06ae1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 870, 21, 142, "Input",ExpressionUUID->"81eb8b48-361d-40eb-bf4b-20339cc47ed2"],
+Cell[1431, 43, 1208, 31, 292, "Input",ExpressionUUID->"d7a10d60-361a-43e5-ac47-20fc8da6fc9f"],
+Cell[2642, 76, 511, 10, 117, "Input",ExpressionUUID->"6153b227-cc23-4fff-96d6-16d6129a3895"],
+Cell[3156, 88, 2766, 61, 467, "Input",ExpressionUUID->"9da1ccde-3a1c-4ec4-99a7-8f61464ed7b5"],
+Cell[5925, 151, 4504, 100, 667, "Input",ExpressionUUID->"9921ec49-db78-4b7c-a249-d973b4d2ee8b"],
+Cell[10432, 253, 205, 4, 92, "Input",ExpressionUUID->"c17d7628-6ce4-42ee-aad6-240e153c2c4d"],
+Cell[10640, 259, 1925, 49, 267, "Input",ExpressionUUID->"105ef6dc-377c-488f-9b4b-920e4db0c227"],
+Cell[12568, 310, 2560, 62, 417, "Input",ExpressionUUID->"86e95b3f-3e30-422a-bc5e-692fa5a17f3f"],
+Cell[15131, 374, 206, 4, 92, "Input",ExpressionUUID->"bf362645-a41f-4826-be55-173d7ebcc409"],
+Cell[15340, 380, 2140, 50, 467, "Input",ExpressionUUID->"9422539e-cd9b-4470-a9f9-cadc31baf61a"],
+Cell[17483, 432, 970, 26, 167, "Input",ExpressionUUID->"422ebb12-8416-4097-9c4a-0f7569d35661"],
+Cell[18456, 460, 1963, 49, 292, "Input",ExpressionUUID->"e42e3599-94f2-44d5-8850-bd7cc6f06cef"],
+Cell[20422, 511, 5074, 111, 767, "Input",ExpressionUUID->"74c305b7-b12c-41c8-a077-ea95e5edb194"]
+}
+]
+*)
+

@@ -1,0 +1,143 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5557,        135]
+NotebookOptionsPosition[      5267,        122]
+NotebookOutlinePosition[      5603,        137]
+CellTagsIndexPosition[      5560,        134]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"SphereQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"loopsubd_Integer", ",", "catmullclarksubd_Integer"}], "}"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"R", ",", "P", ",", "fflist", ",", "M", ",", "r"}], "}"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"r", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Radius\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"R", "=", 
+        RowBox[{"RegionBoundary", "[", 
+         RowBox[{"PolyhedronData", "[", 
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<Polyhedron\>\"", "]"}], ",", 
+           "\"\<MeshRegion\>\""}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"P", "=", 
+        RowBox[{"cNormalize3", "[", 
+         RowBox[{"MeshCoordinates", "[", "R", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"fflist", "=", 
+        RowBox[{
+         RowBox[{"MeshCells", "[", 
+          RowBox[{"R", ",", "2", ",", 
+           RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+         "\[LeftDoubleBracket]", 
+         RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"ToPack", "[", 
+          RowBox[{
+           RowBox[{"MeshCells", "[", 
+            RowBox[{"R", ",", "2"}], "]"}], "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], "]"}], ";"}],
+         "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"M", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"mesh", ",", "P", ",", "fflist"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"M", "=", 
+           RowBox[{"Subdivide", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"SetVertexCoordinates", "[", 
+           RowBox[{"M", ",", 
+            RowBox[{"r", " ", 
+             RowBox[{"cNormalize3", "[", 
+              RowBox[{"VertexCoordinates", "[", "M", "]"}], "]"}]}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "loopsubd", "}"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"M", "=", 
+           RowBox[{"CatmullClarkSubdivide", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"SetVertexCoordinates", "[", 
+           RowBox[{"M", ",", 
+            RowBox[{"r", " ", 
+             RowBox[{"cNormalize3", "[", 
+              RowBox[{"VertexCoordinates", "[", "M", "]"}], "]"}]}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "catmullclarksubd", "}"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", "M"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<SphereQuadMesh[m,n] computes the m-fold Loop subdivided and n-fold \
+Catmull-Clark subdivided polyhedron. Default polyhedron os \
+\\\"Icosahedron\\\". Approximates the unit sphere for \
+s\[Rule]\[Infinity]\>\""}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\"\<Radius\>\"", "\[Rule]", "1."}], ",", 
+       RowBox[{"\"\<Polyhedron\>\"", "\[Rule]", "\"\<Icosahedron\>\""}]}], 
+      "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.63223263844561*^9, 3.632232696417294*^9}, {
+   3.632732023021899*^9, 3.6327320403138237`*^9}, 3.6327322142851753`*^9, {
+   3.6357932638785467`*^9, 3.6357932933281727`*^9}, {3.64569193681532*^9, 
+   3.6456919661162024`*^9}, {3.692871695805414*^9, 3.6928717882146482`*^9}, {
+   3.6928720984595013`*^9, 3.692872098626597*^9}, {3.695618256645948*^9, 
+   3.695618269828205*^9}, {3.707968642589265*^9, 3.7079686482932262`*^9}, {
+   3.71556967595428*^9, 3.71556969246593*^9}, {3.715569778038022*^9, 
+   3.715569812780778*^9}, {3.71556988610325*^9, 3.715569992443719*^9}, {
+   3.715570143807979*^9, 3.715570171407803*^9}, {3.718685444326571*^9, 
+   3.718685444756013*^9}, {3.719478747760133*^9, 3.7194789065002823`*^9}, {
+   3.7194790438576307`*^9, 3.7194790462482843`*^9}, {3.719597860218395*^9, 
+   3.71959786837763*^9}, {3.719597933716342*^9, 3.719598040105525*^9}, {
+   3.752597596837016*^9, 3.752597681959467*^9}, {3.7525983490222054`*^9, 
+   3.752598349244464*^9}, {3.772713163837541*^9, 3.7727131691801023`*^9}},
+ CellLabel->"In[37]:=",ExpressionUUID->"f2a88b13-1672-49ab-a0d0-cbe5ec612543"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 4705, 100, 642, "Input",ExpressionUUID->"f2a88b13-1672-49ab-a0d0-cbe5ec612543"]
+}
+]
+*)
+

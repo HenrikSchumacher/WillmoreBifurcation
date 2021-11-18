@@ -1,0 +1,235 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11390,        227]
+NotebookOptionsPosition[     11043,        213]
+NotebookOutlinePosition[     11434,        229]
+CellTagsIndexPosition[     11391,        226]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ScenePOVray", "=", 
+  RowBox[{"PackageFunction", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"scenefile_String", ":", "$POVraySceneFile"}], ",", 
+      RowBox[{"files_", ":", 
+       RowBox[{"{", "$POVrayGeometryFile", "}"}]}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"aspectchange", ",", "cam", ",", "rad"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"cam", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Cam\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"rad", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Radiosity\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"cam", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ",", "\"\<stereo\>\""}], "]"}], "]"}], ",", 
+         RowBox[{"aspectchange", "=", "1"}], ",", 
+         RowBox[{"aspectchange", "=", "1"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{"scenefile", ",", "\[IndentingNewLine]", 
+         RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<#version 3.7;\n\n#include \\\"colors.inc\\\"\n#include \
+\\\"finish.inc\\\"\n#include \\\"golds.inc\\\"\n#include \\\"metals.inc\\\"\n\
+#include \\\"textures.inc\\\"\n#include \\\"rad_def.inc\\\"\n\n#declare \
+BoundaryTex=\>\"", ",", 
+           RowBox[{"OptionValue", "[", "\"\<BndStyle\>\"", "]"}], ",", 
+           "\"\<; \n#declare SingularTex=\>\"", ",", 
+           RowBox[{"OptionValue", "[", "\"\<SingularStyle\>\"", "]"}], ",", 
+           "\"\<; \n#declare MeshTex=\>\"", ",", 
+           RowBox[{"OptionValue", "[", "\"\<IntStyle\>\"", "]"}], ",", 
+           "\"\<;\n#declare PntTex=\>\"", ",", 
+           RowBox[{"OptionValue", "[", "\"\<PntStyle\>\"", "]"}], ",", 
+           "\"\<;\n#declare EdgeTex=\>\"", ",", 
+           RowBox[{"OptionValue", "[", "\"\<EdgeStyle\>\"", "]"}], ",", 
+           "\"\<;\>\"", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{"x", "\[Function]", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{
+               "\"\<#include \\\"\>\"", ",", "x", ",", "\"\<\\\"\\n\>\""}], 
+               "]"}]}], ",", "files"}], "]"}], ",", "\[IndentingNewLine]", 
+           "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+           "\"\<global_settings { \n\t\tambient_light \>\"", ",", 
+           RowBox[{"POVrayVectorString", "[", 
+            RowBox[{"OptionValue", "[", "\"\<AmbientLight\>\"", "]"}], "]"}], 
+           ",", "\"\<\n\>\"", ",", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+           
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"rad", "===", "None"}], ",", "\"\<\>\"", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"StringJoin", "[", 
+              RowBox[{
+              "\"\<radiosity {\\n\>\"", " ", ",", "rad", ",", "\"\<\\n}\>\"", 
+               ",", "\"\<\\n\>\""}], "]"}]}], "\[IndentingNewLine]", "]"}], 
+           ",", "\n", " ", 
+           "\"\<\nassumed_gamma 1.0  \n\nambient_light rgb\>\"", ",", 
+           RowBox[{"POVrayVectorString", "[", 
+            RowBox[{"OptionValue", "[", "\"\<AmbientLight\>\"", "]"}], "]"}], 
+           ",", "\"\< \n}\\n\\n\>\"", ",", "\[IndentingNewLine]", 
+           "\"\<#default {finish{ambient 0}}\\n\\n\>\"", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", 
+            RowBox[{"{", 
+             RowBox[{
+             "\"\<camera{\\n\>\"", ",", "\"\<perspective\>\"", ",", 
+              "\"\<\\n\>\"", ",", "\[IndentingNewLine]", "\"\<location \>\"", 
+              ",", 
+              RowBox[{"POVrayVectorString", "[", 
+               RowBox[{"cam", "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "\"\<Position\>\""}], "]"}], "]"}], "]"}], 
+              ",", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", "\"\<sky \>\"", 
+              ",", 
+              RowBox[{"POVrayVectorString", "[", 
+               RowBox[{"cam", "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "\"\<Sky\>\""}], "]"}], "]"}], "]"}], ",", 
+              "\"\<\\n\>\"", ",", "\[IndentingNewLine]", "\"\<up y\\n\>\"", 
+              ",", "\[IndentingNewLine]", 
+              "\"\<right - x *image_width/image_height\>\"", ",", 
+              "\"\<\\n\>\"", ",", "\[IndentingNewLine]", "\"\<angle \>\"", 
+              ",", " ", 
+              RowBox[{"POVrayNumberString", "[", 
+               RowBox[{"cam", "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "\"\<ViewAngle\>\""}], "]"}], "]"}], "]"}],
+               ",", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+              "\"\<look_at \>\"", ",", " ", 
+              RowBox[{"POVrayVectorString", "[", 
+               RowBox[{"cam", "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "\"\<LookAt\>\""}], "]"}], "]"}], "]"}], 
+              ",", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+              "\"\<}\\n\>\""}], "\[IndentingNewLine]", "}"}], "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"OptionValue", "[", "\"\<LightSource\>\"", "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+           "\"\<background {\>\"", ",", 
+           RowBox[{"OptionValue", "[", "\"\<Background\>\"", "]"}], ",", 
+           "\"\<}\\n\\n\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"OptionValue", "[", "\"\<Code\>\"", "]"}]}], 
+          "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+         "\"\<Text\>\""}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", "\[IndentingNewLine]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Cam\>\"", "\[RuleDelayed]", "stdcam"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Background\>\"", "\[RuleDelayed]", "stdbackground"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<LightSource\>\"", "\[RuleDelayed]", "stdlight"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<BndStyle\>\"", "\[RuleDelayed]", "stdbndtex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SingularStyle\>\"", "\[RuleDelayed]", "stdsingtex"}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"\"\<EdgeStyle\>\"", "\[RuleDelayed]", "stdedgetex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PntStyle\>\"", "\[RuleDelayed]", "stdpnttex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<IntStyle\>\"", "\[RuleDelayed]", "stdinttex"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<AmbientLight\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "1"}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Radiosity\>\"", "\[RuleDelayed]", "stdrad"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Code\>\"", "\[Rule]", "\"\<\>\""}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.632132553414073*^9, 3.632132620860259*^9}, {
+   3.632132654726995*^9, 3.632132659886243*^9}, 3.632132718852769*^9, {
+   3.632132938938046*^9, 3.632132939236155*^9}, {3.6321329998044577`*^9, 
+   3.632133044237344*^9}, {3.632133116466506*^9, 3.632133263715598*^9}, {
+   3.632133309654949*^9, 3.63213343226617*^9}, {3.633431099820405*^9, 
+   3.6334312374051533`*^9}, {3.633431281446216*^9, 3.633431480333642*^9}, {
+   3.633436752125555*^9, 3.633436783493922*^9}, {3.633436814840662*^9, 
+   3.633436843083976*^9}, {3.633436977094823*^9, 3.633437052137843*^9}, {
+   3.6334370954257917`*^9, 3.6334371636136913`*^9}, {3.6334375195677557`*^9, 
+   3.633437583925856*^9}, {3.633439026111094*^9, 3.633439027990539*^9}, 
+   3.633441416523291*^9, {3.633441566123045*^9, 3.6334415703308783`*^9}, {
+   3.633445457296702*^9, 3.6334454932919693`*^9}, {3.633628198603969*^9, 
+   3.633628200193256*^9}, {3.64058729673488*^9, 3.640587304678549*^9}, {
+   3.6405873743833447`*^9, 3.640587387893908*^9}, {3.640590057781705*^9, 
+   3.640590066318058*^9}, {3.641098969209215*^9, 3.641099060174137*^9}, {
+   3.641103117952099*^9, 3.641103129611539*^9}, 3.641103176110058*^9, {
+   3.6411034611818743`*^9, 3.641103461386627*^9}, {3.641536791593515*^9, 
+   3.641536797498369*^9}, {3.6426805381742783`*^9, 3.6426805407394943`*^9}, {
+   3.642680690204433*^9, 3.64268069270497*^9}, {3.648111888401931*^9, 
+   3.64811189516048*^9}, {3.648451098549368*^9, 3.648451124659895*^9}, {
+   3.6670457896578217`*^9, 3.6670457898029137`*^9}, {3.670864833995327*^9, 
+   3.670864834953539*^9}, {3.670865847760126*^9, 3.670865848334165*^9}, {
+   3.675521745800996*^9, 3.6755217540396547`*^9}, {3.675521797190137*^9, 
+   3.67552179913831*^9}, {3.675522122534264*^9, 3.6755221862794027`*^9}, {
+   3.681631388674706*^9, 3.6816314739329042`*^9}, {3.681631564877582*^9, 
+   3.681631565115303*^9}, {3.68163171045619*^9, 3.6816317125951014`*^9}, {
+   3.6816318480276203`*^9, 3.681631851786927*^9}, {3.6816318842918663`*^9, 
+   3.681632049477717*^9}, {3.681632080261969*^9, 3.6816321655784483`*^9}, 
+   3.681632236010645*^9, {3.681632392284236*^9, 3.681632393151273*^9}, {
+   3.681633901914728*^9, 3.681633904197147*^9}, {3.6816339551262197`*^9, 
+   3.681633955300974*^9}, {3.6816341275298767`*^9, 3.68163412775152*^9}, {
+   3.681634528820696*^9, 3.681634530819326*^9}, {3.6816349024670258`*^9, 
+   3.681634927919127*^9}, 3.6816356890430403`*^9, {3.681636404795994*^9, 
+   3.681636465040368*^9}, 3.681636791241736*^9, {3.681637427867363*^9, 
+   3.681637441670395*^9}, {3.681638869713904*^9, 3.681638881008237*^9}, {
+   3.681638914566597*^9, 3.681638996263668*^9}, 3.726927454724503*^9, {
+   3.72692773145849*^9, 3.72692773175189*^9}, {3.788364288808343*^9, 
+   3.7883643340810137`*^9}, {3.788367384656996*^9, 3.788367398518305*^9}, {
+   3.788367434932736*^9, 3.7883674408409443`*^9}, {3.788605266845543*^9, 
+   3.788605274585586*^9}, {3.78860619902033*^9, 3.788606201081172*^9}, 
+   3.788609530508772*^9, {3.7886095797279673`*^9, 3.7886096232013483`*^9}, 
+   3.788609666753201*^9, {3.834844032368029*^9, 3.834844051751231*^9}},
+ CellLabel->
+  "In[395]:=",ExpressionUUID->"cef9d2df-9d0b-4c58-bc87-de7aad0f8ccd"]
+},
+WindowSize->{1119, 852},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ea362d1f-34a3-4392-8e52-f6090de0b968"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 10481, 191, 1792, "Input",ExpressionUUID->"cef9d2df-9d0b-4c58-bc87-de7aad0f8ccd"]
+}
+]
+*)
+

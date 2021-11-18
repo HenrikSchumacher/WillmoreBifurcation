@@ -1,0 +1,282 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11341,        274]
+NotebookOptionsPosition[     10954,        260]
+NotebookOutlinePosition[     11290,        275]
+CellTagsIndexPosition[     11247,        272]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ToleranceGlue", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polymesh", ",", "\[Epsilon]_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "plist", ",", "p", ",", "nearest", ",", "clusters", ",", "a", ",", 
+        "newp", ",", "newedges", ",", "candidates", ",", 
+        "\[IndentingNewLine]", "lookup", ",", "clusteredplist", ",", 
+        "otherplist", ",", "newpolygons"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"candidates", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Candidates\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"VectorQ", "[", "candidates", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"plist", "=", "candidates"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"candidates", "===", "All"}], ",", "\[IndentingNewLine]", 
+            
+            RowBox[{"plist", "=", "All"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"plist", "=", 
+             RowBox[{"candidates", "[", "M", "]"}]}]}], "\[IndentingNewLine]",
+            "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"p", "=", 
+        RowBox[{"VertexCoordinates", "[", 
+         RowBox[{"M", ",", "plist"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"clusters", "=", 
+        RowBox[{"DeleteDuplicates", "[", 
+         RowBox[{"Sort", "/@", 
+          RowBox[{"Nearest", "[", 
+           RowBox[{
+            RowBox[{"p", "\[Rule]", "Automatic"}], ",", "p", ",", 
+            RowBox[{"{", 
+             RowBox[{"\[Infinity]", ",", "\[Epsilon]"}], "}"}]}], "]"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"lookup", "=", 
+        RowBox[{"Range", "[", 
+         RowBox[{"VertexCount", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"VectorQ", "[", "plist", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"clusteredplist", "=", 
+          RowBox[{"plist", "\[LeftDoubleBracket]", 
+           RowBox[{"ToPack", "[", 
+            RowBox[{"Flatten", "[", "clusters", "]"}], "]"}], 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"clusteredplist", "=", 
+          RowBox[{"ToPack", "[", 
+           RowBox[{"Flatten", "[", "clusters", "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"otherplist", "=", 
+        RowBox[{"Complement", "[", 
+         RowBox[{"lookup", ",", "clusteredplist"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+        "lookup", "\[LeftDoubleBracket]", "clusteredplist", 
+         "\[RightDoubleBracket]"}], "=", 
+        RowBox[{"Join", "@@", 
+         RowBox[{
+          RowBox[{"Compile", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"a", ",", "_Integer", ",", "1"}], "}"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "_Integer"}], "}"}]}], "}"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Table", "[", 
+             RowBox[{"i", ",", 
+              RowBox[{"{", 
+               RowBox[{"j", ",", "1", ",", 
+                RowBox[{"Length", "[", "a", "]"}]}], "}"}]}], "]"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"RuntimeAttributes", "\[Rule]", 
+             RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Parallelization", "\[Rule]", "True"}]}], 
+           "\[IndentingNewLine]", "]"}], "[", 
+          RowBox[{"clusters", ",", 
+           RowBox[{"Range", "[", 
+            RowBox[{"Length", "[", "clusters", "]"}], "]"}]}], "]"}]}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+        "lookup", "\[LeftDoubleBracket]", "otherplist", 
+         "\[RightDoubleBracket]"}], "=", 
+        RowBox[{"Range", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "clusters", "]"}], "+", "1"}], ",", 
+          RowBox[{
+           RowBox[{"Length", "[", "otherplist", "]"}], "+", 
+           RowBox[{"Length", "[", "clusters", "]"}]}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"newp", "=", 
+        RowBox[{"Join", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Compile", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p", ",", "_Real", ",", "2"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"idx", ",", "_Integer", ",", "1"}], "}"}]}], "}"}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"Mean", "[", 
+              RowBox[{"Part", "[", 
+               RowBox[{"p", ",", "idx"}], "]"}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"RuntimeAttributes", "\[Rule]", 
+              RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"Parallelization", "\[Rule]", "True"}]}], 
+            "\[IndentingNewLine]", "]"}], "[", 
+           RowBox[{"p", ",", "clusters"}], "]"}], ",", "\[IndentingNewLine]", 
+          
+          RowBox[{"VertexCoordinates", "[", 
+           RowBox[{"M", ",", "otherplist"}], "]"}]}], "\[IndentingNewLine]", 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"newpolygons", "=", 
+        RowBox[{"Select", "[", 
+         RowBox[{
+          RowBox[{"Internal`PartitionRagged", "[", 
+           RowBox[{
+            RowBox[{"lookup", "\[LeftDoubleBracket]", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"Polygons", "[", "M", "]"}], "]"}], 
+             "\[RightDoubleBracket]"}], ",", 
+            RowBox[{"Length", "/@", 
+             RowBox[{"Polygons", "[", "M", "]"}]}]}], "]"}], ",", 
+          "DuplicateFreeQ"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Init", "[", 
+        RowBox[{"polymesh", ",", "newp", ",", "newpolygons"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<ToleranceGlue[M,\[Epsilon]] returns the mesh M with all points with \
+distances < \[Epsilon] identified.\>\""}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Candidates\>\"", "\[Rule]", "BoundaryVertices"}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.726837013410514*^9, 3.72683702719142*^9}, {
+   3.72683822189988*^9, 3.726838225357387*^9}, 3.727340570461775*^9, {
+   3.7530315118235703`*^9, 3.75303159162037*^9}, 3.753031656774699*^9},
+ CellLabel->"In[44]:=",ExpressionUUID->"707d1346-020d-4629-af53-d9b5cf57ba53"],
+
+Cell[BoxData[
+ RowBox[{"MeshPart", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"P_polymesh", ",", "plist_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+       "list", ",", "flist", ",", "polygons", ",", "lens", ",", "lookuptable",
+         ",", "newfaces", ",", "newpoints"}], "\[IndentingNewLine]", "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"list", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"{", "plist", "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"lookuptable", "=", 
+        RowBox[{"Normal", "[", 
+         RowBox[{"SparseArray", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Partition", "[", 
+             RowBox[{"list", ",", "1"}], "]"}], "\[Rule]", 
+            RowBox[{"Range", "[", 
+             RowBox[{"Length", "[", "list", "]"}], "]"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"VertexCount", "[", "P", "]"}], "}"}]}], "]"}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"polygons", "=", 
+        RowBox[{"Polygons", "[", "P", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"lens", "=", 
+        RowBox[{"Length", "/@", "polygons"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"flist", "=", 
+        RowBox[{"IntegerPositions", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"lens", "-", 
+           RowBox[{
+            RowBox[{"AdjacencyMatrix", "[", 
+             RowBox[{"P", ",", "Polygons", ",", "Vertices"}], "]"}], ".", 
+            RowBox[{"SparseArray", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Partition", "[", 
+                RowBox[{"list", ",", "1"}], "]"}], "\[Rule]", "1"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"VertexCount", "[", "P", "]"}], "}"}]}], "]"}]}]}], 
+          ",", "\[IndentingNewLine]", "0"}], "\[IndentingNewLine]", "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"newfaces", "=", 
+        RowBox[{"Internal`PartitionRagged", "[", 
+         RowBox[{
+          RowBox[{"lookuptable", "\[LeftDoubleBracket]", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{
+            "polygons", "\[LeftDoubleBracket]", "flist", 
+             "\[RightDoubleBracket]"}], "]"}], "\[RightDoubleBracket]"}], ",", 
+          RowBox[{
+          "lens", "\[LeftDoubleBracket]", "flist", 
+           "\[RightDoubleBracket]"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"newpoints", "=", 
+        RowBox[{
+         RowBox[{"VertexCoordinates", "[", "P", "]"}], "\[LeftDoubleBracket]",
+          "list", "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "newfaces", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Init", "[", 
+          RowBox[{"polymesh", ",", "newpoints", ",", "newfaces"}], "]"}], ",",
+          "\[IndentingNewLine]", "$Failed"}], "\[IndentingNewLine]", 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.806202793377595*^9, 
+  3.806202800871051*^9}},ExpressionUUID->"25804100-5d0e-4c8f-a058-\
+27a768ab8e59"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 7077, 160, 1142, "Input",ExpressionUUID->"707d1346-020d-4629-af53-d9b5cf57ba53"],
+Cell[7638, 182, 3312, 76, 517, "Input",ExpressionUUID->"25804100-5d0e-4c8f-a058-27a768ab8e59"]
+}
+]
+*)
+

@@ -1,0 +1,1202 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     53570,       1194]
+NotebookOptionsPosition[     52313,       1171]
+NotebookOutlinePosition[     52649,       1186]
+CellTagsIndexPosition[     52606,       1183]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"HomotopyFacets", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"e1", ",", "e2", ",", "m", ",", "e3"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"e1", ",", "e2"}], "}"}], "=", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{"Edges", "[", "M", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"m", "=", 
+         RowBox[{"VertexCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"e3", "=", 
+         RowBox[{"Range", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"2", "m"}], "+", "1"}], ",", 
+           RowBox[{
+            RowBox[{"2", "m"}], "+", 
+            RowBox[{"EdgeCount", "[", "M", "]"}]}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Join", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"e1", ",", "e2", ",", "e3"}], "}"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"e2", ",", 
+             RowBox[{"e2", "+", "m"}], ",", "e3"}], "}"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"e2", "+", "m"}], ",", 
+             RowBox[{"e1", "+", "m"}], ",", "e3"}], "}"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"e1", "+", "m"}], ",", "e1", ",", "e3"}], "}"}], "]"}]}],
+          "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",",
+      "\[IndentingNewLine]", 
+     RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{3.776461170921219*^9},
+ CellLabel->"In[7]:=",ExpressionUUID->"f9882983-5737-4484-9800-afd7987a675d"],
+
+Cell[BoxData[
+ RowBox[{"Isotopy", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", "data_Association"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "A", ",", "P0", ",", "P1", ",", "Q", ",", "QList", ",", "pieces", ",", 
+        "tt"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"pieces", "=", 
+        RowBox[{"Sort", "[", 
+         RowBox[{"Keys", "[", 
+          RowBox[{"Select", "[", 
+           RowBox[{
+            RowBox[{"data", "[", "\"\<Checks\>\"", "]"}], ",", "Identity"}], 
+           "]"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"A", "=", 
+        RowBox[{"0.25", " ", 
+         RowBox[{"AdjacencyMatrix", "[", 
+          RowBox[{"M", ",", "Edges", ",", "Vertices"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tt", "=", 
+        RowBox[{
+        "pieces", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"P0", "=", 
+        RowBox[{
+         RowBox[{"data", "[", "\"\<Slices\>\"", "]"}], "[", 
+         RowBox[{"tt", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
+          "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"P1", "=", 
+        RowBox[{
+         RowBox[{"data", "[", "\"\<Slices\>\"", "]"}], "[", 
+         RowBox[{"tt", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+          "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"mesh", ",", 
+          RowBox[{"Join", "[", 
+           RowBox[{"P0", ",", "P1", ",", 
+            RowBox[{"A", ".", 
+             RowBox[{"(", 
+              RowBox[{"P0", "+", "P1"}], ")"}]}]}], "]"}], ",", 
+          RowBox[{"HomotopyFacets", "[", "M", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"QList", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"meshlist", ",", "Q"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"P0", "=", 
+           RowBox[{
+            RowBox[{"data", "[", "\"\<Slices\>\"", "]"}], "[", 
+            RowBox[{
+            "tt", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"P1", "=", 
+           RowBox[{
+            RowBox[{"data", "[", "\"\<Slices\>\"", "]"}], "[", 
+            RowBox[{
+            "tt", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"AppendToMeshList", "[", 
+           RowBox[{"QList", ",", 
+            RowBox[{"Join", "[", 
+             RowBox[{"P0", ",", "P1", ",", 
+              RowBox[{"A", ".", 
+               RowBox[{"(", 
+                RowBox[{"P0", "+", "P1"}], ")"}]}]}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"tt", ",", 
+           RowBox[{"Rest", "[", "pieces", "]"}]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "QList"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Second argument is required to be formated like the output of \
+MaximalSelfAvoidingStepSize.\>\""}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.776461358580621*^9, 3.776461399138644*^9}, 
+   3.776461437098281*^9, {3.796053436949647*^9, 3.7960534438726187`*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"532b52f4-9561-4e89-9245-be5ace5b5ec5"],
+
+Cell[BoxData[
+ RowBox[{"Homotopy", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"P0_", "?", "MatrixQ"}], ",", 
+      RowBox[{"P1_", "?", "MatrixQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Init", "[", 
+     RowBox[{"mesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"Join", "[", 
+       RowBox[{"P0", ",", "P1", ",", 
+        RowBox[{"0.25", 
+         RowBox[{
+          RowBox[{"AdjacencyMatrix", "[", 
+           RowBox[{"M", ",", "Edges", ",", "Vertices"}], "]"}], ".", 
+          RowBox[{"(", 
+           RowBox[{"P0", "+", "P1"}], ")"}]}]}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"HomotopyFacets", "[", "M", "]"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.8239557981867313`*^9, 3.823955809467375*^9}, {
+  3.823955861850041*^9, 3.823955879361413*^9}},
+ CellLabel->"In[69]:=",ExpressionUUID->"ecb2d8c5-7d3d-4eb0-a391-2ee145fdf728"],
+
+Cell[BoxData[
+ RowBox[{"Homotopy", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", "Q_polygon"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Homotopy", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+      RowBox[{"VertexCoordinates", "[", "Q", "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.823955819227475*^9, 3.8239558206597443`*^9}, 
+   3.824212281910472*^9},
+ CellLabel->"In[63]:=",ExpressionUUID->"696683d5-4fdb-4be4-ab7d-dccc53dc36fc"],
+
+Cell[BoxData[
+ RowBox[{"IsotopyCheck", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"P0_", "?", "MatrixQ"}], ",", 
+      RowBox[{"P1_", "?", "MatrixQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Dimensions", "[", "P0", "]"}], "\[Equal]", 
+       RowBox[{"Dimensions", "[", "P1", "]"}]}], "\[IndentingNewLine]", ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Check", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Region`Mesh`IntersectionFreeTrianglesQ", "@", 
+         RowBox[{"ToMeshRegion", "@", 
+          RowBox[{"Homotopy", "[", 
+           RowBox[{"M", ",", "P0", ",", "P1"}], "]"}]}]}], 
+        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "Indeterminate", 
+        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{"MeshRegion", "::", "dgcellr"}]}], "\[IndentingNewLine]", 
+       "]"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", "False"}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.776459843872786*^9, 3.77645990351821*^9}, 
+   3.776461160707451*^9, {3.796053447443494*^9, 3.79605345281705*^9}, {
+   3.798385500781797*^9, 3.798385514565424*^9}, {3.798940627975506*^9, 
+   3.798940641125525*^9}, {3.823955830899015*^9, 3.8239558346734457`*^9}, {
+   3.823955868697332*^9, 3.823955870568501*^9}},
+ CellLabel->"In[66]:=",ExpressionUUID->"c34b7246-c611-4276-ba58-805bd9d7a944"],
+
+Cell[BoxData[
+ RowBox[{"IsotopyCheck", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", "Q_polygon"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"IsotopyCheck", "[", 
+     RowBox[{"M", ",", 
+      RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+      RowBox[{"VertexCoordinates", "[", "Q", "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7983854327698517`*^9, 3.798385521372652*^9}, {
+  3.798385650483738*^9, 3.7983856585270567`*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"e04cc0dc-ba99-49d8-8860-4f6751533d43"],
+
+Cell[BoxData[
+ RowBox[{"IsotopyCheck", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", "MList_meshlist", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "M", ",", "A", ",", "triangles", ",", "P", ",", "P0", ",", "P1"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"M", "=", 
+        RowBox[{"MotherMesh", "[", "MList", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"A", "=", 
+        RowBox[{"0.25", 
+         RowBox[{"AdjacencyMatrix", "[", 
+          RowBox[{"M", ",", "Edges", ",", "Vertices"}], "]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"triangles", "=", 
+        RowBox[{"Triangle", "[", 
+         RowBox[{"HomotopyFacets", "[", "M", "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"P", "=", 
+        RowBox[{"VertexCoordinateList", "[", "MList", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"P0", "=", 
+           RowBox[{"P", "[", 
+            RowBox[{"i", "-", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"P1", "=", 
+           RowBox[{"P", "[", "i", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"i", "-", "1"}], ",", "i"}], "}"}], "\[Rule]", " ", 
+           RowBox[{"Check", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Region`Mesh`IntersectionFreeTrianglesQ", "@", 
+              RowBox[{"MeshRegion", "[", 
+               RowBox[{
+                RowBox[{"Join", "[", 
+                 RowBox[{"P0", ",", "P1", ",", 
+                  RowBox[{"A", ".", 
+                   RowBox[{"(", 
+                    RowBox[{"P0", "+", "P1"}], ")"}]}]}], "]"}], ",", 
+                "triangles"}], "]"}]}], "\[IndentingNewLine]", ",", 
+             "\[IndentingNewLine]", "Indeterminate", "\[IndentingNewLine]", 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"MeshRegion", "::", "dgcellr"}]}], "\[IndentingNewLine]",
+             "]"}]}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", 
+           RowBox[{
+            RowBox[{"1", 
+             RowBox[{"MeshCount", "[", "MList", "]"}]}], "-", "1"}]}], 
+          "}"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{3.799557561356906*^9},
+ CellLabel->"In[21]:=",ExpressionUUID->"c2716023-6845-4249-8c66-ef3ba574cdab"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SelfAvoidingStepSize", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", "\[CapitalGamma]_", ",", 
+       RowBox[{"\[Tau]0_", "?", "NumericQ"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "P", ",", "facets", ",", "check", ",", "succeededQ", ",", 
+         "\[IndentingNewLine]", "MaxContractionIterations", ",", 
+         "MaxExpansionIterations", ",", "MaxBisectionIterations", ",", 
+         "\[IndentingNewLine]", "ContractionIteration", ",", 
+         "ExpansionIteration", ",", "BisectionIteration", ",", 
+         "\[IndentingNewLine]", "t0", ",", "t1", ",", "t", ",", "b", ",", 
+         "\[Gamma]", ",", "TOL", ",", "tlist", ",", "p", ",", "c", ",", 
+         "getp", ",", "d", ",", "safet", ",", "goodt", ",", "maxgoodt", ",", 
+         "\[Sigma]"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"d", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"P", "=", 
+         RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"p", "=", 
+         RowBox[{"Association", "[", 
+          RowBox[{"0.", "\[Rule]", "P"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"c", "=", 
+         RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"getp", "[", "t_", "]"}], ":=", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"KeyExistsQ", "[", 
+            RowBox[{"p", ",", "t"}], "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"p", "[", "t", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"p", "[", "t", "]"}], "=", 
+            RowBox[{"P", "+", 
+             RowBox[{"\[CapitalGamma]", "[", "t", "]"}]}]}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"check", "[", 
+          RowBox[{"{", 
+           RowBox[{"t0_", ",", "t1_"}], "}"}], "]"}], ":=", 
+         RowBox[{"With", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"tt", "=", 
+             RowBox[{"MinMax", "[", 
+              RowBox[{"{", 
+               RowBox[{"t0", ",", "t1"}], "}"}], "]"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"KeyExistsQ", "[", 
+              RowBox[{"c", ",", "tt"}], "]"}], "\[IndentingNewLine]", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"c", "[", "tt", "]"}], "\[IndentingNewLine]", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"c", "[", "tt", "]"}], "=", 
+              RowBox[{"Block", "[", 
+               RowBox[{
+                RowBox[{"{", "boolean", "}"}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"boolean", "=", 
+                  RowBox[{"IsotopyCheck", "[", 
+                   RowBox[{"M", ",", 
+                    RowBox[{"getp", "[", 
+                    RowBox[{
+                    "tt", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                    RowBox[{"getp", "[", 
+                    RowBox[{
+                    "tt", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "]"}]}], "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"!", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"boolean", "===", "True"}], "||", 
+                    RowBox[{"boolean", "===", "False"}]}], ")"}]}], 
+                   "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    "Print", "[", 
+                    "\"\<SelfAvoidingStepSize: Some triangles of the homotopy \
+have degenerated. Using the more robust but expensive method.\>\"", 
+                    "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                    
+                    RowBox[{
+                    RowBox[{
+                    "MinimalCollisionStepSize", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Displace", "[", 
+                    RowBox[{"M", ",", 
+                    RowBox[{
+                    RowBox[{"getp", "[", 
+                    RowBox[{
+                    "tt", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}], "-", 
+                    RowBox[{"VertexCoordinates", "[", "M", "]"}]}]}], "]"}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"getp", "[", 
+                    RowBox[{
+                    "tt", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "]"}], "-", 
+                    RowBox[{"getp", "[", 
+                    RowBox[{
+                    "tt", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}]}]}], 
+                    "\[IndentingNewLine]", "]"}], "\[GreaterEqual]", "1."}]}],
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                   "boolean"}], "\[IndentingNewLine]", "]"}]}]}], 
+               "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+            "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"\[Gamma]", "=", 
+         RowBox[{"OptionValue", "[", "\"\<ContractionFactor\>\"", "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"MaxContractionIterations", "=", 
+         RowBox[{
+         "OptionValue", "[", "\"\<MaxContractionIterations\>\"", "]"}]}], ";",
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"\[Sigma]", "=", 
+         RowBox[{"OptionValue", "[", "\"\<ExpansionFactor\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"MaxExpansionIterations", "=", 
+         RowBox[{
+         "OptionValue", "[", "\"\<MaxExpansionIterations\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"MaxBisectionIterations", "=", 
+         RowBox[{
+         "OptionValue", "[", "\"\<MaxBisectionIterations\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"succeededQ", "=", "False"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"t0", "=", "\[Tau]0"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"b", "=", 
+         RowBox[{"check", "[", 
+          RowBox[{"{", 
+           RowBox[{"0.", ",", "t0"}], "}"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ContractionIteration", "=", "0"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"While", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Not", "[", 
+            RowBox[{"TrueQ", "[", "b", "]"}], "]"}], "&&", 
+           RowBox[{
+           "ContractionIteration", "<", "MaxContractionIterations"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"ContractionIteration", "++"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"t0", "*=", "\[Gamma]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"b", "=", 
+            RowBox[{"check", "[", 
+             RowBox[{"{", 
+              RowBox[{"0.", ",", "t0"}], "}"}], "]"}]}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"b", "===", "Indeterminate"}], ",", 
+          RowBox[{
+           RowBox[{"Print", "[", "\"\<!!!\>\"", "]"}], ";", 
+           RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Not", "[", 
+           RowBox[{"TrueQ", "[", "b", "]"}], "]"}], "\[IndentingNewLine]", 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"succeededQ", "=", "False"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"t0", "=", "0."}]}], "\[IndentingNewLine]", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"t1", "=", 
+            RowBox[{"\[Sigma]", " ", "t0"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"b", "=", 
+            RowBox[{"check", "[", 
+             RowBox[{"{", 
+              RowBox[{"t0", ",", "t1"}], "}"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"ExpansionIteration", "=", "0"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"While", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"TrueQ", "[", "b", "]"}], "&&", 
+              RowBox[{"ExpansionIteration", "<", "MaxExpansionIterations"}]}],
+              ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"ExpansionIteration", "++"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"t0", "=", "t1"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"t1", "*=", "\[Sigma]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"b", "=", 
+               RowBox[{"check", "[", 
+                RowBox[{"{", 
+                 RowBox[{"t0", ",", "t1"}], "}"}], "]"}]}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"BisectionIteration", "=", "0"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"While", "[", 
+            RowBox[{
+             RowBox[{"BisectionIteration", "<", "MaxBisectionIterations"}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"BisectionIteration", "++"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"t", "=", 
+               RowBox[{"0.5", 
+                RowBox[{"(", 
+                 RowBox[{"t0", "+", "t1"}], ")"}]}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"check", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"t0", ",", "t"}], "}"}], "]"}], ",", 
+                RowBox[{
+                 RowBox[{"t0", "=", "t"}], ";"}], ",", 
+                RowBox[{
+                 RowBox[{"t1", "=", "t"}], ";"}]}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"t0", "<", "t1"}], "&&", 
+              RowBox[{"check", "[", 
+               RowBox[{"{", 
+                RowBox[{"t0", ",", "t1"}], "}"}], "]"}]}], ",", 
+             RowBox[{"t0", "=", "t1"}]}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"succeededQ", "=", "True"}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"If", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<SafetyFactor\>\"", "]"}], "<", 
+             "1"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"c", "=", 
+              RowBox[{"Select", "[", 
+               RowBox[{"c", ",", "Identity"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"safet", "=", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<SafetyFactor\>\"", "]"}], 
+               "t0"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"c", "=", 
+              RowBox[{"KeySelect", "[", 
+               RowBox[{"c", ",", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                  "#", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+                   "\[LessEqual]", "safet"}], "&"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"goodt", "=", 
+              RowBox[{"Union", "[", 
+               RowBox[{
+                RowBox[{"{", "0.", "}"}], ",", 
+                RowBox[{"Union", "@@", 
+                 RowBox[{"Keys", "[", "c", "]"}]}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"maxgoodt", "=", 
+              RowBox[{"goodt", "\[LeftDoubleBracket]", 
+               RowBox[{"-", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"p", "=", 
+              RowBox[{"p", "\[LeftDoubleBracket]", 
+               RowBox[{"Key", "/@", "goodt"}], "\[RightDoubleBracket]"}]}], 
+             ";", "\[IndentingNewLine]", 
+             RowBox[{"b", "=", 
+              RowBox[{"check", "[", 
+               RowBox[{"{", 
+                RowBox[{"maxgoodt", ",", "safet"}], "}"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"While", "[", 
+              RowBox[{
+               RowBox[{"Not", "[", "b", "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"safet", "*=", "\[Gamma]"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"b", "=", 
+                 RowBox[{"check", "[", 
+                  RowBox[{"{", 
+                   RowBox[{"maxgoodt", ",", "safet"}], "}"}], "]"}]}], 
+                ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"safet", "=", "t0"}]}], "\[IndentingNewLine]", "]"}], 
+          ";"}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"Association", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\"\<SafeSelfAvoidingStepSize\>\"", "\[Rule]", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<SafetyFactor\>\"", "]"}], 
+            "t0"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<MaximalSelfAvoidingStepSize\>\"", "\[Rule]", "t0"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Succeeded\>\"", "\[Rule]", "succeededQ"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Checks\>\"", "\[Rule]", "c"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Slices\>\"", "\[Rule]", "p"}], ",", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<MaxContractionIterations\>\"", "\[Rule]", 
+           "MaxContractionIterations"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Contractions\>\"", "\[Rule]", "ContractionIteration"}],
+           ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ContractionFactor\>\"", "\[Rule]", "\[Gamma]"}], ",", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<MaxExpansionIterations\>\"", "\[Rule]", 
+           "MaxExpansionIterations"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Expansions\>\"", "\[Rule]", "ExpansionIteration"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<ExpansionFactor\>\"", "\[Rule]", "\[Sigma]"}], ",", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{
+          "\"\<MaxBisectionIterations\>\"", "\[Rule]", 
+           "MaxBisectionIterations"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Bisection\>\"", "\[Rule]", "BisectionIteration"}]}], 
+         "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<SafetyFactor\>\"", "\[Rule]", "0.667"}], ",", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"\"\<ContractionFactor\>\"", "\[Rule]", "0.5"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<MaxContractionIterations\>\"", "\[Rule]", "10"}], ",", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"\"\<ExpansionFactor\>\"", "\[Rule]", "1.5"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<MaxExpansionIterations\>\"", "\[Rule]", "10"}], ",", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"\"\<MaxBisectionIterations\>\"", "\[Rule]", "10"}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.798387438885201*^9, 3.7983874845702868`*^9}, {
+   3.798387579441305*^9, 3.798387599630419*^9}, {3.798387661685691*^9, 
+   3.798387701297269*^9}, {3.7983881243083878`*^9, 3.7983881456019363`*^9}, {
+   3.798388195833068*^9, 3.7983882014712677`*^9}, 3.798388352359599*^9, {
+   3.798388647203402*^9, 3.79838864949794*^9}, {3.79838914496985*^9, 
+   3.798389150519545*^9}, {3.7983902392826567`*^9, 3.798390248856266*^9}, {
+   3.7983907527449636`*^9, 3.798390753013535*^9}, {3.7983907943078527`*^9, 
+   3.7983908438582897`*^9}, {3.798390912757763*^9, 3.7983909524181004`*^9}, {
+   3.798391115855541*^9, 3.798391147109252*^9}, {3.7983912612821493`*^9, 
+   3.798391275656392*^9}, {3.798391389548761*^9, 3.798391390308585*^9}, {
+   3.798391532870223*^9, 3.798391565565777*^9}, {3.7983917037642803`*^9, 
+   3.798391730853828*^9}, {3.798393764845923*^9, 3.798393788147463*^9}, 
+   3.7983943571851*^9, {3.79890141544415*^9, 3.7989014189144993`*^9}, {
+   3.7989016634675817`*^9, 3.798901670529807*^9}, {3.798901714560671*^9, 
+   3.798901740238853*^9}, {3.798901816796157*^9, 3.7989019468018007`*^9}, {
+   3.7989019772153797`*^9, 3.798901983630529*^9}, {3.7989020191809072`*^9, 
+   3.798902078659606*^9}, {3.798902128530995*^9, 3.798902130729179*^9}, {
+   3.798902347743631*^9, 3.7989023681041718`*^9}, {3.798902510082052*^9, 
+   3.7989025131440353`*^9}, {3.7989026125546503`*^9, 3.798902628878337*^9}, {
+   3.798902848647682*^9, 3.79890285128541*^9}, {3.798939651478307*^9, 
+   3.798939695227647*^9}, {3.798939725233968*^9, 3.798939739658093*^9}, {
+   3.798939774922146*^9, 3.798939906587824*^9}, {3.7989399563854303`*^9, 
+   3.7989399685236607`*^9}, {3.798940054094146*^9, 3.798940120660122*^9}, {
+   3.798940341619046*^9, 3.798940409832727*^9}, {3.798940560883294*^9, 
+   3.798940567810814*^9}, {3.798940650033231*^9, 3.79894074109163*^9}, {
+   3.798940874044685*^9, 3.798940954806538*^9}, {3.798941449108279*^9, 
+   3.7989415570837727`*^9}, {3.798941614850545*^9, 3.79894175046105*^9}},
+ CellLabel->"In[63]:=",ExpressionUUID->"3ae2dd2e-3d48-4b44-af5a-36fd479b2589"],
+
+Cell[BoxData[
+ RowBox[{"QuadraticInterpolationSelfAvoidingStepSize", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", "s_", ",", 
+      RowBox[{"pts_", "?", "MatrixQ"}], ",", "\[Tau]0_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\[CapitalGamma]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\[CapitalGamma]", "=", 
+        RowBox[{"With", "[", 
+         RowBox[{
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"U", "=", 
+             RowBox[{"Reshape", "[", 
+              RowBox[{"M", ",", "s"}], "]"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"V", "=", 
+             RowBox[{"Subtract", "[", 
+              RowBox[{"pts", ",", 
+               RowBox[{
+                RowBox[{"VertexCoordinates", "[", "M", "]"}], "+", 
+                RowBox[{"Reshape", "[", 
+                 RowBox[{"M", ",", "s"}], "]"}]}]}], "]"}]}]}], 
+           "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Function", "[", 
+           RowBox[{"\[FormalT]", ",", 
+            RowBox[{
+             RowBox[{"\[FormalT]", " ", "U"}], "+", 
+             RowBox[{
+              RowBox[{"\[FormalT]", "^", "2"}], " ", "V"}]}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"SelfAvoidingStepSize", "[", 
+         RowBox[{"M", ",", "\[CapitalGamma]", ",", "\[Tau]0", ",", 
+          RowBox[{"\"\<SafetyFactor\>\"", "\[Rule]", 
+           RowBox[{"OptionValue", "[", "\"\<SafetyFactor\>\"", "]"}]}]}], 
+         "]"}], "[", "\"\<SafeSelfAvoidingStepSize\>\"", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<SafetyFactor\>\"", "\[Rule]", "0.667"}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.798392739417656*^9, 3.798392821349731*^9}, {
+   3.798392895434227*^9, 3.798392961559173*^9}, 3.798393290757763*^9, {
+   3.798393655399644*^9, 3.798393655598309*^9}, {3.798393735140017*^9, 
+   3.7983937529707117`*^9}, {3.7984393019700108`*^9, 3.798439311514817*^9}, {
+   3.798902743383123*^9, 3.7989027439029617`*^9}, {3.798902819931788*^9, 
+   3.798902858053095*^9}},
+ CellLabel->
+  "In[294]:=",ExpressionUUID->"f8bb81a0-1360-4c05-9dd9-4ecfd99cef08"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"SelfAvoidingStepSize", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"M_polygon", ",", "osc_searchline"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "P", ",", "facets", ",", "check", ",", "t0", ",", "t1", ",", "t", 
+           ",", "b", ",", "\[Gamma]", ",", "TOL", ",", "tmax", ",", "tlist", 
+           ",", "p", ",", "c", ",", "getp", ",", "d", ",", "safet", ",", 
+           "goodt", ",", "maxgoodt"}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"d", "=", 
+           RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"P", "=", 
+           RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"p", "=", 
+           RowBox[{"Association", "[", 
+            RowBox[{"0.", "\[Rule]", "P"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"c", "=", 
+           RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"getp", "[", "t_", "]"}], ":=", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"KeyExistsQ", "[", 
+              RowBox[{"p", ",", "t"}], "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"p", "[", "t", "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"p", "[", "t", "]"}], "=", 
+              RowBox[{"P", "+", 
+               RowBox[{"Partition", "[", 
+                RowBox[{
+                 RowBox[{"EvaluateParameterization", "[", 
+                  RowBox[{"osc", ",", "t"}], "]"}], ",", "d"}], "]"}]}]}]}], 
+            "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"check", "[", 
+            RowBox[{"{", 
+             RowBox[{"t0_", ",", "t1_"}], "}"}], "]"}], ":=", 
+           RowBox[{"With", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"tt", "=", 
+               RowBox[{"MinMax", "[", 
+                RowBox[{"{", 
+                 RowBox[{"t0", ",", "t1"}], "}"}], "]"}]}], "}"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"KeyExistsQ", "[", 
+                RowBox[{"c", ",", "tt"}], "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"c", "[", "tt", "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"c", "[", "tt", "]"}], "=", 
+                RowBox[{"IsotopyCheck", "[", 
+                 RowBox[{"M", ",", 
+                  RowBox[{"getp", "[", 
+                   RowBox[{
+                   "tt", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                  RowBox[{"getp", "[", 
+                   RowBox[{
+                   "tt", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "]"}]}], "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+          ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"tmax", "=", 
+           RowBox[{"OptionValue", "[", "\"\<MaxStepSize\>\"", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", 
+             RowBox[{"NumericQ", "[", "tmax", "]"}], "]"}], ",", 
+            RowBox[{"tmax", "=", 
+             RowBox[{"StepSize", "[", "osc", "]"}]}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"TOL", "=", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}], " ", 
+            "tmax"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"\[Gamma]", "=", 
+           RowBox[{"OptionValue", "[", "\"\<BacktrackingFactor\>\"", "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"t1", "=", "tmax"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"b", "=", 
+           RowBox[{"check", "[", 
+            RowBox[{"{", 
+             RowBox[{"0.", ",", "t1"}], "}"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "b", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"t1", "*=", "\[Gamma]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"b", "=", 
+              RowBox[{"check", "[", 
+               RowBox[{"{", 
+                RowBox[{"0.", ",", "t1"}], "}"}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Print", "[", "t1", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"t", "=", "t1"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"t1", "<", "tmax"}], "\[IndentingNewLine]", ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"t0", "=", "t1"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"t1", "=", 
+              RowBox[{"t1", "/", "\[Gamma]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"t", "=", "t0"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"While", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"t1", "-", "t0"}], ">", "TOL"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"t", "=", 
+                 RowBox[{"0.5", 
+                  RowBox[{"(", 
+                   RowBox[{"t0", "+", "t1"}], ")"}]}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"check", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"t0", ",", "t"}], "}"}], "]"}], ",", 
+                  RowBox[{
+                   RowBox[{"t0", "=", "t"}], ";"}], ",", 
+                  RowBox[{
+                   RowBox[{"t1", "=", "t"}], ";"}]}], "]"}], ";"}]}], 
+              "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+           "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<SafetyFactor\>\"", "]"}], "<", 
+             "1"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"c", "=", 
+              RowBox[{"Select", "[", 
+               RowBox[{"c", ",", "Identity"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"safet", "=", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<SafetyFactor\>\"", "]"}], 
+               "t"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"c", "=", 
+              RowBox[{"KeySelect", "[", 
+               RowBox[{"c", ",", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                  "#", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+                   "\[LessEqual]", "safet"}], "&"}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"goodt", "=", 
+              RowBox[{"Union", "[", 
+               RowBox[{
+                RowBox[{"{", "0.", "}"}], ",", 
+                RowBox[{"Union", "@@", 
+                 RowBox[{"Keys", "[", "c", "]"}]}]}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"maxgoodt", "=", 
+              RowBox[{"goodt", "\[LeftDoubleBracket]", 
+               RowBox[{"-", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"p", "=", 
+              RowBox[{"p", "\[LeftDoubleBracket]", 
+               RowBox[{"Key", "/@", "goodt"}], "\[RightDoubleBracket]"}]}], 
+             ";", "\[IndentingNewLine]", 
+             RowBox[{"b", "=", 
+              RowBox[{"check", "[", 
+               RowBox[{"{", 
+                RowBox[{"maxgoodt", ",", "safet"}], "}"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"While", "[", 
+              RowBox[{
+               RowBox[{"Not", "[", "b", "]"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"safet", "*=", "\[Gamma]"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"b", "=", 
+                 RowBox[{"check", "[", 
+                  RowBox[{"{", 
+                   RowBox[{"maxgoodt", ",", "safet"}], "}"}], "]"}]}], 
+                ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+            "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+            RowBox[{"safet", "=", "t"}]}], "\[IndentingNewLine]", "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Association", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"\"\<SafeSelfAvoidingStepSize\>\"", "\[Rule]", "safet"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<MaximalSelfAvoidingStepSize\>\"", "\[Rule]", "t"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "TOL"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Checks\>\"", "\[Rule]", "c"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Slices\>\"", "\[Rule]", "p"}]}], 
+           "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"Options", "\[Rule]", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "0.001"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<SafetyFactor\>\"", "\[Rule]", "0.5"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<BacktrackingFactor\>\"", "\[Rule]", "0.5"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<MaxStepSize\>\"", "\[Rule]", "Automatic"}]}], 
+         "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+    ";"}], "*)"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.776461183454123*^9, 3.776461201725748*^9}, {
+   3.776462104938903*^9, 3.776462119625774*^9}, {3.776462190559658*^9, 
+   3.77646220050347*^9}, {3.776462244266994*^9, 3.7764623136688337`*^9}, {
+   3.776462412709009*^9, 3.776462444905353*^9}, {3.776462493042776*^9, 
+   3.776462517117765*^9}, {3.7764625539109*^9, 3.776462597216257*^9}, {
+   3.7764626407490253`*^9, 3.776462649234783*^9}, {3.7983869948492603`*^9, 
+   3.79838700715044*^9}, {3.798387118098536*^9, 3.798387121378922*^9}, 
+   3.7983930581889887`*^9, {3.7983957485051003`*^9, 3.7983957495587378`*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"f8cef37b-fac2-48c3-8dba-7959c3066ace"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  
+  RowBox[{"(*", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"MaximalSelfAvoidingStepSize", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"M_polygon", ",", 
+         RowBox[{"u_", "?", "VectorQ"}], ",", 
+         RowBox[{"opts", ":", 
+          RowBox[{"OptionsPattern", "[", "]"}]}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"MaximalSelfAvoidingStepSize", "[", 
+        RowBox[{"M", ",", 
+         RowBox[{"Partition", "[", 
+          RowBox[{"u", ",", 
+           RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}], ",", 
+         "opts"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"SelfAvoidingStepSize", "=", 
+     RowBox[{"PackageFunction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"M_polygon", ",", 
+         RowBox[{"U_", "?", "MatrixQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+       
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "P", ",", "Q", ",", "V", ",", "e1", ",", "e2", ",", "e3", ",", "m", 
+           ",", "facets", ",", "check", ",", "t0", ",", "t1", ",", "t", ",", 
+           "b", ",", "\[Gamma]", ",", "TOL", ",", "tmax"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"P", "=", 
+           RowBox[{"VertexCoordinates", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Q", "=", 
+           RowBox[{"EdgeMidpoints", "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"V", "=", 
+           RowBox[{"0.25", 
+            RowBox[{
+             RowBox[{"EdgeVertexAdjacencyMatrix", "[", "M", "]"}], ".", 
+             "U"}]}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"facets", "=", 
+           RowBox[{"Triangle", "[", 
+            RowBox[{"SelfAvoidingStepSizeFacets", "[", "M", "]"}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"check", "[", 
+              RowBox[{"{", 
+               RowBox[{"t0_", ",", "t1_"}], "}"}], "]"}], ":=", 
+             RowBox[{"Region`Mesh`IntersectionFreeTrianglesQ", "@", 
+              RowBox[{"MeshRegion", "[", 
+               RowBox[{
+                RowBox[{"Join", "[", 
+                 RowBox[{
+                  RowBox[{"P", "+", 
+                   RowBox[{"t0", " ", "U"}]}], ",", 
+                  RowBox[{"P", "+", 
+                   RowBox[{"t1", " ", "U"}]}]}], "]"}], ",", "facets"}], 
+               "]"}]}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"check", "[", 
+            RowBox[{"{", 
+             RowBox[{"t0_", ",", "t1_"}], "}"}], "]"}], ":=", 
+           RowBox[{"Region`Mesh`IntersectionFreeTrianglesQ", "@", 
+            RowBox[{"MeshRegion", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Join", "[", 
+               RowBox[{
+                RowBox[{"P", "+", 
+                 RowBox[{"t0", " ", "U"}]}], ",", 
+                RowBox[{"P", "+", 
+                 RowBox[{"t1", " ", "U"}]}], ",", 
+                RowBox[{"Q", " ", "+", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"t0", "+", "t1"}], ")"}], "V"}]}]}], "]"}], ",", 
+              "\[IndentingNewLine]", "facets"}], "\[IndentingNewLine]", 
+             "]"}]}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"tmax", "=", 
+           RowBox[{"OptionValue", "[", "\"\<MaxStepSize\>\"", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"TOL", "=", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<Tolerance\>\"", "]"}], " ", 
+            "tmax"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"\[Gamma]", "=", 
+           RowBox[{"OptionValue", "[", "\"\<BacktrackingFactor\>\"", "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"t1", "=", "tmax"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"b", "=", 
+           RowBox[{"check", "[", 
+            RowBox[{"{", 
+             RowBox[{"0.", ",", "t1"}], "}"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{"Not", "[", "b", "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"t1", "*=", "\[Gamma]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"b", "=", 
+              RowBox[{"check", "[", 
+               RowBox[{"{", 
+                RowBox[{"0.", ",", "t1"}], "}"}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{"{", 
+              RowBox[{"t1", ",", "tmax"}], "}"}], "]"}], ";"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"t1", "<", "tmax"}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"t0", "=", "t1"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"t1", "=", 
+              RowBox[{"t1", "/", "\[Gamma]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"t", "=", "t0"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"While", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"t1", "-", "t0"}], ">", "TOL"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"t", "=", 
+                 RowBox[{"0.5", 
+                  RowBox[{"(", 
+                   RowBox[{"t0", "+", "t1"}], ")"}]}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"check", "[", 
+                   RowBox[{"{", 
+                    RowBox[{"t0", ",", "t"}], "}"}], "]"}], ",", 
+                  RowBox[{
+                   RowBox[{"t0", "=", "t"}], ";"}], ",", 
+                  RowBox[{
+                   RowBox[{"t1", "=", "t"}], ";"}]}], "]"}], ";"}]}], 
+              "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "t"}],
+             ",", "\[IndentingNewLine]", "t1"}], "\[IndentingNewLine]", 
+           "]"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"Options", "\[Rule]", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\"\<Tolerance\>\"", "\[Rule]", "0.001"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<BacktrackingFactor\>\"", "\[Rule]", "0.5"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<MaxStepSize\>\"", "\[Rule]", "1."}]}], 
+         "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+    ";"}], "*)"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.776361595320631*^9, 3.776361775933682*^9}, 
+   3.776363187486122*^9, {3.776363739078018*^9, 3.776363750509013*^9}, {
+   3.7763638713473263`*^9, 3.776363889998386*^9}, {3.776364739641386*^9, 
+   3.776364765087858*^9}, {3.776364832980032*^9, 3.776364900855763*^9}, {
+   3.776364962256117*^9, 3.776364972574773*^9}, {3.7763658710108852`*^9, 
+   3.776365909533297*^9}, {3.776366233820484*^9, 3.7763662475937433`*^9}, {
+   3.776366532754014*^9, 3.776366618425933*^9}, 3.776369377814344*^9, {
+   3.776369493773704*^9, 3.776369504243845*^9}, 3.776451858527069*^9, {
+   3.776452350384406*^9, 3.776452351351048*^9}, {3.776459110574503*^9, 
+   3.77645911989044*^9}, {3.776461132296342*^9, 3.776461204751903*^9}},
+ CellLabel->"In[14]:=",ExpressionUUID->"881b5938-9e9a-4098-bc8f-7282a7e390df"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2129, 54, 367, "Input",ExpressionUUID->"f9882983-5737-4484-9800-afd7987a675d"],
+Cell[2690, 76, 3652, 89, 467, "Input",ExpressionUUID->"532b52f4-9561-4e89-9245-be5ace5b5ec5"],
+Cell[6345, 167, 1002, 23, 167, "Input",ExpressionUUID->"ecb2d8c5-7d3d-4eb0-a391-2ee145fdf728"],
+Cell[7350, 192, 586, 14, 92, "Input",ExpressionUUID->"696683d5-4fdb-4be4-ab7d-dccc53dc36fc"],
+Cell[7939, 208, 1534, 31, 367, "Input",ExpressionUUID->"c34b7246-c611-4276-ba58-805bd9d7a944"],
+Cell[9476, 241, 619, 14, 92, "Input",ExpressionUUID->"e04cc0dc-ba99-49d8-8860-4f6751533d43"],
+Cell[10098, 257, 2703, 64, 542, "Input",ExpressionUUID->"c2716023-6845-4249-8c66-ef3ba574cdab"],
+Cell[12804, 323, 18394, 381, 3242, "Input",ExpressionUUID->"3ae2dd2e-3d48-4b44-af5a-36fd479b2589"],
+Cell[31201, 706, 2522, 55, 439, "Input",ExpressionUUID->"f8bb81a0-1360-4c05-9dd9-4ecfd99cef08"],
+Cell[33726, 763, 10800, 233, 1867, "Input",ExpressionUUID->"f8cef37b-fac2-48c3-8dba-7959c3066ace"],
+Cell[44529, 998, 7780, 171, 1317, "Input",ExpressionUUID->"881b5938-9e9a-4098-bc8f-7282a7e390df"]
+}
+]
+*)
+

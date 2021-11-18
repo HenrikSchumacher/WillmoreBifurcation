@@ -1,0 +1,711 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     29254,        703]
+NotebookOptionsPosition[     27999,        680]
+NotebookOutlinePosition[     28335,        695]
+CellTagsIndexPosition[     28292,        692]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ToQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"R_MeshRegion", ",", "\[IndentingNewLine]", 
+    RowBox[{"Init", "[", "\[IndentingNewLine]", 
+     RowBox[{"quadmesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{"Join", "@@", 
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"MeshCells", "[", 
+           RowBox[{"R", ",", "2", ",", 
+            RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+          "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Dimensions", "[", "#", "]"}], "\[LeftDoubleBracket]", 
+            "2", "\[RightDoubleBracket]"}], "\[Equal]", "4"}], "&"}]}], 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{3.8049160865335484`*^9},
+ CellLabel->"In[4]:=",ExpressionUUID->"9852c5a4-d8f2-4a77-b41d-08af8d2c973a"],
+
+Cell[BoxData[
+ RowBox[{"ToQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"R_BoundaryMeshRegion", ",", "\[IndentingNewLine]", 
+    RowBox[{"Init", "[", "\[IndentingNewLine]", 
+     RowBox[{"quadmesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{"Join", "@@", 
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"MeshCells", "[", 
+           RowBox[{"R", ",", "2", ",", 
+            RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+          "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Dimensions", "[", "#", "]"}], "\[LeftDoubleBracket]", 
+            "2", "\[RightDoubleBracket]"}], "\[Equal]", "4"}], "&"}]}], 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.804915967674197*^9, 3.8049159887849417`*^9}, {
+   3.80491603221507*^9, 3.804916046497411*^9}, 3.804916080675871*^9},
+ CellLabel->"In[5]:=",ExpressionUUID->"66cebe17-5736-4020-ac7c-8c0fb75864af"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ParameterizedQuadMesh", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"f_", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "R", ",", "m", ",", "n", ",", "pts", ",", "quads", ",", "x0", ",", 
+         "x1", ",", "y0", ",", "y1", ",", "a2", ",", "cf", ",", "c\[Nu]f", 
+         ",", "b1", ",", "b2", ",", "X", ",", "der", ",", "grid", ",", 
+         "normals", ",", "Q", ",", "ctarget"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"b1", ",", "b2"}], "}"}], "=", 
+         RowBox[{"OptionValue", "[", "\"\<Closed\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"m", ",", "n"}], "}"}], "=", 
+         RowBox[{"OptionValue", "[", "\"\<Mesh\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ctarget", "=", 
+         RowBox[{"OptionValue", "[", "\"\<CompilationTarget\>\"", "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"x0", ",", "x1"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"y0", ",", "y1"}], "}"}]}], "}"}], "=", 
+         RowBox[{"OptionValue", "[", "\"\<Domain\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Quiet", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"expression", "=", 
+              RowBox[{"f", "[", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{
+                 "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+                 ",", 
+                 RowBox[{
+                 "X", "\[LeftDoubleBracket]", "2", 
+                  "\[RightDoubleBracket]"}]}], "}"}], "]"}]}], "}"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"cf", "=", 
+              RowBox[{"Compile", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"{", 
+                  RowBox[{"X", ",", "_Real", ",", "1"}], "}"}], "}"}], ",", 
+                "\[IndentingNewLine]", "expression", ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"CompilationTarget", "\[Rule]", "ctarget"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"RuntimeAttributes", "\[Rule]", 
+                 RowBox[{"{", "Listable", "}"}]}]}], "\[IndentingNewLine]", 
+               "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"grid", "=", 
+         RowBox[{"getGridPoints", "[", 
+          RowBox[{
+          "x0", ",", "x1", ",", "y0", ",", "y1", ",", "m", ",", "n", ",", 
+           "b1", ",", "b2"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"pts", "=", 
+         RowBox[{"cf", "[", "grid", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"normals", "=", 
+           RowBox[{"c\[Nu]f", "[", "grid", "]"}]}], ";"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"quads", "=", 
+         RowBox[{"getGridQuads", "[", 
+          RowBox[{"m", ",", "n", ",", "b1", ",", "b2"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Init", "[", 
+         RowBox[{"quadmesh", ",", "pts", ",", "quads"}], "]"}]}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<Closed\>\"", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"False", ",", "False"}], "}"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<CompilationTarget\>\"", "\[Rule]", "\"\<WVM\>\""}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<Mesh\>\"", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"36", ",", "36"}], "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Domain\>\"", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0.", ",", 
+             RowBox[{"2.", "Pi"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0.", ",", 
+             RowBox[{"2.", "Pi"}]}], "}"}]}], "}"}]}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{
+  3.6342861498578157`*^9, {3.634286379605521*^9, 3.634286405932527*^9}, 
+   3.6342864740976152`*^9, {3.634838932075302*^9, 3.6348389360958757`*^9}, {
+   3.6348401275606737`*^9, 3.634840154505104*^9}, {3.699776155040451*^9, 
+   3.6997761774533033`*^9}, {3.699777755765853*^9, 3.699777788204468*^9}, {
+   3.699777826228127*^9, 3.699778210049018*^9}, {3.699778261146185*^9, 
+   3.6997782940287743`*^9}, {3.699778489480013*^9, 3.699778493518354*^9}, {
+   3.699779400899444*^9, 3.699779419633555*^9}, {3.699779616040444*^9, 
+   3.699779663775174*^9}, 3.699780261457019*^9, {3.6997808196175823`*^9, 
+   3.69978082079134*^9}, {3.6997808885698*^9, 3.69978088944845*^9}, {
+   3.699780948117288*^9, 3.699780984848802*^9}, {3.699781184677002*^9, 
+   3.699781184868915*^9}, {3.719397535033679*^9, 3.71939753774538*^9}, {
+   3.719397820818701*^9, 3.7193978980281487`*^9}, {3.7193979290163383`*^9, 
+   3.719397941391271*^9}, {3.719397989797847*^9, 3.719397991781303*^9}, {
+   3.747642663823591*^9, 3.7476426682213097`*^9}, {3.747642937347971*^9, 
+   3.747642937578782*^9}, {3.752595019055551*^9, 3.7525950486846447`*^9}},
+ CellLabel->
+  "In[463]:=",ExpressionUUID->"13115b46-1757-49d3-a33c-a8a3301f6dce"],
+
+Cell[BoxData[
+ RowBox[{"RectangleQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"a1_", ",", "a2_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"ParameterizedQuadMesh", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"X", "\[Function]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+         ",", 
+         RowBox[{"X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+         ",", "0."}], "}"}]}], ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Closed\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"False", ",", "False"}], "}"}]}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{"\"\<Mesh\>\"", "\[Rule]", 
+       RowBox[{"OptionValue", "[", "\"\<Mesh\>\"", "]"}]}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<Domain\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "0.5"}], "a1"}], ",", 
+           RowBox[{"0.5", " ", "a1"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "0.5"}], " ", "a2"}], ",", 
+           RowBox[{"0.5", "a2"}]}], "}"}]}], "}"}]}]}], "\[IndentingNewLine]",
+      "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<Description\>\"", "\[Rule]", 
+     "\"\<RectangleQuadMesh[r1,r2] computes a meshed reactangle with edge \
+lengths a1 and a2. You can specify the subdivisions of the grid by using the \
+Mesh option.\>\""}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Mesh\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"36", ",", "36"}], "}"}]}], "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.699776715157363*^9, 3.699776721818059*^9}, {
+   3.699777238550724*^9, 3.699777262659493*^9}, {3.6997774571635723`*^9, 
+   3.699777476093028*^9}, {3.699777539670455*^9, 3.6997775945652733`*^9}, {
+   3.699779672125127*^9, 3.699779687556437*^9}, {3.6997805265889883`*^9, 
+   3.699780623445867*^9}, {3.699780665252274*^9, 3.6997806655802317`*^9}, 
+   3.6997808771140547`*^9, {3.719397951240102*^9, 
+   3.719397954343088*^9}},ExpressionUUID->"1892beaa-9cfd-4d0a-a691-\
+1d03e4b9b587"],
+
+Cell[BoxData[
+ RowBox[{"TorusQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"r1_", ",", "r2_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"ParameterizedQuadMesh", "[", 
+     RowBox[{
+      RowBox[{"X", "\[Function]", 
+       RowBox[{"{", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Cos", "[", 
+           RowBox[{
+           "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "]"}], 
+          RowBox[{"(", 
+           RowBox[{"r1", "+", 
+            RowBox[{"r2", " ", 
+             RowBox[{"Cos", "[", 
+              RowBox[{
+              "X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+              "]"}]}]}], ")"}]}], ",", 
+         RowBox[{
+          RowBox[{"Sin", "[", 
+           RowBox[{
+           "X", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "]"}], 
+          RowBox[{"(", 
+           RowBox[{"r1", "+", 
+            RowBox[{"r2", " ", 
+             RowBox[{"Cos", "[", 
+              RowBox[{
+              "X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+              "]"}]}]}], ")"}]}], ",", 
+         RowBox[{"r2", " ", 
+          RowBox[{"Sin", "[", 
+           RowBox[{
+           "X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+           "]"}]}]}], "}"}]}], ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Closed\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"True", ",", "True"}], "}"}]}], ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Mesh\>\"", "\[Rule]", 
+       RowBox[{"OptionValue", "[", "\"\<Mesh\>\"", "]"}]}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<Domain\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0.", ",", 
+           RowBox[{"2.", "Pi"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0.", ",", 
+           RowBox[{"2.", "Pi"}]}], "}"}]}], "}"}]}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<Description\>\"", "\[Rule]", 
+     "\"\<TorusQuadMesh[r1,r2] computes a meshed Torus with radii r1 and r2. \
+You can specify the subdivisions of the grid by using the Mesh option.\>\""}],
+     ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Mesh\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"36", ",", "18"}], "}"}]}], "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.699780620304879*^9, 3.699780661940485*^9}, 
+   3.719397549425378*^9},ExpressionUUID->"71e469c1-1d00-4707-b218-\
+a58472a4ac75"],
+
+Cell[BoxData[
+ RowBox[{"CubeQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"n_", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "R", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"R", "=", 
+        RowBox[{"BoundaryDiscretizeRegion", "[", 
+         RowBox[{
+          RowBox[{"Cuboid", "@@", 
+           RowBox[{"OptionValue", "[", "\"\<Box\>\"", "]"}]}], ",", 
+          RowBox[{"MaxCellMeasure", "\[Rule]", "\[Infinity]"}]}], "]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"CatmullClarkSubdivide", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Init", "[", 
+          RowBox[{"quadmesh", ",", "\[IndentingNewLine]", 
+           RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"MeshCells", "[", 
+             RowBox[{"R", ",", "2", ",", 
+              RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+            "\[LeftDoubleBracket]", 
+            RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+          "\[IndentingNewLine]", "]"}], ",", 
+         RowBox[{"Method", "\[Rule]", "\"\<Naive\>\""}], ",", 
+         RowBox[{"Subdivisions", "\[Rule]", "n"}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Box\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "1."}], ",", 
+           RowBox[{"-", "1."}], ",", 
+           RowBox[{"-", "1."}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"1.", ",", "1.", ",", "1."}], "}"}]}], "}"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7522146514685183`*^9, 3.752214675833581*^9}, {
+  3.752595069553829*^9, 
+  3.752595070263733*^9}},ExpressionUUID->"c2aad06e-e6f6-4033-bd54-\
+2f362d3b9371"],
+
+Cell[BoxData[
+ RowBox[{"HoledCubeQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "R", ",", "Q"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"a", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "3", ",", "3"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "2", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"2", ",", "All", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"2", ",", "2", ",", "All"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"R", "=", 
+        RowBox[{"BoundaryMesh", "@", 
+         RowBox[{"ArrayMesh", "[", "a", "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"quadmesh", ",", 
+          RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+          RowBox[{
+           RowBox[{"MeshCells", "[", 
+            RowBox[{"R", ",", "2", ",", 
+             RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"CatmullClarkSubdivide", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CatmullClarkSubdivide", "[", 
+          RowBox[{"Q", ",", 
+           RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "m"}], ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Naive\>\""}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "n"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.795247278111227*^9, 3.795247278749181*^9}},
+ CellLabel->
+  "In[351]:=",ExpressionUUID->"4bfaab6f-d1fe-4afc-bacf-1a7735aeac2e"],
+
+Cell[BoxData[
+ RowBox[{"HoledCubeQuadMesh1", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "R", ",", "Q"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"a", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "3", ",", "3"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"2", ",", "All", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "2", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"R", "=", 
+        RowBox[{"BoundaryMesh", "@", 
+         RowBox[{"ArrayMesh", "[", "a", "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"quadmesh", ",", 
+          RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+          RowBox[{
+           RowBox[{"MeshCells", "[", 
+            RowBox[{"R", ",", "2", ",", 
+             RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"CatmullClarkSubdivide", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CatmullClarkSubdivide", "[", 
+          RowBox[{"Q", ",", 
+           RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "m"}], ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Naive\>\""}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "n"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7574408751321*^9, 3.75744089462307*^9}, {
+   3.757441026185319*^9, 3.757441042637068*^9}, 3.7952472823103867`*^9},
+ CellLabel->
+  "In[353]:=",ExpressionUUID->"1b86b5dd-fe76-4e2b-9c3c-5258ed1ed2d4"],
+
+Cell[BoxData[
+ RowBox[{"HoledCubeQuadMesh2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "R", ",", "Q"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"a", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"{", 
+           RowBox[{"3", ",", "3", ",", "3"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"1", ",", "1", ",", "All"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"3", ",", "1", ",", "All"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "2", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"2", ",", "3", ",", "2"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"R", "=", 
+        RowBox[{"BoundaryMesh", "@", 
+         RowBox[{"ArrayMesh", "[", "a", "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"quadmesh", ",", 
+          RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+          RowBox[{
+           RowBox[{"MeshCells", "[", 
+            RowBox[{"R", ",", "2", ",", 
+             RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"CatmullClarkSubdivide", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CatmullClarkSubdivide", "[", 
+          RowBox[{"Q", ",", 
+           RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "m"}], ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Naive\>\""}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "n"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{3.795247284160029*^9},
+ CellLabel->
+  "In[352]:=",ExpressionUUID->"47adc140-cbd5-4055-9b85-12b2bc92a2f6"],
+
+Cell[BoxData[
+ RowBox[{"DoubleTorusQuadMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "R", ",", "Q"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"a", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"{", 
+           RowBox[{"5", ",", "3", ",", "1"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"2", ",", "2", ",", "1"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"4", ",", "2", ",", "1"}], "\[RightDoubleBracket]"}], "=", 
+        "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"R", "=", 
+        RowBox[{"BoundaryMesh", "@", 
+         RowBox[{"ArrayMesh", "[", "a", "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"quadmesh", ",", 
+          RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+          RowBox[{
+           RowBox[{"MeshCells", "[", 
+            RowBox[{"R", ",", "2", ",", 
+             RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"CatmullClarkSubdivide", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CatmullClarkSubdivide", "[", 
+          RowBox[{"Q", ",", 
+           RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "m"}], ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Naive\>\""}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "n"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",ExpressionUUID->"a2ba41dc-a44b-\
+4ce6-829c-b917119074dd"],
+
+Cell[BoxData[
+ RowBox[{"DoubleTorusQuadMesh2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"m_Integer", ",", "n_Integer"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "R", ",", "Q"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"a", "=", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0", ",", 
+          RowBox[{"{", 
+           RowBox[{"7", ",", "3", ",", "3"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{
+          RowBox[{"3", ";;", "5"}], ",", 
+          RowBox[{"1", ";;", "3"}], ",", 
+          RowBox[{"1", ";;", "3"}]}], "\[RightDoubleBracket]"}], "=", "1"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{"1", ",", 
+          RowBox[{"1", ";;", "3"}], ",", "2"}], "\[RightDoubleBracket]"}], 
+        "=", "1"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{
+          RowBox[{"-", "1"}], ",", 
+          RowBox[{"1", ";;", "3"}], ",", "2"}], "\[RightDoubleBracket]"}], 
+        "=", "1"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{
+          RowBox[{"1", ";;", "7"}], ",", "3", ",", "2"}], 
+         "\[RightDoubleBracket]"}], "=", "1"}], ";", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"a", "\[LeftDoubleBracket]", 
+         RowBox[{
+          RowBox[{"1", ";;", "7"}], ",", "1", ",", "2"}], 
+         "\[RightDoubleBracket]"}], "=", "1"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"R", "=", 
+        RowBox[{"BoundaryMesh", "@", 
+         RowBox[{"ArrayMesh", "[", "a", "]"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Q", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"quadmesh", ",", 
+          RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+          RowBox[{
+           RowBox[{"MeshCells", "[", 
+            RowBox[{"R", ",", "2", ",", 
+             RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"CatmullClarkSubdivide", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CatmullClarkSubdivide", "[", 
+          RowBox[{"Q", ",", 
+           RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "m"}], ",", 
+           RowBox[{"Method", "\[Rule]", "\"\<Naive\>\""}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<Subdivisions\>\"", "\[Rule]", "n"}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.758293095614964*^9, 3.758293101381338*^9}},
+ CellLabel->"In[96]:=",ExpressionUUID->"011dc99d-6407-4fa0-b88f-d96dfc9939b4"]
+},
+WindowSize->{1440, 852},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1097, 25, 192, "Input",ExpressionUUID->"9852c5a4-d8f2-4a77-b41d-08af8d2c973a"],
+Cell[1658, 47, 1200, 26, 192, "Input",ExpressionUUID->"66cebe17-5736-4020-ac7c-8c0fb75864af"],
+Cell[2861, 75, 5751, 128, 742, "Input",ExpressionUUID->"13115b46-1757-49d3-a33c-a8a3301f6dce"],
+Cell[8615, 205, 2317, 54, 317, "Input",ExpressionUUID->"1892beaa-9cfd-4d0a-a691-1d03e4b9b587"],
+Cell[10935, 261, 2593, 67, 292, "Input",ExpressionUUID->"71e469c1-1d00-4707-b218-a58472a4ac75"],
+Cell[13531, 330, 2016, 48, 342, "Input",ExpressionUUID->"c2aad06e-e6f6-4033-bd54-2f362d3b9371"],
+Cell[15550, 380, 2411, 56, 367, "Input",ExpressionUUID->"4bfaab6f-d1fe-4afc-bacf-1a7735aeac2e"],
+Cell[17964, 438, 2298, 53, 342, "Input",ExpressionUUID->"1b86b5dd-fe76-4e2b-9c3c-5258ed1ed2d4"],
+Cell[20265, 493, 2571, 60, 392, "Input",ExpressionUUID->"47adc140-cbd5-4055-9b85-12b2bc92a2f6"],
+Cell[22839, 555, 2132, 50, 342, "Input",ExpressionUUID->"a2ba41dc-a44b-4ce6-829c-b917119074dd"],
+Cell[24974, 607, 3021, 71, 417, "Input",ExpressionUUID->"011dc99d-6407-4fa0-b88f-d96dfc9939b4"]
+}
+]
+*)
+

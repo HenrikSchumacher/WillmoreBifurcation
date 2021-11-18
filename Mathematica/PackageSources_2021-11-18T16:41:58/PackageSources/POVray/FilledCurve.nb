@@ -1,0 +1,354 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15040,        346]
+NotebookOptionsPosition[     14462,        330]
+NotebookOutlinePosition[     14798,        345]
+CellTagsIndexPosition[     14755,        342]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"convertFilledCurveToBezier", "=", 
+   RowBox[{"CPackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"type", ",", "_Integer"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"a", ",", "_Integer"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"b", ",", "_Integer"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"pts", ",", "_Real", ",", "2"}], "}"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"type", "\[Equal]", "1"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"pts", ",", "i"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "a", ",", "b"}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"pts", ",", "a"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"pts", ",", "a"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"pts", ",", "b"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Compile`GetElement", "[", 
+          RowBox[{"pts", ",", "b"}], "]"}]}], "\[IndentingNewLine]", "}"}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"RuntimeAttributes", "\[Rule]", 
+      RowBox[{"{", "Listable", "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Parallelization", "\[Rule]", "True"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellLabel->"In[91]:=",ExpressionUUID->"cc6441b6-3c0a-4ef0-bb52-b51850e2a527"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ConvertFilledCurveToBezier", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", "curve_FilledCurve", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"a", ",", "b"}], "}"}], "=", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"Accumulate", "[", 
+               RowBox[{"X", "[", 
+                RowBox[{"[", 
+                 RowBox[{"1", ",", "All", ",", "2"}], "]"}], "]"}], "]"}], 
+              ",", "2", ",", "1", ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "1"}], ",", 
+                RowBox[{"-", "1"}]}], "}"}], ",", "1"}], "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"convertFilledCurveToBezier", "[", 
+             RowBox[{
+              RowBox[{"X", "\[LeftDoubleBracket]", 
+               RowBox[{"1", ",", "All", ",", "1"}], "\[RightDoubleBracket]"}],
+               ",", "a", ",", "b", ",", 
+              RowBox[{
+              "X", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+             "]"}], ",", "1"}], "]"}]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"X", ",", 
+           RowBox[{"Transpose", "[", 
+            RowBox[{"List", "@@", "curve"}], "]"}]}], "}"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", "1"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.726920773853915*^9, 3.726920777826323*^9}, {
+  3.726925396986863*^9, 3.7269254093684998`*^9}, {3.788379121262948*^9, 
+  3.788379125850288*^9}},
+ CellLabel->"In[92]:=",ExpressionUUID->"7646e676-4349-442d-9e86-6a61240529ea"],
+
+Cell[BoxData[
+ RowBox[{"FilledCurvePOVrayString", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"curves", ":", 
+       RowBox[{"{", "___FilledCurve", "}"}]}], ",", 
+      RowBox[{"pos_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "pts", ",", "s", ",", "\[Theta]", ",", "U", ",", "w", ",", "p"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\[Theta]", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Thickness\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"U", "=", 
+        RowBox[{"Orthogonalize", "@", 
+         RowBox[{"N", "@", 
+          RowBox[{"OptionValue", "[", "\"\<Rotation\>\"", "]"}]}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"U", "*=", 
+        RowBox[{"Det", "[", "U", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"w", "=", 
+        RowBox[{
+         RowBox[{"N", "@", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"Reverse", "[", 
+             RowBox[{"EulerAngles", "[", 
+              RowBox[{"U", ",", 
+               RowBox[{"{", 
+                RowBox[{"3", ",", "2", ",", "1"}], "}"}]}], "]"}], "]"}], "+", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"-", "Pi"}], "/", "2"}], ",", "0", ",", "0"}], "}"}]}],
+            ")"}]}], 
+         RowBox[{"180", "/", "Pi"}]}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"p", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"ConvertFilledCurveToBezier", "/@", "curves"}], ",", "1"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{"Times", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Scale\>\"", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Subtract", "[", 
+           RowBox[{"p", ",", 
+            RowBox[{"ConstantArray", "[", 
+             RowBox[{
+              RowBox[{"OptionValue", "[", "\"\<Anchor\>\"", "]"}], ",", 
+              RowBox[{"Length", "[", "p", "]"}]}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"s", "=", 
+        RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+         RowBox[{"\"\<prism {\n\\tbezier_spline\n\\t\>\"", ",", 
+          RowBox[{"POVrayNumberString", "[", 
+           RowBox[{"\[Theta]", "/", "2"}], "]"}], ",", "\"\<, \n\\t\>\"", ",", 
+          RowBox[{"POVrayNumberString", "[", 
+           RowBox[{
+            RowBox[{"-", "\[Theta]"}], "/", "2"}], "]"}], ",", 
+          "\"\<,\n\\t\>\"", ",", 
+          RowBox[{"POVrayNumberString", "[", 
+           RowBox[{"Length", "[", "pts", "]"}], "]"}], ",", "\"\<,\n\\t\>\"", 
+          ",", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{"Riffle", "[", 
+            RowBox[{
+             RowBox[{"POVrayVectorString", "/@", "pts"}], ",", 
+             "\"\<,\\n\\t\>\""}], "]"}], "]"}], ",", "\"\<\n\\t\>\"", ",", 
+          RowBox[{"OptionValue", "[", "\"\<Style\>\"", "]"}], ",", 
+          "\"\<\n\\t\>\"", ",", "\"\<rotate \>\"", ",", 
+          RowBox[{"POVrayVectorString", "[", "w", "]"}], ",", "\"\<\n\\t\>\"",
+           ",", "\"\<translate \>\"", ",", 
+          RowBox[{"POVrayVectorString", "[", "pos", "]"}], ",", 
+          "\"\<\n\\t\>\"", ",", 
+          RowBox[{"OptionValue", "[", "\"\<Modifiers\>\"", "]"}], ",", 
+          "\"\<\\n}\\n\\n\>\""}], "\n", "]"}]}], ";", "\[IndentingNewLine]", 
+       "s"}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Thickness\>\"", "\[Rule]", "0.2"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+       "\"\<Style\>\"", "\[Rule]", 
+        "\"\<texture {pigment {rgb<0,0,0>} finish {}}\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Modifiers\>\"", "\[Rule]", "\"\<\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Scale\>\"", "\[Rule]", 
+        RowBox[{"1.", "/", "64"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Rotation\>\"", "\[Rule]", 
+        RowBox[{"IdentityMatrix", "[", "3", "]"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Anchor\>\"", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0"}], "}"}]}]}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.726920027608357*^9, 3.726920028999674*^9}, {
+   3.726920783599345*^9, 3.726920806721242*^9}, {3.726921106414509*^9, 
+   3.726921109013711*^9}, 3.726921199547347*^9, {3.726921252295212*^9, 
+   3.726921260893209*^9}, {3.726921401203825*^9, 3.726921405410125*^9}, 
+   3.726921486241747*^9, {3.726921526430853*^9, 3.726921532916716*^9}, {
+   3.726921565550234*^9, 3.726921565948462*^9}, {3.726921622377273*^9, 
+   3.726921721021029*^9}, {3.7269235674706993`*^9, 3.726923661940708*^9}, {
+   3.726924386917954*^9, 3.7269244103702583`*^9}, {3.726924440964548*^9, 
+   3.726924535912815*^9}, {3.72692456715441*^9, 3.726924618047415*^9}, {
+   3.726924757816765*^9, 3.726924761116597*^9}, {3.726924876647732*^9, 
+   3.726924930458939*^9}, {3.726924971524652*^9, 3.7269249726654778`*^9}, {
+   3.72692509288308*^9, 3.726925132344769*^9}, {3.7269260130685368`*^9, 
+   3.726926105296049*^9}, {3.726926347710721*^9, 3.726926359109952*^9}, 
+   3.7269265231171627`*^9, {3.726927604002145*^9, 3.726927658586236*^9}, {
+   3.726927697193309*^9, 3.726927699581273*^9}, {3.726927788197567*^9, 
+   3.726927804061411*^9}, {3.726927922698989*^9, 3.726927956937044*^9}, 
+   3.7269280260124683`*^9, {3.7269280565734987`*^9, 3.726928131991214*^9}, {
+   3.726928175160452*^9, 3.726928303159605*^9}, {3.726928357596168*^9, 
+   3.726928373242478*^9}, {3.7269287236312733`*^9, 3.726928724555562*^9}, {
+   3.726928904286484*^9, 3.726928923935898*^9}, {3.726931827796883*^9, 
+   3.726931828931369*^9}, {3.7269320002408667`*^9, 3.726932000438943*^9}, {
+   3.7269321426892557`*^9, 3.726932145984288*^9}, {3.726932178899061*^9, 
+   3.7269321819143887`*^9}, {3.726932388330266*^9, 3.726932388504706*^9}, {
+   3.72813991513249*^9, 3.728139953778982*^9}, {3.7284952845048647`*^9, 
+   3.72849528655159*^9}, {3.7883639309953737`*^9, 3.788363932446603*^9}, {
+   3.788363964672099*^9, 3.788363966044791*^9}, {3.788367474684067*^9, 
+   3.7883674871248903`*^9}, {3.788367517664631*^9, 3.7883675181122513`*^9}, {
+   3.788367552443491*^9, 3.78836757620891*^9}, {3.788368163718154*^9, 
+   3.7883681754497747`*^9}},
+ CellLabel->"In[93]:=",ExpressionUUID->"d20279e7-7b1a-47f2-a6f2-3e5546faf125"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"FilledCurvePOVray", "=", 
+    RowBox[{"PackageFunction", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"curve_FilledCurve", ",", 
+        RowBox[{"pos_", "?", "VectorQ"}], ",", 
+        RowBox[{"file_String:", "$POVrayGeometryFile"}], ",", "args___"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"file", ",", 
+        RowBox[{"FilledCurvePOVrayString", "[", 
+         RowBox[{
+          RowBox[{"{", "curve", "}"}], ",", "pos", ",", "args"}], "]"}], ",", 
+        "\"\<Text\>\""}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"FilledCurvePOVray", "=", 
+      RowBox[{"PackageFunction", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"curves", ":", 
+           RowBox[{"{", "___FilledCurve", "}"}]}], ",", 
+          RowBox[{"position_", "?", "VectorQ"}], ",", 
+          RowBox[{"file_String:", "$POVrayGeometryFile"}]}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"FilledCurvePOVray", "[", 
+         RowBox[{"curves", ",", 
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"position", ",", 
+            RowBox[{"Length", "[", "curves", "]"}]}], "]"}]}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"FilledCurvePOVray", "=", 
+    RowBox[{"PackageFunction", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"curves", ":", 
+         RowBox[{"{", "___FilledCurve", "}"}]}], ",", 
+        RowBox[{"pos_", "?", "VectorQ"}], ",", 
+        RowBox[{"file_String:", "$POVrayGeometryFile"}], ",", "args___"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"file", ",", 
+        RowBox[{"FilledCurvePOVrayString", "[", 
+         RowBox[{"curves", ",", "pos", ",", "args"}], "]"}], ",", 
+        "\"\<Text\>\""}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"FilledCurvePOVray", "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"curveslists_List", ",", 
+        RowBox[{"positions_", "?", "MatrixQ"}], ",", 
+        RowBox[{"file_String:", "$POVrayGeometryFile"}], ",", "args___"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"file", ",", "\[IndentingNewLine]", 
+        RowBox[{"StringJoin", "@", 
+         RowBox[{"MapThread", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"x", ",", "y"}], "}"}], "\[Function]", 
+            RowBox[{"FilledCurvePOVrayString", "[", 
+             RowBox[{"x", ",", "y", ",", "args"}], "]"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"curveslists", ",", "positions"}], "}"}]}], 
+          "\[IndentingNewLine]", "]"}]}], ",", "\"\<Text\>\""}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.7883681789383583`*^9, 3.78836817950467*^9}, {
+  3.788379991211669*^9, 3.788380004995366*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"4bd97671-3772-446e-8989-4e3b5f243a86"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1875, 43, 367, "Input",ExpressionUUID->"cc6441b6-3c0a-4ef0-bb52-b51850e2a527"],
+Cell[2436, 65, 1933, 46, 192, "Input",ExpressionUUID->"7646e676-4349-442d-9e86-6a61240529ea"],
+Cell[4372, 113, 6722, 135, 892, "Input",ExpressionUUID->"d20279e7-7b1a-47f2-a6f2-3e5546faf125"],
+Cell[11097, 250, 3361, 78, 592, "Input",ExpressionUUID->"4bd97671-3772-446e-8989-4e3b5f243a86"]
+}
+]
+*)
+

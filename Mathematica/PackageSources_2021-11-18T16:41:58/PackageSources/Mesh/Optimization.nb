@@ -1,0 +1,536 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     22509,        528]
+NotebookOptionsPosition[     21527,        507]
+NotebookOutlinePosition[     21880,        523]
+CellTagsIndexPosition[     21837,        520]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"InteriorPointsMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "idx", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"idx", "=", 
+        RowBox[{"InteriorVertices", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"idx", "==", 
+          RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"SparseArray", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Transpose", "[", 
+             RowBox[{"{", 
+              RowBox[{"idx", ",", 
+               RowBox[{"Range", "[", 
+                RowBox[{"Length", "[", "idx", "]"}], "]"}]}], "}"}], "]"}], 
+            "\[Rule]", "1."}], ",", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"VertexCount", "[", "M", "]"}], ",", 
+             RowBox[{"Length", "[", "idx", "]"}]}], "}"}], ",", "0."}], 
+          "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6659454835485773`*^9, 3.665945534174684*^9}, {
+  3.665945624486405*^9, 3.665945645605899*^9}, {3.665945702699458*^9, 
+  3.66594570913694*^9}, {3.665945754043145*^9, 3.6659457629146147`*^9}, {
+  3.665946937463173*^9, 3.665946956758595*^9}, {3.7582737275605288`*^9, 
+  3.758273761102089*^9}},ExpressionUUID->"5238678f-7ac3-4c71-b5f1-\
+da775bd809b0"],
+
+Cell[BoxData[
+ RowBox[{"InnerH1GradSearchDirection", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"idx", "=", 
+         RowBox[{"InteriorVertices", "[", "M", "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"V", "=", 
+         RowBox[{"Partition", "[", 
+          RowBox[{
+           RowBox[{"Flatten", "[", 
+            RowBox[{
+             RowBox[{"F", "'"}], "[", "M", "]"}], "]"}], ",", 
+           RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"InteriorPointsMatrix", "[", "M", "]"}], ".", 
+       RowBox[{"LinearSolve", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"WeakLaplace", "[", "M", "]"}], ")"}], 
+          "\[LeftDoubleBracket]", 
+          RowBox[{"idx", ",", "idx"}], "\[RightDoubleBracket]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"-", 
+          RowBox[{
+          "V", "\[LeftDoubleBracket]", "idx", "\[RightDoubleBracket]"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<Description\>\"", "\[Rule]", "\"\<Downward H1-Gradient.\>\""}]}], 
+   " ", "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.641461202977222*^9, {3.6414618898809347`*^9, 3.6414618903929358`*^9}, {
+   3.6414714607353563`*^9, 3.6414714648890467`*^9}, {3.64148050760353*^9, 
+   3.641480508030879*^9}, {3.641480703673208*^9, 3.641480704318309*^9}, {
+   3.6659341282692327`*^9, 3.6659341499557734`*^9}, {3.66594001622267*^9, 
+   3.665940020250525*^9}, {3.665945791303753*^9, 3.665945794205347*^9}, {
+   3.665946721057241*^9, 3.6659467704149446`*^9}, 3.670861336724537*^9, {
+   3.758273766111318*^9, 
+   3.75827378158972*^9}},ExpressionUUID->"60320a28-2afd-4803-b6c4-\
+c836028761ac"],
+
+Cell[BoxData[
+ RowBox[{"NormalNewtonSearchDirection", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Partition", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Dot", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"NormalBundleBasis", "[", "M", "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"-", 
+         RowBox[{"LinearSolve", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"NormalHessian", "[", 
+            RowBox[{"M", ",", "F"}], "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"NormalDerivative", "[", 
+            RowBox[{"M", ",", "F"}], "]"}]}], "\[IndentingNewLine]", 
+          "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<InputType\>\"", "\[Rule]", "mesh"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\"\<Caching\>\"", "\[Rule]", "False"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6539858768436317`*^9, 3.6539858839339952`*^9}, {
+   3.653985949761311*^9, 3.653985950782214*^9}, 
+   3.653985993394734*^9},ExpressionUUID->"a09e11f3-950f-47a4-a97d-\
+432f0d333633"],
+
+Cell[BoxData[
+ RowBox[{"InnerNormalNewtonSearchDirection", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"InnerNormalBundleEmbedding", "[", 
+     RowBox[{"M", ",", "\[IndentingNewLine]", 
+      RowBox[{"-", 
+       RowBox[{"LinearSolve", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"InnerNormalHessian", "[", 
+          RowBox[{"M", ",", "F"}], "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"InnerNormalDerivative", "[", 
+          RowBox[{"M", ",", "F"}], "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.641461292449342*^9, 3.641461351417706*^9}, {
+   3.641461660799481*^9, 3.641461721866516*^9}, {3.641461760487955*^9, 
+   3.641461792783079*^9}, 3.641480515259259*^9, 3.641480708651453*^9, {
+   3.641482822211479*^9, 3.641482828167652*^9}, {3.64240921358113*^9, 
+   3.642409230865219*^9}, {3.647695838194406*^9, 3.6476958388912783`*^9}, {
+   3.647743389250898*^9, 3.6477433907750874`*^9}, {3.7582737948878803`*^9, 
+   3.758273797237157*^9}},ExpressionUUID->"dfad3a31-9b1b-4170-bae2-\
+c0bdd400b1a8"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"L\[Infinity]NormofInnerDerivative", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Max", "@", 
+      RowBox[{"Abs", "@", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"F", "'"}], "[", "M", "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"InteriorVertices", "[", "M", "]"}], 
+         "\[RightDoubleBracket]"}], ")"}]}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"L\[Infinity]NormofInnerNormalDerivative", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Max", "@", 
+     RowBox[{"Abs", "@", 
+      RowBox[{"InnerNormalDerivative", "[", 
+       RowBox[{"M", ",", "F"}], "]"}]}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.641484048615814*^9, 3.641484141472412*^9}, {
+  3.641484303020711*^9, 3.641484304989932*^9}, {3.64148435183144*^9, 
+  3.641484359280263*^9}, {3.665934167331773*^9, 3.665934171289315*^9}, {
+  3.758273787376192*^9, 
+  3.7582738031190233`*^9}},ExpressionUUID->"086bd974-fe32-449d-a9c5-\
+a72b0e84b830"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Newtonize", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "R", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"R", "\[LeftArrow]", "M"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<PrepSteps\>\"", "]"}], ">", "0"}],
+           ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"PrintTemporary", "[", "\"\<Gradient descent\>\"", "]"}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"Quiet", "[", 
+            RowBox[{"R", "=", 
+             RowBox[{"ModelAlgorithm", "[", 
+              RowBox[{"R", ",", "F", ",", "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<SearchDirection\>\"", "\[Rule]", 
+                "InnerH1GradSearchDirection"}], ",", "\[IndentingNewLine]", 
+               RowBox[{"\"\<StepWidth\>\"", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{"ConstantStepWidth", ",", "1."}], "}"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<PrepSteps\>\"", "]"}]}], ",",
+                "\[IndentingNewLine]", 
+               RowBox[{
+               "\"\<AccuracyMeasure\>\"", "\[Rule]", 
+                "L\[Infinity]NormofInnerDerivative"}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"\"\<AccuracyGoal\>\"", "\[Rule]", 
+                RowBox[{"OptionValue", "[", "\"\<PrepTol\>\"", "]"}]}]}], 
+              "\[IndentingNewLine]", "]"}]}], "]"}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<NewtonSteps\>\"", "]"}], ">", 
+           "0"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"PrintTemporary", "[", "\"\<Newton-Raphson\>\"", "]"}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"R", "=", 
+            RowBox[{"ModelAlgorithm", "[", 
+             RowBox[{"R", ",", "F", ",", "\[IndentingNewLine]", 
+              RowBox[{
+              "\"\<SearchDirection\>\"", "\[Rule]", 
+               "InnerNormalNewtonSearchDirection"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<StepWidth\>\"", "\[Rule]", 
+               RowBox[{"{", 
+                RowBox[{"ConstantStepWidth", ",", "1."}], "}"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<MaxIterations\>\"", "\[Rule]", 
+               RowBox[{"OptionValue", "[", "\"\<NewtonSteps\>\"", "]"}]}], 
+              ",", "\[IndentingNewLine]", 
+              RowBox[{
+              "\"\<AccuracyMeasure\>\"", "\[Rule]", 
+               "L\[Infinity]NormofInnerNormalDerivative"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"\"\<AccuracyGoal\>\"", "\[Rule]", 
+               RowBox[{"OptionValue", "[", "\"\<NewtonTol\>\"", "]"}]}]}], 
+             "\[IndentingNewLine]", "]"}]}]}]}], "\[IndentingNewLine]", "]"}],
+         ";", "\[IndentingNewLine]", "R"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<Options\>\"", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<PrepSteps\>\"", "\[Rule]", "10"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<PrepTol\>\"", "\[Rule]", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "9"}], ")"}]}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<NewtonSteps\>\"", "\[Rule]", "100"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<NewtonTol\>\"", "\[Rule]", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "8"}], ")"}]}]}]}], "\[IndentingNewLine]", "}"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SaddleDownwardDirection", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"B_", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "IdMatrix", ",", "shift", ",", "Bshift", ",", "n", ",", "\[Lambda]", 
+         ",", "v"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"shift", "=", "1."}], ";", "\[IndentingNewLine]", 
+        RowBox[{"n", "=", 
+         RowBox[{"Length", "[", "B", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Bshift", "=", 
+         RowBox[{"B", "+", 
+          RowBox[{"SparseArray", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Band", "[", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "1"}], "}"}], "]"}], "\[Rule]", "shift"}], 
+             "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"n", ",", "n"}], "}"}]}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"While", "[", 
+         RowBox[{
+          RowBox[{"!", 
+           RowBox[{"PositiveDefiniteMatrixQ", "[", "Bshift", "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Bshift", "=", 
+            RowBox[{"B", "+", 
+             RowBox[{"SparseArray", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"Band", "[", 
+                  RowBox[{"{", 
+                   RowBox[{"1", ",", "1"}], "}"}], "]"}], "\[Rule]", 
+                 "shift"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"n", ",", "n"}], "}"}]}], "]"}]}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"shift", "+=", "1"}], ";"}]}], "\[IndentingNewLine]", 
+         "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\[Lambda]", ",", "v"}], "}"}], "=", 
+         RowBox[{
+          RowBox[{"Eigensystem", "[", 
+           RowBox[{"Bshift", ",", 
+            RowBox[{"-", "1"}]}], "]"}], "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\[Lambda]", "-=", "shift"}], ";", "\[IndentingNewLine]", 
+        "v"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"SaddlePointPerturbation", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"U", ",", "R", ",", "idx"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"idx", "=", 
+        RowBox[{"InteriorVertices", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{"PositiveDefiniteMatrixQ", "[", 
+           RowBox[{"InnerNormalHessian", "[", 
+            RowBox[{"M", ",", "Area"}], "]"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"U", "=", 
+           RowBox[{"Join", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"LinearSolve", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"-", 
+                RowBox[{
+                 RowBox[{"WeakLaplace", "[", "M", "]"}], 
+                 "\[LeftDoubleBracket]", 
+                 RowBox[{"idx", ",", "idx"}], "\[RightDoubleBracket]"}]}], 
+               ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"InnerNormalBundleEmbedding", "[", 
+                 RowBox[{"M", ",", 
+                  RowBox[{"SaddleDownwardDirection", "[", 
+                   RowBox[{"InnerNormalHessian", "[", 
+                    RowBox[{"M", ",", "Area"}], "]"}], "]"}]}], "]"}], 
+                "\[LeftDoubleBracket]", "idx", "\[RightDoubleBracket]"}]}], 
+              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"0.", ",", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"VertexCount", "[", "M", "]"}], "-", 
+                  RowBox[{"InteriorVertexCount", "[", "M", "]"}]}], ",", 
+                 RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "}"}]}], 
+              "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"R", "\[LeftArrow]", 
+           RowBox[{"Displace", "[", 
+            RowBox[{"M", ",", 
+             RowBox[{"0.1", " ", "U"}]}], "]"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Print", "[", "\"\<Local Minimum.\>\"", "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"R", "\[LeftArrow]", "M"}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", "R"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]"}], "Input",\
+
+ CellChangeTimes->{{3.641529596378416*^9, 3.6415296020748787`*^9}, {
+   3.64152967010979*^9, 3.64152967048005*^9}, {3.6415297339689827`*^9, 
+   3.6415297761642237`*^9}, {3.641529835588347*^9, 3.6415298558115664`*^9}, {
+   3.6415340491831408`*^9, 3.6415340528103743`*^9}, {3.64153409096027*^9, 
+   3.641534093930729*^9}, {3.641543263717869*^9, 3.6415433081017647`*^9}, {
+   3.6415435736009493`*^9, 3.641543611563209*^9}, 3.642513697513815*^9, {
+   3.64769636295464*^9, 3.6476963938513308`*^9}, {3.6476967755296173`*^9, 
+   3.647696777344434*^9}, {3.650097621219041*^9, 3.650097625411345*^9}, {
+   3.653984953194727*^9, 3.6539849644209013`*^9}, {3.6539899498761587`*^9, 
+   3.6539899752181807`*^9}, {3.665761286562167*^9, 3.665761299747912*^9}, {
+   3.665761974578972*^9, 3.665761981202516*^9}, {3.6659341822078953`*^9, 
+   3.6659342052846413`*^9}, {3.665940027685689*^9, 3.665940030825244*^9}, {
+   3.758273670509038*^9, 3.7582737142806892`*^9}, {3.758273805503829*^9, 
+   3.758273820942958*^9}},ExpressionUUID->"f9e0a717-4142-4004-84ca-\
+9553c5712b6e"],
+
+Cell[BoxData[
+ RowBox[{"KKTMatrix", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Q", "=", 
+         RowBox[{
+          RowBox[{"F", "''"}], "[", "M", "]"}]}], ",", "\[IndentingNewLine]", 
+        
+        RowBox[{"L", "=", 
+         RowBox[{
+          RowBox[{"Constraint", "'"}], "[", "M", "]"}]}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ArrayFlatten", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"Q", ",", 
+           RowBox[{"L", "\[Transpose]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"L", ",", "0."}], "}"}]}], "}"}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Errors\>\"", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+      "\"\<Fundef\>\"", "\[Rule]", "\"\<The function `1` is undefined.\>\""}],
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6666357584055367`*^9, 3.666635771642644*^9}, {
+   3.6666972107809277`*^9, 3.666697215694854*^9}, {3.670829024809247*^9, 
+   3.670829025227256*^9}, 3.7201167082282352`*^9, {3.758273667282906*^9, 
+   3.758273667994425*^9}, {3.7582737167597446`*^9, 
+   3.758273719432659*^9}},ExpressionUUID->"30843225-bc0e-4100-b1c1-\
+7dae563896d4"],
+
+Cell[BoxData[
+ RowBox[{"NewtonSearchDirection", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_", ",", "F_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"A", ",", "b"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"A", "=", 
+        RowBox[{"KKTMatrix", "[", 
+         RowBox[{"M", ",", "F"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"b", "=", 
+        RowBox[{"Join", "[", 
+         RowBox[{
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"F", "'"}], "[", "M", "]"}], "]"}], ",", 
+          RowBox[{"ConstraintViolation", "[", "M", "]"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"-", 
+        RowBox[{"Part", "[", 
+         RowBox[{
+          RowBox[{"LinearSolve", "[", 
+           RowBox[{"A", ",", "b"}], "]"}], ",", 
+          RowBox[{"1", ";;", 
+           RowBox[{"DofCount", "[", "M", "]"}]}]}], "]"}]}]}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"InputType", "\[Rule]", "mesh"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"\"\<Description\>\"", "\[Rule]", "\"\<\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.666697072819384*^9, 3.6666971008173437`*^9}, {
+   3.666697247505912*^9, 3.6666972997470083`*^9}, {3.6708290449781523`*^9, 
+   3.670829045322113*^9}, 
+   3.720116712954049*^9},ExpressionUUID->"ee00b017-bc02-45e2-b79f-\
+62e51790a273"]
+},
+WindowSize->{1121, 852},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1733, 38, 342, "Input",ExpressionUUID->"5238678f-7ac3-4c71-b5f1-da775bd809b0"],
+Cell[2294, 60, 2093, 48, 317, "Input",ExpressionUUID->"60320a28-2afd-4803-b6c4-c836028761ac"],
+Cell[4390, 110, 1342, 29, 367, "Input",ExpressionUUID->"a09e11f3-950f-47a4-a97d-432f0d333633"],
+Cell[5735, 141, 1234, 24, 217, "Input",ExpressionUUID->"dfad3a31-9b1b-4170-bae2-c0bdd400b1a8"],
+Cell[6972, 167, 1315, 31, 217, "Input",ExpressionUUID->"086bd974-fe32-449d-a9c5-a72b0e84b830"],
+Cell[8290, 200, 10203, 226, 1717, "Input",ExpressionUUID->"f9e0a717-4142-4004-84ca-9553c5712b6e"],
+Cell[18496, 428, 1508, 38, 267, "Input",ExpressionUUID->"30843225-bc0e-4100-b1c1-7dae563896d4"],
+Cell[20007, 468, 1516, 37, 242, "Input",ExpressionUUID->"ee00b017-bc02-45e2-b79f-62e51790a273"]
+}
+]
+*)
+

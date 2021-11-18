@@ -1,0 +1,201 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      7503,        193]
+NotebookOptionsPosition[      7118,        179]
+NotebookOutlinePosition[      7454,        194]
+CellTagsIndexPosition[      7411,        191]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"MyMatrixPlot", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"A_", "?", "MatrixQ"}], ",", 
+      RowBox[{"opts", ":", 
+       RowBox[{"OptionsPattern", "[", "]"}]}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "M", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"M", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"polygon", ",", 
+          RowBox[{"Partition", "[", 
+           RowBox[{
+            RowBox[{"Subdivide", "[", 
+             RowBox[{"0.", ",", "1.", ",", 
+              RowBox[{"Length", "[", "A", "]"}]}], "]"}], ",", "1"}], "]"}]}],
+          "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"MyMatrixPlot", "[", 
+        RowBox[{"M", ",", "A", ",", "opts"}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.8198063848040533`*^9, 3.8198064684079943`*^9}},
+ CellLabel->
+  "In[130]:=",ExpressionUUID->"66075b36-726c-418f-95c3-f23e5e97236f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"MyMatrixPlot", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"A_", "?", "MatrixQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "downsample", ",", "Amatrix", ",", "\[Lambda]", ",", "xx", ",", 
+         "xmatrix", ",", "ymatrix", ",", "plora", ",", "QA", ",", "m"}], 
+        "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"plora", "=", 
+         RowBox[{"OptionValue", "[", "\"\<PlotRange\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"plora", "===", "All"}], ",", 
+          RowBox[{"plora", "=", 
+           RowBox[{"MinMax", "[", "A", "]"}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"m", "=", 
+         RowBox[{"OptionValue", "[", "\"\<Mesh\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"m", "===", "Automatic"}], "||", 
+           RowBox[{"Not", "[", 
+            RowBox[{"IntegerQ", "[", "m", "]"}], "]"}]}], ",", 
+          RowBox[{"m", "=", "250"}]}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"downsample", "=", 
+         RowBox[{"Round", "[", 
+          RowBox[{
+           RowBox[{"VertexCount", "[", "M", "]"}], "/", "m"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Amatrix", "=", 
+         RowBox[{"Downsample", "[", 
+          RowBox[{"A", ",", "downsample"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\[Lambda]", "=", 
+         RowBox[{"Prepend", "[", 
+          RowBox[{
+           RowBox[{"Most", "[", 
+            RowBox[{"Accumulate", "[", 
+             RowBox[{"EdgeLengths", "[", "M", "]"}], "]"}], "]"}], ",", 
+           "0."}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"xx", "=", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"\[Lambda]", ",", 
+           RowBox[{"Length", "[", "\[Lambda]", "]"}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"xmatrix", "=", 
+         RowBox[{"Downsample", "[", 
+          RowBox[{"xx", ",", "downsample"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"ymatrix", "=", 
+         RowBox[{"Downsample", "[", 
+          RowBox[{
+           RowBox[{"Transpose", "[", "xx", "]"}], ",", "downsample"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"QA", "=", 
+         RowBox[{"RectangleQuadMesh", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Sequence", "@@", 
+            RowBox[{"Normalize", "[", 
+             RowBox[{
+              RowBox[{"Dimensions", "[", "Amatrix", "]"}], ",", "Max"}], 
+             "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<Mesh\>\"", "\[Rule]", 
+            RowBox[{"Dimensions", "[", "Amatrix", "]"}]}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"SetVertexCoordinates", "[", 
+         RowBox[{"QA", ",", "\[IndentingNewLine]", 
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Flatten", "[", "xmatrix", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Flatten", "[", "ymatrix", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"OptionValue", "[", "\"\<Scale\>\"", "]"}], 
+              RowBox[{"\[Lambda]", "\[LeftDoubleBracket]", 
+               RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], 
+              RowBox[{
+               RowBox[{"Flatten", "[", 
+                RowBox[{"Clip", "[", 
+                 RowBox[{"Amatrix", ",", "plora"}], "]"}], "]"}], "/", 
+               RowBox[{"Abs", "[", 
+                RowBox[{
+                 RowBox[{
+                 "plora", "\[LeftDoubleBracket]", "2", 
+                  "\[RightDoubleBracket]"}], "-", 
+                 RowBox[{
+                 "plora", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}]}], "]"}]}]}]}], 
+            "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", 
+         "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"MeshPlot", "[", 
+         RowBox[{"QA", ",", 
+          RowBox[{"\"\<PlotStyle\>\"", "\[Rule]", 
+           RowBox[{"OptionValue", "[", "\"\<PlotStyle\>\"", "]"}]}]}], 
+         "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<PlotRange\>\"", "\[Rule]", "All"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<Scale\>\"", "\[Rule]", "1."}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<PlotStyle\>\"", "\[Rule]", 
+         RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<Mesh\>\"", "\[Rule]", "Automatic"}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.787666991012652*^9, 3.787667198742153*^9}, {
+  3.7876673592255297`*^9, 3.787667434789851*^9}, {3.787667530931978*^9, 
+  3.787667546210267*^9}, {3.8067290151824636`*^9, 3.806729024780849*^9}, {
+  3.8198063559508257`*^9, 3.819806356771852*^9}},
+ CellLabel->
+  "In[593]:=",ExpressionUUID->"2478525d-3485-471d-95d2-ce5cf43ddd1b"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1088, 29, 167, "Input",ExpressionUUID->"66075b36-726c-418f-95c3-f23e5e97236f"],
+Cell[1649, 51, 5465, 126, 842, "Input",ExpressionUUID->"2478525d-3485-471d-95d2-ce5cf43ddd1b"]
+}
+]
+*)
+

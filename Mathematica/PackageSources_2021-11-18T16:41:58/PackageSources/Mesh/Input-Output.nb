@@ -1,0 +1,1612 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     74368,       1604]
+NotebookOptionsPosition[     73012,       1580]
+NotebookOutlinePosition[     73348,       1595]
+CellTagsIndexPosition[     73305,       1592]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ExportToOBJ", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "file_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Export", "[", 
+     RowBox[{"file", ",", 
+      RowBox[{"ToMeshRegion", "[", "M", "]"}], ",", "\"\<OBJ\>\""}], "]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<ExportToOBJ[file] exports a mesh from file. Uses Mathematica's \
+OBJ-import filter with all its shortcomings.\>\""}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.822653908859022*^9, 3.822653979050967*^9}},
+ CellLabel->
+  "In[297]:=",ExpressionUUID->"f481cc4b-344b-4320-97c5-05e835dbc5eb"],
+
+Cell[BoxData[
+ RowBox[{"ImportFromOBJ", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"file_", ",", "\[IndentingNewLine]", 
+    RowBox[{"ToMesh", "[", 
+     RowBox[{"Import", "[", 
+      RowBox[{"file", ",", "\"\<OBJ\>\""}], "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<ImportFromOBJ[file] imports a mesh from file. Uses Mathematica's \
+OBJ-import filter with all its shortcomings. E.g., it does not import \
+material properties.\>\""}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "}"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.631882277383851*^9, 3.631882343545899*^9}, {
+   3.631882538793771*^9, 3.6318825393529787`*^9}, {3.6328261530237417`*^9, 
+   3.632826165622343*^9}, {3.635707591299499*^9, 3.635707591762185*^9}, {
+   3.6357077570081167`*^9, 3.635707757199025*^9}, 3.6477108679182796`*^9, {
+   3.692016571623974*^9, 3.692016572218129*^9}, {3.712155488051874*^9, 
+   3.712155526288447*^9}, {3.7121555851752577`*^9, 3.712155603598991*^9}, {
+   3.731490966730072*^9, 3.7314909670147057`*^9}, 3.745724426668269*^9, {
+   3.822655245764988*^9, 3.822655247972477*^9}},
+ CellLabel->
+  "In[306]:=",ExpressionUUID->"9e793575-65e3-4088-b027-cea4e06ec897"],
+
+Cell[BoxData[
+ RowBox[{"ExportToOBJ2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_mesh", ",", "file_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"GCList", ",", "texfile", ",", "offset", ",", "mat"}], "}"}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"GCList", "=", 
+        RowBox[{"Cases", "[", 
+         RowBox[{
+          RowBox[{"Present", "[", "M", "]"}], ",", "_GraphicsComplex", ",", 
+          "All"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"texfile", "=", 
+        RowBox[{
+         RowBox[{"FileBaseName", "[", "file", "]"}], "<>", "\"\<_Texture\>\"",
+          "<>", "\"\<.png\>\""}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"offset", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"mat", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<Material\>\"", "]"}], "===", 
+           "Automatic"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"{", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"MissingQ", "[", 
+               RowBox[{"Texture", "[", "M", "]"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{"\"\<newmtl MeshTex\>\"", ",", 
+                 RowBox[{"IntegerString", "[", 
+                  RowBox[{"1", ",", "10", ",", "3"}], "]"}], ",", 
+                 "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+                 "\"\<Ka 0.16705 0.2584 0.4735\\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<Kd 0.0745 0.176 0.415\\n\>\"", 
+                 ",", "\[IndentingNewLine]", "\"\<Ks 1 1 1\\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<Ns 500\\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<d 1\\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<illum 2\\n\>\""}], 
+                "\[IndentingNewLine]", "}"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{"\"\<newmtl MeshTex\>\"", ",", 
+                 RowBox[{"IntegerString", "[", 
+                  RowBox[{"1", ",", "10", ",", "3"}], "]"}], ",", 
+                 "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+                 "\"\<Ka 1 1 1\\n\>\"", ",", "\[IndentingNewLine]", 
+                 "\"\<Kd 1 1 1\\n\>\"", ",", "\[IndentingNewLine]", 
+                 "\"\<Ks 1 1 1\\n\>\"", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                 "\"\<map_Ka ./\>\"", "<>", "texfile", "<>", "\"\<\\n\>\""}], 
+                 ",", "\[IndentingNewLine]", "\"\<Ns 500\\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<d 1\\n\>\"", ",", 
+                 "\[IndentingNewLine]", "\"\<illum 2\\n\>\""}], 
+                "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", 
+             "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"StringJoin", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{"\"\<newmtl MeshTex\>\"", ",", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{"2", ",", "10", ",", "3"}], "]"}], ",", "\"\<\\n\>\"",
+                ",", "\[IndentingNewLine]", 
+               "\"\<Ka 0.33333333333333337 0.33333333333333337 \
+0.33333333333333337\\n\>\"", ",", "\[IndentingNewLine]", 
+               "\"\<Kd 0.4 0.4 0.4\\n\>\"", ",", "\[IndentingNewLine]", 
+               "\"\<Ks 1 1 1\\n\>\"", ",", "\[IndentingNewLine]", 
+               "\"\<Ns 500\\n\>\"", ",", "\[IndentingNewLine]", 
+               "\"\<d 1\\n\>\"", ",", "\[IndentingNewLine]", 
+               "\"\<illum 2\\n\>\""}], "\[IndentingNewLine]", "}"}], "]"}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"StringJoin", "[", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{"\"\<newmtl MeshTex\>\"", ",", 
+               RowBox[{"IntegerString", "[", 
+                RowBox[{"3", ",", "10", ",", "3"}], "]"}], ",", "\"\<\\n\>\"",
+                ",", "\[IndentingNewLine]", "\"\<Ka 0.7 0.7 0.7\\n\>\"", ",", 
+               "\[IndentingNewLine]", 
+               "\"\<Kd 0.6666666666666666 0.6666666666666666 \
+0.6666666666666666\\n\>\"", ",", "\[IndentingNewLine]", "\"\<Ks 1 1 1\\n\>\"",
+                ",", "\[IndentingNewLine]", "\"\<Ns 500\\n\>\"", ",", 
+               "\[IndentingNewLine]", "\"\<d 1\\n\>\"", ",", 
+               "\[IndentingNewLine]", "\"\<illum 2\\n\>\""}], 
+              "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", 
+           "}"}], "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\<\>\"", ",", "\"\<\>\"", ",", "\"\<\>\""}], "}"}]}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ExportToOBJ2", "[", 
+           RowBox[{
+            RowBox[{
+            "GCList", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+            ",", "file", ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<MeshIndex\>\"", "\[Rule]", "i"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Texture\>\"", "\[Rule]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"i", "\[Equal]", "1"}], ",", 
+               RowBox[{"Texture", "[", "M", "]"}], ",", "False"}], "]"}]}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<Overwrite\>\"", "\[Rule]", 
+             RowBox[{"i", "\[Equal]", "1"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<OverwriteTexture\>\"", "\[Rule]", 
+             RowBox[{"i", "\[Equal]", "1"}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<IndexOffset\>\"", "\[Rule]", "offset"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"\"\<Material\>\"", "\[Rule]", 
+             RowBox[{
+             "mat", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}]}], 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"\"\<Precision\>\"", "\[Rule]", 
+             RowBox[{"OptionValue", "[", "\"\<Precision\>\"", "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"offset", "+=", 
+           RowBox[{"Length", "[", 
+            RowBox[{"GCList", "\[LeftDoubleBracket]", 
+             RowBox[{"i", ",", "1"}], "\[RightDoubleBracket]"}], "]"}]}], 
+          ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "GCList", "]"}]}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Material\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Precision\>\"", "\[Rule]", "16"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7457402171113462`*^9, 3.745740237800144*^9}, 
+   3.822653895198764*^9, {3.822654634859479*^9, 3.822654659991774*^9}, 
+   3.822657230823965*^9, {3.829386225079084*^9, 3.829386240622437*^9}, {
+   3.829386439016687*^9, 3.829386502853457*^9}, {3.844325449074799*^9, 
+   3.844325474824313*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"1275c61d-c33a-4315-a355-5a17f04dfb12"],
+
+Cell[BoxData[
+ RowBox[{"ExportToOBJ2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"GC_GraphicsComplex", ",", "file_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "path", ",", "basefilename", ",", "pts", ",", "triangles", ",", 
+        "normals", ",", "texcoords", ",", "prec", ",", "S", ",", "tex", ",", 
+        "texQ", ",", "texfile", ",", "normalsQ", ",", "shadingstring", ",", 
+        "colsep", ",", "col", ",", "string", ",", "mtlfile", ",", 
+        "overwriteQ", ",", "indexoffset", ",", "stream"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"prec", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Precision\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{
+        "GC", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"indexoffset", "=", 
+        RowBox[{"OptionValue", "[", "\"\<IndexOffset\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"triangles", "=", 
+        RowBox[{"Join", "@@", 
+         RowBox[{
+          RowBox[{"Cases", "[", 
+           RowBox[{"GC", ",", "_Polygon"}], "]"}], "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"indexoffset", ">", "0"}], "]"}], ",", 
+         RowBox[{"triangles", "+=", "indexoffset"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"normals", ",", "texcoords"}], "}"}], "=", 
+        RowBox[{"ToPack", "/@", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"VertexNormals", ",", "VertexTextureCoordinates"}], "}"}],
+            "/.", 
+           RowBox[{"Cases", "[", 
+            RowBox[{"GC", ",", "_Rule"}], "]"}]}], ")"}]}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"overwriteQ", "=", 
+        RowBox[{"TrueQ", "[", 
+         RowBox[{"OptionValue", "[", "\"\<Overwrite\>\"", "]"}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"tex", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Texture\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"texQ", "=", "False"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"texfile", "=", "None"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"texcoords", "=!=", "VertexTextureCoordinates"}], ")"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"TrueQ", "[", "tex", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"texQ", "=", "True"}], ";"}], "\[IndentingNewLine]", ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Head", "[", "tex", "]"}], "===", "Texture"}], "&&", 
+               RowBox[{
+                RowBox[{"Depth", "[", "tex", "]"}], ">", "1"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"tex", "=", 
+               RowBox[{
+               "tex", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Head", "[", "tex", "]"}], "===", "File"}], "&&", 
+                  RowBox[{
+                   RowBox[{"Depth", "[", "tex", "]"}], ">", "1"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"tex", "=", 
+                  RowBox[{
+                  "tex", "\[LeftDoubleBracket]", "1", 
+                   "\[RightDoubleBracket]"}]}]}], "\[IndentingNewLine]", 
+                "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"(*", " ", 
+             RowBox[{
+             "Now", " ", "tex", " ", "is", " ", "either", " ", "an", " ", 
+              "Image", " ", "or", " ", "a", " ", "string"}], " ", "*)"}], 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Head", "[", "tex", "]"}], "===", "Image"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"texfile", "=", 
+                RowBox[{
+                 RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+                 "\"\<_Texture\>\"", "<>", "\"\<.png\>\""}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"With", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"f", "=", 
+                   RowBox[{"FileNameJoin", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"DirectoryName", "[", "file", "]"}], "/.", 
+                    RowBox[{"\"\<\>\"", "\[Rule]", "Nothing"}]}], ",", 
+                    "texfile"}], "}"}], "]"}]}], "}"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"TrueQ", "[", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<OverwriteTexture\>\"", "]"}], 
+                    "]"}], "&&", 
+                    RowBox[{"FileExistsQ", "[", "f", "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<File \>\"", ",", "f", ",", "\"\< overwritten.\>\""}],
+                     "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"DeleteFile", "[", "f", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"FileExistsQ", "[", "f", "]"}]}], ",", 
+                    RowBox[{"Export", "[", 
+                    RowBox[{"f", ",", "tex"}], "]"}]}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"texQ", "=", "True"}]}]}], "\[IndentingNewLine]", 
+             "]"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{"Head", "[", "tex", "]"}], "===", "String"}], "&&", 
+               RowBox[{"FileExistsQ", "[", "tex", "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"texfile", "=", 
+                RowBox[{
+                 RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+                 "\"\<_Texture\>\"", "<>", "\"\<.\>\"", "<>", 
+                 RowBox[{"FileExtension", "[", "tex", "]"}]}]}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"With", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"f", "=", 
+                   RowBox[{"FileNameJoin", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"DirectoryName", "[", "file", "]"}], "/.", 
+                    RowBox[{"\"\<\>\"", "\[Rule]", "Nothing"}]}], ",", 
+                    "texfile"}], "}"}], "]"}]}], "}"}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"TrueQ", "[", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<OverwriteTexture\>\"", "]"}], 
+                    "]"}], "&&", 
+                    RowBox[{"FileExistsQ", "[", "f", "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<File \>\"", ",", "f", ",", "\"\< overwritten.\>\""}],
+                     "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"DeleteFile", "[", "f", "]"}], ";"}]}], 
+                   "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"If", "[", 
+                   RowBox[{
+                    RowBox[{"!", 
+                    RowBox[{"FileExistsQ", "[", "f", "]"}]}], ",", 
+                    RowBox[{"CopyFile", "[", 
+                    RowBox[{"tex", ",", "f"}], "]"}]}], "]"}], ";"}]}], 
+                "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"texQ", "=", "True"}]}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"normalsQ", "=", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "[", "\"\<SmoothNormals\>\"", "]"}], "]"}], "&&", 
+         RowBox[{"(", 
+          RowBox[{"normals", "=!=", "VertexNormals"}], ")"}]}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"S", "=", 
+        RowBox[{"Make", "[", "\"\<StringToolChain\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TrueQ", "[", "overwriteQ", "]"}], "&&", 
+          RowBox[{"FileExistsQ", "[", "file", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Print", "[", 
+           RowBox[{
+           "\"\<File \>\"", ",", "file", ",", "\"\< overwritten.\>\""}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"DeleteFile", "[", "file", "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"writeRealVectors", "[", 
+        RowBox[{"S", ",", "file", ",", "pts", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{"overwriteQ", ",", "\"\<\>\"", ",", "\"\<\\n\>\""}], "]"}],
+           "<>", "\[IndentingNewLine]", "\"\<mtllib \>\"", "<>", 
+          RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+          "\"\<.mtl \\n\>\"", "<>", "\"\<g mesh_\>\"", "<>", 
+          RowBox[{"FileBaseName", "[", "file", "]"}], "<>", "\"\<_\>\"", "<>", 
+          RowBox[{"IntegerString", "[", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<MeshIndex\>\"", "]"}], ",", "10",
+             ",", "3"}], "]"}], "<>", "\"\< \\n\>\""}], ",", "\"\<v \>\"", 
+         ",", "\"\< \>\"", ",", "\"\<\>\"", ",", "\"\<\\n\>\"", ",", 
+         "\"\<\\n\>\"", ",", "\[IndentingNewLine]", "prec"}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{"texQ", ",", "\[IndentingNewLine]", 
+         RowBox[{"writeRealVectors", "[", 
+          RowBox[{
+          "S", ",", "file", ",", "texcoords", ",", "\[IndentingNewLine]", 
+           "\"\<\>\"", ",", "\"\<vt \>\"", ",", "\"\< \>\"", ",", "\"\< \>\"",
+            ",", "\"\<\\n\>\"", ",", "\"\<\\n\>\"", ",", 
+           "\[IndentingNewLine]", "prec"}], "\[IndentingNewLine]", "]"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{"normalsQ", ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"shadingstring", "=", "\"\<1\>\""}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"writeRealVectors", "[", 
+           RowBox[{
+           "S", ",", "file", ",", "normals", ",", "\[IndentingNewLine]", 
+            "\"\<\>\"", ",", "\"\<vn \>\"", ",", "\"\< \>\"", ",", 
+            "\"\< \>\"", ",", "\"\<\\n\>\"", ",", "\"\<\\n\>\"", ",", 
+            "\[IndentingNewLine]", "prec"}], "\[IndentingNewLine]", "]"}]}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"shadingstring", "=", "\"\<off\>\""}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{"texQ", ",", "\[IndentingNewLine]", 
+         RowBox[{"colsep", "=", "\"\</\>\""}], ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{"normalsQ", ",", "\[IndentingNewLine]", 
+           RowBox[{"colsep", "=", "\"\<//\>\""}], ",", "\[IndentingNewLine]", 
+           
+           RowBox[{"colsep", "=", "\"\<\>\""}]}], "\[IndentingNewLine]", 
+          "]"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"writeIntegerMatrices", "[", 
+        RowBox[{"S", ",", "file", ",", "\[IndentingNewLine]", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{
+           RowBox[{"ConstantArray", "[", 
+            RowBox[{"triangles", ",", 
+             RowBox[{"{", 
+              RowBox[{"1", "+", 
+               RowBox[{"Boole", "[", "texQ", "]"}], "+", 
+               RowBox[{"Boole", "[", "normalsQ", "]"}]}], "}"}]}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"3", ",", "1", ",", "2"}], "}"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"\"\<g mesh_\>\"", "<>", 
+          RowBox[{"FileBaseName", "[", "file", "]"}], "<>", "\"\<_\>\"", "<>", 
+          RowBox[{"IntegerString", "[", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<MeshIndex\>\"", "]"}], ",", "10",
+             ",", "3"}], "]"}], "<>", "\"\<\nusemtl MeshTex\>\"", "<>", 
+          RowBox[{"IntegerString", "[", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "\"\<MeshIndex\>\"", "]"}], ",", "10",
+             ",", "3"}], "]"}], "<>", "\"\<\ns \>\"", "<>", "shadingstring", 
+          "<>", "\"\<\\n\>\""}], ",", "\"\<f \>\"", ",", "\"\<\>\"", ",", 
+         "colsep", ",", "\"\<\>\"", ",", "\"\< \>\"", ",", "\"\<\>\"", ",", 
+         "\"\<\\n\>\"", ",", "\"\<\\n\>\""}], "\[IndentingNewLine]", "]"}], 
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"col", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"texQ", "&&", 
+           RowBox[{"StringQ", "[", "texfile", "]"}]}], ",", "White", ",", 
+          "uniblau"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"string", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "\"\<Material\>\"", "]"}], "===", 
+           "Automatic"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{"{", "\[IndentingNewLine]", 
+            RowBox[{"\"\<newmtl MeshTex\>\"", ",", 
+             RowBox[{"IntegerString", "[", 
+              RowBox[{
+               RowBox[{"OptionValue", "[", "\"\<MeshIndex\>\"", "]"}], ",", 
+               "10", ",", "3"}], "]"}], ",", "\"\<\\n\>\"", ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"{", "\[IndentingNewLine]", 
+              RowBox[{"\"\<Ka \>\"", ",", "\[IndentingNewLine]", 
+               RowBox[{"StringJoin", "[", 
+                RowBox[{"Riffle", "[", 
+                 RowBox[{
+                  RowBox[{"Map", "[", 
+                   RowBox[{
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"x", ",", "FortranForm"}], "]"}]}], ",", 
+                    RowBox[{"List", "@@", 
+                    RowBox[{"Lighter", "[", 
+                    RowBox[{"col", ",", 
+                    RowBox[{"1", "/", "10"}]}], "]"}]}]}], "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"\"\< \>\"", ",", "\"\< \>\""}], "}"}]}], "]"}], 
+                "]"}], ",", "\[IndentingNewLine]", "\"\<\\n\>\"", ",", 
+               "\[IndentingNewLine]", "\"\<Kd \>\"", ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"StringJoin", "[", 
+                RowBox[{"Riffle", "[", 
+                 RowBox[{
+                  RowBox[{"Map", "[", 
+                   RowBox[{
+                    RowBox[{"x", "\[Function]", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"x", ",", "FortranForm"}], "]"}]}], ",", 
+                    RowBox[{"List", "@@", 
+                    RowBox[{"Lighter", "[", 
+                    RowBox[{"col", ",", "0"}], "]"}]}]}], "]"}], ",", 
+                  RowBox[{"{", 
+                   RowBox[{"\"\< \>\"", ",", "\"\< \>\""}], "}"}]}], "]"}], 
+                "]"}], ",", "\[IndentingNewLine]", "\"\<\\n\>\""}], 
+              "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"texQ", "&&", 
+                RowBox[{"StringQ", "[", "texfile", "]"}]}], ",", 
+               "\[IndentingNewLine]", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<map_Ka ./\>\"", "<>", "texfile", "<>", "\"\<\\n\>\""}], 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{",", 
+                  RowBox[{
+                  "\"\<map_Kd ./\>\"", "<>", "texfile", "<>", 
+                   "\"\<\\n\>\""}]}], "*)"}], "\[IndentingNewLine]", "}"}], 
+               ",", "\[IndentingNewLine]", "Nothing"}], "]"}], ",", 
+             "\[IndentingNewLine]", "\"\<Ks 1 1 1\\n\>\"", ",", 
+             "\[IndentingNewLine]", "\"\<Ns 500\\n\>\"", ",", 
+             "\[IndentingNewLine]", "\"\<d 1\\n\>\"", ",", 
+             "\[IndentingNewLine]", "\"\<illum 2\\n\>\""}], 
+            "\[IndentingNewLine]", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"OptionValue", "[", "\"\<Material\>\"", "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"StringLength", "[", "string", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"mtlfile", "=", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"DirectoryName", "[", "file", "]"}], "\[Equal]", 
+              "\"\<\>\""}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+              "\"\<.mtl\>\""}], ",", "\[IndentingNewLine]", 
+             RowBox[{"FileNameJoin", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"DirectoryName", "[", "file", "]"}], ",", 
+                RowBox[{
+                 RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+                 "\"\<.mtl\>\""}]}], "}"}], "]"}]}], "\[IndentingNewLine]", 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"TrueQ", "[", 
+              RowBox[{"OptionValue", "[", "\"\<Overwrite\>\"", "]"}], "]"}], "&&", 
+             RowBox[{"FileExistsQ", "[", "mtlfile", "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{
+              "\"\<File \>\"", ",", "mtlfile", ",", "\"\< overwritten.\>\""}],
+               "]"}], ";", "\[IndentingNewLine]", 
+             RowBox[{"DeleteFile", "[", "mtlfile", "]"}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"stream", "=", 
+           RowBox[{"OpenAppend", "[", "mtlfile", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"WriteString", "[", 
+           RowBox[{"stream", ",", "string"}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Close", "[", "stream", "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<Material\>\"", "\[Rule]", "Automatic"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<MeshIndex\>\"", "\[Rule]", "1"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<IndexOffset\>\"", "\[Rule]", "0"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Texture\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Precision\>\"", "\[Rule]", "16"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Overwrite\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<OverwriteTexture\>\"", "\[Rule]", "True"}], ","}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.648293988583831*^9, {3.681969211593359*^9, 3.681969238527401*^9}, 
+   3.692016572934284*^9, {3.719506729798202*^9, 3.719506731220132*^9}, 
+   3.731404378375318*^9, 3.745731952470605*^9, {3.745732787937505*^9, 
+   3.745732855124465*^9}, {3.745732898475461*^9, 3.7457329136564903`*^9}, 
+   3.7457329487502317`*^9, {3.74573299698011*^9, 3.745732997210678*^9}, {
+   3.745733074316552*^9, 3.745733077347337*^9}, {3.745733107887336*^9, 
+   3.7457331953762302`*^9}, {3.745733227926899*^9, 3.7457332563346167`*^9}, {
+   3.745733286661642*^9, 3.745733288611288*^9}, {3.745733455291012*^9, 
+   3.745733478540093*^9}, {3.745733580072157*^9, 3.745733598953199*^9}, {
+   3.7457337041429653`*^9, 3.745733764798106*^9}, {3.7457338104185753`*^9, 
+   3.745733812367629*^9}, {3.7457350617735977`*^9, 3.74573508881714*^9}, {
+   3.745735181652082*^9, 3.745735201444573*^9}, {3.7457352896213017`*^9, 
+   3.745735317840019*^9}, {3.745735355391761*^9, 3.745735435592533*^9}, {
+   3.745735511562901*^9, 3.7457355194323483`*^9}, {3.7457356536757517`*^9, 
+   3.7457357323826723`*^9}, {3.745735774952231*^9, 3.7457357938140287`*^9}, {
+   3.745735897123664*^9, 3.7457360243814697`*^9}, {3.745736076286171*^9, 
+   3.7457360865713377`*^9}, {3.745736306792283*^9, 3.745736308446228*^9}, {
+   3.745736497347574*^9, 3.745736497576653*^9}, 3.7457365868876123`*^9, {
+   3.74573674692074*^9, 3.745736773704068*^9}, {3.745736935529067*^9, 
+   3.745736943557898*^9}, {3.7457371180935297`*^9, 3.745737119229927*^9}, {
+   3.745737220637389*^9, 3.7457373601526737`*^9}, {3.74573820023625*^9, 
+   3.745738260557088*^9}, {3.745738502296924*^9, 3.745738527552115*^9}, {
+   3.745739323074649*^9, 3.745739325688733*^9}, {3.745739376449767*^9, 
+   3.745739441185398*^9}, {3.745739516786593*^9, 3.7457395616696577`*^9}, 
+   3.745740218974968*^9, {3.82005708921515*^9, 3.8200571078629227`*^9}, 
+   3.822653899873254*^9, {3.822654718952775*^9, 3.82265471915606*^9}, {
+   3.822657321462954*^9, 3.8226573218924522`*^9}, {3.829386252241918*^9, 
+   3.8293862601689262`*^9}, {3.8293863158716793`*^9, 3.829386386837426*^9}, {
+   3.8296351191463346`*^9, 3.82963512105058*^9}, 3.8296351560168123`*^9},
+ CellLabel->"In[18]:=",ExpressionUUID->"e4136c6b-0d82-4d89-889e-f452370636ca"],
+
+Cell[BoxData[
+ RowBox[{"ToMeshRegion", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"MeshRegion", "[", 
+     RowBox[{
+      RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+      RowBox[{"Polygon", "[", 
+       RowBox[{"Triangles", "[", "M", "]"}], "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"InputType", "\[Rule]", "mesh"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.665825412485746*^9, 3.665825425707679*^9}, {
+  3.691919237385379*^9, 3.6919192504059896`*^9}, {3.719506686016695*^9, 
+  3.719506715470131*^9}},ExpressionUUID->"48ab7223-4da6-4ade-9d2a-\
+c10a98c66d23"],
+
+Cell[BoxData[
+ RowBox[{"ToBoundaryMeshRegion", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_mesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"BoundaryMeshRegion", "[", 
+     RowBox[{
+      RowBox[{"VertexCoordinates", "[", "M", "]"}], ",", 
+      RowBox[{"Polygon", "[", 
+       RowBox[{"Triangles", "[", "M", "]"}], "]"}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"InputType", "\[Rule]", "mesh"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.75062185633114*^9, 3.750621863036708*^9}},
+ CellLabel->"In[49]:=",ExpressionUUID->"ec2bc28d-cab0-4b8c-a3c7-e648ec35f9e7"],
+
+Cell[BoxData[
+ RowBox[{"ToMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"R_MeshRegion", ",", "\[IndentingNewLine]", 
+    RowBox[{"Init", "[", 
+     RowBox[{"mesh", ",", 
+      RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+      RowBox[{"Join", "@@", 
+       RowBox[{
+        RowBox[{"MeshCells", "[", 
+         RowBox[{"R", ",", "2", ",", 
+          RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+        "\[LeftDoubleBracket]", 
+        RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.726146353353571*^9, 3.7261463797116747`*^9}, {
+  3.7261464144566*^9, 3.7261464349881268`*^9}, {3.736313816205768*^9, 
+  3.7363138742916*^9}, {3.817720712030229*^9, 3.817720715333823*^9}, {
+  3.839488331569708*^9, 
+  3.839488331769019*^9}},ExpressionUUID->"a4676c35-7b70-4219-a9b4-\
+9122d70265d1"],
+
+Cell[BoxData[
+ RowBox[{"ToMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"R_BoundaryMeshRegion", ",", "\[IndentingNewLine]", 
+    RowBox[{"Init", "[", 
+     RowBox[{"mesh", ",", 
+      RowBox[{"MeshCoordinates", "[", "R", "]"}], ",", 
+      RowBox[{"Join", "@@", 
+       RowBox[{
+        RowBox[{"MeshCells", "[", 
+         RowBox[{"R", ",", "2", ",", 
+          RowBox[{"\"\<Multicells\>\"", "\[Rule]", "True"}]}], "]"}], 
+        "\[LeftDoubleBracket]", 
+        RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.723101140655655*^9, 3.723101148858264*^9}, {
+   3.73631374126712*^9, 3.736313749256054*^9}, {3.736313875588839*^9, 
+   3.736313880435129*^9}, 3.817720722759905*^9},
+ CellLabel->
+  "In[299]:=",ExpressionUUID->"a9312520-41fe-4cd2-8f7d-4ea63517c21b"],
+
+Cell[BoxData[
+ RowBox[{"ToMesh", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_GraphicsComplex", ",", "\[IndentingNewLine]", 
+    RowBox[{"Init", "[", "\[IndentingNewLine]", 
+     RowBox[{"mesh", ",", "\[IndentingNewLine]", 
+      RowBox[{"ToPack", "[", 
+       RowBox[{"N", "[", 
+        RowBox[{"M", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+        "]"}], "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"ToPack", "[", 
+       RowBox[{"Join", "@@", 
+        RowBox[{
+         RowBox[{"Cases", "[", 
+          RowBox[{
+           RowBox[{"List", "@@", "M"}], ",", "_Polygon"}], "]"}], 
+         "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.7231011546823*^9, 3.723101160192851*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"bb4c1107-2209-487e-89fc-8e3ed2a7aa88"],
+
+Cell[BoxData[
+ RowBox[{"ImportFromOBJ2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"objfile_", ",", "texfile_"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "data", ",", "tex", ",", "pos", ",", "pts", ",", "facestrings", ",", 
+        "texpts", ",", "normals", ",", "s", ",", "faces", ",", "n", ",", "v", 
+        ",", "f", ",", "vt", ",", "M", ",", "R", ",", "texfaces", ",", 
+        "nfaces"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"data", "=", 
+        RowBox[{"Import", "[", 
+         RowBox[{"objfile", ",", "\"\<Table\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"tex", "=", 
+        RowBox[{"Import", "[", "texfile", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<v\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "4"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<f\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"facestrings", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "4"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<vt\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"texpts", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "3"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<n\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"normals", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "4"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"potentially", " ", "risky"}], " ", "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"s", "=", 
+        RowBox[{"ToExpression", "[", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{"x", "\[Function]", 
+            RowBox[{
+             RowBox[{"StringSplit", "[", 
+              RowBox[{"x", ",", "\"\</\>\""}], "]"}], "/.", 
+             RowBox[{"\"\<\>\"", "\[Rule]", "0"}]}]}], ",", "facestrings"}], 
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"faces", "=", 
+        RowBox[{"s", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "All", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{
+         RowBox[{"Dimensions", "[", "s", "]"}], "\[LeftDoubleBracket]", "3", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"n", "\[Equal]", "1"}], ",", 
+         RowBox[{
+          RowBox[{"texfaces", "=", 
+           RowBox[{"{", "}"}]}], ";", 
+          RowBox[{"nfaces", "=", 
+           RowBox[{"{", "}"}]}], ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"n", "\[Equal]", "2"}], ",", 
+         RowBox[{
+          RowBox[{"texfaces", "=", 
+           RowBox[{"s", "\[LeftDoubleBracket]", 
+            RowBox[{"All", ",", "All", ",", "2"}], 
+            "\[RightDoubleBracket]"}]}], ";", 
+          RowBox[{"nfaces", "=", 
+           RowBox[{"{", "}"}]}], ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"n", "\[Equal]", "3"}], ",", 
+         RowBox[{
+          RowBox[{"texfaces", "=", 
+           RowBox[{"s", "\[LeftDoubleBracket]", 
+            RowBox[{"All", ",", "All", ",", "2"}], 
+            "\[RightDoubleBracket]"}]}], ";", 
+          RowBox[{"nfaces", "=", 
+           RowBox[{"s", "\[LeftDoubleBracket]", 
+            RowBox[{"All", ",", "All", ",", "3"}], 
+            "\[RightDoubleBracket]"}]}], ";"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"IntegerPositions", "[", 
+            RowBox[{
+             RowBox[{"Flatten", "@", "texfaces"}], ",", "0"}], "]"}], "]"}], 
+          "\[NotEqual]", " ", "0"}], ",", 
+         RowBox[{"texfaces", "=", 
+          RowBox[{"{", "}"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"IntegerPositions", "[", 
+            RowBox[{
+             RowBox[{"Flatten", "@", "nfaces"}], ",", "0"}], "]"}], "]"}], 
+          "\[NotEqual]", " ", "0"}], ",", 
+         RowBox[{"nfaces", "=", 
+          RowBox[{"{", "}"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"v", "=", 
+        RowBox[{"pts", "\[LeftDoubleBracket]", 
+         RowBox[{"Flatten", "[", "faces", "]"}], "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"f", "=", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"Range", "[", 
+           RowBox[{"3", " ", 
+            RowBox[{"Length", "[", "faces", "]"}]}], "]"}], ",", "3"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"vt", "=", 
+        RowBox[{"texpts", "\[LeftDoubleBracket]", 
+         RowBox[{"Flatten", "[", "texfaces", "]"}], 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"M", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"mesh", ",", "pts", ",", "faces"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "texfaces", "]"}], ">", "0"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"R", "=", 
+           RowBox[{"Init", "[", 
+            RowBox[{"mesh", ",", "texpts", ",", "texfaces"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"SetTexture", "[", 
+           RowBox[{"M", ",", "tex"}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"SetTextureMesh", "[", 
+           RowBox[{"M", ",", "R"}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+        "]"}], ";", "\[IndentingNewLine]", "M"}]}], "\[IndentingNewLine]", 
+     "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.679718814019079*^9, 3.679718823603187*^9}, {
+  3.6797190967999783`*^9, 3.6797191067901382`*^9}, {3.679720502793563*^9, 
+  3.679720550667818*^9}, {3.679720622803052*^9, 3.679720684803287*^9}, {
+  3.679721183582059*^9, 3.679721186756719*^9}, {3.681042712934333*^9, 
+  3.6810427300770597`*^9}, {3.719506760880465*^9, 3.7195067708933783`*^9}, {
+  3.731404997938209*^9, 3.731405029441689*^9}, {3.745732055930513*^9, 
+  3.745732066113284*^9}, {3.758280546246181*^9, 3.7582805720664597`*^9}, {
+  3.758283278320606*^9, 3.7582832794598427`*^9}, {3.82265757087467*^9, 
+  3.8226575821118593`*^9}},
+ CellLabel->
+  "In[150]:=",ExpressionUUID->"70b0b453-3446-4154-bb84-6b5475ac2105"],
+
+Cell[BoxData[
+ RowBox[{"ImportFromOBJ2", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", "objfile_", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "data", ",", "tex", ",", "pos", ",", "pts", ",", "facestrings", ",", 
+        "texpts", ",", "normals", ",", "s", ",", "faces", ",", "n", ",", "v", 
+        ",", "f", ",", "vt", ",", "M", ",", "R", ",", "texfaces", ",", 
+        "nfaces"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"data", "=", 
+        RowBox[{"Import", "[", 
+         RowBox[{"objfile", ",", "\"\<Table\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<v\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pts", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "4"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<f\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"facestrings", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "4"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<vt\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"texpts", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "3"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"pos", "=", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{"data", ",", "\"\<n\>\""}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"normals", "=", 
+        RowBox[{"ToPack", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{"data", "\[LeftDoubleBracket]", 
+           RowBox[{"pos", ",", 
+            RowBox[{"2", ";;", "4"}]}], "\[RightDoubleBracket]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"potentially", " ", "risky"}], " ", "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"s", "=", 
+        RowBox[{"ToExpression", "[", 
+         RowBox[{"Map", "[", 
+          RowBox[{
+           RowBox[{"x", "\[Function]", 
+            RowBox[{
+             RowBox[{"StringSplit", "[", 
+              RowBox[{"x", ",", "\"\</\>\""}], "]"}], "/.", 
+             RowBox[{"\"\<\>\"", "\[Rule]", "0"}]}]}], ",", "facestrings"}], 
+          "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"faces", "=", 
+        RowBox[{"s", "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "All", ",", "1"}], "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"n", "=", 
+        RowBox[{
+         RowBox[{"Dimensions", "[", "s", "]"}], "\[LeftDoubleBracket]", "3", 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"v", "=", 
+        RowBox[{"pts", "\[LeftDoubleBracket]", 
+         RowBox[{"Flatten", "[", "faces", "]"}], "\[RightDoubleBracket]"}]}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"f", "=", 
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"Range", "[", 
+           RowBox[{"3", " ", 
+            RowBox[{"Length", "[", "faces", "]"}]}], "]"}], ",", "3"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"M", "=", 
+        RowBox[{"Init", "[", 
+         RowBox[{"mesh", ",", "pts", ",", "faces"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "M"}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.822657668078188*^9, 3.822657690913663*^9}},
+ CellLabel->
+  "In[154]:=",ExpressionUUID->"68c52b2d-692a-4c74-8a9c-060f601de715"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"ExportToOBJOld", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_mesh", ",", "file_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "g", ",", "gc", ",", "intP", ",", "intnormals", ",", "intfflist", ",",
+          "\[IndentingNewLine]", "bndP", ",", "bndnormals", ",", "bndn", ",", 
+         "bndfflist", ",", "\[IndentingNewLine]", "intn", ",", "allP", ",", 
+         "allnormals", ",", "i", ",", "j", ",", "path", ",", "col", ",", 
+         "facestring", ",", "shadingstring", ",", "tostring", ",", 
+         "tostring2", ",", "string"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"tostring", "=", 
+         RowBox[{"x", "\[Function]", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"x", ",", "FortranForm"}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetAttributes", "[", 
+         RowBox[{"tostring", ",", "Listable"}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"tostring2", "=", 
+         RowBox[{"x", "\[Function]", 
+          RowBox[{"Block", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"s", "=", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"x", ",", "FortranForm"}], "]"}]}], "}"}], ",", 
+            RowBox[{"s", "<>", "\"\<//\>\"", "<>", "s"}]}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetAttributes", "[", 
+         RowBox[{"tostring2", ",", "Listable"}], "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"g", "=", 
+         RowBox[{"MeshPlot", "[", 
+          RowBox[{"M", ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<SmoothedStrata\>\"", "\[Rule]", "False"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<SmoothNormals\>\"", "\[Rule]", "True"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<BoundaryThickness\>\"", "\[Rule]", "1."}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<SingularThickness\>\"", "\[Rule]", "1."}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Strata\>\"", "\[Rule]", "False"}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"gc", "=", 
+         RowBox[{"Extract", "[", 
+          RowBox[{"g", ",", 
+           RowBox[{"Position", "[", 
+            RowBox[{"g", ",", 
+             RowBox[{"GraphicsComplex", "[", "__", "]"}]}], "]"}]}], "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"intP", "=", 
+         RowBox[{"gc", "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"intnormals", "=", 
+         RowBox[{"Join", "@@", 
+          RowBox[{
+           RowBox[{"Extract", "[", 
+            RowBox[{"gc", ",", 
+             RowBox[{"Position", "[", 
+              RowBox[{"gc", ",", 
+               RowBox[{"VertexNormals", "\[Rule]", "__"}]}], "]"}]}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"intfflist", "=", 
+         RowBox[{
+          RowBox[{"Extract", "[", 
+           RowBox[{"gc", ",", 
+            RowBox[{"Position", "[", 
+             RowBox[{"gc", ",", 
+              RowBox[{"Polygon", "[", "__", "]"}]}], "]"}]}], "]"}], 
+          "\[LeftDoubleBracket]", 
+          RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"intn", "=", 
+         RowBox[{"Accumulate", "[", 
+          RowBox[{"Prepend", "[", 
+           RowBox[{
+            RowBox[{"Length", "/@", "intP"}], ",", "0"}], "]"}], "]"}]}], ";",
+         "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Boundary\>\"", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"g", "=", 
+            RowBox[{"BndPresent3D", "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"gc", "=", 
+            RowBox[{"Extract", "[", 
+             RowBox[{"g", ",", 
+              RowBox[{"Position", "[", 
+               RowBox[{"g", ",", 
+                RowBox[{"GraphicsComplex", "[", "__", "]"}]}], "]"}]}], 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"bndP", "=", 
+            RowBox[{"gc", "\[LeftDoubleBracket]", 
+             RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"bndnormals", "=", 
+            RowBox[{"Join", "@@", 
+             RowBox[{
+              RowBox[{"Extract", "[", 
+               RowBox[{"gc", ",", 
+                RowBox[{"Position", "[", 
+                 RowBox[{"gc", ",", 
+                  RowBox[{"VertexNormals", "\[Rule]", "__"}]}], "]"}]}], 
+               "]"}], "\[LeftDoubleBracket]", 
+              RowBox[{"All", ",", "2"}], "\[RightDoubleBracket]"}]}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"bndn", "=", 
+            RowBox[{"Accumulate", "[", 
+             RowBox[{"Join", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"Length", "[", "intP", "]"}], "}"}], ",", 
+               RowBox[{"Length", "/@", 
+                RowBox[{"Most", "[", "bndP", "]"}]}]}], "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"bndfflist", "=", 
+            RowBox[{
+             RowBox[{"Extract", "[", 
+              RowBox[{"gc", ",", 
+               RowBox[{"Position", "[", 
+                RowBox[{"gc", ",", 
+                 RowBox[{"Polygon", "[", "__", "]"}]}], "]"}]}], "]"}], 
+             "\[LeftDoubleBracket]", 
+             RowBox[{"All", ",", "1"}], "\[RightDoubleBracket]"}]}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"allP", "=", 
+            RowBox[{"Join", "[", 
+             RowBox[{
+              RowBox[{"Join", "@@", "intP"}], ",", 
+              RowBox[{"Join", "@@", "bndP"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"allnormals", "=", 
+            RowBox[{"Join", "[", 
+             RowBox[{"intnormals", ",", "bndnormals"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"intfflist", "=", 
+            RowBox[{"(", 
+             RowBox[{"intfflist", "+", 
+              RowBox[{"MapThread", "[", 
+               RowBox[{"ConstantArray", ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"Most", "[", "intn", "]"}], ",", 
+                  RowBox[{"Dimensions", "/@", "intfflist"}]}], "}"}]}], 
+               "]"}]}], ")"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"bndn", "=", 
+            RowBox[{"Accumulate", "[", 
+             RowBox[{"Prepend", "[", 
+              RowBox[{
+               RowBox[{"Length", "/@", "bndP"}], ",", 
+               RowBox[{"Last", "[", "intn", "]"}]}], "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"bndfflist", "=", 
+            RowBox[{"(", 
+             RowBox[{"bndfflist", "+", 
+              RowBox[{"MapThread", "[", 
+               RowBox[{"ConstantArray", ",", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"Most", "[", "bndn", "]"}], ",", 
+                  RowBox[{"Dimensions", "/@", "bndfflist"}]}], "}"}]}], 
+               "]"}]}], ")"}]}], ";"}], "\[IndentingNewLine]", ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"allP", "=", 
+            RowBox[{"Join", "[", 
+             RowBox[{"Join", "@@", "intP"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"allnormals", "=", 
+            RowBox[{"Join", "[", "intnormals", "]"}]}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"i", "=", "0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"j", "=", "0"}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"path", "=", 
+         RowBox[{"DirectoryName", "[", "file", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"path", "\[NotEqual]", "\"\<\>\""}], "&&", 
+           RowBox[{"!", 
+            RowBox[{"FileExistsQ", "[", "path", "]"}]}]}], ",", 
+          RowBox[{"CreateDirectory", "[", "path", "]"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "\"\<Normals\>\"", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"facestring", "=", "tostring2"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"shadingstring", "=", "\"\<1\>\""}], ";"}], 
+          "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"shadingstring", "=", "\"\<off\>\""}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"facestring", "=", "tostring"}]}]}], "\[IndentingNewLine]",
+          "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"string", "=", 
+         RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<mtllib \>\"", "<>", 
+            RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+            "\"\<.mtl \\n\>\""}], ",", "\[IndentingNewLine]", 
+           RowBox[{"\"\<o mesh_\>\"", "<>", 
+            RowBox[{"FileBaseName", "[", "file", "]"}], "<>", "\"\<\\n\>\""}],
+            ",", "\[IndentingNewLine]", 
+           RowBox[{"StringJoin", "[", 
+            RowBox[{"Riffle", "[", 
+             RowBox[{
+              RowBox[{"Flatten", "[", 
+               RowBox[{"ConstantArray", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                  "\"\<\\nv \>\"", ",", "\"\< \>\"", " ", ",", "\"\< \>\""}], 
+                  "  ", "}"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"Length", "[", "allP", "]"}], "}"}]}], "]"}], "]"}],
+               ",", 
+              RowBox[{"Map", "[", 
+               RowBox[{"tostring", ",", 
+                RowBox[{"Flatten", "[", "allP", "]"}], ",", 
+                RowBox[{"{", "1", "}"}]}], "]"}]}], "]"}], "]"}], ",", 
+           "\[IndentingNewLine]", "\"\<\\n\>\"", ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<Normals\>\"", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"StringJoin", "[", 
+              RowBox[{"Riffle", "[", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\nvn \>\"", ",", "\"\< \>\"", " ", ",", 
+                    "\"\< \>\""}], "  ", "}"}], ",", 
+                   RowBox[{"{", 
+                    RowBox[{"Length", "[", "allnormals", "]"}], "}"}]}], 
+                  "]"}], "]"}], ",", 
+                RowBox[{"Map", "[", 
+                 RowBox[{"tostring", ",", 
+                  RowBox[{"Flatten", "[", "allnormals", "]"}], ",", 
+                  RowBox[{"{", "1", "}"}]}], "]"}]}], "]"}], "]"}], ",", 
+             "\[IndentingNewLine]", "\"\<\\n\>\""}], "\[IndentingNewLine]", 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"j", "++"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"\"\<\\ng mesh_\>\"", "<>", 
+                 RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+                 "\"\<_interior\>\"", "<>", 
+                 RowBox[{"IntegerString", "[", 
+                  RowBox[{"j", ",", "10", ",", "3"}], "]"}], "<>", 
+                 "\"\<\\n\>\""}], ",", "\[IndentingNewLine]", 
+                RowBox[{"\"\<usemtl ./MeshTex\>\"", "<>", 
+                 RowBox[{"IntegerString", "[", 
+                  RowBox[{"j", ",", "10", ",", "3"}], "]"}], "<>", 
+                 "\"\<\\n\>\""}], ",", "\[IndentingNewLine]", "\"\<s \>\"", 
+                ",", "shadingstring", ",", "\[IndentingNewLine]", 
+                RowBox[{"StringJoin", "[", 
+                 RowBox[{"Riffle", "[", 
+                  RowBox[{
+                   RowBox[{"Flatten", "[", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\nf \>\"", ",", "\"\< \>\"", " ", ",", 
+                    "\"\< \>\""}], "  ", "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"Length", "[", "fflist", "]"}], "}"}]}], "]"}], 
+                    "]"}], ",", 
+                   RowBox[{"Map", "[", 
+                    RowBox[{"facestring", ",", 
+                    RowBox[{"Flatten", "[", "fflist", "]"}], ",", 
+                    RowBox[{"{", "1", "}"}]}], "]"}]}], "]"}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"fflist", ",", "intfflist"}], "}"}]}], 
+            "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<Boundary\>\"", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Table", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"i", "++"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"\"\<\\ng mesh_\>\"", "<>", 
+                   RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+                   "\"\<_boundary\>\"", "<>", 
+                   RowBox[{"IntegerString", "[", 
+                    RowBox[{"i", ",", "10", ",", "3"}], "]"}], "<>", 
+                   "\"\<\\n\>\""}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"\"\<usemtl BoundaryTex\>\"", "<>", 
+                   RowBox[{"IntegerString", "[", 
+                    RowBox[{"i", ",", "10", ",", "3"}], "]"}], "<>", 
+                   "\"\<\\n\>\""}], ",", "\[IndentingNewLine]", "\"\<s \>\"", 
+                  ",", "shadingstring", ",", "\[IndentingNewLine]", 
+                  RowBox[{"StringJoin", "[", 
+                   RowBox[{"Riffle", "[", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "\"\<\\nf \>\"", ",", "\"\< \>\"", " ", ",", 
+                    "\"\< \>\""}], "  ", "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"Length", "[", "fflist", "]"}], "}"}]}], "]"}], 
+                    "]"}], ",", 
+                    RowBox[{"Map", "[", 
+                    RowBox[{"facestring", ",", 
+                    RowBox[{"Flatten", "[", "fflist", "]"}], ",", 
+                    RowBox[{"{", "1", "}"}]}], "]"}]}], "]"}], "]"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"fflist", ",", "bndfflist"}], "}"}]}], 
+              "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+             "\"\<\>\""}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Export", "[", 
+         RowBox[{"file", ",", "string", ",", "\"\<Text\>\""}], "]"}], ";", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"col", "=", "uniblau"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"string", "=", 
+         RowBox[{"StringJoin", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"\"\<newmtl MeshTex\>\"", "<>", 
+              RowBox[{"IntegerString", "[", 
+               RowBox[{"j", ",", "10", ",", "3"}], "]"}], "<>", 
+              "\"\<\n   Ka \>\"", "<>", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{"Riffle", "[", 
+                RowBox[{
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"x", ",", "FortranForm"}], "]"}]}], ",", 
+                   RowBox[{"List", "@@", 
+                    RowBox[{"Lighter", "[", 
+                    RowBox[{"col", ",", 
+                    RowBox[{"1", "/", "10"}]}], "]"}]}]}], "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"\"\< \>\"", ",", "\"\< \>\""}], "}"}]}], "]"}], 
+               "]"}], "<>", "\"\<\n   Kd \>\"", "<>", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{"Riffle", "[", 
+                RowBox[{
+                 RowBox[{"Map", "[", 
+                  RowBox[{
+                   RowBox[{"x", "\[Function]", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"x", ",", "FortranForm"}], "]"}]}], ",", 
+                   RowBox[{"List", "@@", 
+                    RowBox[{"Lighter", "[", 
+                    RowBox[{"col", ",", "0"}], "]"}]}]}], "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"\"\< \>\"", ",", "\"\< \>\""}], "}"}]}], "]"}], 
+               "]"}], "<>", 
+              "\"\<\n   Ks 0.25 0.25 0.25\n   Ns 50\n   d 1\n   illum 2\n   \
+\\n\>\""}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", "1", ",", 
+               RowBox[{
+                RowBox[{"Length", "[", "intn", "]"}], "-", "1"}]}], "}"}]}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"OptionValue", "[", "\"\<Boundary\>\"", "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Table", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"\"\<newmtl BoundaryTex\>\"", "<>", 
+                RowBox[{"IntegerString", "[", 
+                 RowBox[{"i", ",", "10", ",", "3"}], "]"}], "<>", 
+                "\"\<\n   Ka 0 0 0 \n   Kd 1 1 1\n   Ks 1 1 1\n   Ns 10\n   d \
+1\n   illum 2\n   \\n\>\""}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "1", ",", 
+                 RowBox[{
+                  RowBox[{"Length", "[", "bndn", "]"}], "-", "1"}]}], "}"}]}],
+               "]"}], ",", "\[IndentingNewLine]", "\"\<\>\""}], 
+            "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"Export", "[", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"DirectoryName", "[", "file", "]"}], "\[Equal]", 
+             "\"\<\>\""}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+             "\"\<.mtl\>\""}], ",", "\[IndentingNewLine]", 
+            RowBox[{"FileNameJoin", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"DirectoryName", "[", "file", "]"}], ",", 
+               RowBox[{
+                RowBox[{"FileBaseName", "[", "file", "]"}], "<>", 
+                "\"\<.mtl\>\""}]}], "}"}], "]"}]}], "\[IndentingNewLine]", 
+           "]"}], ",", "string", ",", "\"\<Text\>\""}], "]"}], ";"}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+     "Description", "\[Rule]", 
+      "\"\<ExportToOBJ[M,file] exports a mesh to file.obj and writes material \
+properties to file.mtl\>\""}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"\"\<Boundary\>\"", "\[Rule]", "False"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"\"\<Normals\>\"", "\[Rule]", "True"}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.631880393212613*^9, 3.631880549055729*^9}, 
+   3.631880632817835*^9, {3.631880760468596*^9, 3.6318807675700293`*^9}, {
+   3.6318810815725117`*^9, 3.63188109057883*^9}, {3.632826133371722*^9, 
+   3.632826148956369*^9}, {3.6482903277412243`*^9, 3.648290393569324*^9}, {
+   3.64829046456682*^9, 3.648290475316543*^9}, {3.648290540429727*^9, 
+   3.648290558960195*^9}, {3.648290592514105*^9, 3.6482906026198*^9}, 
+   3.648290644583311*^9, {3.648290760098374*^9, 3.648290768950646*^9}, {
+   3.648290875867099*^9, 3.6482908786111526`*^9}, {3.648290981619874*^9, 
+   3.648290983515441*^9}, {3.64829135185763*^9, 3.648291369150371*^9}, {
+   3.648291435906299*^9, 3.648291473741349*^9}, {3.648291555015757*^9, 
+   3.648291558926763*^9}, {3.648291594671084*^9, 3.648291628815486*^9}, {
+   3.648291901466724*^9, 3.6482919607080393`*^9}, {3.6482920097685957`*^9, 
+   3.64829201405433*^9}, 3.64829204472174*^9, {3.648292164633243*^9, 
+   3.648292206017221*^9}, {3.648292320483178*^9, 3.648292321176001*^9}, {
+   3.648292636926147*^9, 3.64829263894062*^9}, {3.6819691373556023`*^9, 
+   3.68196920008333*^9}, {3.689407757284265*^9, 3.689407770794569*^9}, 
+   3.692016412520316*^9, {3.6920165332754927`*^9, 3.692016574742713*^9}, {
+   3.712155503855136*^9, 3.712155529300179*^9}, {3.7156070465188303`*^9, 
+   3.715607081443406*^9}, {3.730139449188167*^9, 3.7301394579367647`*^9}, {
+   3.731388090779729*^9, 3.731388091799329*^9}, {3.7313889398615627`*^9, 
+   3.731388950645978*^9}, {3.731417736368987*^9, 3.731417740767787*^9}, {
+   3.731490984144836*^9, 3.731490984376946*^9}, {3.745723304915132*^9, 
+   3.745723308610403*^9}, {3.745723412459428*^9, 3.7457234255266457`*^9}, {
+   3.745723562106451*^9, 3.745723585982007*^9}, {3.745733995460693*^9, 
+   3.745733995697912*^9}, {3.745737413859483*^9, 3.745737414191024*^9}, {
+   3.745740219638115*^9, 3.745740231184614*^9}},
+ CellLabel->"In[76]:=",ExpressionUUID->"0fbba20c-aca2-4363-8789-00f355a20ca4"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 809, 19, 192, "Input",ExpressionUUID->"f481cc4b-344b-4320-97c5-05e835dbc5eb"],
+Cell[1370, 41, 1282, 24, 192, "Input",ExpressionUUID->"9e793575-65e3-4088-b027-cea4e06ec897"],
+Cell[2655, 67, 7622, 148, 1717, "Input",ExpressionUUID->"1275c61d-c33a-4315-a355-5a17f04dfb12"],
+Cell[10280, 217, 23219, 483, 3642, "Input",ExpressionUUID->"e4136c6b-0d82-4d89-889e-f452370636ca"],
+Cell[33502, 702, 676, 15, 117, "Input",ExpressionUUID->"48ab7223-4da6-4ade-9d2a-c10a98c66d23"],
+Cell[34181, 719, 613, 13, 117, "Input",ExpressionUUID->"ec2bc28d-cab0-4b8c-a3c7-e648ec35f9e7"],
+Cell[34797, 734, 900, 20, 92, "Input",ExpressionUUID->"a4676c35-7b70-4219-a9b4-9122d70265d1"],
+Cell[35700, 756, 859, 19, 92, "Input",ExpressionUUID->"a9312520-41fe-4cd2-8f7d-4ea63517c21b"],
+Cell[36562, 777, 946, 21, 192, "Input",ExpressionUUID->"bb4c1107-2209-487e-89fc-8e3ed2a7aa88"],
+Cell[37511, 800, 8389, 193, 1042, "Input",ExpressionUUID->"70b0b453-3446-4154-bb84-6b5475ac2105"],
+Cell[45903, 995, 4826, 111, 692, "Input",ExpressionUUID->"68c52b2d-692a-4c74-8a9c-060f601de715"],
+Cell[50732, 1108, 22276, 470, 3167, "Input",ExpressionUUID->"0fbba20c-aca2-4363-8789-00f355a20ca4"]
+}
+]
+*)
+

@@ -1,0 +1,110 @@
+Notebook[
+ {Cell[BoxData[RowBox[{"TotalVariation", "=", 
+      RowBox[{"PackageFunction", "[", 
+        RowBox[{RowBox[{"{", RowBox[{"M_", ",", "v_"}], "}"}], ",", 
+          "\[IndentingNewLine]", RowBox[{"Dot", "[", "\[IndentingNewLine]", 
+            RowBox[{RowBox[{"Areas", "[", "M", "]"}], ",", 
+              "\[IndentingNewLine]", RowBox[{"cNorm3", "[", RowBox[
+                 {"Partition", "[", RowBox[{RowBox[{RowBox[
+                       {"MeshGradientOperator", "[", "M", "]"}], ".", "v"}], 
+                    ",", RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], 
+                  "]"}], "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+          "\[IndentingNewLine]", RowBox[{"\"InputType\"", "\[Rule]", 
+            "mesh"}]}], "\[IndentingNewLine]", "]"}]}]], "Input", 
+   CellChangeTimes -> {{3.65668210421012*^9, 3.656682129593492*^9}, 
+     {3.656682703778768*^9, 3.65668271060856*^9}, 3.656685178534897*^9, 
+     {3.656686821412745*^9, 3.656686825742837*^9}, {3.656686873250005*^9, 
+      3.6566868849857273*^9}}], 
+  Cell[BoxData[
+    {RowBox[{RowBox[{RowBox[{"Quiet", "[", RowBox[{"Module", "[", 
+             RowBox[{RowBox[{"{", RowBox[{"VV", ",", "V", ",", "\[Epsilon]", 
+                   ",", "code"}], "}"}], ",", "\[IndentingNewLine]", RowBox[
+                {RowBox[{"VV", "=", RowBox[{"Table", "[", RowBox[
+                      {RowBox[{"V", "[", RowBox[{"[", "i", "]"}], "]"}], ",", 
+                       RowBox[{"{", RowBox[{"i", ",", "1", ",", "3"}], 
+                         "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"code", "=", RowBox[{"Sqrt", "[", RowBox[
+                      {"\[Epsilon]", "+", RowBox[{"VV", ".", "VV"}]}], 
+                     "]"}]}], ";", "\[IndentingNewLine]", 
+                 "\[IndentingNewLine]", RowBox[{"CompileJet", "[", 
+                   "\[IndentingNewLine]", RowBox[
+                    {"\"RegularizedTotalVariation\"", ",", 
+                     "\[IndentingNewLine]", RowBox[{"{", RowBox[{RowBox[
+                          {"{", RowBox[{"V", ",", "_Real", ",", "1"}], "}"}], 
+                         ",", RowBox[{"{", RowBox[{"\[Epsilon]", ",", 
+                          "_Real"}], "}"}]}], "}"}], ",", "code", ",", "VV", 
+                     ",", "\[IndentingNewLine]", RowBox[{"\"Derivatives\"", 
+                       "\[Rule]", "2"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}], "]"}], 
+         ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+     RowBox[{"RegularizedTotalVariation", "=", 
+       RowBox[{"PackageFunction", "[", RowBox[
+          {RowBox[{"{", RowBox[{"M_", ",", "v_", ",", "\[Epsilon]_"}], "}"}], 
+           ",", "\[IndentingNewLine]", RowBox[{"Dot", "[", 
+             "\[IndentingNewLine]", RowBox[{RowBox[{"Areas", "[", "M", "]"}], 
+               ",", "\[IndentingNewLine]", RowBox[{"Sqrt", "[", 
+                 RowBox[{"\[Epsilon]", "+", RowBox[{"Total", "[", RowBox[
+                      {RowBox[{RowBox[{"Partition", "[", RowBox[{RowBox[
+                          {RowBox[{"MeshGradientOperator", "[", "M", "]"}], 
+                          ".", "v"}], ",", RowBox[{"EmbeddingDimension", "[", 
+                          "M", "]"}]}], "]"}], "^", "2"}], ",", RowBox[
+                        {"{", "2", "}"}]}], "]"}]}], "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"\"InputType\"", "\[Rule]", "mesh"}]}], 
+         "\[IndentingNewLine]", "]"}]}]}], "Input", 
+   CellChangeTimes -> {{3.656682818885397*^9, 3.65668283005309*^9}, 
+     {3.656685182275964*^9, 3.656685202256302*^9}, {3.656686841948064*^9, 
+      3.656686843955265*^9}, 3.65668689302244*^9, {3.656687347638695*^9, 
+      3.6566873587693567*^9}, 3.65668771136342*^9, {3.656689230971405*^9, 
+      3.656689236895192*^9}, {3.689074677353531*^9, 3.689074678094396*^9}}], 
+  Cell[BoxData[RowBox[{"DRegularizedTotalVariation", "=", 
+      RowBox[{"PackageFunction", "[", 
+        RowBox[{RowBox[{"{", RowBox[{"M_", ",", "v_", ",", "\[Epsilon]_"}], 
+            "}"}], ",", "\[IndentingNewLine]", RowBox[{"Dot", "[", 
+            "\[IndentingNewLine]", RowBox[{RowBox[{"Flatten", "[", 
+                "\[IndentingNewLine]", RowBox[{"Times", "[", 
+                  "\[IndentingNewLine]", RowBox[{RowBox[
+                     {"getDRegularizedTotalVariation", "[", 
+                      "\[IndentingNewLine]", RowBox[{RowBox[{"Partition", 
+                          "[", RowBox[{RowBox[{RowBox[
+                          {"MeshGradientOperator", "[", "M", "]"}], ".", 
+                          "v"}], ",", RowBox[{"EmbeddingDimension", "[", "M", 
+                          "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+                        "\[Epsilon]"}], "\[IndentingNewLine]", "]"}], ",", 
+                    "\[IndentingNewLine]", RowBox[{"Areas", "[", "M", 
+                      "]"}]}], "\[IndentingNewLine]", "]"}], 
+                "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+              RowBox[{"MeshGradientOperator", "[", "M", "]"}]}], 
+            "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"InputType\"", "\[Rule]", "mesh"}]}], 
+        "\[IndentingNewLine]", "]"}]}]], "Input", 
+   CellChangeTimes -> {3.656689240716589*^9}], 
+  Cell[BoxData[RowBox[{"DDRegularizedTotalVariation", "=", 
+      RowBox[{"PackageFunction", "[", 
+        RowBox[{RowBox[{"{", RowBox[{"M_", ",", "v_", ",", "\[Epsilon]_"}], 
+            "}"}], ",", "\[IndentingNewLine]", RowBox[{"Dot", "[", 
+            "\[IndentingNewLine]", RowBox[{RowBox[{RowBox[
+                 {"MeshGradientOperator", "[", "M", "]"}], "\[Transpose]"}], 
+              ",", "\[IndentingNewLine]", RowBox[{
+                "SparseDiagonalBlockMatrix", "[", "\[IndentingNewLine]", 
+                RowBox[{"Times", "[", "\[IndentingNewLine]", RowBox[
+                   {RowBox[{"Areas", "[", "M", "]"}], ",", 
+                    "\[IndentingNewLine]", RowBox[
+                     {"getDDRegularizedTotalVariation", "[", 
+                      "\[IndentingNewLine]", RowBox[{RowBox[{"Partition", 
+                          "[", RowBox[{RowBox[{RowBox[
+                          {"MeshGradientOperator", "[", "M", "]"}], ".", 
+                          "v"}], ",", RowBox[{"EmbeddingDimension", "[", "M", 
+                          "]"}]}], "]"}], ",", "\[IndentingNewLine]", 
+                        "\[Epsilon]"}], "\[IndentingNewLine]", "]"}]}], 
+                  "\[IndentingNewLine]", "]"}], "]"}], ",", 
+              "\[IndentingNewLine]", RowBox[{"MeshGradientOperator", "[", 
+                "M", "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+          "\[IndentingNewLine]", RowBox[{"\"InputType\"", "\[Rule]", 
+            "mesh"}]}], "\[IndentingNewLine]", "]"}]}]], "Input", 
+   CellChangeTimes -> {3.656689240716589*^9, {3.6566893753249407*^9, 
+      3.656689382878333*^9}}]}, WindowSize -> {808, 752}, 
+ WindowMargins -> {{Automatic, 178}, {Automatic, 19}}, 
+ FrontEndVersion -> 
+  "11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 28, 2016)", 
+ StyleDefinitions -> "Default.nb"]

@@ -1,0 +1,510 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20831,        502]
+NotebookOptionsPosition[     19810,        481]
+NotebookOutlinePosition[     20202,        497]
+CellTagsIndexPosition[     20159,        494]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"IsotropicH2SemiInnerProduct", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+     RowBox[{"SparseArray`SparseArraySort", "[", 
+      RowBox[{"WeakBiLaplace", "[", "M", "]"}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"IsotropicH2SemiInnerProduct", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"u_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{"WeakBiLaplace", "[", "M", "]"}], ".", 
+       RowBox[{"Partition", "[", 
+        RowBox[{"u", ",", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"IsotropicH2SemiInnerProduct", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_polygon", ",", 
+      RowBox[{"u_", "?", "VectorQ"}], ",", 
+      RowBox[{"v_", "?", "VectorQ"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Flatten", "[", 
+      RowBox[{
+       RowBox[{"WeakBiLaplace", "[", "M", "]"}], ".", 
+       RowBox[{"Partition", "[", 
+        RowBox[{"u", ",", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}]}], "]"}], ".",
+      "v"}]}], "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.697719532367251*^9, 3.697719574834014*^9}, {
+   3.697720904361525*^9, 3.697720904728321*^9}, {3.69772103898885*^9, 
+   3.6977210389961557`*^9}, 3.709812828885709*^9, {3.7584752764340763`*^9, 
+   3.758475292193787*^9}, {3.797410461531272*^9, 3.797410484698946*^9}},
+ CellLabel->"In[37]:=",ExpressionUUID->"e552e3fe-2679-4e65-b0e3-0b16d6212a5f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IsotropicH2SemiInnerProduct", "'"}], "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M_polygon", ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "d", ",", "vv", ",", "v", ",", "u", ",", "L", ",", "\[Chi]", ",", 
+          "\[Lambda]", ",", "D\[Lambda]v", ",", "Lu", ",", "uDLv", ",", 
+          "term1", ",", "term2"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"d", "=", 
+          RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"vv", "=", 
+          RowBox[{"Flatten", "[", "V", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"v", "=", 
+          RowBox[{"Partition", "[", 
+           RowBox[{"vv", ",", "d"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"u", "=", 
+          RowBox[{"Partition", "[", 
+           RowBox[{
+            RowBox[{"Flatten", "[", "U", "]"}], ",", "d"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"L", "=", 
+          RowBox[{"WeakLaplace", "[", "M", "]"}]}], ";", 
+         RowBox[{"(*", 
+          RowBox[{"Should", " ", "be", " ", 
+           RowBox[{"adjusted", "?"}]}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{"\[Chi]", "=", 
+          RowBox[{"Normal", "[", 
+           RowBox[{
+           "RegularInteriorVerticesCharakteristicFunction", "[", "M", "]"}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"\[Lambda]", "=", 
+          RowBox[{"\[Chi]", " ", 
+           RowBox[{"DualEdgeLengthsInverse", "[", "M", "]"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"D\[Lambda]v", "=", 
+          RowBox[{"\[Chi]", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"DualEdgeLengthsInverse", "'"}], "[", "M", "]"}], ".", 
+             "vv"}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Lu", "=", 
+          RowBox[{"L", ".", "u"}]}], ";", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{"uDLv", "=", 
+          RowBox[{"Partition", "[", 
+           RowBox[{
+            RowBox[{"Normal", "[", 
+             RowBox[{
+              RowBox[{"IsotropicH1SemiInnerProduct", "'"}], "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"{", 
+                RowBox[{"u", ",", "v"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"2", ",", "3"}], "}"}]}], "]"}], "]"}], ",", "d"}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"term1", "=", 
+          RowBox[{"Normal", "[", 
+           RowBox[{
+            RowBox[{"IsotropicH1SemiInnerProduct", "'"}], "[", 
+            RowBox[{"M", ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"\[Lambda]", " ", "Lu"}], ",", "v"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"2", ",", "3"}], "}"}]}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"term2", "=", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"L", ".", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"D\[Lambda]v", " ", "Lu"}], "+", 
+              RowBox[{"\[Lambda]", " ", "uDLv"}]}], ")"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"term1", "+", "term2"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IsotropicH2SemiInnerProduct", "'"}], "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M_polygon", ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"1", ",", "3"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      
+      RowBox[{
+       RowBox[{"IsotropicH2SemiInnerProduct", "'"}], "[", 
+       RowBox[{"M", ",", 
+        RowBox[{"{", 
+         RowBox[{"U", ",", "V"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "3"}], "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+     "]"}]}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IsotropicH2SemiInnerProduct", "'"}], "=", 
+    RowBox[{"PackageFunction", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"M_polygon", ",", 
+        RowBox[{"{", 
+         RowBox[{"U_", ",", "V_"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i_Integer", ",", "j_Integer"}], "}"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"IsotropicH2SemiInnerProduct", "'"}], "[", 
+       RowBox[{"M", ",", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"U", ",", "V"}], "}"}], "\[LeftDoubleBracket]", 
+         RowBox[{"Ordering", "[", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "j"}], "}"}], "]"}], "\[RightDoubleBracket]"}], 
+        ",", 
+        RowBox[{"Sort", "[", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "j"}], "}"}], "]"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"IsotropicH2SemiInnerProduct", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_polygon", ",", 
+       RowBox[{"{", 
+        RowBox[{"U_", ",", "V_"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "d", ",", "u", ",", "v", ",", "L", ",", "\[Chi]", ",", "\[Lambda]", 
+         ",", "Lv", ",", "Lu"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"d", "=", 
+         RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"L", "=", 
+         RowBox[{"WeakLaplace", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"\[Chi]", "=", 
+         RowBox[{"Normal", "[", 
+          RowBox[{
+          "RegularInteriorVerticesCharakteristicFunction", "[", "M", "]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"\[Lambda]", "=", 
+         RowBox[{"\[Chi]", " ", 
+          RowBox[{"DualEdgeLengthsInverse", "[", "M", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"U", "\[Equal]", "V"}], ",", 
+          RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Lu", "=", 
+            RowBox[{"L", ".", "u"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"u", "=", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "U", "]"}], ",", "d"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Plus", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"2.", " ", 
+              RowBox[{
+               RowBox[{"IsotropicH1SemiInnerProduct", "'"}], "[", 
+               RowBox[{"M", ",", 
+                RowBox[{"{", " ", 
+                 RowBox[{"u", ",", 
+                  RowBox[{"\[Lambda]", " ", "Lu"}]}], "}"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "2"}], "}"}]}], "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"\[Chi]", " ", 
+                RowBox[{"ThreadDot", "[", 
+                 RowBox[{"Lu", ",", "Lu"}], "]"}]}], ")"}], ".", 
+              RowBox[{
+               RowBox[{"DualEdgeLengthsInverse", "'"}], "[", "M", "]"}]}]}], 
+            "\[IndentingNewLine]", "]"}]}], ",", 
+          RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Lu", "=", 
+            RowBox[{"L", ".", "u"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"u", "=", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "U", "]"}], ",", "d"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Lv", "=", 
+            RowBox[{"L", ".", "v"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"v", "=", 
+            RowBox[{"Partition", "[", 
+             RowBox[{
+              RowBox[{"Flatten", "[", "V", "]"}], ",", "d"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Plus", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"IsotropicH1SemiInnerProduct", "'"}], "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"{", " ", 
+                RowBox[{"u", ",", 
+                 RowBox[{"\[Lambda]", " ", "Lv"}]}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "2"}], "}"}]}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"\[Chi]", " ", 
+                RowBox[{"ThreadDot", "[", 
+                 RowBox[{"Lu", ",", "Lv"}], "]"}]}], ")"}], ".", 
+              RowBox[{
+               RowBox[{"DualEdgeLengthsInverse", "'"}], "[", "M", "]"}]}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"IsotropicH1SemiInnerProduct", "'"}], "[", 
+              RowBox[{"M", ",", 
+               RowBox[{"{", " ", 
+                RowBox[{"v", ",", 
+                 RowBox[{"\[Lambda]", " ", "Lu"}]}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "2"}], "}"}]}], "]"}]}], 
+            "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+         "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.697719658910304*^9, 3.6977197508487043`*^9}, {
+   3.697721025901422*^9, 3.697721039019033*^9}, 3.697721069808017*^9, {
+   3.7437632600615396`*^9, 3.743763260731185*^9}, {3.756122872142861*^9, 
+   3.756122900364615*^9}, {3.756123406764719*^9, 3.756123410354129*^9}, {
+   3.758475320197631*^9, 
+   3.758475361628096*^9}},ExpressionUUID->"525a266a-deb5-43d1-93e1-\
+2a5f3b5b08fa"],
+
+Cell[BoxData[
+ RowBox[{"RegularInteriorDofsCharakteristicFunction", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{"Join", "@@", 
+      RowBox[{"Table", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+        "RegularInteriorVerticesCharakteristicFunction", "[", "M", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", 
+          RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "}"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6799258454729757`*^9, 3.679925904379343*^9}, {
+   3.6799260612873793`*^9, 3.6799260856522818`*^9}, 3.686751476392088*^9, 
+   3.7437632614715853`*^9, {3.758475347731577*^9, 
+   3.758475349537595*^9}},ExpressionUUID->"c7e47621-2d95-4365-8891-\
+6d0f23012edd"],
+
+Cell[BoxData[
+ RowBox[{"WeakBiLaplaceHelper", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"SparseArray", "[", "\[IndentingNewLine]", 
+     RowBox[{"Times", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+       "RegularInteriorVerticesCharakteristicFunction", "[", "M", "]"}], " ", 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"DualEdgeLengths", "[", "M", "]"}], "^", 
+        RowBox[{"(", 
+         RowBox[{"-", "0.5"}], ")"}]}]}], "\[IndentingNewLine]", "]"}], "]"}],
+     ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6797416785232277`*^9, 3.6797416989073153`*^9}, {
+   3.679741799435055*^9, 3.6797418650784082`*^9}, {3.67992578739227*^9, 
+   3.679925788100724*^9}, 3.680072093522709*^9, {3.680072296423299*^9, 
+   3.680072297373056*^9}, {3.686752494750578*^9, 3.686752513907834*^9}, 
+   3.7437632621173897`*^9, {3.758475255211553*^9, 
+   3.7584752573053007`*^9}},ExpressionUUID->"fe17d0f7-0c3b-4af3-9d60-\
+a51dde702e21"],
+
+Cell[BoxData[
+ RowBox[{"WeakBiLaplace", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"L", "=", 
+        RowBox[{"Dot", "[", 
+         RowBox[{
+          RowBox[{"SparseDiagonalMatrix", "[", 
+           RowBox[{"WeakBiLaplaceHelper", "[", "M", "]"}], "]"}], ",", 
+          RowBox[{"WeakLaplace", "[", "M", "]"}]}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"L", "\[Transpose]"}], ".", "L"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Returns the weak formulation of the Bi-Laplace operator on the \
+polygon M.\>\""}]}], " ", "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.636970556852146*^9, {3.679649577885741*^9, 3.679649654280735*^9}, {
+   3.679649705060205*^9, 3.679649716132658*^9}, {3.6797409013364887`*^9, 
+   3.679740903035062*^9}, 3.6797418696299057`*^9, {3.679741992443632*^9, 
+   3.679741999828878*^9}, {3.680071928145855*^9, 3.6800719961616697`*^9}, {
+   3.680072388718285*^9, 3.680072397813936*^9}, {3.681038922821649*^9, 
+   3.68103892929065*^9}, {3.6867524913903723`*^9, 3.686752492231135*^9}, 
+   3.6977209382368307`*^9, 3.697721038984209*^9, {3.758475258881816*^9, 
+   3.7584752602914743`*^9}},ExpressionUUID->"3cceb536-c3b1-4fba-8a10-\
+7e5689adf4cf"],
+
+Cell[BoxData[
+ RowBox[{"H2SemiInnerProductHelper", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", "=", 
+        RowBox[{"Times", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+          "RegularInteriorVerticesCharakteristicFunction", "[", "M", "]"}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"DualEdgeLengths", "[", "M", "]"}], "^", 
+           RowBox[{"(", 
+            RowBox[{"-", "0.5"}], ")"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"SparseDiagonalMatrix", "[", "\[IndentingNewLine]", 
+       RowBox[{"Flatten", "[", 
+        RowBox[{"Transpose", "[", 
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"a", ",", 
+           RowBox[{"EmbeddingDimension", "[", "M", "]"}]}], "]"}], "]"}], 
+        "]"}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.680063798609284*^9, 3.6800638503142157`*^9}, 
+   3.680072615970868*^9, 3.681038538196855*^9, {3.686751399523641*^9, 
+   3.6867514003858*^9}, 3.686752516983227*^9, 3.688533025908701*^9, 
+   3.743763262713628*^9, {3.7584752623939753`*^9, 
+   3.758475264099113*^9}},ExpressionUUID->"7814205a-048f-44ba-8058-\
+6873c977ebb0"],
+
+Cell[BoxData[
+ RowBox[{"H2SemiInnerProduct", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_polygon", ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"L", "=", 
+        RowBox[{
+         RowBox[{"H2SemiInnerProductHelper", "[", "M", "]"}], ".", 
+         RowBox[{"H1SemiInnerProduct", "[", "M", "]"}]}]}], 
+       "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"L", "\[Transpose]"}], ".", "L"}]}], "\[IndentingNewLine]", 
+     "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+    "Description", "\[Rule]", 
+     "\"\<Returns the bilinear form associated with the vector \
+bi-Laplacian.\>\""}]}], " ", "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6785210575220013`*^9, 3.6785210814216633`*^9}, {
+   3.678541650270317*^9, 3.678541657732465*^9}, {3.679584028490725*^9, 
+   3.67958402890487*^9}, 3.679584067402833*^9, {3.679584129648939*^9, 
+   3.6795841752390823`*^9}, 3.679649812730694*^9, {3.6796499032833157`*^9, 
+   3.6796499099874887`*^9}, {3.679740416170375*^9, 3.679740420146134*^9}, {
+   3.67975995130753*^9, 3.6797599518327637`*^9}, 3.6797601750798407`*^9, {
+   3.6800639206767273`*^9, 3.680063922653962*^9}, {3.680069310660638*^9, 
+   3.6800693259779987`*^9}, {3.680069434931171*^9, 3.6800694360828543`*^9}, {
+   3.680072631741075*^9, 3.680072688210582*^9}, {3.680929670589444*^9, 
+   3.680929671321772*^9}, {3.681038466552019*^9, 3.681038469340537*^9}, {
+   3.681038540059766*^9, 3.681038542761217*^9}, {3.681199041678546*^9, 
+   3.681199060499711*^9}, {3.686751402740301*^9, 3.686751412769112*^9}, {
+   3.6889676522944593`*^9, 3.688967655633902*^9}, 3.688968165549617*^9, {
+   3.758475266233369*^9, 
+   3.758475268651593*^9}},ExpressionUUID->"653548e4-8c12-4c4e-92b7-\
+366513d401a8"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.7437742090181627`*^9},ExpressionUUID->"1e213444-bcce-4c2e-99f2-\
+457c93fee5e6"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Mac OS X x86 (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"70308351-803a-4134-8521-6891772bb20e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1858, 43, 292, "Input",ExpressionUUID->"e552e3fe-2679-4e65-b0e3-0b16d6212a5f"],
+Cell[2419, 65, 10309, 258, 1317, "Input",ExpressionUUID->"525a266a-deb5-43d1-93e1-2a5f3b5b08fa"],
+Cell[12731, 325, 962, 20, 167, "Input",ExpressionUUID->"c7e47621-2d95-4365-8891-6d0f23012edd"],
+Cell[13696, 347, 1119, 23, 217, "Input",ExpressionUUID->"fe17d0f7-0c3b-4af3-9d60-a51dde702e21"],
+Cell[14818, 372, 1503, 31, 192, "Input",ExpressionUUID->"3cceb536-c3b1-4fba-8a10-7e5689adf4cf"],
+Cell[16324, 405, 1487, 33, 292, "Input",ExpressionUUID->"7814205a-048f-44ba-8058-6873c977ebb0"],
+Cell[17814, 440, 1840, 34, 217, "Input",ExpressionUUID->"653548e4-8c12-4c4e-92b7-366513d401a8"],
+Cell[19657, 476, 149, 3, 67, "Input",ExpressionUUID->"1e213444-bcce-4c2e-99f2-457c93fee5e6"]
+}
+]
+*)
+

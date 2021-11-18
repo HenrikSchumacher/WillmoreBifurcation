@@ -1,0 +1,993 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     45163,        985]
+NotebookOptionsPosition[     43820,        961]
+NotebookOutlinePosition[     44156,        976]
+CellTagsIndexPosition[     44113,        973]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstraintList", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"KeyDrop", "[", 
+     RowBox[{
+      RowBox[{"ConstraintList", "[", "M", "]"}], ",", 
+      RowBox[{"Keys", "[", 
+       RowBox[{"PenalizationParameterList", "[", "M", "]"}], "]"}]}], "]"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.795759496940844*^9, 3.795759553434474*^9}},
+ CellLabel->
+  "In[228]:=",ExpressionUUID->"811bdf12-df6f-49cd-8bc5-3ebcbfd4b85f"],
+
+Cell[BoxData[
+ RowBox[{"DesiredUnpenalizedConstraint", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"ToPack", "@", 
+     RowBox[{"Flatten", "@", 
+      RowBox[{"Values", "[", 
+       RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}]}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.681200909456295*^9, {3.683615743274066*^9, 3.683615749162717*^9}, 
+   3.683618225109342*^9, 3.68940739159823*^9, {3.692959702549128*^9, 
+   3.6929597033359957`*^9}, {3.738246965540979*^9, 3.7382469680364037`*^9}, 
+   3.7574965949105883`*^9, {3.7574966617353067`*^9, 3.757496663256753*^9}, {
+   3.75749689777874*^9, 3.757496907842785*^9}, {3.795759445601378*^9, 
+   3.795759459072947*^9}, 3.79576493578185*^9, 3.795764980829159*^9},
+ CellLabel->
+  "In[101]:=",ExpressionUUID->"49141d28-5367-49ff-85a9-b59295130428"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstraintLength", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Length", "[", 
+     RowBox[{"UnpenalizedConstraint", "[", "M", "]"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.7574969279382753`*^9, 3.757496928654812*^9}, {
+  3.796401481754861*^9, 
+  3.79640148413769*^9}},ExpressionUUID->"c5063a1e-bad6-49ac-b0ae-\
+4704675af3aa"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstraintSpans", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"AssociationThread", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Keys", "[", 
+       RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"a", ",", "b", ",", "c"}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"c", "=", "1"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"b", "=", "0"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Table", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"b", "+=", "d"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"a", "=", "c"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"c", "+=", "d"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"Span", "[", 
+             RowBox[{"a", ",", "b"}], "]"}]}], "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"a", "\[LessEqual]", " ", "b"}], ",", 
+              RowBox[{"Span", "[", 
+               RowBox[{"a", ",", "b"}], "]"}], ",", 
+              RowBox[{"{", "}"}]}], "]"}], "*)"}], "\[IndentingNewLine]", ",",
+            "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"d", ",", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Length", "[", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"G", "[", "M", "]"}], "}"}], "]"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"G", ",", 
+                 RowBox[{"Keys", "[", 
+                  RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], 
+                  "]"}]}], "}"}]}], "]"}]}], "}"}]}], "]"}]}]}], 
+       "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.714024942407241*^9, {3.714025162112986*^9, 3.714025166301518*^9}, {
+   3.714025314654708*^9, 3.714025334638097*^9}, {3.7140254051904488`*^9, 
+   3.714025418980476*^9}, {3.714025469692379*^9, 3.714025473139072*^9}, {
+   3.7382469569915953`*^9, 3.73824695900585*^9}, {3.796401474240788*^9, 
+   3.796401499784384*^9}},ExpressionUUID->"91c16b56-7569-46b1-adfe-\
+d00156fba92b"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedReadUList", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "Ulist0_", ",", "slotlist_", ",", "G_"}], 
+     "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"With", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"spans", "=", 
+        RowBox[{"UnpenalizedConstraintSpans", "[", "M", "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Table", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+           "slotlist", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}],
+            "\[Equal]", "1"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Ulist0", "\[LeftDoubleBracket]", 
+           RowBox[{"i", ",", 
+            RowBox[{"spans", "[", "G", "]"}]}], "\[RightDoubleBracket]"}], 
+          " ", ",", "\[IndentingNewLine]", 
+          RowBox[{
+          "Ulist0", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}]}], 
+         "\[IndentingNewLine]", "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", 
+          RowBox[{"Length", "[", "Ulist0", "]"}]}], "}"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.714025265512446*^9, 3.714025266669969*^9}, {
+  3.738246960837862*^9, 3.738246963997057*^9}, {3.796401464442164*^9, 
+  3.796401467737224*^9}},ExpressionUUID->"dd9c453e-8a9f-406c-aa80-\
+776d0c700b0f"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstaintProcessingStorage", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Association", "[", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.788418127247262*^9, 3.788418162372457*^9}, {
+   3.788418220747691*^9, 3.788418235641284*^9}, {3.7884210876502447`*^9, 
+   3.7884210891674757`*^9}, 3.7884227900026283`*^9, 
+   3.7964014624502687`*^9},ExpressionUUID->"0d500be0-b4a3-43a6-bea4-\
+01c017af3086"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstaintProcessingLog", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "Persistent"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.788421175252244*^9, 3.78842117596385*^9}, {
+   3.788421533455933*^9, 3.788421533550639*^9}, 3.788422791056987*^9, 
+   3.796401461266399*^9},ExpressionUUID->"e1d330cf-65d3-4137-a9be-\
+675516a61f4e"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstraint", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "g", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ToPack", "@", "Join"}], "@@", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"g", "=", 
+           RowBox[{"G", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"TensorRank", "[", "g", "]"}], "\[Equal]", "0"}], ",", 
+            RowBox[{"{", "g", "}"}], ",", "g"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"G", ",", 
+           RowBox[{"Keys", "[", 
+            RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}]}], 
+          "}"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{
+  3.6894073921803837`*^9, {3.738246970853394*^9, 3.738246972404187*^9}, {
+   3.795759461280805*^9, 3.7957594626411133`*^9}},
+ CellLabel->
+  "In[230]:=",ExpressionUUID->"35943db2-2fb1-4580-aba1-8656e16463ac"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"UnpenalizedConstraint", "'"}], "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "g", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ToPack", "@", "Join"}], "@@", 
+        RowBox[{"Table", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"g", "=", 
+            RowBox[{
+             RowBox[{"G", "'"}], "[", "M", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"TensorRank", "[", "g", "]"}], "\[Equal]", "1"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Length", "[", "g", "]"}], "\[Equal]", "0"}], ",", 
+               RowBox[{"{", "}"}], ",", 
+               RowBox[{"Sparsify", "[", 
+                RowBox[{"{", "g", "}"}], "]"}]}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Sparsify", "[", "g", "]"}]}], "\[IndentingNewLine]", 
+            "]"}]}], "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"G", ",", 
+            RowBox[{"Keys", "[", 
+             RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}]}], 
+           "}"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"UnpenalizedConstraint", "'"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "Ulist0_", ",", "slotlist_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"g", ",", "DGU", ",", "DG", ",", "Ulist", ",", "data"}], "}"}],
+       ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"data", "=", 
+        RowBox[{"Table", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Ulist", "=", 
+            RowBox[{"UnpenalizedReadUList", "[", 
+             RowBox[{"M", ",", "Ulist0", ",", "slotlist", ",", "G"}], "]"}]}],
+            ";", "\[IndentingNewLine]", 
+           RowBox[{"DGU", "=", 
+            RowBox[{
+             RowBox[{"G", "'"}], "[", 
+             RowBox[{"M", ",", "Ulist", ",", "slotlist"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"NumberQ", "[", "DGU", "]"}], ",", 
+             RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+             RowBox[{"DGU", "=", 
+              RowBox[{"Sparsify", "[", 
+               RowBox[{"{", "DGU", "}"}], "]"}]}], ",", 
+             RowBox[{"(*", "Else", "*)"}], "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"!", 
+                 RowBox[{"TensorQ", "[", "DGU", "]"}]}], ",", 
+                RowBox[{"(*", "Then", "*)"}], "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"DG", "=", 
+                  RowBox[{
+                   RowBox[{"G", "'"}], "[", "M", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Length", "[", "DG", "]"}], "\[Equal]", "0"}], 
+                   ",", "\[IndentingNewLine]", 
+                   RowBox[{"DGU", "=", 
+                    RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"Print", "[", 
+                    RowBox[{
+                    "\"\<Constraint': Exception found with function \>\"", 
+                    ",", "G", ",", "\"\<. Fallback used.\>\""}], "]"}], ";"}],
+                     "*)"}], "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"TensorRank", "[", "DG", "]"}], "\[Equal]", "1"}],
+                     ",", 
+                    RowBox[{"DG", "=", 
+                    RowBox[{"Sparsify", "[", 
+                    RowBox[{"{", "DG", "}"}], "]"}]}]}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"DGU", "=", 
+                    RowBox[{"TensorVectorContract", "[", 
+                    RowBox[{"DG", ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"M", ",", "#"}], "]"}], "&"}], "/@", "Ulist"}], 
+                    ",", "slotlist"}], "]"}]}], ";"}]}], 
+                  "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+               "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+           "\[IndentingNewLine]", "DGU"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"G", ",", 
+            RowBox[{"Keys", "[", 
+             RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}]}], 
+           "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"ToPack", "@", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"MemberQ", "[", 
+           RowBox[{"slotlist", ",", "1"}], "]"}], ",", "\[IndentingNewLine]", 
+          
+          RowBox[{"Total", "[", "data", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Join", "@@", "data"}]}], "\[IndentingNewLine]", 
+         "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.689407392651518*^9, 3.689407393099134*^9}, {
+   3.69721386703828*^9, 3.697213876060782*^9}, {3.700017662105796*^9, 
+   3.7000176664312572`*^9}, {3.7000199353892393`*^9, 3.700019945259715*^9}, {
+   3.7132626478724537`*^9, 3.7132626529203253`*^9}, {3.727112945038394*^9, 
+   3.7271129700443153`*^9}, 3.727116152956089*^9, {3.7382465030492067`*^9, 
+   3.738246506200241*^9}, {3.738246921092605*^9, 3.738246927783444*^9}, {
+   3.738256483321767*^9, 3.738256493167769*^9}, 3.744026063654928*^9, {
+   3.744026127466971*^9, 3.744026129151826*^9}, {3.7957594654184647`*^9, 
+   3.795759475313402*^9}, 
+   3.796401532871945*^9},ExpressionUUID->"549cf73e-9b39-42b7-b804-\
+999abe815a20"],
+
+Cell[BoxData[
+ RowBox[{"UnpenalizedConstraintViolation", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"UnpenalizedConstraint", "[", "M", "]"}], "-", 
+     RowBox[{"DesiredUnpenalizedConstraint", "[", "M", "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Caching", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.681200730278901*^9, 3.6812007312220583`*^9}, {
+   3.681200930876479*^9, 3.6812009324332314`*^9}, 3.689407395182179*^9, {
+   3.738246940263082*^9, 3.738246942269412*^9}, {3.7957595867056303`*^9, 
+   3.795759600899311*^9}, {3.795764927550291*^9, 
+   3.795764931357555*^9}},ExpressionUUID->"c033a5c9-8897-4d40-b88b-\
+c5e181a91b75"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"UnpenalizedConstraint", "''"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{"M_genericmesh", ",", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "g", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ToPack", "@", "Join"}], "@@", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"g", "=", 
+           RowBox[{
+            RowBox[{"G", "''"}], "[", "M", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"TensorRank", "[", "g", "]"}], "\[Equal]", "2"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"Sparsify", "[", 
+             RowBox[{"{", "g", "}"}], "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"TensorRank", "[", "g", "]"}], "\[Equal]", "1"}], ",", 
+              
+              RowBox[{"{", "}"}], ",", 
+              RowBox[{"Sparsify", "[", "g", "]"}]}], "]"}]}], 
+           "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"G", ",", 
+           RowBox[{"Keys", "[", 
+            RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}]}], 
+          "}"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6812002664951*^9, 3.681200271722344*^9}, {
+   3.681200405569091*^9, 3.6812004890869703`*^9}, {3.681200561159954*^9, 
+   3.681200561583824*^9}, {3.681200602873822*^9, 3.681200605858266*^9}, {
+   3.681200649752953*^9, 3.6812006501866827`*^9}, {3.681200712104566*^9, 
+   3.6812007235779037`*^9}, {3.681200911074416*^9, 3.6812009239334097`*^9}, {
+   3.683615752176113*^9, 3.6836157829715643`*^9}, {3.6843937286798897`*^9, 
+   3.684393865437042*^9}, {3.6893965055278807`*^9, 3.6893965214852*^9}, 
+   3.689407393589582*^9, {3.6972138813321123`*^9, 3.697213882779839*^9}, {
+   3.7000199620357237`*^9, 3.7000199624113407`*^9}, {3.700118556005247*^9, 
+   3.700118556935533*^9}, 3.700118733777596*^9, {3.7132623629772797`*^9, 
+   3.713262413995513*^9}, {3.7132626380733347`*^9, 3.71326263899837*^9}, {
+   3.714036112518104*^9, 3.714036122765882*^9}, {3.714037528591652*^9, 
+   3.714037533093955*^9}, {3.714037741259111*^9, 3.714037742427163*^9}, {
+   3.714041320503317*^9, 3.714041382197695*^9}, {3.714041694885358*^9, 
+   3.7140417050666313`*^9}, {3.714488264983165*^9, 3.714488266070706*^9}, {
+   3.714489032785946*^9, 3.7144890421525307`*^9}, {3.7144891189524813`*^9, 
+   3.714489126353104*^9}, 3.7144891777499323`*^9, {3.714489549247295*^9, 
+   3.7144895611487627`*^9}, 3.714489610482971*^9, {3.714489674719172*^9, 
+   3.714489690235816*^9}, {3.7271129809439163`*^9, 3.7271130080357037`*^9}, {
+   3.727116143497322*^9, 3.727116146710225*^9}, {3.738246509743184*^9, 
+   3.738246515367507*^9}, {3.738246930224386*^9, 3.738246937207649*^9}, {
+   3.7382564975934343`*^9, 3.738256504672765*^9}, {3.7440260843875513`*^9, 
+   3.74402608479469*^9}, 3.75722029930048*^9, 3.757220791664501*^9, {
+   3.757221049298719*^9, 3.75722105790291*^9}, {3.757222136966874*^9, 
+   3.757222160022787*^9}, {3.757222215022077*^9, 3.757222236889531*^9}, {
+   3.758479716301323*^9, 3.758479716634015*^9}, {3.758482742025803*^9, 
+   3.758482785767666*^9}, 3.758482848421579*^9, {3.758482942623438*^9, 
+   3.7584829606275673`*^9}, {3.758483149943721*^9, 3.758483155241212*^9}, {
+   3.758484012430354*^9, 3.758484031759932*^9}, {3.758484317590951*^9, 
+   3.758484327408217*^9}, 3.7884216319656763`*^9, {3.7964000655114717`*^9, 
+   3.796400079389082*^9}},ExpressionUUID->"caff3d8a-3bb7-48f4-b5e8-\
+afa34fae209e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"UnpenalizedConstraint", "''"}], "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"M_genericmesh", ",", "Ulist0_", ",", "slotlist_"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "i0", ",", "slot1Q", ",", "spans", ",", "proc", ",", "log", ",", 
+        "logPrint", ",", "f", ",", "DDGU", ",", "Ulist"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"i0", "=", 
+        RowBox[{"IntegerPositions", "[", 
+         RowBox[{"slotlist", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"slot1Q", "=", 
+        RowBox[{
+         RowBox[{"Length", "[", "i0", "]"}], ">", "0"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"proc", "=", 
+        RowBox[{"ConstaintProcessingStorage", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"log", "=", 
+        RowBox[{"ConstaintProcessingLog", "[", "M", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"logPrint", "=", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"G", ",", "x"}], "}"}], "\[Function]", 
+         RowBox[{"(", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"G", ",", "2", ",", "slotlist"}], "}"}], "\[Rule]", 
+              "x"}], "]"}], ";"}], "*)"}], 
+          RowBox[{"AppendTo", "[", 
+           RowBox[{"log", ",", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"G", ",", "2", ",", "slotlist"}], "}"}], "\[Rule]", 
+             "x"}]}], "]"}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{"slot1Q", ",", "Plus", ",", "Join"}], "]"}], "@@", 
+        RowBox[{"Table", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"f", "=", 
+            RowBox[{"proc", "[", 
+             RowBox[{"{", 
+              RowBox[{"G", ",", "2", ",", "slotlist"}], "}"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Ulist", "=", 
+            RowBox[{"UnpenalizedReadUList", "[", 
+             RowBox[{"M", ",", "Ulist0", ",", "slotlist", ",", "G"}], "]"}]}],
+            ";", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"!", 
+              RowBox[{"MissingQ", "[", "f", "]"}]}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"DDGU", "=", 
+               RowBox[{"f", "[", 
+                RowBox[{"M", ",", "Ulist"}], "]"}]}], ";"}], 
+             "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"logPrint", "[", 
+               RowBox[{
+               "G", ",", 
+                "\"\<Processing function has not been created, yet.\>\""}], 
+               "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"-", 
+                  RowBox[{"Subtract", " ", "@@", " ", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"UnpenalizedConstraintSpans", "[", "M", "]"}], 
+                    ")"}], "[", "G", "]"}]}]}], "<", "0"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"logPrint", "[", 
+                  RowBox[{"G", ",", "\"\<No actual constraint found.\>\""}], 
+                  "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"f", "=", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                   "\[Function]", "Nothing"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{
+                   RowBox[{"DDGU", "=", 
+                    RowBox[{"{", "}"}]}], ";"}], "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"DDGU", "=", "Nothing"}], ";"}], 
+                "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"logPrint", "[", 
+                  RowBox[{"G", ",", "\"\<Constraint found.\>\""}], "]"}], ";",
+                  "\[IndentingNewLine]", 
+                 RowBox[{"DDGU", "=", 
+                  RowBox[{
+                   RowBox[{"G", "''"}], "[", 
+                   RowBox[{"M", ",", "Ulist", ",", "slotlist"}], "]"}]}], ";",
+                  "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"TensorQ", "[", "DDGU", "]"}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{
+                    "G", ",", 
+                    "\"\<Everything is fine, G'' is well-implemented.\>\""}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"G", "=", "G"}], ",", 
+                    RowBox[{"s", "=", "slotlist"}]}], "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                    "\[Function]", 
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]", ",", "s"}], 
+                    "]"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"DDGU", "=", "DDGU"}], ";"}], "*)"}], 
+                   "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{
+                    "G", ",", "\"\<G'' is not well-implemented.\>\""}], "]"}],
+                     ";", "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "i0", "]"}], "\[LessEqual]", "0"}],
+                     ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{"G", ",", "\"\<Slot 1 does not appear.\>\""}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "one", " ", "of", " ", "the", " ", "worst", " ", 
+                    "cases"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"computing", " ", "the", " ", "full", " ", "3"}], 
+                    "-", 
+                    RowBox[{
+                    "tensor", " ", "and", " ", "contract", " ", 
+                    "afterwards"}]}]}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"G", "=", "G"}], ",", 
+                    RowBox[{"s", "=", "slotlist"}]}], "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                    "\[Function]", 
+                    RowBox[{"TensorVectorContract", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", "\[FormalX]", "]"}], ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"\[FormalX]", ",", "#"}], "]"}], "&"}], "/@", 
+                    "\[FormalU]"}], ",", "s"}], "]"}]}]}], 
+                    "\[IndentingNewLine]", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{"f", "[", 
+                    RowBox[{"M", ",", "Ulist"}], "]"}]}], ";"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{"G", ",", "\"\<Slot 1 found.\>\""}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"-", 
+                    RowBox[{"Subtract", " ", "@@", " ", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"UnpenalizedConstraintSpans", "[", "M", "]"}], 
+                    ")"}], "[", "G", "]"}]}]}], "\[Equal]", "0"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{"G", ",", "\"\<G is scalar.\>\""}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", 
+                    RowBox[{"M", ",", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"Ulist", ",", "i0"}], "]"}], ",", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"slotlist", ",", "i0"}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"TensorQ", "[", "DDGU", "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{
+                    "G", ",", 
+                    "\"\<G is scalar but G'' supports requested slots.\>\""}],
+                     "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"G", "=", "G"}], ",", 
+                    RowBox[{"i", "=", "i0"}], ",", 
+                    RowBox[{"s", "=", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"slotlist", ",", "i0"}], "]"}]}]}], "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                    "\[Function]", 
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"\[FormalX]", ",", 
+                    RowBox[{
+                    RowBox[{"\[FormalU]", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    "i", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], 
+                    "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+                    "]"}], 
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", 
+                    RowBox[{"\[FormalX]", ",", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"\[FormalU]", ",", "i"}], "]"}], ",", "s"}], 
+                    "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Ulist", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    "i0", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], 
+                    "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+                    "DDGU"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{"f", "[", 
+                    RowBox[{"M", ",", "Ulist"}], "]"}]}]}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{
+                    "G", ",", 
+                    "\"\<G is scalar and G'' does not support requested \
+slots.\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"G", "=", "G"}], ",", 
+                    RowBox[{"i", "=", "i0"}], ",", 
+                    RowBox[{"s", "=", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"slotlist", ",", "i0"}], "]"}]}]}], "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                    "\[Function]", 
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"\[FormalX]", ",", 
+                    RowBox[{
+                    RowBox[{"\[FormalU]", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    "i", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], 
+                    "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+                    "]"}], 
+                    RowBox[{"TensorVectorContract", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", "\[FormalX]", "]"}], ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"\[FormalX]", ",", "#"}], "]"}], "&"}], "/@", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"\[FormalU]", ",", "i"}], "]"}]}], ",", "s"}], 
+                    "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{"f", "[", 
+                    RowBox[{"M", ",", "Ulist"}], "]"}]}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{"G", ",", "\"\<G is vectorial.\>\""}], "]"}], ";",
+                     "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", 
+                    RowBox[{"M", ",", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"Ulist", ",", "i0"}], "]"}], ",", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"slotlist", ",", "i0"}], "]"}]}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"TensorQ", "[", "DDGU", "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{
+                    "G", ",", 
+                    "\"\<G is vectorial but G'' supports requested \
+slots.\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"G", "=", "G"}], ",", 
+                    RowBox[{"i", "=", "i0"}], ",", 
+                    RowBox[{"s", "=", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"slotlist", ",", "i0"}], "]"}]}]}], "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                    "\[Function]", 
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"\[FormalX]", ",", 
+                    RowBox[{"\[FormalU]", "\[LeftDoubleBracket]", 
+                    RowBox[{"i", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}]}], 
+                    "]"}], 
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", 
+                    RowBox[{"\[FormalX]", ",", 
+                    RowBox[{"Delete", "[", 
+                    RowBox[{"\[FormalU]", ",", "i"}], "]"}], ",", "s"}], 
+                    "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{
+                    RowBox[{"Ulist", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    "i0", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "\[RightDoubleBracket]"}], ".",
+                     "DDGU"}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{"f", "[", 
+                    RowBox[{"M", ",", "Ulist"}], "]"}]}], ";"}], 
+                    "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"logPrint", "[", 
+                    RowBox[{
+                    "G", ",", 
+                    "\"\<G is vectorial but G'' does not support requested \
+slots.\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{
+                    RowBox[{
+                    "one", " ", "of", " ", "the", " ", "worst", " ", 
+                    "cases"}], ",", " ", 
+                    RowBox[{
+                    RowBox[{"computing", " ", "the", " ", "full", " ", "3"}], 
+                    "-", 
+                    RowBox[{
+                    "tensor", " ", "and", " ", "contract", " ", 
+                    "afterwards"}]}]}], "*)"}], "\[IndentingNewLine]", 
+                    RowBox[{"f", "=", 
+                    RowBox[{"With", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"G", "=", "G"}], ",", 
+                    RowBox[{"s", "=", "slotlist"}]}], "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"\[FormalX]", ",", "\[FormalU]"}], "}"}], 
+                    "\[Function]", 
+                    RowBox[{"TensorVectorContract", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"G", "''"}], "[", "\[FormalX]", "]"}], ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"GetBuffer", "[", 
+                    RowBox[{"\[FormalX]", ",", "#"}], "]"}], "&"}], "/@", 
+                    "\[FormalU]"}], ",", "s"}], "]"}]}]}], 
+                    "\[IndentingNewLine]", "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"DDGU", "=", 
+                    RowBox[{"f", "[", 
+                    RowBox[{"M", ",", "Ulist"}], "]"}]}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+                    "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}], 
+                  "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+               "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"proc", "[", 
+                RowBox[{"{", 
+                 RowBox[{"G", ",", "2", ",", "slotlist"}], "}"}], "]"}], "=", 
+               "f"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"SetPersistentCache", "[", 
+               RowBox[{
+               "M", ",", "\"\<ConstaintProcessingStorage\>\"", ",", "proc"}], 
+               "]"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"SetPersistentCache", "[", 
+               RowBox[{
+               "M", ",", "\"\<ConstaintProcessingLog\>\"", ",", "log"}], 
+               "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{"Sparsify", "[", "DDGU", "]"}], "*)"}], 
+           "\[IndentingNewLine]", "DDGU"}], "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"G", ",", 
+            RowBox[{"Keys", "[", 
+             RowBox[{"UnpenalizedConstraintList", "[", "M", "]"}], "]"}]}], 
+           "}"}]}], "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7884155299124117`*^9, 3.788415535799499*^9}, {
+   3.788415670940256*^9, 3.7884156753068542`*^9}, 3.7884160847643948`*^9, {
+   3.788416126016046*^9, 3.7884161392466993`*^9}, {3.788417640905237*^9, 
+   3.788417709428809*^9}, {3.7884183630950613`*^9, 3.7884183653166733`*^9}, {
+   3.788418403262207*^9, 3.7884185184650803`*^9}, {3.788418582758284*^9, 
+   3.78841879294448*^9}, {3.788418926042354*^9, 3.78841895935511*^9}, {
+   3.7884190206908913`*^9, 3.788419114235832*^9}, {3.7884192147383966`*^9, 
+   3.7884192641409063`*^9}, {3.788419312093052*^9, 3.7884193566844463`*^9}, {
+   3.7884194413218822`*^9, 3.788419485066173*^9}, {3.788419521512719*^9, 
+   3.788419699966095*^9}, {3.7884197399937057`*^9, 3.788419832155114*^9}, {
+   3.788419876123424*^9, 3.788419876297863*^9}, {3.788419920168994*^9, 
+   3.788419935208344*^9}, {3.788420015591366*^9, 3.788420019995858*^9}, {
+   3.788420106849557*^9, 3.788420114752698*^9}, 3.78842021895012*^9, {
+   3.788420264429186*^9, 3.7884203563758183`*^9}, {3.788420392735857*^9, 
+   3.788420511057989*^9}, {3.788420592211483*^9, 3.788420593503395*^9}, {
+   3.788420629941597*^9, 3.7884206427174883`*^9}, {3.7884206748523808`*^9, 
+   3.788420712202982*^9}, {3.788420761409606*^9, 3.788420915540901*^9}, 
+   3.78842100493775*^9, {3.788421103206625*^9, 3.788421124164568*^9}, {
+   3.788421180130019*^9, 3.7884213080510406`*^9}, {3.7884213501165037`*^9, 
+   3.788421489005619*^9}, {3.788421540166889*^9, 3.78842156087547*^9}, {
+   3.788421645680677*^9, 3.7884217934427233`*^9}, {3.78842183473062*^9, 
+   3.788421887022657*^9}, 3.788421941462781*^9, {3.7884219977804956`*^9, 
+   3.78842200853189*^9}, {3.7884220458023767`*^9, 3.788422253706853*^9}, {
+   3.7884222854888144`*^9, 3.788422491657049*^9}, 3.788422558888241*^9, {
+   3.7884226414763193`*^9, 3.788422724741338*^9}, 3.7884227966872473`*^9, {
+   3.788423125455662*^9, 3.788423128255775*^9}, 3.788423255431443*^9, 
+   3.788427404958029*^9, 3.788427465430196*^9, {3.788427513556055*^9, 
+   3.788427518450735*^9}, {3.7884277156665487`*^9, 3.7884277186976147`*^9}, {
+   3.788428131178616*^9, 3.788428135625504*^9}, {3.788428194728084*^9, 
+   3.788428207974243*^9}, {3.788447645145793*^9, 3.788447677935066*^9}, {
+   3.7884477669241734`*^9, 3.7884478719916973`*^9}, {3.7884480374983597`*^9, 
+   3.7884480637693777`*^9}, {3.796400084010901*^9, 3.796400097186919*^9}, {
+   3.796401373090173*^9, 3.796401389632318*^9}, 
+   3.796401533454854*^9},ExpressionUUID->"5f0247e5-dc29-4ee8-ac47-\
+c048fcab508e"]
+},
+WindowSize->{1440, 855},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 627, 14, 117, "Input",ExpressionUUID->"811bdf12-df6f-49cd-8bc5-3ebcbfd4b85f"],
+Cell[1188, 36, 983, 19, 117, "Input",ExpressionUUID->"49141d28-5367-49ff-85a9-b59295130428"],
+Cell[2174, 57, 543, 12, 117, "Input",ExpressionUUID->"c5063a1e-bad6-49ac-b0ae-4704675af3aa"],
+Cell[2720, 71, 2534, 55, 467, "Input",ExpressionUUID->"91c16b56-7569-46b1-adfe-d00156fba92b"],
+Cell[5257, 128, 1505, 36, 242, "Input",ExpressionUUID->"dd9c453e-8a9f-406c-aa80-776d0c700b0f"],
+Cell[6765, 166, 606, 11, 117, "Input",ExpressionUUID->"0d500be0-b4a3-43a6-bea4-01c017af3086"],
+Cell[7374, 179, 528, 10, 117, "Input",ExpressionUUID->"e1d330cf-65d3-4137-a9be-675516a61f4e"],
+Cell[7905, 191, 1318, 32, 242, "Input",ExpressionUUID->"35943db2-2fb1-4580-aba1-8656e16463ac"],
+Cell[9226, 225, 6351, 145, 917, "Input",ExpressionUUID->"549cf73e-9b39-42b7-b804-999abe815a20"],
+Cell[15580, 372, 769, 15, 117, "Input",ExpressionUUID->"c033a5c9-8897-4d40-b88b-c5e181a91b75"],
+Cell[16352, 389, 3767, 69, 292, "Input",ExpressionUUID->"caff3d8a-3bb7-48f4-b5e8-afa34fae209e"],
+Cell[20122, 460, 23694, 499, 2620, "Input",ExpressionUUID->"5f0247e5-dc29-4ee8-ac47-c048fcab508e"]
+}
+]
+*)
+

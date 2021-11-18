@@ -1,0 +1,785 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     37819,        777]
+NotebookOptionsPosition[     37333,        762]
+NotebookOutlinePosition[     37669,        777]
+CellTagsIndexPosition[     37626,        774]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"$CompileJetLog", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+   "\[IndentingNewLine]", 
+   RowBox[{"$CompileJetLog", "=", 
+    RowBox[{"Association", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.7972200541739693`*^9, 3.797220070362485*^9}, {
+  3.7972209773656883`*^9, 
+  3.797220981459147*^9}},ExpressionUUID->"e356402b-6ced-4670-8021-\
+f0eaee9a9906"],
+
+Cell[BoxData[
+ RowBox[{"CompileJet", "=", 
+  RowBox[{"PackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"name_", ",", "arglist_", ",", "code0_", ",", "derargs0_"}], 
+     "}"}], ",", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "U", ",", "UU", ",", "UU1", ",", "UU2", ",", "UU3", ",", "UU4", ",", 
+        "U1", ",", "U2", ",", "U3", ",", "U4", ",", "VV", ",", "V", ",", "WW",
+         ",", "derargs", ",", "resr", ",", "l", ",", "dims", ",", 
+        "codestring", ",", "allcodestring", ",", "pos", ",", "dcode", ",", 
+        "r", ",", "der", ",", "vecarglist", ",", "tuples", ",", "S", ",", "s",
+         ",", "code1", ",", "code", ",", "rule", ",", "symbolictime", ",", 
+        "optimizationtime", ",", "ctime", ",", "optimizedcode"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"AssociateTo", "[", 
+        RowBox[{"$CompileJetLog", ",", 
+         RowBox[{"name", "\[Rule]", 
+          RowBox[{"Association", "[", "]"}]}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"der", "=", 
+        RowBox[{"OptionValue", "[", "\"\<Derivatives\>\"", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"rule", "=", 
+        RowBox[{"Part", "\[Rule]", "Compile`GetElement"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"derargs", "=", 
+        RowBox[{"derargs0", "/.", "rule"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"r", "=", 
+        RowBox[{"ArrayDepth", "[", "derargs", "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"r", ">", "0"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"UU1", "=", "derargs"}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"UU1", "\[LeftDoubleBracket]", 
+            RowBox[{
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"All", ",", "r"}], "]"}]}], ",", "1"}], 
+            "\[RightDoubleBracket]"}], "=", "U1"}], ";", 
+          RowBox[{"UU2", "=", "derargs"}], ";", 
+          RowBox[{
+           RowBox[{"UU2", "\[LeftDoubleBracket]", 
+            RowBox[{
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"All", ",", "r"}], "]"}]}], ",", "1"}], 
+            "\[RightDoubleBracket]"}], "=", "U2"}], ";", 
+          RowBox[{"UU3", "=", "derargs"}], ";", 
+          RowBox[{
+           RowBox[{"UU3", "\[LeftDoubleBracket]", 
+            RowBox[{
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"All", ",", "r"}], "]"}]}], ",", "1"}], 
+            "\[RightDoubleBracket]"}], "=", "U3"}], ";", 
+          RowBox[{"UU4", "=", "derargs"}], ";", 
+          RowBox[{
+           RowBox[{"UU4", "\[LeftDoubleBracket]", 
+            RowBox[{
+             RowBox[{"Sequence", "@@", 
+              RowBox[{"ConstantArray", "[", 
+               RowBox[{"All", ",", "r"}], "]"}]}], ",", "1"}], 
+            "\[RightDoubleBracket]"}], "=", "U4"}], ";"}], 
+         "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{"rank", " ", "0", " ", 
+           RowBox[{"case", " ", "--"}], " ", "fix", " ", "for", " ", 
+           "CreateChainRule"}], "*)"}], "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"UU1", "=", 
+           RowBox[{"{", "U1", "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"UU2", "=", 
+           RowBox[{"{", "U2", "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"UU3", "=", 
+           RowBox[{"{", "U3", "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"UU4", "=", 
+           RowBox[{"{", "U4", "}"}]}], ";"}]}], "\[IndentingNewLine]", 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"UU", "=", 
+        RowBox[{"{", 
+         RowBox[{"UU1", ",", "UU2", ",", "UU3", ",", "UU4"}], "}"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"ArrayQ", "[", "code0", "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"resr", "=", "1"}], ";", 
+          RowBox[{"VV", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"Compile`GetElement", "[", 
+              RowBox[{"V", ",", "i"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"Length", "[", 
+                RowBox[{"Flatten", "[", "code0", "]"}], "]"}]}], "}"}]}], 
+            "]"}]}], ";", 
+          RowBox[{"WW", "=", 
+           RowBox[{"{", 
+            RowBox[{"VV", ",", "UU1", ",", "UU2", ",", "UU3", ",", "UU4"}], 
+            "}"}]}], ";", 
+          RowBox[{"vecarglist", "=", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"V", ",", "_Real", ",", "1"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U1", ",", "_Real", ",", "r"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U2", ",", "_Real", ",", "r"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U3", ",", "_Real", ",", "r"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U4", ",", "_Real", ",", "r"}], "}"}]}], "}"}]}], ";", 
+          RowBox[{"code", "=", 
+           RowBox[{"code0", "/.", "rule"}]}], ";"}], "\[IndentingNewLine]", 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"resr", "=", "0"}], ";", 
+          RowBox[{"VV", "=", 
+           RowBox[{"{", "V", "}"}]}], ";", 
+          RowBox[{"WW", "=", 
+           RowBox[{"{", 
+            RowBox[{"VV", ",", "UU1", ",", "UU2", ",", "UU3", ",", "UU4"}], 
+            "}"}]}], ";", 
+          RowBox[{"vecarglist", "=", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"V", ",", "_Real"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U1", ",", "_Real", ",", "r"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U2", ",", "_Real", ",", "r"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U3", ",", "_Real", ",", "r"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"U4", ",", "_Real", ",", "r"}], "}"}]}], "}"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"code", "=", 
+           RowBox[{
+            RowBox[{"{", "code0", "}"}], "/.", "rule"}]}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"dcode", "=", 
+           RowBox[{"N", "[", 
+            RowBox[{"D", "[", 
+             RowBox[{"code", ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"{", "derargs", "}"}], "]"}], ",", "k"}], "}"}]}], 
+             "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"tuples", "=", 
+           RowBox[{"SortBy", "[", 
+            RowBox[{
+             RowBox[{"Join", "[", 
+              RowBox[{
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{"Range", "[", 
+                  RowBox[{"1", ",", "i"}], "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"i", ",", "0", ",", 
+                   RowBox[{"k", "+", "1"}]}], "}"}]}], "]"}], ",", 
+               RowBox[{"Table", "[", 
+                RowBox[{
+                 RowBox[{"Range", "[", 
+                  RowBox[{"2", ",", "i"}], "]"}], ",", 
+                 RowBox[{"{", 
+                  RowBox[{"i", ",", "2", ",", 
+                   RowBox[{"k", "+", "1"}]}], "}"}]}], "]"}]}], "]"}], ",", 
+             "Length"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"symbolictime", "=", 
+              RowBox[{"First", "@", 
+               RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"l", "=", 
+                  RowBox[{"Length", "[", "slotlist", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"dims", "=", 
+                  RowBox[{"Dimensions", "[", "dcode", "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"code1", "=", 
+                  RowBox[{"TensorVectorContract", "[", 
+                   RowBox[{"dcode", ",", 
+                    RowBox[{
+                    "WW", "\[LeftDoubleBracket]", "slotlist", 
+                    "\[RightDoubleBracket]"}], ",", "slotlist"}], "]"}]}], 
+                 ";", "\[IndentingNewLine]", 
+                 RowBox[{"s", "=", 
+                  RowBox[{"{", 
+                   RowBox[{"StringJoin", "[", 
+                    RowBox[{"\"\<get\>\"", ",", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], ",", "name", ",", 
+                    
+                    RowBox[{"ToString", "/@", "slotlist"}]}], "]"}], "}"}]}], 
+                 ";", 
+                 RowBox[{"ClearAll", "/@", "s"}], ";", "\[IndentingNewLine]", 
+                 
+                 RowBox[{"S", "=", 
+                  RowBox[{"ToExpression", "[", 
+                   RowBox[{"s", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ";"}], 
+                "\[IndentingNewLine]", "]"}]}]}], ";", "\[IndentingNewLine]", 
+             "\[IndentingNewLine]", 
+             RowBox[{"optimizationtime", "=", 
+              RowBox[{"First", "@", 
+               RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"optimizedcode", "=", 
+                  RowBox[{"COptimize", "[", 
+                   RowBox[{"code1", ",", 
+                    RowBox[{"\"\<OptimizationLevel\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<OptimizationLevel\>\"", 
+                    "]"}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+                "]"}]}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             
+             RowBox[{"ctime", "=", 
+              RowBox[{"First", "@", 
+               RowBox[{"AbsoluteTiming", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"With", "[", 
+                  RowBox[{
+                   RowBox[{"{", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"code2", "=", "optimizedcode"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"args", "=", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"arglist", ",", 
+                    RowBox[{"vecarglist", "[", 
+                    RowBox[{"[", "slotlist", "]"}], "]"}]}], "]"}], "]"}]}]}],
+                     "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"SetCPackageFunction", "[", 
+                    RowBox[{
+                    "S", ",", "args", ",", "code2", ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"\"\<Parallelization\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<Parallelization\>\"", "]"}]}], 
+                    ",", 
+                    RowBox[{"\"\<RuntimeAttributes\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<RuntimeAttributes\>\"", "]"}]}], 
+                    ",", 
+                    RowBox[{"\"\<RuntimeOptions\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<RuntimeOptions\>\"", "]"}]}], 
+                    ",", 
+                    RowBox[{"\"\<CompilationOptions\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<CompilationOptions\>\"", "]"}]}],
+                     ",", 
+                    RowBox[{"\"\<ExportPseudoCode\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<ExportPseudoCode\>\"", "]"}]}]}],
+                     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+                  "]"}], ";"}], "\[IndentingNewLine]", "]"}]}]}], ";", 
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"$CompileJetLog", "[", "name", "]"}], "[", 
+               RowBox[{"{", 
+                RowBox[{"k", ",", "slotlist"}], "}"}], "]"}], "=", 
+              RowBox[{"Association", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"\"\<SymbolicTime\>\"", "\[Rule]", "symbolictime"}], 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<OptimizationTime\>\"", "\[Rule]", "optimizationtime"}], 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{
+                "\"\<SetCPackageFunctionTime\>\"", "\[Rule]", "ctime"}]}], 
+               "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+            ",", "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"slotlist", ",", "tuples"}], "}"}]}], "]"}], ";"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "0", ",", 
+           RowBox[{"Min", "[", 
+            RowBox[{"4", ",", "der"}], "]"}]}], "}"}]}], "]"}], ";"}]}], 
+     "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"Options", "\[Rule]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"\"\<CompilationTarget\>\"", "\[Rule]", "\"\<C\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "True"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<RuntimeAttributes\>\"", "\[Rule]", "Listable"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<RuntimeOptions\>\"", "\[Rule]", "\"\<Speed\>\""}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<CompilationOptions\>\"", "\[Rule]", 
+        RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<ExportPseudoCode\>\"", "\[Rule]", "False"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"\"\<OptimizationLevel\>\"", "\[Rule]", "1"}]}], 
+      "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.729593625824298*^9, 3.729593630354609*^9}, {
+   3.730202353609103*^9, 3.73020235772609*^9}, {3.7302040613230343`*^9, 
+   3.730204080281461*^9}, {3.730204113448863*^9, 3.7302041207860317`*^9}, {
+   3.730204171168626*^9, 3.7302041748487062`*^9}, {3.730204204983519*^9, 
+   3.7302042564994097`*^9}, {3.730204340742766*^9, 3.730204372505485*^9}, {
+   3.730204452151264*^9, 3.730204458436018*^9}, {3.730204563360363*^9, 
+   3.730204572609432*^9}, {3.7599147403295794`*^9, 3.7599148501246758`*^9}, {
+   3.759914969967636*^9, 3.759914985780315*^9}, {3.759915668931088*^9, 
+   3.759915674544471*^9}, {3.7600960791391563`*^9, 3.7600960878727217`*^9}, {
+   3.7600962014782953`*^9, 3.760096207335782*^9}, {3.760096344554895*^9, 
+   3.7600963447766123`*^9}, {3.7641673584570227`*^9, 
+   3.7641673937357883`*^9}, {3.764860123624395*^9, 3.764860150213372*^9}, {
+   3.764860568213318*^9, 3.764860569052109*^9}, {3.764860624814168*^9, 
+   3.7648606250290127`*^9}, {3.7756635700773907`*^9, 3.775663577811349*^9}, {
+   3.783961523350213*^9, 3.783961561891914*^9}, {3.78396160369207*^9, 
+   3.783961642281892*^9}, {3.78396167664262*^9, 3.78396167784931*^9}, {
+   3.783961720082992*^9, 3.783961722359977*^9}, {3.783961788599547*^9, 
+   3.7839618215568943`*^9}, {3.783961857325533*^9, 3.7839618746436377`*^9}, {
+   3.783961908276672*^9, 3.7839619494635687`*^9}, {3.783962547174563*^9, 
+   3.783962550413127*^9}, {3.783962622445541*^9, 3.783962656849494*^9}, {
+   3.783962706666416*^9, 3.783962746862596*^9}, {3.7839628147253313`*^9, 
+   3.783962817830118*^9}, {3.783962877955018*^9, 3.7839629212809277`*^9}, {
+   3.783962972712654*^9, 3.7839629765186996`*^9}, {3.783963411618003*^9, 
+   3.783963419598742*^9}, {3.78396392158144*^9, 3.783963957492033*^9}, {
+   3.783964039289678*^9, 3.783964045200354*^9}, {3.783964155110189*^9, 
+   3.783964162595858*^9}, {3.797216760042388*^9, 3.797216765803351*^9}, {
+   3.797219394782195*^9, 3.797219396320837*^9}, {3.797219954825858*^9, 
+   3.797220045128456*^9}, {3.797220102206613*^9, 3.797220380556218*^9}, {
+   3.7972207370717707`*^9, 3.7972207873178053`*^9}, {3.797220835093218*^9, 
+   3.7972208428357773`*^9}, {3.797222021433755*^9, 3.79722204766549*^9}, {
+   3.7972226999694843`*^9, 3.797222726703608*^9}, {3.7972227629753637`*^9, 
+   3.7972228306197767`*^9}, {3.7972249341224623`*^9, 3.797224987398353*^9}, {
+   3.797225068677547*^9, 3.7972250742266397`*^9}, {3.797225144372068*^9, 
+   3.797225164130012*^9}, 3.7972252093834248`*^9, {3.797225240150989*^9, 
+   3.7972252515090837`*^9}, {3.797225391249453*^9, 3.797225397511384*^9}},
+ CellLabel->
+  "In[160]:=",ExpressionUUID->"19e900da-04db-4583-980b-6f3836372729"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"VerbatimRegion", "[", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ClearAll", "[", "CompileJet", "]"}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CompileJet", "::", "usage"}], "=", "\"\<\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"SetAttributes", "[", 
+     RowBox[{"CompileJet", ",", "HoldRest"}], "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"CompileJet", "[", 
+      RowBox[{"name_", ",", "arglist_", ",", "code0_", ",", "derargs_", ",", 
+       RowBox[{"OptionsPattern", "[", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"\"\<CompilationTarget\>\"", "\[Rule]", "\"\<C\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<Parallelization\>\"", "\[Rule]", "True"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<RuntimeAttributes\>\"", "\[Rule]", "Listable"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<RuntimeOptions\>\"", "\[Rule]", "\"\<Quality\>\""}], 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<CompilationOptions\>\"", "\[Rule]", 
+           RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Derivatives\>\"", "\[Rule]", "2"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"\"\<PrintCode\>\"", "\[Rule]", "False"}]}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{",", 
+           RowBox[{"\"\<ProcessCode\>\"", "\[Rule]", "True"}]}], "*)"}], 
+         "\[IndentingNewLine]", "}"}], "]"}]}], "]"}], ":=", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Quiet", "[", 
+      RowBox[{"Block", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+         "U", ",", "UU", ",", "UU1", ",", "UU2", ",", "UU3", ",", "UU4", ",", 
+          "U1", ",", "U2", ",", "U3", ",", "U4", ",", "VV", ",", "V", ",", 
+          "WW", ",", "resr", ",", "l", ",", "dims", ",", "codestring", ",", 
+          "allcodestring", ",", "codelist", ",", "pos", ",", "dcode", ",", 
+          "r", ",", "der", ",", "vecarglist", ",", "tuples", ",", "S", ",", 
+          "s", ",", "code1", ",", "code", ",", "rule"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"der", "=", 
+          RowBox[{"OptionValue", "[", "\"\<Derivatives\>\"", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"r", "=", 
+          RowBox[{"TensorRank", "[", "derargs", "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"rule", "=", 
+          RowBox[{
+           RowBox[{"Part", "[", 
+            RowBox[{"p_", ",", "args__"}], "]"}], "\[RuleDelayed]", 
+           RowBox[{"Compile`GetElement", "[", 
+            RowBox[{"p", ",", "args"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"UU1", "=", "derargs"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"UU1", "\[LeftDoubleBracket]", 
+           RowBox[{
+            RowBox[{"Sequence", " ", "@@", " ", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"All", ",", "r"}], "]"}]}], ",", " ", "1"}], 
+           "\[RightDoubleBracket]"}], "=", "U1"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"UU2", "=", "derargs"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"UU2", "\[LeftDoubleBracket]", 
+           RowBox[{
+            RowBox[{"Sequence", " ", "@@", " ", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"All", ",", "r"}], "]"}]}], ",", " ", "1"}], 
+           "\[RightDoubleBracket]"}], "=", "U2"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"UU3", "=", "derargs"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"UU3", "\[LeftDoubleBracket]", 
+           RowBox[{
+            RowBox[{"Sequence", " ", "@@", " ", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"All", ",", "r"}], "]"}]}], ",", " ", "1"}], 
+           "\[RightDoubleBracket]"}], "=", "U3"}], ";", "\[IndentingNewLine]",
+          
+         RowBox[{"UU4", "=", "derargs"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"UU4", "\[LeftDoubleBracket]", 
+           RowBox[{
+            RowBox[{"Sequence", " ", "@@", " ", 
+             RowBox[{"ConstantArray", "[", 
+              RowBox[{"All", ",", "r"}], "]"}]}], ",", " ", "1"}], 
+           "\[RightDoubleBracket]"}], "=", "U4"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"UU", "=", 
+          RowBox[{"{", 
+           RowBox[{"UU1", ",", "UU2", ",", "UU3", ",", "UU4"}], "}"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"TensorQ", "[", "code0", "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"resr", "=", "1"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"VV", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{
+               "V", "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}], 
+               ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "1", ",", 
+                 RowBox[{"Length", "[", 
+                  RowBox[{"Flatten", "[", "code0", "]"}], "]"}]}], "}"}]}], 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"WW", "=", 
+             RowBox[{"{", 
+              RowBox[{"VV", ",", "UU1", ",", "UU2", ",", "UU3", ",", "UU4"}], 
+              "}"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"vecarglist", "=", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"V", ",", "_Real", ",", "1"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U1", ",", "_Real", ",", "r"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U2", ",", "_Real", ",", "r"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U3", ",", "_Real", ",", "r"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U4", ",", "_Real", ",", "r"}], "}"}]}], "}"}]}], ";",
+             "\[IndentingNewLine]", 
+            RowBox[{"code", "=", "code0"}], ";"}], "\[IndentingNewLine]", ",",
+            "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"resr", "=", "0"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"VV", "=", 
+             RowBox[{"{", "V", "}"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"WW", "=", 
+             RowBox[{"{", 
+              RowBox[{"VV", ",", "UU1", ",", "UU2", ",", "UU3", ",", "UU4"}], 
+              "}"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"vecarglist", "=", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"V", ",", "_Real"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U1", ",", "_Real", ",", "r"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U2", ",", "_Real", ",", "r"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U3", ",", "_Real", ",", "r"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"U4", ",", "_Real", ",", "r"}], "}"}]}], "}"}]}], ";",
+             "\[IndentingNewLine]", 
+            RowBox[{"code", "=", 
+             RowBox[{"{", "code0", "}"}]}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"codelist", "=", "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"dcode", "=", 
+              RowBox[{"N", "[", 
+               RowBox[{"D", "[", 
+                RowBox[{"code", ",", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"Flatten", "[", "derargs", "]"}], ",", "k"}], 
+                  "}"}]}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"tuples", "=", 
+              RowBox[{"SortBy", "[", 
+               RowBox[{
+                RowBox[{"Join", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Table", "[", 
+                   RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{"1", ",", "i"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "0", ",", 
+                    RowBox[{"k", "+", "1"}]}], "}"}]}], "]"}], ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{"Table", "[", 
+                   RowBox[{
+                    RowBox[{"Range", "[", 
+                    RowBox[{"2", ",", "i"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"i", ",", "2", ",", 
+                    RowBox[{"k", "+", "1"}]}], "}"}]}], "]"}]}], 
+                 "\[IndentingNewLine]", "]"}], ",", "Length"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"Table", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"l", "=", 
+                 RowBox[{"Length", "[", "slotlist", "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"dims", "=", 
+                 RowBox[{"Dimensions", "[", "dcode", "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"code1", "=", 
+                 RowBox[{"TensorContract", "[", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"TensorProduct", "[", 
+                    RowBox[{"dcode", ",", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"Table", "[", 
+                    RowBox[{
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{
+                    "WW", "\[LeftDoubleBracket]", "j", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"j", ",", "slotlist"}], "}"}]}], "]"}]}]}], "]"}],
+                    ",", 
+                   RowBox[{"Transpose", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"slotlist", ",", 
+                    RowBox[{"Range", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"TensorRank", "[", "dcode", "]"}], "+", "1"}], 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"TensorRank", "[", "dcode", "]"}], "+", 
+                    RowBox[{"Length", "[", "slotlist", "]"}]}]}], "]"}]}], 
+                    "}"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"s", "=", 
+                 RowBox[{"{", 
+                  RowBox[{"StringJoin", "[", 
+                   RowBox[{"\"\<get\>\"", ",", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{"\"\<D\>\"", ",", "k"}], "]"}], ",", "name", ",", 
+                    
+                    RowBox[{"ToString", "/@", "slotlist"}]}], "]"}], "}"}]}], 
+                ";", "\[IndentingNewLine]", 
+                RowBox[{"ClearAll", "/@", "s"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"S", "=", 
+                 RowBox[{"ToExpression", "[", 
+                  RowBox[{
+                  "s", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
+                   "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                RowBox[{"With", "[", 
+                 RowBox[{
+                  RowBox[{"{", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"code2", "=", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Experimental`OptimizeExpression", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"N", "@", "code1"}], "/.", "rule"}], ",", 
+                    RowBox[{"\"\<OptimizationLevel\>\"", "\[Rule]", "2"}]}], 
+                    "]"}], "]"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"args", "=", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Join", "[", 
+                    RowBox[{"arglist", ",", 
+                    RowBox[{
+                    "vecarglist", "\[LeftDoubleBracket]", "slotlist", 
+                    "\[RightDoubleBracket]"}]}], "]"}], "]"}]}]}], 
+                   "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+                  RowBox[{"SetCPackageFunction", "[", 
+                   RowBox[{
+                   "S", ",", "args", ",", "code2", ",", "\[IndentingNewLine]", 
+                    RowBox[{"\"\<CompilationTarget\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<CompilationTarget\>\"", "]"}]}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"\"\<Parallelization\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<Parallelization\>\"", "]"}]}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"\"\<RuntimeAttributes\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<RuntimeAttributes\>\"", "]"}]}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"\"\<RuntimeOptions\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<RuntimeOptions\>\"", "]"}]}], 
+                    ",", "\[IndentingNewLine]", 
+                    RowBox[{"\"\<CompilationOptions\>\"", "\[Rule]", 
+                    RowBox[{
+                    "OptionValue", "[", "\"\<CompilationOptions\>\"", 
+                    "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], ",", "\[IndentingNewLine]", 
+               RowBox[{"{", 
+                RowBox[{"slotlist", ",", "tuples"}], "}"}]}], "]"}]}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{"{", 
+             RowBox[{"k", ",", "0", ",", 
+              RowBox[{"Min", "[", 
+               RowBox[{"4", ",", "der"}], "]"}]}], "}"}]}], "]"}]}]}]}], 
+       "\[IndentingNewLine]", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "]"}], "*)"}]], "Input",
+ CellChangeTimes->{{3.652586355540962*^9, 3.652586401891087*^9}, {
+   3.6525864879464407`*^9, 3.6525865840590363`*^9}, {3.652586640830578*^9, 
+   3.652586792310706*^9}, {3.652586848278309*^9, 3.6525869461989603`*^9}, {
+   3.652587112096527*^9, 3.6525871193569202`*^9}, {3.652587159140532*^9, 
+   3.652587226913769*^9}, {3.6525873152375097`*^9, 3.652587317267764*^9}, {
+   3.652587349830452*^9, 3.652587377067313*^9}, {3.6525874175334377`*^9, 
+   3.652587425523571*^9}, {3.652587459612563*^9, 3.652587478845159*^9}, {
+   3.652587561629385*^9, 3.652587631678174*^9}, {3.652587674794291*^9, 
+   3.652587688845479*^9}, {3.652587721967307*^9, 3.652587787657258*^9}, {
+   3.6525878206486073`*^9, 3.652587830018156*^9}, {3.652587908412188*^9, 
+   3.652588007259852*^9}, {3.6525880454223013`*^9, 3.652588116118808*^9}, {
+   3.652588163036764*^9, 3.652588177325101*^9}, {3.652588214647256*^9, 
+   3.652588214877945*^9}, {3.652588420042391*^9, 3.652588426665593*^9}, {
+   3.652588485986579*^9, 3.6525886108196697`*^9}, {3.652588652004086*^9, 
+   3.652588691654449*^9}, {3.6525887270224533`*^9, 3.6525888472542686`*^9}, {
+   3.652588877384017*^9, 3.6525889028389063`*^9}, {3.652588941521627*^9, 
+   3.652589035274384*^9}, {3.652589075399892*^9, 3.6525891327909822`*^9}, {
+   3.65258935842675*^9, 3.652589363458276*^9}, {3.65258954860485*^9, 
+   3.6525895504057817`*^9}, 3.652589588791607*^9, {3.652589633758391*^9, 
+   3.6525896469566603`*^9}, {3.652589772758436*^9, 3.652589776364584*^9}, {
+   3.652589862464594*^9, 3.652589863743924*^9}, {3.652590249529008*^9, 
+   3.652590260798832*^9}, 3.652590307147663*^9, {3.6525990822884903`*^9, 
+   3.65259908269547*^9}, {3.654092903571887*^9, 3.654092903751899*^9}, 
+   3.654246831295948*^9, 3.664209881787159*^9, {3.664217933380096*^9, 
+   3.66421795467654*^9}, {3.664293405570839*^9, 3.664293441215404*^9}, {
+   3.664295427187533*^9, 3.6642956067319107`*^9}, {3.664295788975629*^9, 
+   3.66429579818056*^9}, 3.664296974525622*^9, {3.6747161340013866`*^9, 
+   3.674716136498803*^9}, {3.688970697745306*^9, 3.6889707016594143`*^9}, {
+   3.688971599173937*^9, 3.688971736652089*^9}, {3.688971812268025*^9, 
+   3.688971830233644*^9}, {3.688971905973377*^9, 3.688971911453649*^9}, {
+   3.688971950096745*^9, 3.688971956815111*^9}, {3.688971999840362*^9, 
+   3.6889720150112753`*^9}, {3.688972066679212*^9, 3.688972099694996*^9}, {
+   3.688972130756267*^9, 3.688972147873983*^9}, {3.688988701436658*^9, 
+   3.6889887091280537`*^9}, 3.68905421063307*^9, {3.6999434995852547`*^9, 
+   3.699943504246992*^9}, {3.699943536416317*^9, 3.6999436860026712`*^9}, {
+   3.69994373850158*^9, 3.6999437392876987`*^9}, 3.699944378518347*^9, {
+   3.699953645774218*^9, 3.699953646860671*^9}, {3.699953697493075*^9, 
+   3.699953698408184*^9}, {3.69995387627357*^9, 3.699953880222254*^9}, {
+   3.699954022070747*^9, 3.699954049909073*^9}, {3.6999540841099367`*^9, 
+   3.6999541899788303`*^9}, {3.699954277916377*^9, 3.69995428815412*^9}, {
+   3.699954321086128*^9, 3.699954323134956*^9}, {3.699954387216776*^9, 
+   3.699954392135561*^9}, {3.6999545248380423`*^9, 3.699954623128068*^9}, {
+   3.6999546635090227`*^9, 3.699954742610919*^9}, {3.69995477464851*^9, 
+   3.69995494367601*^9}, {3.699954999239341*^9, 3.699955001492577*^9}, {
+   3.699955059145112*^9, 3.699955065312716*^9}, {3.699955131600587*^9, 
+   3.699955142956182*^9}, 3.6999551918213663`*^9, {3.6999553855928593`*^9, 
+   3.699955385896385*^9}, {3.699956017863153*^9, 3.699956026797176*^9}, {
+   3.699956101346292*^9, 3.699956102208419*^9}, {3.6999561607111053`*^9, 
+   3.699956169014099*^9}, 3.699956389526176*^9, {3.699956603316022*^9, 
+   3.699956627066996*^9}, 3.69996142493498*^9, {3.6999784963276863`*^9, 
+   3.6999785109976053`*^9}, {3.700020223935996*^9, 3.700020225423972*^9}, {
+   3.70002205249095*^9, 3.700022084199733*^9}, 3.7000232324044333`*^9, {
+   3.700023856157015*^9, 3.700023862604368*^9}, {3.700024356758972*^9, 
+   3.700024362501082*^9}, {3.700024595692362*^9, 3.700024597186236*^9}, {
+   3.700024647937008*^9, 3.700024668848311*^9}, {3.70002477912571*^9, 
+   3.7000248515832863`*^9}, {3.700024914673012*^9, 3.7000249215059557`*^9}, {
+   3.7000249780168247`*^9, 3.700024978847144*^9}, 3.700025073128251*^9, 
+   3.709977057266724*^9, {3.709979300305934*^9, 3.70997934227921*^9}, {
+   3.709980154503029*^9, 3.709980160670233*^9}, {3.709980505410591*^9, 
+   3.709980505626306*^9}, {3.715958942403001*^9, 3.715958948426194*^9}, {
+   3.715959002172286*^9, 3.715959002707459*^9}, {3.7159590808501167`*^9, 
+   3.715959127733963*^9}, {3.71595930588701*^9, 3.71595932155748*^9}, {
+   3.720613333384218*^9, 3.720613356029654*^9}, {3.720613564975419*^9, 
+   3.720613565349443*^9}, {3.720621641631084*^9, 3.720621649973724*^9}, 
+   3.7641499517836657`*^9},ExpressionUUID->"c5e8ac02-6b61-44b9-8ef1-\
+f24e7c663f58"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 496, 12, 117, "Input",ExpressionUUID->"e356402b-6ced-4670-8021-f0eaee9a9906"],
+Cell[1057, 34, 17324, 360, 2417, "Input",ExpressionUUID->"19e900da-04db-4583-980b-6f3836372729"],
+Cell[18384, 396, 18945, 364, 1992, "Input",ExpressionUUID->"c5e8ac02-6b61-44b9-8ef1-f24e7c663f58"]
+}
+]
+*)
+

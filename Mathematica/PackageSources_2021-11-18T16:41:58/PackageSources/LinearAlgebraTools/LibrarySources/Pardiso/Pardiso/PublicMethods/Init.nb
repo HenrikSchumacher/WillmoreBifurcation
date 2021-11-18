@@ -1,0 +1,141 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      7207,        133]
+NotebookOptionsPosition[      6917,        120]
+NotebookOutlinePosition[      7253,        135]
+CellTagsIndexPosition[      7210,        132]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"libfun", "[", 
+  RowBox[{"\"\<Void\>\"", ",", "\"\<Init\>\"", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\"\<ia0\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Integer", ",", "1"}], "}"}], ",", "\"\<Constant\>\""}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<ja0\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Integer", ",", "1"}], "}"}], ",", "\"\<Constant\>\""}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<a0\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"Real", ",", "1"}], "}"}], ",", "\"\<Constant\>\""}], "}"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"\"\<mtype0\>\"", ",", "Integer"}], "}"}]}], 
+    "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{
+   "{", "\[IndentingNewLine]", 
+    "\"\<\n\t\t if(!initialized)\n        {\n            mint i;\n            \
+mtype = mtype0;\n            nrhs = 1;\n            timestamp = 0.;\n         \
+   n = ia0.length()-1;\n            nnz = ia0[ia0.length()-1]-1;\n            \
+ia = (mint*) malloc(ia0.length()*sizeof(mint));\n            mint anyerror = \
+0;\n            if(!ia)\n            {\n                \
+mma::print(\\\"Allocation of ia failed.\\\");\n                anyerror = 1;\n\
+            }\n            std::copy(ia0.data(),ia0.data()+ia0.length(),ia);\n\
+            ja = (mint*) malloc(ja0.length()*sizeof(mint));\n            \
+if(!ja)\n            {\n                mma::print(\\\"Allocation of ja \
+failed.\\\");\n                anyerror = 1;\n            }\n            \
+std::copy(ja0.data(),ja0.data()+ja0.length(),ja);\n            a = (mreal*) \
+malloc(a0.length()*sizeof(mreal));\n            if(!a)\n            {\n       \
+         mma::print(\\\"Allocation of a failed.\\\");\n                \
+anyerror = 1;\n            }\n            \
+std::copy(a0.data(),a0.data()+a0.length(),a);\n            perm = (mint*) \
+malloc(n*sizeof(mint));\n            if(!perm)\n            {\n               \
+ mma::print(\\\"Allocation of perm failed.\\\");\n                anyerror = \
+1;\n            }\n            for ( i = 0; i < n; i++ )\n            {\n     \
+           perm[i] = i+1;\n            }\n\n            iparm[0] = 1;         \
+      /* No solver default */\n            iparm[1] = 3;               /* \
+parallel version of nested disection */\n            iparm[3] = 0;            \
+   /* No iterative-direct algorithm */\n            iparm[4] = 2;             \
+  /* Write fill-in reducing permutation to perm */\n            iparm[5] = 0; \
+              /* Write solution into x */\n\t\t    iparm[7] = 10;             \
+  /* maximum number of iterative refinements */\n            if(mtype==11)\n  \
+          {\n                iparm[9] = 13;          /* Perturb the pivot \
+elements with 1E-iparm[9] */\n            }\n            else\n            {\n\
+                iparm[9] = 8;           /* Perturb the pivot elements with \
+1E-iparm[9] */\n            }\n            if( (mtype==2) || (mtype==-2) )\n  \
+          {\n                iparm[10] = 0;          /* Disable scaling. \
+Because it is slow.*/\n                iparm[12] = 0;          /* Disable \
+matching. Because it is slow.*/\n            }\n            else\n            \
+{\n                iparm[10] = 1;          /* Enable scaling. Default for \
+nonsymmetric matrices. Good for indefinite symmetric matrices */\n            \
+    iparm[12] = 1;          /* Enable matching. Default for nonsymmetric \
+matrices. Good for indefinite symmetric matrices */\n            }\n          \
+  iparm[17] = -1;             /* Report number of nonzeros in the factor LU \
+*/\n            iparm[18] = -1;              /* Compute Mflops for LU \
+factorization (because it is not for free) */\n\n            iparm[20] = 1;   \
+           /* Bunch-Kaufman pivoting */\n\t\t\tiparm[24] = 2;              /* \
+matrix partitioning also for multiple RHS */\n\t\t\tiparm[26] = 1;            \
+  /* activate matrix checker */\n            iparm[34] = 0;              /* \
+use 1-based indexing */\n\n            if(anyerror==0)\n            {\n       \
+         //mma::print(\\\"Initialization done.\\\");\n                \
+initialized = 1;\n            }\n            else\n            {\n            \
+    mma::print(\\\"Initialization failed.\\\");\n                initialized \
+= 0;\n            }\n        }\n\>\"", "\[IndentingNewLine]", "}"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.68615325442739*^9, 3.686153267386179*^9}, {
+   3.686159776235159*^9, 3.686159803964324*^9}, {3.686159885175782*^9, 
+   3.686159889028872*^9}, {3.686160083285222*^9, 3.6861602447691708`*^9}, {
+   3.686195534032634*^9, 3.686195534196168*^9}, {3.686195571547717*^9, 
+   3.686195579048192*^9}, {3.686195734645939*^9, 3.68619573633993*^9}, {
+   3.686195874958243*^9, 3.68619590935874*^9}, {3.696405642138975*^9, 
+   3.696405649113495*^9}, {3.698123185780014*^9, 3.698123186473217*^9}, 
+   3.69813072081433*^9, {3.716746086132876*^9, 3.71674608681076*^9}, {
+   3.7167810654917097`*^9, 3.716781072085548*^9}, {3.7232965356091137`*^9, 
+   3.723296557669497*^9}, {3.723296950783126*^9, 3.723296953244885*^9}, 
+   3.723299221552943*^9, {3.723304042455303*^9, 3.72330406593484*^9}, {
+   3.723304370409197*^9, 3.723304370631002*^9}, {3.723308280970579*^9, 
+   3.723308353893887*^9}, {3.723308457680832*^9, 3.723308458653289*^9}, 
+   3.723308846923975*^9, {3.723313067466568*^9, 3.723313067768202*^9}, {
+   3.728409194179966*^9, 3.7284091986185503`*^9}, 3.796705508387635*^9, {
+   3.797738479992187*^9, 3.797738481259832*^9}, {3.797738660853982*^9, 
+   3.797738673036561*^9}, {3.797742953346013*^9, 3.7977429535635977`*^9}, {
+   3.82108805332154*^9, 3.821088072215601*^9}, {3.823587653798764*^9, 
+   3.8235876868720827`*^9}, {3.8235884244298267`*^9, 3.823588425364201*^9}, 
+   3.823588953777885*^9, {3.823589197985241*^9, 3.823589226639447*^9}, {
+   3.823589304989937*^9, 3.823589306629304*^9}, {3.823589344331004*^9, 
+   3.823589353081575*^9}, 3.823589389243175*^9, {3.823589424960856*^9, 
+   3.82358942837642*^9}, {3.82358949095018*^9, 3.8235895223575*^9}, {
+   3.823589583695229*^9, 
+   3.82358958414706*^9}},ExpressionUUID->"2a623eab-7e49-4454-a8f1-\
+6e8ea7bfaecb"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 6355, 98, 2492, "Input",ExpressionUUID->"2a623eab-7e49-4454-a8f1-6e8ea7bfaecb"]
+}
+]
+*)
+

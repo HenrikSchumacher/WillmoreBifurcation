@@ -1,0 +1,957 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     43884,        949]
+NotebookOptionsPosition[     43495,        935]
+NotebookOutlinePosition[     43831,        950]
+CellTagsIndexPosition[     43788,        947]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"getLeppEdgeList", "=", 
+  RowBox[{"CPackageFunction", "[", 
+   RowBox[{
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"f0", ",", "_Integer"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"pts", ",", "_Real", ",", "2"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"edges", ",", "_Integer", ",", "2"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"faces", ",", "_Integer", ",", "2"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"ENF", ",", "_Integer", ",", "2"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"FNE", ",", "_Integer", ",", "2"}], "}"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "LeppEdgeBag", ",", "f", ",", "fold", ",", "fnew", ",", "eold", ",", 
+        "p1", ",", "p2", ",", "p3", ",", "\[Lambda]1", ",", "\[Lambda]2", ",",
+         "\[Lambda]3", ",", "e", ",", "c"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"f", "=", "f0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"LeppEdgeBag", "=", 
+        RowBox[{"Internal`Bag", "[", 
+         RowBox[{"Most", "[", 
+          RowBox[{"{", "0", "}"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"fold", "=", "f0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"eold", "=", "0"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"p1", "=", 
+        RowBox[{"pts", "\[LeftDoubleBracket]", 
+         RowBox[{"faces", "\[LeftDoubleBracket]", 
+          RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}], 
+         "\[RightDoubleBracket]"}]}], ";", 
+       RowBox[{"p2", "=", 
+        RowBox[{"pts", "\[LeftDoubleBracket]", 
+         RowBox[{"faces", "\[LeftDoubleBracket]", 
+          RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}], 
+         "\[RightDoubleBracket]"}]}], ";", 
+       RowBox[{"p3", "=", 
+        RowBox[{"pts", "\[LeftDoubleBracket]", 
+         RowBox[{"faces", "\[LeftDoubleBracket]", 
+          RowBox[{"f", ",", "3"}], "\[RightDoubleBracket]"}], 
+         "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"\[Lambda]1", "=", 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"p3", "-", "p2"}], ")"}], "^", "2"}], "]"}], "]"}]}], ";", 
+       RowBox[{"\[Lambda]2", "=", 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"p1", "-", "p3"}], ")"}], "^", "2"}], "]"}], "]"}]}], ";", 
+       RowBox[{"\[Lambda]3", "=", 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"p2", "-", "p1"}], ")"}], "^", "2"}], "]"}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"e", "=", 
+        RowBox[{"FNE", "\[LeftDoubleBracket]", 
+         RowBox[{"f", ",", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"\[Lambda]1", "<", "\[Lambda]2"}], ",", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"\[Lambda]2", "<", "\[Lambda]3"}], ",", "3", ",", "2"}],
+              "]"}], ",", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"\[Lambda]1", "<", "\[Lambda]3"}], ",", "3", ",", "1"}],
+              "]"}]}], "]"}]}], "\[RightDoubleBracket]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Internal`StuffBag", "[", 
+        RowBox[{"LeppEdgeBag", ",", "e"}], "]"}], ";", "\[IndentingNewLine]", 
+       
+       RowBox[{"fnew", "=", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"f", "==", 
+           RowBox[{"ENF", "\[LeftDoubleBracket]", 
+            RowBox[{"e", ",", "1"}], "\[RightDoubleBracket]"}]}], ",", 
+          RowBox[{"ENF", "\[LeftDoubleBracket]", 
+           RowBox[{"e", ",", "2"}], "\[RightDoubleBracket]"}], ",", 
+          RowBox[{"ENF", "\[LeftDoubleBracket]", 
+           RowBox[{"e", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"While", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"fold", "\[NotEqual]", "fnew"}], "&&", 
+          RowBox[{"fnew", "\[NotEqual]", "0"}]}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{
+          RowBox[{"fold", "=", "f"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"f", "=", "fnew"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"p1", "=", 
+           RowBox[{"pts", "\[LeftDoubleBracket]", 
+            RowBox[{"faces", "\[LeftDoubleBracket]", 
+             RowBox[{"f", ",", "1"}], "\[RightDoubleBracket]"}], 
+            "\[RightDoubleBracket]"}]}], ";", 
+          RowBox[{"p2", "=", 
+           RowBox[{"pts", "\[LeftDoubleBracket]", 
+            RowBox[{"faces", "\[LeftDoubleBracket]", 
+             RowBox[{"f", ",", "2"}], "\[RightDoubleBracket]"}], 
+            "\[RightDoubleBracket]"}]}], ";", 
+          RowBox[{"p3", "=", 
+           RowBox[{"pts", "\[LeftDoubleBracket]", 
+            RowBox[{"faces", "\[LeftDoubleBracket]", 
+             RowBox[{"f", ",", "3"}], "\[RightDoubleBracket]"}], 
+            "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"\[Lambda]1", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"Total", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"p3", "-", "p2"}], ")"}], "^", "2"}], "]"}], "]"}]}], 
+          ";", 
+          RowBox[{"\[Lambda]2", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"Total", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"p1", "-", "p3"}], ")"}], "^", "2"}], "]"}], "]"}]}], 
+          ";", 
+          RowBox[{"\[Lambda]3", "=", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{"Total", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"p2", "-", "p1"}], ")"}], "^", "2"}], "]"}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"e", "=", 
+           RowBox[{"FNE", "\[LeftDoubleBracket]", 
+            RowBox[{"f", ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"\[Lambda]1", "<", "\[Lambda]2"}], ",", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"\[Lambda]2", "<", "\[Lambda]3"}], ",", "3", ",", 
+                 "2"}], "]"}], ",", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"\[Lambda]1", "<", "\[Lambda]3"}], ",", "3", ",", 
+                 "1"}], "]"}]}], "]"}]}], "\[RightDoubleBracket]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Internal`StuffBag", "[", 
+           RowBox[{"LeppEdgeBag", ",", "e"}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"fnew", "=", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"f", "==", 
+              RowBox[{"ENF", "\[LeftDoubleBracket]", 
+               RowBox[{"e", ",", "1"}], "\[RightDoubleBracket]"}]}], ",", 
+             RowBox[{"ENF", "\[LeftDoubleBracket]", 
+              RowBox[{"e", ",", "2"}], "\[RightDoubleBracket]"}], ",", 
+             RowBox[{"ENF", "\[LeftDoubleBracket]", 
+              RowBox[{"e", ",", "1"}], "\[RightDoubleBracket]"}]}], "]"}]}], 
+          ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Internal`BagPart", "[", 
+        RowBox[{"LeppEdgeBag", ",", "All"}], "]"}]}]}], "\[IndentingNewLine]",
+      "]"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.693418867707398*^9, 3.693419047711124*^9}, {
+   3.693419079439239*^9, 3.6934191947268553`*^9}, {3.6934192311678658`*^9, 
+   3.693419231487885*^9}, {3.693419262223933*^9, 3.693419318636105*^9}, {
+   3.693419370272345*^9, 3.69341955585279*^9}, {3.693419591319664*^9, 
+   3.693419623591267*^9}, {3.693419673167015*^9, 3.693419676413192*^9}, {
+   3.69341971005217*^9, 3.693419781586399*^9}, {3.693419850577209*^9, 
+   3.6934198547448883`*^9}, {3.6934205216266727`*^9, 3.693420545333948*^9}, {
+   3.6934206520982847`*^9, 3.693420654636157*^9}, {3.69342943409547*^9, 
+   3.693429473355394*^9}, {3.6934314248047447`*^9, 3.693431436435961*^9}, {
+   3.693431570588356*^9, 3.6934315709642067`*^9}, {3.693432511866287*^9, 
+   3.693432521528941*^9}, 3.6934326150322037`*^9, 3.693433650325683*^9, {
+   3.693434073946912*^9, 3.693434084229808*^9}, 3.693435774335397*^9, {
+   3.693436253822323*^9, 
+   3.693436254389928*^9}},ExpressionUUID->"70cfcc57-2fab-4bb1-ac32-\
+e2ae961f9340"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LeppEdgeBisection", "=", 
+   RowBox[{"PackageFunction", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"M_mesh", ",", "f0_"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "pts", ",", "edges", ",", "faces", ",", "TNE", ",", "ENT", ",", 
+         "npts", ",", "nedges", ",", "nfaces", ",", "flist", ",", 
+         "quadmeansQ", ",", "Q", ",", "c", ",", "adjacencylist", ",", 
+         "\[IndentingNewLine]", "iter", ",", "deletelist", ",", "m", ",", "i",
+          ",", "LeppEdgeBag", ",", "e", ",", "f1", ",", "f2", ",", "edge", 
+         ",", "face1", ",", "face2", ",", "o1", ",", "o2", ",", "e1", ",", 
+         "e2", ",", "fne", ",", "b1", ",", "b2", ",", "b3", ",", "b4", ",", 
+         "ee"}], "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"quadmeansQ", "=", 
+         RowBox[{"OptionValue", "[", "\"\<QuadMeans\>\"", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"pts", "=", 
+         RowBox[{"Internal`Bag", "[", 
+          RowBox[{"VertexCoordinates", "[", "M", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"edges", "=", 
+         RowBox[{"Internal`Bag", "[", 
+          RowBox[{"Edges", "[", "M", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"faces", "=", 
+         RowBox[{"Internal`Bag", "[", 
+          RowBox[{"Triangles", "[", "M", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"TNE", "=", 
+         RowBox[{"Internal`Bag", "[", 
+          RowBox[{"AdjacencyLists", "[", 
+           RowBox[{"M", ",", "Triangles", ",", "Edges"}], "]"}], "]"}]}], ";",
+         "\[IndentingNewLine]", 
+        RowBox[{"ENT", "=", 
+         RowBox[{"Internal`Bag", "[", 
+          RowBox[{"AdjacencyLists", "[", 
+           RowBox[{"M", ",", "Edges", ",", "Triangles"}], "]"}], "]"}]}], ";",
+         "\[IndentingNewLine]", 
+        RowBox[{"npts", "=", 
+         RowBox[{"VertexCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"nedges", "=", 
+         RowBox[{"EdgeCount", "[", "M", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"nfaces", "=", 
+         RowBox[{"TriangleCount", "[", "M", "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"flist", "=", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"f0", "===", "All"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Range", "[", "nfaces", "]"}], ",", "\[IndentingNewLine]", 
+           
+           RowBox[{"Intersection", "[", 
+            RowBox[{
+             RowBox[{"Range", "[", "nfaces", "]"}], ",", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{"List", "[", "f0", "]"}], "]"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"iter", "=", "0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"While", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", "flist", "]"}], ">", "0"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"iter", "++"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"Print", "[", 
+              RowBox[{"\"\<flist = \>\"", ",", "flist"}], "]"}], ";"}], 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{"deletelist", "=", 
+            RowBox[{"Internal`Bag", "[", 
+             RowBox[{"Most", "[", 
+              RowBox[{"{", "0", "}"}], "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"LeppEdgeBag", "=", 
+            RowBox[{"getLeppEdgeList", "[", 
+             RowBox[{
+              RowBox[{
+              "flist", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
+               ",", "\[IndentingNewLine]", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"pts", ",", "All"}], "]"}], ",", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"edges", ",", "All"}], "]"}], ",", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"faces", ",", "All"}], "]"}], ",", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"ENT", ",", "All"}], "]"}], ",", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"TNE", ",", "All"}], "]"}]}], "\[IndentingNewLine]", 
+             "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"m", "=", 
+            RowBox[{"Length", "[", "LeppEdgeBag", "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"m", "\[GreaterEqual]", "2"}], ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"LeppEdgeBag", "\[LeftDoubleBracket]", 
+                 RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "==", 
+                RowBox[{"LeppEdgeBag", "\[LeftDoubleBracket]", 
+                 RowBox[{"-", "2"}], "\[RightDoubleBracket]"}]}], ",", 
+               RowBox[{"i", "=", 
+                RowBox[{"-", "1"}]}], ",", 
+               RowBox[{"i", "=", 
+                RowBox[{"-", "0"}]}]}], "]"}], ",", 
+             RowBox[{"i", "=", 
+              RowBox[{"-", "0"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"While", "[", 
+            RowBox[{
+             RowBox[{"i", ">", 
+              RowBox[{"-", "m"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"i", "--"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"e", "=", 
+               RowBox[{
+               "LeppEdgeBag", "\[LeftDoubleBracket]", "i", 
+                "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"f1", ",", "f2"}], "}"}], "=", 
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"ENT", ",", "e"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"deletelist", ",", "f1"}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"deletelist", ",", "f2"}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"edge", "=", 
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"edges", ",", "e"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"face1", "=", 
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"faces", ",", "f1"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"o1", "=", 
+               RowBox[{
+                RowBox[{"Complement", "[", 
+                 RowBox[{"face1", ",", "edge"}], "]"}], 
+                "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], ";",
+               "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"fne", "=", 
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"TNE", ",", "f1"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"o1", "\[Equal]", 
+                 RowBox[{
+                 "face1", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"b1", "=", 
+                  RowBox[{
+                  "fne", "\[LeftDoubleBracket]", "3", 
+                   "\[RightDoubleBracket]"}]}], ";", 
+                 RowBox[{"b4", "=", 
+                  RowBox[{
+                  "fne", "\[LeftDoubleBracket]", "2", 
+                   "\[RightDoubleBracket]"}]}], ";"}], "\[IndentingNewLine]", 
+                ",", "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"o1", "\[Equal]", " ", 
+                   RowBox[{
+                   "face1", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"b1", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                   RowBox[{"b4", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], ";"}], "\[IndentingNewLine]",
+                   ",", "\[IndentingNewLine]", 
+                  RowBox[{"(*", 
+                   RowBox[{"o1", "\[Equal]", " ", 
+                    RowBox[{
+                    "face1", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "*)"}], 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"b1", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                   RowBox[{"b4", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], ";"}]}], 
+                 "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}],
+               ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"ee", "=", 
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"edges", ",", "b1"}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"e1", "=", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"o1", "\[Equal]", 
+                  RowBox[{
+                  "ee", "\[LeftDoubleBracket]", "1", 
+                   "\[RightDoubleBracket]"}]}], ",", 
+                 RowBox[{
+                 "ee", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+                  ",", 
+                 RowBox[{
+                 "ee", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}]}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"e2", "=", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"e1", "\[Equal]", 
+                  RowBox[{
+                  "edge", "\[LeftDoubleBracket]", "1", 
+                   "\[RightDoubleBracket]"}]}], ",", 
+                 RowBox[{
+                 "edge", "\[LeftDoubleBracket]", "2", 
+                  "\[RightDoubleBracket]"}], ",", 
+                 RowBox[{
+                 "edge", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}]}], "]"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"npts", "+=", "1"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"nfaces", "+=", "1"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"nedges", "+=", "2"}], ";", "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"pts", ",", 
+                RowBox[{"0.5", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", "e1"}], "]"}], "+", 
+                   RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", "e2"}], "]"}]}], ")"}]}]}], "]"}], 
+              ";", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"edges", ",", "e"}], "]"}], "=", 
+               RowBox[{"{", 
+                RowBox[{"o1", ",", "npts"}], "}"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"edges", ",", 
+                RowBox[{"{", 
+                 RowBox[{"e1", ",", "npts"}], "}"}]}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"edges", ",", 
+                RowBox[{"{", 
+                 RowBox[{"npts", ",", "e2"}], "}"}]}], "]"}], ";", 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"faces", ",", "f1"}], "]"}], "=", 
+               RowBox[{"{", 
+                RowBox[{"e1", ",", "npts", ",", "o1"}], "}"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"faces", ",", 
+                RowBox[{"{", 
+                 RowBox[{"o1", ",", "npts", ",", "e2"}], "}"}]}], "]"}], ";", 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"TNE", ",", "f1"}], "]"}], "=", 
+               RowBox[{"{", 
+                RowBox[{"e", ",", "b1", ",", 
+                 RowBox[{"nedges", "-", "1"}]}], "}"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"TNE", ",", 
+                RowBox[{"{", 
+                 RowBox[{"nedges", ",", "b4", ",", "e"}], "}"}]}], "]"}], ";",
+               "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"f1", "==", 
+                 RowBox[{
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"ENT", ",", "b4"}], "]"}], "\[LeftDoubleBracket]", 
+                  "1", "\[RightDoubleBracket]"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Internal`BagPart", "[", 
+                  RowBox[{"ENT", ",", "b4"}], "]"}], "=", 
+                 RowBox[{"{", 
+                  RowBox[{"nfaces", ",", 
+                   RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b4"}], "]"}], "\[LeftDoubleBracket]",
+                     "2", "\[RightDoubleBracket]"}]}], "}"}]}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Internal`BagPart", "[", 
+                  RowBox[{"ENT", ",", "b4"}], "]"}], "=", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b4"}], "]"}], "\[LeftDoubleBracket]",
+                     "1", "\[RightDoubleBracket]"}], ",", "nfaces"}], 
+                  "}"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Internal`BagPart", "[", 
+                RowBox[{"ENT", ",", "e"}], "]"}], "=", 
+               RowBox[{"{", 
+                RowBox[{"f1", ",", "nfaces"}], "}"}]}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"ENT", ",", 
+                RowBox[{"{", 
+                 RowBox[{"f1", ",", "0"}], "}"}]}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Internal`StuffBag", "[", 
+               RowBox[{"ENT", ",", 
+                RowBox[{"{", 
+                 RowBox[{"nfaces", ",", "0"}], "}"}]}], "]"}], ";", 
+              "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"f2", "\[NotEqual]", " ", "0"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{
+                   "\"\<Edge \>\"", ",", "e", ",", 
+                    "\"\< is interior edge\>\""}], "]"}], ";"}], "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"face2", "=", 
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"faces", ",", "f2"}], "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"o2", "=", 
+                  RowBox[{
+                   RowBox[{"Complement", "[", 
+                    RowBox[{"face2", ",", "edge"}], "]"}], 
+                   "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+                 ";", "\[IndentingNewLine]", 
+                 RowBox[{"fne", "=", 
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"TNE", ",", "f2"}], "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"o2", "\[Equal]", 
+                    RowBox[{
+                    "face2", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"b2", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{"b3", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], ";"}], "\[IndentingNewLine]",
+                    ",", "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"o2", "\[Equal]", " ", 
+                    RowBox[{
+                    "face2", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"b2", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{"b3", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], ";"}], "\[IndentingNewLine]",
+                     ",", "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{"o2", "\[Equal]", " ", 
+                    RowBox[{
+                    "face2", "\[LeftDoubleBracket]", "3", 
+                    "\[RightDoubleBracket]"}]}], "*)"}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"b2", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], ";", 
+                    RowBox[{"b3", "=", 
+                    RowBox[{
+                    "fne", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], ";"}]}], 
+                    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+                  "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"ee", "=", 
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"edges", ",", "b2"}], "]"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"e2", "\[Equal]", 
+                    RowBox[{
+                    "ee", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}]}], "||", 
+                    RowBox[{"e2", "\[Equal]", 
+                    RowBox[{
+                    "ee", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}]}], ",", 
+                   RowBox[{
+                    RowBox[{"c", "=", "b2"}], ";", 
+                    RowBox[{"b2", "=", "b3"}], ";", 
+                    RowBox[{"b3", "=", "c"}]}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"nfaces", "+=", "1"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"nedges", "+=", "1"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{"quadmeansQ", ",", "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", 
+                    RowBox[{"-", "1"}]}], "]"}], "=", 
+                    RowBox[{"0.25", 
+                    RowBox[{"Plus", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", "e1"}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", "e2"}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", "o1"}], "]"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"pts", ",", "o2"}], "]"}]}], 
+                    "\[IndentingNewLine]", "]"}]}]}], ";"}]}], 
+                  "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"faces", ",", "f2"}], "]"}], "=", 
+                  RowBox[{"{", 
+                   RowBox[{"o2", ",", "npts", ",", "e1"}], "}"}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"Internal`StuffBag", "[", 
+                  RowBox[{"faces", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"e2", ",", "npts", ",", "o2"}], "}"}]}], "]"}], 
+                 ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                 RowBox[{"Internal`StuffBag", "[", 
+                  RowBox[{"edges", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"o2", ",", "npts"}], "}"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"f2", "==", 
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b3"}], "]"}], "\[LeftDoubleBracket]",
+                     "1", "\[RightDoubleBracket]"}]}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b3"}], "]"}], "=", 
+                    RowBox[{"{", 
+                    RowBox[{"nfaces", ",", 
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b3"}], "]"}], "\[LeftDoubleBracket]",
+                     "2", "\[RightDoubleBracket]"}]}], "}"}]}], ",", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b3"}], "]"}], "=", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "b3"}], "]"}], "\[LeftDoubleBracket]",
+                     "1", "\[RightDoubleBracket]"}], ",", "nfaces"}], 
+                    "}"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
+                 "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                 RowBox[{"Internal`StuffBag", "[", 
+                  RowBox[{"ENT", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"f2", ",", "nfaces"}], "}"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"ENT", ",", 
+                    RowBox[{"nedges", "-", "2"}]}], "]"}], "=", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", 
+                    RowBox[{"nedges", "-", "2"}]}], "]"}], 
+                    "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+                    ",", "f2"}], "}"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"ENT", ",", 
+                    RowBox[{"nedges", "-", "1"}]}], "]"}], "=", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", 
+                    RowBox[{"nedges", "-", "1"}]}], "]"}], 
+                    "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+                    ",", "nfaces"}], "}"}]}], ";", "\[IndentingNewLine]", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"TNE", ",", "f2"}], "]"}], "=", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    RowBox[{"nedges", "-", "2"}], ",", "b2", ",", "nedges"}], 
+                   "}"}]}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"Internal`StuffBag", "[", 
+                  RowBox[{"TNE", ",", 
+                   RowBox[{"{", 
+                    RowBox[{"nedges", ",", "b3", ",", 
+                    RowBox[{"nedges", "-", "1"}]}], "}"}]}], "]"}], ";"}]}], 
+               "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"Print", "[", 
+                   RowBox[{
+                   "\"\<Edge \>\"", ",", "e", ",", 
+                    "\"\< is boundary edge\>\""}], "]"}], ";"}]}], "*)"}], 
+               "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+            "]"}], ";", "\[IndentingNewLine]", 
+           RowBox[{"flist", "=", 
+            RowBox[{"Complement", "[", 
+             RowBox[{"flist", ",", 
+              RowBox[{"Internal`BagPart", "[", 
+               RowBox[{"deletelist", ",", "All"}], "]"}]}], "]"}]}], ";"}]}], 
+         "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Q", "\[LeftArrow]", "M"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"ClearAllCache", "[", "Q", "]"}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{
+         RowBox[{"Q", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<VertexCoordinates\>\""}], 
+          "\[RightDoubleBracket]"}], "=", 
+         RowBox[{"Internal`BagPart", "[", 
+          RowBox[{"pts", ",", "All"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Q", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<Edges\>\""}], "\[RightDoubleBracket]"}], "=", 
+         RowBox[{"Internal`BagPart", "[", 
+          RowBox[{"edges", ",", "All"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{
+         RowBox[{"Q", "\[LeftDoubleBracket]", 
+          RowBox[{"1", ",", "\"\<Triangles\>\""}], "\[RightDoubleBracket]"}], 
+         "=", 
+         RowBox[{"Internal`BagPart", "[", 
+          RowBox[{"faces", ",", "All"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        
+        RowBox[{"adjacencylist", "=", 
+         RowBox[{"Association", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"adjacencylist", ",", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"Edges", ",", "Triangles"}], "}"}], "\[Rule]", " ", 
+           RowBox[{"Internal`BagPart", "[", 
+            RowBox[{"ENT", ",", "All"}], "]"}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"adjacencylist", ",", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"Triangles", ",", "Edges"}], "}"}], "\[Rule]", " ", 
+           RowBox[{"Internal`BagPart", "[", 
+            RowBox[{"TNE", ",", "All"}], "]"}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetPersistentCache", "[", 
+         RowBox[{"Q", ",", "\"\<AdjacencyLists\>\"", ",", "adjacencylist"}], 
+         "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Q", "\[LeftDoubleBracket]", 
+            RowBox[{
+            "1", ",", "\"\<PersistentCache\>\"", ",", 
+             "\"\<EdgesNeighTriangles\>\""}], "\[RightDoubleBracket]"}], "=", 
+           
+           RowBox[{"Internal`BagPart", "[", 
+            RowBox[{"ENT", ",", "All"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          
+          RowBox[{
+           RowBox[{"Q", "\[LeftDoubleBracket]", 
+            RowBox[{
+            "1", ",", "\"\<PersistentCache\>\"", ",", 
+             "\"\<TrianglesNeighEdges\>\""}], "\[RightDoubleBracket]"}], "=", 
+           
+           RowBox[{"Internal`BagPart", "[", 
+            RowBox[{"TNE", ",", "All"}], "]"}]}], ";"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"SetPersistentCache", "[", 
+         RowBox[{
+         "Q", ",", "\"\<ValenceList\>\"", ",", "\[IndentingNewLine]", 
+          RowBox[{"Association", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"Edges", ",", "Triangles"}], "}"}], "\[Rule]", " ", 
+            RowBox[{"GroupBy", "[", 
+             RowBox[{
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"Total", "/@", 
+                  RowBox[{"Unitize", "[", 
+                   RowBox[{"Internal`BagPart", "[", 
+                    RowBox[{"ENT", ",", "All"}], "]"}], "]"}]}], ",", 
+                 RowBox[{"Range", "[", "nedges", "]"}]}], "}"}], "]"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"First", "\[Rule]", "Last"}]}], "]"}]}], "]"}]}], "]"}],
+         ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Q", "\[LeftDoubleBracket]", 
+            RowBox[{
+            "1", ",", "\"\<PersistentCache\>\"", ",", 
+             "\"\<EdgeTriangleValenceList\>\""}], "\[RightDoubleBracket]"}], 
+           "=", 
+           RowBox[{"GroupBy", "[", 
+            RowBox[{
+             RowBox[{"Transpose", "[", 
+              RowBox[{"{", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Total", "/@", 
+                 RowBox[{"Unitize", "[", 
+                  RowBox[{"Internal`BagPart", "[", 
+                   RowBox[{"ENT", ",", "All"}], "]"}], "]"}]}], ",", 
+                RowBox[{"Range", "[", "nedges", "]"}]}], "}"}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{"First", "\[Rule]", "Last"}]}], "]"}]}], ";"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Q", "\[LeftDoubleBracket]", 
+            RowBox[{
+            "1", ",", "\"\<PersistentCache\>\"", ",", 
+             "\"\<BoundaryLinkData\>\""}], "\[RightDoubleBracket]"}], "=", 
+           RowBox[{"M", "\[LeftDoubleBracket]", 
+            RowBox[{
+            "1", ",", "\"\<PersistentCache\>\"", ",", 
+             "\"\<BoundaryLinkData\>\""}], "\[RightDoubleBracket]"}]}], ";"}],
+          "*)"}], "\[IndentingNewLine]", "Q"}]}], "\[IndentingNewLine]", 
+      "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Options", "\[Rule]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"\"\<QuadMeans\>\"", "\[Rule]", "False"}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.6934226831842747`*^9, 3.6934226838002234`*^9}, {
+   3.693422752285904*^9, 3.6934227604050503`*^9}, {3.693423132514255*^9, 
+   3.6934231333246517`*^9}, {3.693423311236306*^9, 3.693423311588484*^9}, {
+   3.693423376830501*^9, 3.6934233886317463`*^9}, {3.6934234417275333`*^9, 
+   3.693423464553794*^9}, {3.693423528442535*^9, 3.6934235694948483`*^9}, {
+   3.6934236240423594`*^9, 3.693423718567844*^9}, {3.6934238577163677`*^9, 
+   3.693423868045767*^9}, {3.693424158877412*^9, 3.693424166223332*^9}, 
+   3.693429276954077*^9, {3.6934295962221746`*^9, 3.693429599867757*^9}, {
+   3.69343044655849*^9, 3.693430527230296*^9}, {3.6934305600897417`*^9, 
+   3.693430589619163*^9}, {3.693430668166695*^9, 3.693430701252458*^9}, {
+   3.693430776494244*^9, 3.693430780269046*^9}, {3.693430952990484*^9, 
+   3.6934309690191936`*^9}, {3.693431082445155*^9, 3.6934311951562147`*^9}, {
+   3.69343122852007*^9, 3.69343126152561*^9}, {3.693431644366506*^9, 
+   3.6934316484823837`*^9}, {3.693431693399465*^9, 3.6934317133100777`*^9}, {
+   3.6934318995505037`*^9, 3.693431906125559*^9}, 3.693431968317471*^9, {
+   3.693432052572503*^9, 3.6934321386335573`*^9}, {3.6934327466855507`*^9, 
+   3.6934327546370163`*^9}, {3.6934334008891287`*^9, 3.693433453224641*^9}, {
+   3.693433558060869*^9, 3.6934335779137917`*^9}, {3.6934336311663523`*^9, 
+   3.693433690962844*^9}, {3.69343373466556*^9, 3.6934338025083647`*^9}, {
+   3.69343388025359*^9, 3.693433910409307*^9}, {3.693433949262897*^9, 
+   3.693433973544334*^9}, {3.693434102144226*^9, 3.693434176129524*^9}, {
+   3.6934342090521107`*^9, 3.6934342507600727`*^9}, {3.6934342991101418`*^9, 
+   3.6934343268944817`*^9}, 3.693434370392194*^9, {3.693434409739687*^9, 
+   3.693434419163694*^9}, {3.693434455346315*^9, 3.693434463930356*^9}, {
+   3.693434748630392*^9, 3.6934347820532837`*^9}, {3.69343483316759*^9, 
+   3.6934348363746233`*^9}, {3.693434868596092*^9, 3.6934348902761793`*^9}, 
+   3.693434950132674*^9, {3.693435091251896*^9, 3.693435139000024*^9}, {
+   3.69343518117105*^9, 3.693435208305605*^9}, {3.69343525412973*^9, 
+   3.693435453248334*^9}, {3.693435780871127*^9, 3.693435856332469*^9}, {
+   3.693436015783245*^9, 3.6934360492695007`*^9}, 3.693436083634129*^9, 
+   3.693436264011767*^9, {3.693436324261138*^9, 3.6934363828105917`*^9}, {
+   3.693436428507804*^9, 3.6934364756453657`*^9}, {3.693436560531836*^9, 
+   3.693436579522925*^9}, {3.707923114782449*^9, 3.707923137661456*^9}, {
+   3.7194848548933153`*^9, 3.719484908181045*^9}, {3.7877329287627363`*^9, 
+   3.787732937755988*^9}, {3.791025894048667*^9, 3.7910259068706083`*^9}, {
+   3.791025937807096*^9, 3.7910259613397293`*^9}, {3.7910290052571363`*^9, 
+   3.79102900586537*^9}, {3.7910290532816772`*^9, 3.791029126741089*^9}},
+ CellLabel->"In[5]:=",ExpressionUUID->"900db68a-e8be-497b-914b-3b01ec917a2e"]
+},
+WindowSize->{1440, 851},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 8643, 193, 692, "Input",ExpressionUUID->"70cfcc57-2fab-4bb1-ac32-e2ae961f9340"],
+Cell[9204, 215, 34287, 718, 3817, "Input",ExpressionUUID->"900db68a-e8be-497b-914b-3b01ec917a2e"]
+}
+]
+*)
+
